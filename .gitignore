@@ -1,0 +1,11 @@
+*_cache
+*.html
+.~lock*
+*.backup
+*.Rproj
+.google_API_keys
+.httr-oauth
+.RData
+.Rhistory
+.Rproj.user
+.Ruserdata
