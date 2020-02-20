@@ -39,4 +39,4 @@ Make sure that [`make`](https://de.wikipedia.org/wiki/GNU_Make)[^make-prop] is a
 
 ## See also
 
-- [The _xfun_ package by Yihui Xe, a different collection of miscellaneous R functions](https://yihui.org/xfun/).
+- [The _xfun_ package](https://yihui.org/xfun/) by Yihui Xe, a different collection of miscellaneous R functions.

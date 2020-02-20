@@ -33,4 +33,4 @@ This package combines a variety of convenience functions which aren't found in a
 
 ## See also
 
-- [The _xfun_ package by Yihui Xe, a different collection of miscellaneous R functions](https://yihui.org/xfun/).
+- [The _xfun_ package](https://yihui.org/xfun/) by Yihui Xe, a different collection of miscellaneous R functions.
