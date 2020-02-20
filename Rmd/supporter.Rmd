@@ -1,0 +1,71 @@
+---
+title: "Supporter"
+subtitle: "Various helper functions that make the life of a typical R coder just a little bit easier"
+author: "Salim Brüggemann"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+# Packages
+
+## Check if a package is installed
+
+This function [was proposed by Stack Overflow user Artem Klevtsov](https://stackoverflow.com/a/38082613/7196903).
+
+```{r, is-installed}
+is_installed <- function(pkg)
+{
+  nzchar(system.file(package = pkg))
+}
+```
+
+# Miscellaneous
+
+## Determine file path of executing script
+
+This function is inspired by an [answer from Stack Overflow user Jerry T](https://stackoverflow.com/a/36777602/7196903).
+
+```{r, script-path}
+script_path <- function()
+{
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  needle <- "--file="
+  match <- grep(x = cmd_args,
+                pattern = needle)
+  
+  if ( length(match) > 0 )
+  {
+    # Rscript
+    return(normalizePath(sub(needle, "", cmd_args[match])))
+    
+  } else
+  {
+    if ( !is.null(sys.frames()[[1]]$ofile) )
+    {
+      # `source()`d via R console
+      return(normalizePath(sys.frames()[[1]]$ofile))
+      
+      # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993  
+    } else if ( is_installed("rstudioapi") )
+    {
+      return(normalizePath(rstudioapi::getActiveDocumentContext()$path))
+
+    } else rlang::abort("Couldn't determine script path!'")
+  }
+}
+```
+
+## Print `x` as newline-separated character vector using `cat()`
+
+```{r, cat-lines}
+cat_lines <- function(x)
+{
+  cat(as.character(unlist(x)),
+      sep = "\n")
+}
+```
+
