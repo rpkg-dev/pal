@@ -1,0 +1,36 @@
+# supporter: Convenience Functions for the Typical R Coder
+```{r, prep-snippets, echo = FALSE}
+# download the snippets to insert later on
+## define temporary file paths
+file_path_installation_notice_dev <- tempfile(pattern = "installation_notice_dev_")
+file_path_literate_programming_notice <- tempfile(pattern = "literate_programming_notice_")
+
+## download the files
+download.file(url = "https://gitlab.com/salim_b/r/snippets/raw/master/R%20Markdown/installation_notice_dev_version_gitlab.Rmd",
+              destfile = file_path_installation_notice_dev,
+              quiet = TRUE)
+download.file(url = "https://gitlab.com/salim_b/r/snippets/raw/master/R%20Markdown/literate_programming_notice.Rmd",
+              destfile = file_path_literate_programming_notice,
+              quiet = TRUE)
+```
+This package combines a variety of convenience functions which aren't found in any other tidyverse-style R packages.
+
+## Features
+
+...
+
+## Details
+
+...
+
+## Installation
+```{r, install-snippet, child = file_path_installation_notice_dev}
+```
+
+## Development
+```{r, development-snippet, child = file_path_literate_programming_notice}
+```
+
+## See also
+
+- [The _xfun_ package by Yihui Xe, a different collection of miscellaneous R functions](https://yihui.org/xfun/).

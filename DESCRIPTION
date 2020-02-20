@@ -1,0 +1,16 @@
+Package: supporter
+Title: Convenience Functions for the Typical R Coder
+Version: 0.0.9000
+Authors@R: 
+    person(given = "Salim",
+           family = "Brüggemann",
+           role = c("aut", "cre"),
+           email = "salim-b@pm.me",
+           comment = c(ORCID = "0000-0002-5329-5987"))
+Description: A collection of convenience functions which aren't found in any other tidyverse-style R packages.
+License: AGPL-3
+URL: https://gitlab.com/salim_b/r/pkgs/supporter
+BugReports: https://gitlab.com/salim_b/r/pkgs/supporter/issues
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
