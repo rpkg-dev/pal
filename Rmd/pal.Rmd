@@ -1,5 +1,5 @@
 ---
-title: "Supporter"
+title: "pal"
 subtitle: "Various helper functions that make the life of a typical R coder just a little bit easier"
 author: "Salim Brüggemann"
 date: "`r Sys.Date()`"
@@ -14,7 +14,9 @@ editor_options:
 
 ## Check if a package is installed
 
-This function [was proposed by Stack Overflow user Artem Klevtsov](https://stackoverflow.com/a/38082613/7196903).
+In contrast to `require`, this function checks if a package is installed without attaching its namespace if so. It is [considerably faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than `pkg %in% rownames(installed.packages())`.
+
+This function [was originally proposed by Stack Overflow user Artem Klevtsov](https://stackoverflow.com/a/38082613/7196903).
 
 ```{r, is-installed}
 is_installed <- function(pkg)

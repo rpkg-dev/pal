@@ -1,4 +1,4 @@
-# supporter: Convenience Functions for the Typical R Coder
+# pal: Convenience Functions for the Typical R Coder
 
 This package combines a variety of convenience functions which aren't found in any other tidyverse-style R packages.
 
@@ -12,7 +12,7 @@ This package combines a variety of convenience functions which aren't found in a
 
 ## Installation
 
-To install the latest development version of _supporter_, run the following in R:
+To install the latest development version of _pal_, run the following in R:
 
 ```r
 if ( !("remotes" %in% rownames(installed.packages())) )
@@ -20,7 +20,7 @@ if ( !("remotes" %in% rownames(installed.packages())) )
   install.packages(pkgs = "remotes",
                    repos = "https://cloud.r-project.org/")
 }
-remotes::install_gitlab(repo = "salim_b/r/pkgs/supporter")
+remotes::install_gitlab(repo = "salim_b/r/pkgs/pal")
 ```
 
 ## Development

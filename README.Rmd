@@ -1,4 +1,4 @@
-# supporter: Convenience Functions for the Typical R Coder
+# pal: Convenience Functions for the Typical R Coder
 ```{r, prep-snippets, echo = FALSE}
 # download the snippets to insert later on
 ## define temporary file paths
@@ -13,7 +13,11 @@ download.file(url = "https://gitlab.com/salim_b/r/snippets/raw/master/R%20Markdo
               destfile = file_path_literate_programming_notice,
               quiet = TRUE)
 ```
-This package combines a variety of convenience functions which aren't found in any other tidyverse-style R packages.
+This package combines a variety of convenience functions which aren't found in any other tidyverse-style R packages[^notify].
+
+
+[^notify]: If you discover one or more of the features of this package in a more popular tydiverse-style package, feel free to report it to me and I will consider removing it. I strongly support standardization efforts and the avoidance of duplication.
+
 
 ## Features
 
@@ -33,4 +37,4 @@ This package combines a variety of convenience functions which aren't found in a
 
 ## See also
 
-- [The _xfun_ package](https://yihui.org/xfun/) by Yihui Xe, a different collection of miscellaneous R functions.
+- [The _xfun_ package](https://yihui.org/xfun/) by Yihui Xe, a non-overlapping collection of miscellaneous R functions.
