@@ -7,7 +7,7 @@ utils::globalVariables(names = c(".",
 #' Build `README.Rmd`
 #'
 #' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
-#' output format
+#' output format.
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.

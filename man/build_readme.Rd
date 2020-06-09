@@ -13,5 +13,5 @@ build_readme(input = "README.Rmd", output = "README.md")
 }
 \description{
 This function is an preliminary replacement for \code{\link[devtools:build_readme]{devtools::build_readme()}} that \emph{works} with the \code{\link[pal:gitlab_document]{pal::gitlab_document}} R Markdown
-output format
+output format.
 }
