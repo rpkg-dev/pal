@@ -9,6 +9,28 @@ arg_match_invalid_msg <- utils::getFromNamespace(x = "arg_match_invalid_msg",
 chr_quoted <- utils::getFromNamespace(x = "chr_quoted",
                                       ns = "rlang")
 
+#' Build `README.Rmd`
+#'
+#' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
+#' output format
+#'
+#' @param input The path to the R Markdown README file to be built. A character scalar.
+#' @param output The path of the built Markdown README. A character scalar.
+#'
+#' @export
+build_readme <- function(input = "README.Rmd",
+                         output = "README.md") {
+  
+  # knit Rmd to md
+  knitr::knit(input = input,
+              output = output,
+              quiet = TRUE)
+  
+  # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
+  rmarkdown::render(input = output,
+                    quiet = TRUE)
+}
+
 #' Convert to GitLab Flavored Markdown
 #'
 #' Format for converting from R Markdown to [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).

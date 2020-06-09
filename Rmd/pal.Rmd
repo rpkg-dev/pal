@@ -27,6 +27,36 @@ chr_quoted <- utils::getFromNamespace(x = "chr_quoted",
 
 # R Markdown / Knitr
 
+## Build `README.Rmd`
+
+TODO: There's already the superior `devtools::build_readme()`, but it doesn't work with the `pal::gitlab_document` output format because
+[it sets the `html_preview`](https://github.com/r-lib/devtools/blob/master/R/build-readme.R#L26-L27) option which is only found in
+`rmarkdown::github_document`. -> file a [bug report](https://github.com/r-lib/devtools/issues?q=is%3Aissue+is%3Aopen+build) or even submit a PR to fix this!
+
+```{r}
+#' Build `README.Rmd`
+#'
+#' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
+#' output format
+#'
+#' @param input The path to the R Markdown README file to be built. A character scalar.
+#' @param output The path of the built Markdown README. A character scalar.
+#'
+#' @export
+build_readme <- function(input = "README.Rmd",
+                         output = "README.md") {
+  
+  # knit Rmd to md
+  knitr::knit(input = input,
+              output = output,
+              quiet = TRUE)
+  
+  # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
+  rmarkdown::render(input = output,
+                    quiet = TRUE)
+}
+```
+
 ## Output formats
 
 These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
