@@ -4,11 +4,6 @@
 utils::globalVariables(names = c(".",
                                  "Package"))
 
-arg_match_invalid_msg <- utils::getFromNamespace(x = "arg_match_invalid_msg",
-                                                 ns = "rlang")
-chr_quoted <- utils::getFromNamespace(x = "chr_quoted",
-                                      ns = "rlang")
-
 #' Build `README.Rmd`
 #'
 #' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
@@ -208,7 +203,7 @@ check_dots_named <- function(...,
                                                              "warn",
                                                              "inform",
                                                              "signal"))) %>%
-      paste0("(message = '`...` must be provided (no empty set)!')") %>%
+      paste0("(message = '`...` must be provided (not `NULL`)!')") %>%
       parse(text = .) %>%
       eval()
   }
@@ -230,7 +225,7 @@ assert_dot <- function(dot,
   
   if (rlang::is_na(i)) {
     
-    msg <- arg_match_invalid_msg(dot, values)
+    msg <- glue::glue("Invalid argument provided in `...`: `{dot}`\nValid arguments include: ", pal::prose_ls(values, wrap = "`"))
     i_partial <- pmatch(dot, values)
     
     if (!rlang::is_na(i_partial)) {
@@ -244,7 +239,7 @@ assert_dot <- function(dot,
     }
     
     if (exists("candidate")) {
-      candidate <- chr_quoted(candidate, "\"")
+      candidate <- pal::prose_ls(candidate, wrap = "`")
       msg <- paste0(msg, "\n", "Did you mean ", candidate, 
                     "?")
     }
@@ -275,11 +270,11 @@ prose_ls <- function(x,
                      separator = ", ",
                      last_separator = " and ") {
   if (length(x) < 2) {
-    return(x)
+    paste0(checkmate::assert_string(wrap), x, wrap)
     
   } else {
     paste0(x[-length(x)],
-           collapse = paste0(wrap, separator, wrap)) %>%
+           collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
       paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, x[length(x)], wrap)
   }
 }
