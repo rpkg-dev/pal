@@ -1,29 +1,13 @@
-# pal: Friendly Convenience/Utility Functions
-```{r, prep-snippets, echo = FALSE}
-# download the snippets to insert later on
-## define temporary file paths
-path_notice_inst_dev <- tempfile(pattern = "path_notice_inst_dev_")
-path_notice_lp <- tempfile(pattern = "path_notice_lp_")
-path_notice_coding_style <- tempfile(pattern = "path_notice_coding_style_")
-on.exit(unlink(c(path_notice_inst_dev,
-                 path_notice_lp,
-                 path_notice_coding_style)))
+---
+output: pal::gitlab_document
+---
 
-## download the files
-download.file(url = "https://gitlab.com/salim_b/r/snippets/raw/master/R%20Markdown/installation_notice_dev_version_gitlab.Rmd",
-              destfile = path_notice_inst_dev,
-              quiet = TRUE)
-download.file(url = "https://gitlab.com/salim_b/r/snippets/raw/master/R%20Markdown/literate_programming_notice.Rmd",
-              destfile = path_notice_lp,
-              quiet = TRUE)
-download.file(url = "https://gitlab.com/salim_b/r/snippets/raw/master/R%20Markdown/coding_style_notice.Rmd",
-              destfile = path_notice_coding_style,
-              quiet = TRUE)
-```
-This package combines a variety of convenience functions which aren't found in any other tidyverse-style R packages[^notify].
+# `r paste0(desc::desc_get_field(key = "Package"), ": ", desc::desc_get_field(key = "Title", default = "<No \x60Title\x60 field set in DESCRIPTION!>"))`
+
+`r desc::desc_get_field(key = "Description", default = "<No \x60Description\x60 field set in DESCRIPTION!>")`[^notify].
 
 
-[^notify]: If you discover one or more of the features of this package in a more popular tydiverse-style package, feel free to report it to me and I will consider removing it. I strongly support standardization efforts and the avoidance of duplication.
+[^notify]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider removing it. I strongly support standardization efforts and the avoidance of unnecessary duplication.
 
 
 ## Features
@@ -35,19 +19,19 @@ This package combines a variety of convenience functions which aren't found in a
 ...
 
 ## Installation
-```{r, install-snippet-dev, child = path_notice_inst_dev}
+```{r, install-snippet-dev, child = pkgsnippets::file("installation-notice_dev-version_gitlab.Rmd")}
 ```
 
 ## Development
 
 ### Literate Programming
-```{r, literate-programming-snippet, child = path_notice_lp}
+```{r, literate-programming-snippet, child = pkgsnippets::file("literate-programming-notice.Rmd")}
 ```
 
 ### Coding Style
-```{r, coding-style-snippet, child = path_notice_coding_style}
+```{r, coding-style-snippet, child = pkgsnippets::file("coding-style-notice.Rmd")}
 ```
 
 ## See also
 
-- [The _xfun_ package](https://yihui.org/xfun/) by Yihui Xe, a non-overlapping collection of miscellaneous R functions.
+- The [xfun](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.
