@@ -65,7 +65,7 @@ gitlab_document <- function(smart_punctuation = TRUE,
                             ...) {
   pal::check_dots_named(...,
                         .function = rmarkdown::md_document,
-                        .without = c("variant", "md_extensions", "pandoc_args"))
+                        .forbidden = c("variant", "md_extensions", "pandoc_args"))
   
   rmarkdown::md_document(variant = "markdown",
                          md_extensions = c("-simple_tables",
