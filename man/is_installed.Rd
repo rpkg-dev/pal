@@ -29,6 +29,7 @@ is_installed(pkg = "tidyverse")
 }
 \seealso{
 R package functions
+\code{\link{is_pkg_dir}()},
 \code{\link{ls_pkg}()}
 }
 \concept{rpkgs}

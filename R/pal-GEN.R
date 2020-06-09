@@ -130,9 +130,30 @@ assert_pkg <- function(pkg,
 #' @examples
 #' is_installed(pkg = "tidyverse")
 is_installed <- function(pkg) {
+  
   pkg %>%
     magrittr::set_names(., .) %>%
     purrr::map_lgl(~ nzchar(system.file(package = .x)))
+}
+
+#' Test if a directory is an R package
+#'
+#' This is a simple convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that this function will only
+#' return `TRUE` for the root of a package directory, not its subdirectories.
+#'
+#' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
+#'
+#' @return `TRUE` if `path` is the root directory of an R package, `FALSE` otherwise.
+#' @export
+#' @family rpkgs
+#'
+#' @examples
+#' is_pkg_dir()
+#' is_pkg_dir(fs::path_package("pal"))
+is_pkg_dir <- function(path = ".") {
+  
+  rprojroot::is_r_package$testfun[[1]](path = checkmate::assert_directory(path,
+                                                                          access = "r"))
 }
 
 #' List a subset of all installed packages
