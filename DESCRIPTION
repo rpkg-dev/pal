@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "salim-b@pm.me",
            comment = c(ORCID = "0000-0002-5329-5987"))
-Description: A collection of convenience functions which aren't found in any other tidyverse-style R packages.
+Description: A collection of convenience/utility functions which aren't found in any other tidyverse-style R package.
 License: AGPL-3
 URL: https://gitlab.com/salim_b/r/pkgs/pal
 BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues

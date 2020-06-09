@@ -6,7 +6,7 @@
 \alias{pal-package}
 \title{pal: Friendly Convenience/Utility Functions}
 \description{
-A collection of convenience functions which aren't found in any other tidyverse-style R packages.
+A collection of convenience/utility functions which aren't found in any other tidyverse-style R package.
 }
 \seealso{
 Useful links:

@@ -7,10 +7,12 @@
 gitlab_document(smart_punctuation = TRUE, parse_emoji_markup = FALSE, ...)
 }
 \arguments{
-\item{smart_punctuation}{If \code{TRUE}, straight quotes are converted to curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such as \code{Mr.}.}
+\item{smart_punctuation}{Setting this to \code{TRUE} activates \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts
+straight quotes to curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). Nonbreaking spaces are inserted after certain
+abbreviations, such as \code{Mr.}.}
 
-\item{parse_emoji_markup}{Should emoji markup (e.g. \verb{:smile:}) be parsed as Unicode emoticons? Setting this to \code{TRUE} activates
-\href{https://pandoc.org/MANUAL.html#extension-emoji}{Pandoc's \code{emoji} extension}.}
+\item{parse_emoji_markup}{Setting this to \code{TRUE} activates \href{https://pandoc.org/MANUAL.html#extension-emoji}{Pandoc's \code{emoji} extension} which parses emoji
+markup (e.g. \verb{:smile:}) as Unicode emoticons.}
 
 \item{...}{Additional arguments passed to \code{\link[rmarkdown:md_document]{rmarkdown::md_document()}}.}
 }

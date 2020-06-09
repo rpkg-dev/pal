@@ -86,9 +86,11 @@ As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://g
 #' This output format basically ensures Pandoc is called with a custom set of options optimized for maximum compatibility with
 #' [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
 #'
-#' @param parse_emoji_markup Should emoji markup (e.g. `:smile:`) be parsed as Unicode emoticons? Setting this to `TRUE` activates
-#'   [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji).
-#' @param smart_punctuation If `TRUE`, straight quotes are converted to curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such as `Mr.`.
+#' @param parse_emoji_markup Setting this to `TRUE` activates [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji
+#'   markup (e.g. `:smile:`) as Unicode emoticons.
+#' @param smart_punctuation Setting this to `TRUE` activates [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts
+#'   straight quotes to curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain
+#'   abbreviations, such as `Mr.`.
 #' @param ... Additional arguments passed to [rmarkdown::md_document()].
 #'
 #' @return R Markdown output format to pass to [rmarkdown::render()].
