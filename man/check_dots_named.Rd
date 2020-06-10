@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal-GEN.R
 \name{check_dots_named}
 \alias{check_dots_named}
-\title{Check that either \link[base:dots]{dots}) are empty or all dot parameter names are a valid subset of a function's parameter names.}
+\title{Check that all \link[base:dots]{dot} parameter names are a valid subset of a function's parameter names.}
 \usage{
 check_dots_named(
   ...,
@@ -13,22 +13,18 @@ check_dots_named(
 )
 }
 \arguments{
-\item{...}{The three-dot argument to check.}
+\item{...}{The dots argument to check.}
 
-\item{.function}{The function name.}
+\item{.function}{The function the \code{...} will be passed on to.}
 
 \item{.forbidden}{Parameter names within \code{...} that should be treated as invalid.}
 
-\item{.empty_ok}{Set to \code{TRUE} if empty dots should be allowed and \code{FALSE} otherwise.}
+\item{.empty_ok}{Set to \code{TRUE} if empty \code{...} should be allowed, or to \code{FALSE} otherwise.}
 
-\item{.action}{The action to take when the dots have not been used. One of
-\code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, \code{\link[rlang:inform]{rlang::inform()}} or \code{\link[rlang:signal]{rlang::signal()}}.}
-}
-\value{
-\code{...} invisibly.
+\item{.action}{The action to take when the check fails. One of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, \code{\link[rlang:inform]{rlang::inform()}} or \code{\link[rlang:signal]{rlang::signal()}}.}
 }
 \description{
-Check that either \link[base:dots]{dots}) are empty or all dot parameter names are a valid subset of a function's parameter names.
+Check that all \link[base:dots]{dot} parameter names are a valid subset of a function's parameter names.
 }
 \examples{
 sapply_safe <- function(X,
@@ -36,11 +32,19 @@ sapply_safe <- function(X,
                         ...,
                         simplify = TRUE,
                         USE.NAMES = TRUE) {
+  pal::check_dots_named(...,
+                        .function = FUN)
   sapply(X = X,
          FUN = FUN,
-         check_dots_named(...,
-                          .function = FUN),
+         ...,
          simplify = TRUE,
          USE.NAMES = TRUE)
+}
+
+\dontrun{
+# while the original `sapply()` silently ignores misspelled arguments,
+sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
+# `sapply_safe()` will throw an informative error message:
+sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 }
 }

@@ -179,15 +179,13 @@ ls_pkg <- function(pkg,
                                                        "$")))
 }
 
-#' Check that either [dots][base::dots()]) are empty or all dot parameter names are a valid subset of a function's parameter names.
+#' Check that all [dot][base::dots()] parameter names are a valid subset of a function's parameter names.
 #'
-#' @inheritParams ellipsis::check_dots_used
-#' @param ... The three-dot argument to check.
-#' @param .function The function name.
+#' @param ... The dots argument to check.
+#' @param .function The function the `...` will be passed on to.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid.
-#' @param .empty_ok Set to `TRUE` if empty dots should be allowed and `FALSE` otherwise.
-#'
-#' @return `...` invisibly.
+#' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
+#' @param .action The action to take when the check fails. One of [rlang::abort()], [rlang::warn()], [rlang::inform()] or [rlang::signal()].
 #' @export
 #'
 #' @examples
@@ -196,12 +194,20 @@ ls_pkg <- function(pkg,
 #'                         ...,
 #'                         simplify = TRUE,
 #'                         USE.NAMES = TRUE) {
+#'   pal::check_dots_named(...,
+#'                         .function = FUN)
 #'   sapply(X = X,
 #'          FUN = FUN,
-#'          check_dots_named(...,
-#'                           .function = FUN),
+#'          ...,
 #'          simplify = TRUE,
 #'          USE.NAMES = TRUE)
+#' }
+#'
+#' \dontrun{
+#' # while the original `sapply()` silently ignores misspelled arguments,
+#' sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
+#' # `sapply_safe()` will throw an informative error message:
+#' sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 #' }
 check_dots_named <- function(...,
                              .function,
@@ -211,9 +217,14 @@ check_dots_named <- function(...,
   
   if (length(list(...))) {
     
-    names(c(...)) %>% purrr::walk(.f = assert_dot,
-                                  values = allowed_dots_params(fun = checkmate::assert_function(.function),
-                                                               forbidden = .forbidden))
+    names(c(...)) %>%
+      setdiff("") %>%
+      purrr::walk(.f = assert_dot,
+                  values = setdiff(methods::formalArgs(.function),
+                                   checkmate::assert_character(.forbidden,
+                                                               any.missing = FALSE,
+                                                               null.ok = TRUE)),
+                  action = .action)
     
   } else if (!.empty_ok) {
     
@@ -223,25 +234,17 @@ check_dots_named <- function(...,
       checkmate::assert_choice(choices = paste0("rlang::", c("abort",
                                                              "warn",
                                                              "inform",
-                                                             "signal"))) %>%
-      paste0("(message = '`...` must be provided (not `NULL`)!')") %>%
-      parse(text = .) %>%
-      eval()
+                                                             "signal")))
+    
+    .action(message = '`...` must be provided (!= NULL)!')
   }
 }
 
-allowed_dots_params <- function(fun,
-                                forbidden) {
-  
-  methods::formalArgs(fun) %>% setdiff(checkmate::assert_character(forbidden,
-                                                                   any.missing = FALSE,
-                                                                   null.ok = TRUE))
-}
-
 assert_dot <- function(dot,
-                       values) {
+                       values,
+                       action) {
   
-  # The following code is borrowed from `rlang::arg_match()`
+  # The following code is largely borrowed from `rlang::arg_match()`
   i <- match(dot, values)
   
   if (rlang::is_na(i)) {
@@ -265,7 +268,7 @@ assert_dot <- function(dot,
                     "?")
     }
     
-    rlang::abort(msg)
+    action(msg)
   }
 }
 
