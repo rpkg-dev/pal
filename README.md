@@ -2,14 +2,6 @@
 
 A collection of convenience/utility functions which aren't found in any other tidyverse-style R package.[^1].
 
-## Features
-
-...
-
-## Details
-
-...
-
 ## Installation
 
 To install the latest development version of **pal**, run the following in R:

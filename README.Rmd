@@ -9,27 +9,18 @@ output: pal::gitlab_document
 
 [^notify]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider removing it. I strongly support standardization efforts and the avoidance of unnecessary duplication.
 
-
-## Features
-
-...
-
-## Details
-
-...
-
 ## Installation
-```{r, install-snippet-dev, child = pkgsnippets::file("installation-notice_dev-version_gitlab.Rmd")}
+```{r, install-snippet-dev, child = pkgsnippets::snippet_path("installation-notice_dev-version_gitlab.Rmd")}
 ```
 
 ## Development
 
 ### Literate Programming
-```{r, literate-programming-snippet, child = pkgsnippets::file("literate-programming-notice.Rmd")}
+```{r, literate-programming-snippet, child = pkgsnippets::snippet_path("literate-programming-notice.Rmd")}
 ```
 
 ### Coding Style
-```{r, coding-style-snippet, child = pkgsnippets::file("coding-style-notice.Rmd")}
+```{r, coding-style-snippet, child = pkgsnippets::snippet_path("coding-style-notice.Rmd")}
 ```
 
 ## See also
