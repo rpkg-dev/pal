@@ -251,7 +251,7 @@ ls_pkg <- function(pkg,
 
 # Extending [ellipsis](https://ellipsis.r-lib.org/)
 
-## Check that either dots are empty or all dot parameter names are a valid subset of a function's parameter names.
+## Check that all dot parameter names are a valid subset of a function's parameter names.
 
 **Remarks:**
 
