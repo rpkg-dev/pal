@@ -12,6 +12,8 @@ Description: A collection of convenience/utility functions which
 License: AGPL-3
 URL: https://gitlab.com/salim_b/r/pkgs/pal
 BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues
+Depends: 
+    R (>= 4.0)
 Imports: 
     checkmate (>= 2.0.0),
     desc (>= 1.2.0),
@@ -31,6 +33,7 @@ Imports:
     rstudioapi (>= 0.11),
     stringr (>= 1.4.0),
     tibble (>= 2.1.3),
+    utils,
     xfun (>= 0.14),
     xml2 (>= 1.3.2)
 Suggests: 
