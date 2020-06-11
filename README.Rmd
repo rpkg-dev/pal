@@ -2,9 +2,9 @@
 output: pal::gitlab_document
 ---
 
-# `r paste0(desc::desc_get_field(key = "Package"), ": ", desc::desc_get_field(key = "Title", default = "<No \x60Title\x60 field set in DESCRIPTION!>"))`
+# `r paste0(pal::desc_value("Package"), ": ", pal::desc_value("Title"))`
 
-`r desc::desc_get_field(key = "Description", default = "<No \x60Description\x60 field set in DESCRIPTION!>")`[^notify].
+`r pal::desc_value("Description")`[^notify].
 
 
 [^notify]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider removing it. I strongly support standardization efforts and the avoidance of unnecessary duplication.

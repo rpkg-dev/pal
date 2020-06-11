@@ -435,6 +435,29 @@ script_path <- function() {
 }
 ```
 
+## Get the value from a DESCRIPTION file field, cleaned up and with fallback
+
+```{r}
+#' Get the value from a DESCRIPTION file field, cleaned up and with fallback
+#'
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' desc_value(key = "Description",
+#'            file = fs::path_package("pal"))
+desc_value <- function(key,
+                       file = ".") {
+  
+  desc::desc_get_field(key = key,
+                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
+                       file = file) %>%
+    stringr::str_squish()
+}
+```
+
 ## Print `x` as newline-separated character vector using `cat()`
 
 ```{r}
