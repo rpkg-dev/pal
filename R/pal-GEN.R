@@ -217,14 +217,30 @@ check_dots_named <- function(...,
   
   if (length(list(...))) {
     
+    # determine original function name the `...` will be passed on to
+    fun_arg_name <- deparse1(substitute(.function))
+    parent_call <- as.list(sys.call(-1L))
+    parent_param_names <- methods::formalArgs(sys.function(-1L))
+    
+    if (fun_arg_name %in% parent_param_names) {
+      fun_name <- as.character(parent_call[which(parent_param_names == fun_arg_name) + 1][[1]])
+    } else {
+      fun_name <- fun_arg_name
+    }
+    
+    # determine param names of the function the `...` will be passed on to
+    dots_param_names <- methods::formalArgs(checkmate::assert_function(.function))
+    
+    # check `...` args
     purrr::walk(.x = setdiff(names(c(...)),
                              ""),
                 .f = assert_dot,
-                values = setdiff(methods::formalArgs(checkmate::assert_function(.function)),
-                                 checkmate::assert_character(.forbidden,
-                                                             any.missing = FALSE,
-                                                             null.ok = TRUE)),
-                fun_name = as.character(as.list(sys.call(-1L))[which(methods::formalArgs(sys.function(-1L)) == deparse1(substitute(.function))) + 1][[1]]),
+                values = dots_param_names,
+                allowed_values = setdiff(dots_param_names,
+                                         checkmate::assert_character(.forbidden,
+                                                                     any.missing = FALSE,
+                                                                     null.ok = TRUE)),
+                fun_name = fun_name,
                 action = .action)
     
   } else if (!checkmate::assert_flag(.empty_ok)) {
@@ -243,25 +259,36 @@ check_dots_named <- function(...,
 
 assert_dot <- function(dot,
                        values,
+                       allowed_values,
                        fun_name,
                        action) {
   
   # The following code is largely borrowed from `rlang::arg_match()`
-  i <- match(dot, values)
+  i <- match(dot, allowed_values)
   
   if (rlang::is_na(i)) {
     
-    msg <- glue::glue("Invalid argument provided in `...`: `{dot}`\nValid arguments for `{fun_name}()` include: ", pal::prose_ls(values, wrap = "`"))
-    i_partial <- pmatch(dot, values)
+    is_forbidden <- dot %in% values
+    is_restricted <- !setequal(values,
+                               allowed_values)
+    
+    msg <- glue::glue(dplyr::if_else(is_forbidden,
+                                     "Forbidden",
+                                     "Invalid"), " argument provided in `...`: `{dot}`\n",
+                      dplyr::if_else(is_restricted,
+                                     "Arguments allowed to pass on to ",
+                                     "Valid arguments for "), "`{fun_name}()` include: ", pal::prose_ls(allowed_values, wrap = "`"))
+    
+    i_partial <- pmatch(dot, allowed_values)
     
     if (!rlang::is_na(i_partial)) {
-      candidate <- values[[i_partial]]
+      candidate <- allowed_values[[i_partial]]
     }
     
-    i_close <- utils::adist(dot, values)/nchar(values)
+    i_close <- utils::adist(dot, allowed_values)/nchar(allowed_values)
     
     if (any(i_close <= 0.5)) {
-      candidate <- values[[which.min(i_close)]]
+      candidate <- allowed_values[[which.min(i_close)]]
     }
     
     if (exists("candidate")) {
