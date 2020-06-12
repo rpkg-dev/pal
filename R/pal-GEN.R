@@ -4,6 +4,57 @@
 utils::globalVariables(names = c(".",
                                  "Package"))
 
+#' Convert dataframe/tibble to Markdown pipe table
+#'
+#' This is a simple wrapper around [pander::pandoc.table.return()] with sensible defaults to create a
+#' [Markdown pipe table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
+#' 
+#' # Create tables dynamically in roxygen2 documentation
+#' 
+#' This function can be useful to create tables inside [roxygen2][roxygen2::roxygen2] documentation programmatically from data using
+#' [dynamic R code](https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1).
+#' 
+#' The inline code
+#' 
+#' `` `r mtcars %>% head() %>% pal::pipe_table()` ``
+#'
+#' should produce the following table in [roxygen2 7.1.0](https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/) and above:
+#'
+#' `r mtcars %>% head() %>% pipe_table()`
+#'
+#' @param x The dataframe/tibble/matrix to be converted to a pipe table.
+#' @param strong_colnames Highlight column names by formatting them `<strong>`. Enabled by default.
+#' @param strong_rownames Highlight row names by formatting them `<strong>`. Enabled by default.
+#' @inheritParams pander::pandoc.table.return
+#' @param ... Additional arguments passed to [pander::pandoc.table.return()].
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#' mtcars %>% head() %>% pal::pipe_table() %>% cat()
+pipe_table <- function(x,
+                       strong_colnames = TRUE,
+                       strong_rownames = TRUE,
+                       justify = "left",
+                       ...) {
+  
+  pal::check_dots_named(...,
+                        .function = pander::pandoc.table,
+                        .forbidden = c("t", "style", "justify", "split.tables"))
+  
+  x %>%
+    purrr::when(strong_colnames ~ magrittr::set_colnames(x = .,
+                                                         value = pander::pandoc.strong.return(names(.))),
+                ~ .) %>%
+    pander::pandoc.table.return(style = "rmarkdown",
+                                justify = justify,
+                                emphasize.rownames = strong_rownames,
+                                split.tables = Inf,
+                                ...)
+}
+
 #' Build `README.Rmd`
 #'
 #' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
