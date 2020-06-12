@@ -56,7 +56,7 @@ pipe_table <- function(x,
                        ...) {
   
   pal::check_dots_named(...,
-                        .function = pander::pandoc.table,
+                        .function = pander::pandoc.table.return,
                         .forbidden = c("t", "style", "justify", "split.tables"))
   
   x %>%
