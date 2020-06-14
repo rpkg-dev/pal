@@ -16,7 +16,7 @@ utils::globalVariables(names = c(".",
 
 # Pandoc / Markdown
 
-## Convert dataframe/tibble to pipe table
+## Convert dataframe/tibble to Markdown pipe table
 
 ```{r}
 #' Convert dataframe/tibble to Markdown pipe table
@@ -57,7 +57,11 @@ pipe_table <- function(x,
   
   pal::check_dots_named(...,
                         .function = pander::pandoc.table.return,
-                        .forbidden = c("t", "style", "justify", "split.tables"))
+                        .forbidden = c("t",
+                                       "style",
+                                       "justify", 
+                                       "emphasize.rownames",
+                                       "split.tables"))
   
   x %>%
     purrr::when(strong_colnames ~ magrittr::set_colnames(x = .,

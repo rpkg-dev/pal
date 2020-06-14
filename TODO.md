@@ -1,1 +1,1 @@
-- rely on pkg [xfun](https://yihui.name/xfun/) whenever possible
+- systematically rely on pkg [xfun](https://yihui.name/xfun/) whenever possible
