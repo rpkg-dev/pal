@@ -393,10 +393,10 @@ check_dots_named <- function(...,
     # determine param names of the function the `...` will be passed on to
     dots_param_names <- methods::formalArgs(checkmate::assert_function(.function))
     
-    # check `...` args
+    # check named `...` args
     purrr::walk(.x = setdiff(names(c(...)),
                              ""),
-                .f = assert_dot,
+                .f = check_dot_named,
                 values = dots_param_names,
                 allowed_values = setdiff(union(dots_param_names,
                                                checkmate::assert_character(.additional,
@@ -422,11 +422,11 @@ check_dots_named <- function(...,
   }
 }
 
-assert_dot <- function(dot,
-                       values,
-                       allowed_values,
-                       fun_name,
-                       action) {
+check_dot_named <- function(dot,
+                            values,
+                            allowed_values,
+                            fun_name,
+                            action) {
   
   # The following code is largely borrowed from `rlang::arg_match()`
   i <- match(dot, allowed_values)
