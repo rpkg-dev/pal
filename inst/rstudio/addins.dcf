@@ -1,0 +1,4 @@
+Name: Build `README.Rmd`
+Description: Executes `pal::build_readme()`.
+Binding: build_readme
+Interactive: false
