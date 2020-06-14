@@ -79,31 +79,48 @@ pipe_table <- function(x,
 
 ## Build `README.Rmd`
 
-TODO: There's already the superior `devtools::build_readme()`, but it doesn't work with the `pal::gitlab_document` output format because
-[it sets the `html_preview`](https://github.com/r-lib/devtools/blob/master/R/build-readme.R#L26-L27) option which is only found in
-`rmarkdown::github_document`. -> file a [bug report](https://github.com/r-lib/devtools/issues?q=is%3Aissue+is%3Aopen+build) or even submit a PR to fix this!
-
 ```{r}
 #' Build `README.Rmd`
 #'
-#' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
-#' output format.
+#' This function is a simpler, but considerabily faster alternative to [devtools::build_readme()] because it doesn't install your package in a temporary library
+#' before building the `README.Rmd`. This has the pleasant side effect that other than the latter function it also works for `.Rmd` files which aren't part of
+#' an R package.
+#' 
+#' Note that for public package repositories it's recommended to use `devtools::build_readme()` since it ensures the `README.Rmd` can be built reproducibly,
+#' which means all the objects and files it references must be accessible from the repository.
+#' 
+#' `r pkgsnippets::md_snippet("rstudio_addin_hint")`
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
+#' @inheritParams knitr::knit
+#' @family rmd_knitr
 #'
 #' @export
 build_readme <- function(input = "README.Rmd",
-                         output = "README.md") {
+                         output = "README.md",
+                         envir = parent.frame()) {
+  
+  if (pal::is_pkg_dir()) {
+    
+    assign(x = "pkg_metadata",
+           value = desc::desc_get(desc::desc_fields()),
+           envir = envir)
+  }
   
   # knit Rmd to md
-  knitr::knit(input = input,
-              output = output,
-              quiet = TRUE)
+  knitr::knit(input = checkmate::assert_file(input,
+                                             access = "r"),
+              output = checkmate::assert_path_for_output(output,
+                                                         overwrite = TRUE),
+              quiet = TRUE,
+              envir = envir)
   
   # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = output,
-                    quiet = TRUE)
+                    output_file = output,
+                    quiet = TRUE,
+                    envir = envir)
 }
 ```
 
