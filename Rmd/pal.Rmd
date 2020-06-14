@@ -379,20 +379,19 @@ ls_pkg <- function(pkg,
 }
 ```
 
-# Extending [ellipsis](https://ellipsis.r-lib.org/)
+# Extending other R packages
 
-## Check that all dot parameter names are a valid subset of a function's parameter names.
+These functions are likely to be proposed upstream, and if accepted, will be removed from this package.
+
+## [ellipsis](https://ellipsis.r-lib.org/)
+
+### Check that all dot parameter names are a valid subset of a function's parameter names.
 
 **Remarks:**
 
 - Code to suggest proper dots params largely borrowed from `rlang::arg_match()`.
 
 - Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35).
-
-  The function below offers some advantages (but probably needs more testing):
-  
-  - The name of the function the `...` will be passed on to is shown in the error message!
-  - The error message adapts to the value of `.forbidden` -> should be less confusing for users! 
 
 ```{r}
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
@@ -464,6 +463,20 @@ ls_pkg <- function(pkg,
 #'
 #' # while the original function actually has nothing to complain
 #' sum(a = 1, b = 2)
+#'
+#' \dontrun{
+#' # also, it doesn't play nicely with functions that don't expose all of
+#' # their arg names (`to` and `by` in the case of `seq()`)
+#' sapply_safe(X = c(0,50),
+#'             FUN = seq,
+#'             to = 100,
+#'             by = 5)}
+#'
+#' # but providing `to` and `by` *unnamed* is fine of course:
+#' sapply_safe(X = c(0,50),
+#'             FUN = seq,
+#'             100,
+#'             5)
 check_dots_named <- function(...,
                              .function,
                              .additional = NULL,

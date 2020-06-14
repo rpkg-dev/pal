@@ -87,4 +87,18 @@ sum_safe(a = 1, b = 2)}
 
 # while the original function actually has nothing to complain
 sum(a = 1, b = 2)
+
+\dontrun{
+# also, it doesn't play nicely with functions that don't expose all of
+# their arg names (`to` and `by` in the case of `seq()`)
+sapply_safe(X = c(0,50),
+            FUN = seq,
+            to = 100,
+            by = 5)}
+
+# but providing `to` and `by` *unnamed* is fine of course:
+sapply_safe(X = c(0,50),
+            FUN = seq,
+            100,
+            5)
 }
