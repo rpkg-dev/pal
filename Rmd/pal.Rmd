@@ -270,6 +270,31 @@ assert_pkg <- function(pkg,
 }
 ```
 
+## Get the value from a DESCRIPTION file field, cleaned up and with fallback
+
+TODO: Make PR proposing new `trim` param.
+
+```{r}
+#' Get the value from a DESCRIPTION file field, cleaned up and with fallback
+#'
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' desc_value(key = "Description",
+#'            file = fs::path_package("pal"))
+desc_value <- function(key,
+                       file = ".") {
+  
+  desc::desc_get_field(key = key,
+                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
+                       file = file) %>%
+    stringr::str_squish()
+}
+```
+
 ## Test if packages are installed
 
 This function [was originally proposed by Stack Overflow user Artem Klevtsov](https://stackoverflow.com/a/38082613/7196903).
