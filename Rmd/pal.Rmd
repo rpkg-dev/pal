@@ -153,14 +153,18 @@ As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://g
 #' This output format basically ensures Pandoc is called with a custom set of options optimized for maximum compatibility with
 #' [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
 #'
-#' @param parse_emoji_markup Setting this to `TRUE` activates [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji
-#'   markup (e.g. `:smile:`) as Unicode emoticons.
-#' @param smart_punctuation Setting this to `TRUE` activates [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts
+#' @param smart_punctuation Enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts
 #'   straight quotes to curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain
 #'   abbreviations, such as `Mr.`.
-#' @param ... Additional arguments passed to [rmarkdown::md_document()].
+#' @param parse_emoji_markup Enable [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji
+#'   markup (e.g. `:smile:`) as Unicode emoticons.
+#' @param autolink_bare_uris Enable the [`autolink_bare_uris` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-autolink_bare_uris) which makes all absolute URIs into links, even when not surrounded by pointy braces <...>.
+#' @param tex_math_single_backslash Enable the [`tex_math_single_backslash` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash) which causes anything between `\(` and `\)` to be interpreted as inline TeX math, and anything between `\[` and `\]` to be interpreted as display TeX math. Note: a drawback of this extension is that it precludes escaping `(` and `[`.
+#' @inheritParams rmarkdown::output_format
+#' @inheritParams rmarkdown::pandoc_options
 #'
 #' @return R Markdown output format to pass to [rmarkdown::render()].
+#' @family rmd_knitr
 #' @export
 #'
 #' @examples
@@ -171,25 +175,48 @@ As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://g
 #'                                                preserve_yaml = TRUE,
 #'                                                extension = ".markdown"))
 #' }
-gitlab_document <- function(smart_punctuation = TRUE,
+gitlab_document <- function(#add_toc = FALSE,
+                            smart_punctuation = TRUE,
                             parse_emoji_markup = FALSE,
-                            ...) {
-  pal::check_dots_named(...,
-                        .function = rmarkdown::md_document,
-                        .forbidden = c("variant", "md_extensions", "pandoc_args"))
+                            df_print = "kable",
+                            autolink_bare_uris = FALSE,
+                            tex_math_single_backslash = FALSE) {
   
-  rmarkdown::md_document(variant = "markdown",
-                         md_extensions = c("-simple_tables",
+  rmarkdown::output_format(
+    knitr = rmarkdown::knitr_options(opts_knit = NULL,
+                                     opts_chunk = NULL,
+                                     knit_hooks = NULL,
+                                     opts_hooks = NULL,
+                                     opts_template = NULL),
+    pandoc = rmarkdown::pandoc_options(to =
+                                         c("markdown",
+                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)],
+                                           "-smart",
+                                           "-simple_tables",
                                            "-multiline_tables",
                                            "-grid_tables",
                                            "-fenced_code_attributes",
                                            "-inline_code_attributes",
-                                           "-raw_attribute",
-                                           "-smart"[!checkmate::assert_flag(smart_punctuation)],
-                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)]),
-                         pandoc_args = c("--atx-headers",
-                                         "--columns=9999"),
-                         ...)
+                                           "-raw_attribute") %>%
+                                         paste0(collapse = ""),
+                                       from =
+                                         c("markdown",
+                                           "+autolink_bare_uris"[checkmate::assert_flag(autolink_bare_uris)],
+                                           "+tex_math_single_backslash"[checkmate::assert_flag(tex_math_single_backslash)],
+                                           "-smart"[!checkmate::assert_flag(smart_punctuation)]) %>%
+                                         paste0(collapse = ""),
+                                       args = c("--atx-headers",
+                                                "--columns=9999")),
+    df_print = df_print,
+    pre_knit = NULL,
+    post_knit = NULL,
+    pre_processor = NULL,
+    intermediates_generator = NULL,
+    post_processor = NULL,
+    # on_exit = purrr::when(checkmate::assert_flag(add_toc) ~ tocr::add_toc,
+    #                       ~ NULL),
+    base_format = NULL
+  )
 }
 ```
 
