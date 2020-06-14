@@ -576,51 +576,40 @@ TODO:
 #'
 #' @return The file path to the executing script.
 #' @export
-script_path <- function() {
+path_script <- function() {
   
   cmd_args <- commandArgs(trailingOnly = FALSE)
   needle <- "--file="
   match <- grep(x = cmd_args,
                 pattern = needle)
   
+  # Rscript
   if (length(match) > 0L) {
-    # Rscript
+    
     return(normalizePath(sub(needle, "", cmd_args[match])))
     
-  } else {
-    if (!is.null(sys.frames()[[1L]][["ofile"]])) {
-      # `source()`d via R console
-      return(normalizePath(sys.frames()[[1L]][["ofile"]]))
-      
-    } else if (is_installed("rstudioapi")) {
-      # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
-      return(normalizePath(rstudioapi::getActiveDocumentContext()[["path"]]))
-
-    } else rlang::abort("Couldn't determine script path!'")
   }
-}
-```
-
-## Get the value from a DESCRIPTION file field, cleaned up and with fallback
-
-```{r}
-#' Get the value from a DESCRIPTION file field, cleaned up and with fallback
-#'
-#' @inheritParams desc::desc_get_field
-#'
-#' @return A character scalar.
-#' @export
-#'
-#' @examples
-#' desc_value(key = "Description",
-#'            file = fs::path_package("pal"))
-desc_value <- function(key,
-                       file = ".") {
   
-  desc::desc_get_field(key = key,
-                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
-                       file = file) %>%
-    stringr::str_squish()
+  # `source()`d via R console
+  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
+    
+    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
+    
+    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
+  } else if (!is.null(rprojroot::thisfile())) {
+    
+    rprojroot::thisfile()
+    
+  } else if (is_installed("rstudioapi")) {
+    
+    path <- normalizePath(rstudioapi::getActiveDocumentContext()[["path"]])
+    
+    if ( path != "" ) {
+      return(path)
+    }
+  }
+  
+  rlang::abort("Couldn't determine script path!'")
 }
 ```
 
