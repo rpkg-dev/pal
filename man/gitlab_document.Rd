@@ -4,17 +4,37 @@
 \alias{gitlab_document}
 \title{Convert to GitLab Flavored Markdown}
 \usage{
-gitlab_document(smart_punctuation = TRUE, parse_emoji_markup = FALSE, ...)
+gitlab_document(
+  smart_punctuation = TRUE,
+  parse_emoji_markup = FALSE,
+  df_print = "kable",
+  autolink_bare_uris = FALSE,
+  tex_math_single_backslash = FALSE
+)
 }
 \arguments{
-\item{smart_punctuation}{Setting this to \code{TRUE} activates \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts
+\item{smart_punctuation}{Enable \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts
 straight quotes to curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). Nonbreaking spaces are inserted after certain
 abbreviations, such as \code{Mr.}.}
 
-\item{parse_emoji_markup}{Setting this to \code{TRUE} activates \href{https://pandoc.org/MANUAL.html#extension-emoji}{Pandoc's \code{emoji} extension} which parses emoji
+\item{parse_emoji_markup}{Enable \href{https://pandoc.org/MANUAL.html#extension-emoji}{Pandoc's \code{emoji} extension} which parses emoji
 markup (e.g. \verb{:smile:}) as Unicode emoticons.}
 
-\item{...}{Additional arguments passed to \code{\link[rmarkdown:md_document]{rmarkdown::md_document()}}.}
+\item{df_print}{Method to be used for printing data frames. Valid values
+include "default", "kable", "tibble", and "paged". The "default" method
+uses a corresponding S3 method of \code{print}, typically
+\code{print.data.frame}. The "kable" method uses the
+\code{\link[knitr:kable]{knitr::kable}} function. The "tibble" method uses
+the \pkg{tibble} package to print a summary of the data frame. The "paged"
+method creates a paginated HTML table (note that this method is only valid
+for formats that produce HTML). In addition to the named methods you can
+also pass an arbitrary function to be used for printing data frames. You
+can disable the \code{df_print} behavior entirely by setting the option
+\code{rmarkdown.df_print} to \code{FALSE}.}
+
+\item{autolink_bare_uris}{Enable the \href{https://pandoc.org/MANUAL.html#extension-autolink_bare_uris}{\code{autolink_bare_uris} Pandoc Markdown extension} which makes all absolute URIs into links, even when not surrounded by pointy braces <...>.}
+
+\item{tex_math_single_backslash}{Enable the \href{https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash}{\code{tex_math_single_backslash} Pandoc Markdown extension} which causes anything between \verb{\\(} and \verb{\\)} to be interpreted as inline TeX math, and anything between \verb{\[} and \verb{\]} to be interpreted as display TeX math. Note: a drawback of this extension is that it precludes escaping \code{(} and \code{[}.}
 }
 \value{
 R Markdown output format to pass to \code{\link[rmarkdown:render]{rmarkdown::render()}}.
@@ -39,3 +59,8 @@ rmarkdown::render("input.Rmd", gitlab_document(parse_emoji_markup = TRUE,
                                                extension = ".markdown"))
 }
 }
+\seealso{
+R-Markdown and Knitr functions
+\code{\link{build_readme}()}
+}
+\concept{rmd_knitr}

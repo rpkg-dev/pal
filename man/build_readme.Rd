@@ -4,14 +4,34 @@
 \alias{build_readme}
 \title{Build \code{README.Rmd}}
 \usage{
-build_readme(input = "README.Rmd", output = "README.md")
+build_readme(
+  input = "README.Rmd",
+  output = "README.md",
+  envir = parent.frame()
+)
 }
 \arguments{
 \item{input}{The path to the R Markdown README file to be built. A character scalar.}
 
 \item{output}{The path of the built Markdown README. A character scalar.}
+
+\item{envir}{Environment in which code chunks are to be evaluated,
+for example, \code{\link{parent.frame}()}, \code{\link{new.env}()}, or
+\code{\link{globalenv}()}).}
 }
 \description{
-This function is an preliminary replacement for \code{\link[devtools:build_readme]{devtools::build_readme()}} that \emph{works} with the \code{\link[pal:gitlab_document]{pal::gitlab_document}} R Markdown
-output format.
+This function is a simpler, but considerabily faster alternative to \code{\link[devtools:build_readme]{devtools::build_readme()}} because it doesn't install your package in a temporary library
+before building the \code{README.Rmd}. This has the pleasant side effect that other than the latter function it also works for \code{.Rmd} files which aren't part of
+an R package.
 }
+\details{
+Note that for public package repositories it's recommended to use \code{devtools::build_readme()} since it ensures the \code{README.Rmd} can be built reproducibly,
+which means all the objects and files it references must be accessible from the repository.
+
+This function is also registered as an \href{https://rstudio.github.io/rstudioaddins/}{RStudio add-in} allowing RStudio users to assign a custom shortcut to it.
+}
+\seealso{
+R-Markdown and Knitr functions
+\code{\link{gitlab_document}()}
+}
+\concept{rmd_knitr}

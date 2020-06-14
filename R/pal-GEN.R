@@ -42,7 +42,11 @@ pipe_table <- function(x,
   
   pal::check_dots_named(...,
                         .function = pander::pandoc.table.return,
-                        .forbidden = c("t", "style", "justify", "split.tables"))
+                        .forbidden = c("t",
+                                       "style",
+                                       "justify", 
+                                       "emphasize.rownames",
+                                       "split.tables"))
   
   x %>%
     purrr::when(strong_colnames ~ magrittr::set_colnames(x = .,
@@ -57,24 +61,45 @@ pipe_table <- function(x,
 
 #' Build `README.Rmd`
 #'
-#' This function is an preliminary replacement for [devtools::build_readme()] that _works_ with the [`pal::gitlab_document`][pal::gitlab_document()] R Markdown
-#' output format.
+#' This function is a simpler, but considerabily faster alternative to [devtools::build_readme()] because it doesn't install your package in a temporary library
+#' before building the `README.Rmd`. This has the pleasant side effect that other than the latter function it also works for `.Rmd` files which aren't part of
+#' an R package.
+#' 
+#' Note that for public package repositories it's recommended to use `devtools::build_readme()` since it ensures the `README.Rmd` can be built reproducibly,
+#' which means all the objects and files it references must be accessible from the repository.
+#' 
+#' `r pkgsnippets::md_snippet("rstudio_addin_hint")`
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
+#' @inheritParams knitr::knit
+#' @family rmd_knitr
 #'
 #' @export
 build_readme <- function(input = "README.Rmd",
-                         output = "README.md") {
+                         output = "README.md",
+                         envir = parent.frame()) {
+  
+  if (pal::is_pkg_dir()) {
+    
+    assign(x = "pkg_metadata",
+           value = desc::desc_get(desc::desc_fields()),
+           envir = envir)
+  }
   
   # knit Rmd to md
-  knitr::knit(input = input,
-              output = output,
-              quiet = TRUE)
+  knitr::knit(input = checkmate::assert_file(input,
+                                             access = "r"),
+              output = checkmate::assert_path_for_output(output,
+                                                         overwrite = TRUE),
+              quiet = TRUE,
+              envir = envir)
   
   # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = output,
-                    quiet = TRUE)
+                    output_file = output,
+                    quiet = TRUE,
+                    envir = envir)
 }
 
 #' Convert to GitLab Flavored Markdown
@@ -88,14 +113,18 @@ build_readme <- function(input = "README.Rmd",
 #' This output format basically ensures Pandoc is called with a custom set of options optimized for maximum compatibility with
 #' [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
 #'
-#' @param parse_emoji_markup Setting this to `TRUE` activates [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji
-#'   markup (e.g. `:smile:`) as Unicode emoticons.
-#' @param smart_punctuation Setting this to `TRUE` activates [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts
+#' @param smart_punctuation Enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts
 #'   straight quotes to curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain
 #'   abbreviations, such as `Mr.`.
-#' @param ... Additional arguments passed to [rmarkdown::md_document()].
+#' @param parse_emoji_markup Enable [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji
+#'   markup (e.g. `:smile:`) as Unicode emoticons.
+#' @param autolink_bare_uris Enable the [`autolink_bare_uris` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-autolink_bare_uris) which makes all absolute URIs into links, even when not surrounded by pointy braces <...>.
+#' @param tex_math_single_backslash Enable the [`tex_math_single_backslash` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash) which causes anything between `\(` and `\)` to be interpreted as inline TeX math, and anything between `\[` and `\]` to be interpreted as display TeX math. Note: a drawback of this extension is that it precludes escaping `(` and `[`.
+#' @inheritParams rmarkdown::output_format
+#' @inheritParams rmarkdown::pandoc_options
 #'
 #' @return R Markdown output format to pass to [rmarkdown::render()].
+#' @family rmd_knitr
 #' @export
 #'
 #' @examples
@@ -106,25 +135,48 @@ build_readme <- function(input = "README.Rmd",
 #'                                                preserve_yaml = TRUE,
 #'                                                extension = ".markdown"))
 #' }
-gitlab_document <- function(smart_punctuation = TRUE,
+gitlab_document <- function(#add_toc = FALSE,
+                            smart_punctuation = TRUE,
                             parse_emoji_markup = FALSE,
-                            ...) {
-  pal::check_dots_named(...,
-                        .function = rmarkdown::md_document,
-                        .forbidden = c("variant", "md_extensions", "pandoc_args"))
+                            df_print = "kable",
+                            autolink_bare_uris = FALSE,
+                            tex_math_single_backslash = FALSE) {
   
-  rmarkdown::md_document(variant = "markdown",
-                         md_extensions = c("-simple_tables",
+  rmarkdown::output_format(
+    knitr = rmarkdown::knitr_options(opts_knit = NULL,
+                                     opts_chunk = NULL,
+                                     knit_hooks = NULL,
+                                     opts_hooks = NULL,
+                                     opts_template = NULL),
+    pandoc = rmarkdown::pandoc_options(to =
+                                         c("markdown",
+                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)],
+                                           "-smart",
+                                           "-simple_tables",
                                            "-multiline_tables",
                                            "-grid_tables",
                                            "-fenced_code_attributes",
                                            "-inline_code_attributes",
-                                           "-raw_attribute",
-                                           "-smart"[!checkmate::assert_flag(smart_punctuation)],
-                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)]),
-                         pandoc_args = c("--atx-headers",
-                                         "--columns=9999"),
-                         ...)
+                                           "-raw_attribute") %>%
+                                         paste0(collapse = ""),
+                                       from =
+                                         c("markdown",
+                                           "+autolink_bare_uris"[checkmate::assert_flag(autolink_bare_uris)],
+                                           "+tex_math_single_backslash"[checkmate::assert_flag(tex_math_single_backslash)],
+                                           "-smart"[!checkmate::assert_flag(smart_punctuation)]) %>%
+                                         paste0(collapse = ""),
+                                       args = c("--atx-headers",
+                                                "--columns=9999")),
+    df_print = df_print,
+    pre_knit = NULL,
+    post_knit = NULL,
+    pre_processor = NULL,
+    intermediates_generator = NULL,
+    post_processor = NULL,
+    # on_exit = purrr::when(checkmate::assert_flag(add_toc) ~ tocr::add_toc,
+    #                       ~ NULL),
+    base_format = NULL
+  )
 }
 
 #' Assert a package is installed
@@ -158,6 +210,25 @@ assert_pkg <- function(pkg,
     
     invisible(pkg)
   }
+}
+
+#' Get the value from a DESCRIPTION file field, cleaned up and with fallback
+#'
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' desc_value(key = "Description",
+#'            file = fs::path_package("pal"))
+desc_value <- function(key,
+                       file = ".") {
+  
+  desc::desc_get_field(key = key,
+                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
+                       file = file) %>%
+    stringr::str_squish()
 }
 
 #' Test if packages are installed
@@ -230,16 +301,48 @@ ls_pkg <- function(pkg,
                                                        "$")))
 }
 
-#' Check that all [dot][base::dots()] parameter names are a valid subset of a function's parameter names.
+#' Check that all dot parameter names are a valid subset of a function's parameter names.
+#'
+#' This function ensures that [dots (...)][base::dots()] are either empty (if `.empty_ok = TRUE`), or all named dot parameter names are a valid subset of a
+#' function's parameter names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
+#'
+#' `check_dots_named()` is intended to combat the second one of the two major downsides that using `...` usually brings. In chapter 6.6 of the book
+#' _Advanced R_ it is [phrased](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot) as follows:
+#'
+#' _Using `...` comes with two downsides:_
+#' 
+#' - _When you use it to pass arguments to another function, you have to carefully explain to the user where those arguments go. This makes it hard to
+#'   understand what you can do with functions like `lapply()` and `plot()`._
+#' 
+#' - **_A misspelled argument will not raise an error. This makes it easy for typos to go unnoticed._**
 #'
 #' @param ... The dots argument to check.
 #' @param .function The function the `...` will be passed on to.
-#' @param .forbidden Parameter names within `...` that should be treated as invalid.
+#' @param .additional Parameter names within `...` that should be treated as valid in addition to `.function`'s actual parameter names. A character vector.
+#' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
 #' @param .action The action to take when the check fails. One of [rlang::abort()], [rlang::warn()], [rlang::inform()] or [rlang::signal()].
 #' @export
 #'
 #' @examples
+#' # We can use `check_dots_named()` to address this second downside:
+#' sum_safe <- function(...,
+#'                      na.rm = FALSE) {
+#'   pal::check_dots_named(...,
+#'                         .function = sum)
+#'   sum(...,
+#'       na.rm = na.rm)
+#' }
+#' 
+#' # note how the misspelled `na_rm` (instead of `na.rm`) silently gets ignored
+#' # in the original function
+#' sum(1, 2, NA, na_rm = TRUE)
+#'
+#' \dontrun{
+#' # whereas our safe version properly errors
+#' sum_safe(1, 2, NA, na_rm = TRUE)}
+#'
+#' # we can even build an `sapply()` function that fails "intelligently" 
 #' sapply_safe <- function(X,
 #'                         FUN,
 #'                         ...,
@@ -254,14 +357,22 @@ ls_pkg <- function(pkg,
 #'          USE.NAMES = TRUE)
 #' }
 #'
-#' \dontrun{
 #' # while the original `sapply()` silently ignores misspelled arguments,
 #' sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
-#' # `sapply_safe()` will throw an informative error message:
-#' sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
-#' }
+#'
+#' \dontrun{
+#' # `sapply_safe()` will throw an informative error message
+#' sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")}
+#'
+#' \dontrun{
+#' # but be aware that `check_dots_named()` might be a bit rash
+#' sum_safe(a = 1, b = 2)}
+#'
+#' # while the original function actually has nothing to complain
+#' sum(a = 1, b = 2)
 check_dots_named <- function(...,
                              .function,
+                             .additional = NULL,
                              .forbidden = NULL,
                              .empty_ok = TRUE,
                              .action = rlang::abort) {
@@ -287,7 +398,10 @@ check_dots_named <- function(...,
                              ""),
                 .f = assert_dot,
                 values = dots_param_names,
-                allowed_values = setdiff(dots_param_names,
+                allowed_values = setdiff(union(dots_param_names,
+                                               checkmate::assert_character(.additional,
+                                                                           any.missing = FALSE,
+                                                                           null.ok = TRUE)),
                                          checkmate::assert_character(.forbidden,
                                                                      any.missing = FALSE,
                                                                      null.ok = TRUE)),
@@ -326,9 +440,18 @@ assert_dot <- function(dot,
     msg <- glue::glue(dplyr::if_else(is_forbidden,
                                      "Forbidden",
                                      "Invalid"), " argument provided in `...`: `{dot}`\n",
-                      dplyr::if_else(is_restricted,
-                                     "Arguments allowed to pass on to ",
-                                     "Valid arguments for "), "`{fun_name}()` include: ", pal::prose_ls(allowed_values, wrap = "`"))
+                      .trim = FALSE)
+    
+    if (length(allowed_values) > 0) {
+      
+      msg %<>% glue::glue(dplyr::if_else(is_restricted,
+                                         "Arguments allowed to pass on to ",
+                                         "Valid arguments for "), "`{fun_name}()` include: ", pal::prose_ls(allowed_values, wrap = "`"), "\n",
+                          .trim = FALSE)
+    } else {
+      
+      msg %<>% glue::glue("Only unnamed arguments are ", dplyr::if_else(is_restricted, "allowed", "valid"), " for `{fun_name}()`.")
+    }
     
     i_partial <- pmatch(dot, allowed_values)
     
@@ -387,47 +510,40 @@ prose_ls <- function(x,
 #'
 #' @return The file path to the executing script.
 #' @export
-script_path <- function() {
+path_script <- function() {
   
   cmd_args <- commandArgs(trailingOnly = FALSE)
   needle <- "--file="
   match <- grep(x = cmd_args,
                 pattern = needle)
   
+  # Rscript
   if (length(match) > 0L) {
-    # Rscript
+    
     return(normalizePath(sub(needle, "", cmd_args[match])))
     
-  } else {
-    if (!is.null(sys.frames()[[1L]][["ofile"]])) {
-      # `source()`d via R console
-      return(normalizePath(sys.frames()[[1L]][["ofile"]]))
-      
-    } else if (is_installed("rstudioapi")) {
-      # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
-      return(normalizePath(rstudioapi::getActiveDocumentContext()[["path"]]))
-
-    } else rlang::abort("Couldn't determine script path!'")
   }
-}
-
-#' Get the value from a DESCRIPTION file field, cleaned up and with fallback
-#'
-#' @inheritParams desc::desc_get_field
-#'
-#' @return A character scalar.
-#' @export
-#'
-#' @examples
-#' desc_value(key = "Description",
-#'            file = fs::path_package("pal"))
-desc_value <- function(key,
-                       file = ".") {
   
-  desc::desc_get_field(key = key,
-                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
-                       file = file) %>%
-    stringr::str_squish()
+  # `source()`d via R console
+  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
+    
+    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
+    
+    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
+  } else if (!is.null(rprojroot::thisfile())) {
+    
+    rprojroot::thisfile()
+    
+  } else if (is_installed("rstudioapi")) {
+    
+    path <- normalizePath(rstudioapi::getActiveDocumentContext()[["path"]])
+    
+    if ( path != "" ) {
+      return(path)
+    }
+  }
+  
+  rlang::abort("Couldn't determine script path!'")
 }
 
 #' Print `x` as newline-separated character vector using [`cat()`][base::cat()].
