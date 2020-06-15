@@ -16,7 +16,7 @@ utils::globalVariables(names = c(".",
 #' 
 #' The inline code
 #' 
-#' `` `r mtcars %>% head() %>% pal::pipe_table()` ``
+#' `` `r mtcars %>% head() %>% pipe_table()` ``
 #'
 #' should produce the following table in [roxygen2 7.1.0](https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/) and above:
 #'
@@ -33,7 +33,7 @@ utils::globalVariables(names = c(".",
 #'
 #' @examples
 #' library(magrittr)
-#' mtcars %>% head() %>% pal::pipe_table() %>% cat()
+#' mtcars %>% head() %>% pipe_table() %>% cat()
 pipe_table <- function(x,
                        strong_colnames = TRUE,
                        strong_rownames = TRUE,
@@ -80,7 +80,7 @@ build_readme <- function(input = "README.Rmd",
                          output = "README.md",
                          envir = parent.frame()) {
   
-  if (pal::is_pkg_dir()) {
+  if (is_pkg_dir()) {
     
     assign(x = "pkg_metadata",
            value = desc::desc_get(desc::desc_fields()),
@@ -460,7 +460,7 @@ check_dot_named <- function(dot,
       
       msg %<>% glue::glue(dplyr::if_else(is_restricted,
                                          "Arguments allowed to pass on to ",
-                                         "Valid arguments for "), "`{fun_name}()` include: ", pal::prose_ls(allowed_values, wrap = "`"), "\n",
+                                         "Valid arguments for "), "`{fun_name}()` include: ", prose_ls(allowed_values, wrap = "`"), "\n",
                           .trim = FALSE)
     } else {
       
@@ -480,7 +480,7 @@ check_dot_named <- function(dot,
     }
     
     if (exists("candidate")) {
-      candidate <- pal::prose_ls(candidate, wrap = "`")
+      candidate <- prose_ls(candidate, wrap = "`")
       msg <- paste0(msg, "\n", "Did you mean ", candidate, 
                     "?")
     }
