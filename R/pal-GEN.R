@@ -520,6 +520,70 @@ prose_ls <- function(x,
   }
 }
 
+#' Convert to a character scalar (aka string)
+#'
+#' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all its elements to type character.
+#'
+#' @param ... The elements to be assembled to a single string.
+#' @param sep The separator to delimit `...`. Defaults to none (`""`).
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' input <-
+#'   sample.int(n = 5,
+#'              size = 3) %>%
+#'   paste0(", ") %>%
+#'   purrr::map(rep,
+#'              times = 20) %>%
+#'   list(c("This is a glut of ", "meaningless numbers: "), .)
+#'
+#' # while this just converts `input` in a lazy way
+#' paste0(input,
+#'        collapse = "")
+#'
+#' # this one works harder
+#' as_string(input)
+as_string <- function(...,
+                      sep = "") {
+  
+  list(...) %>%
+    purrr::map_chr(~ {
+      if (purrr::vec_depth(.x) == 1) {
+        paste0(as.character(.x), collapse = sep)
+      } else {
+        paste0(purrr::map_chr(.x,
+                              as_string,
+                              sep = sep),
+               collapse = sep)
+      }
+    }) %>%
+    paste0(collapse = sep)
+}
+
+#' Print `x` as newline-separated character vector using [`cat()`][base::cat()].
+#' 
+#' This is simply a convenience wrapper around [`cat()`][base::cat()], mainly intended for interactive use.
+#'
+#' @param x A vector to print.
+#'
+#' @inherit base::cat return
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' fs::path_package(package = "pal",
+#'                  "DESCRIPTION") %>%
+#'   readr::read_lines() %>%
+#'   cat_lines()
+cat_lines <- function(x) {
+  
+  cat(as.character(unlist(x)),
+      sep = "\n")
+}
+
 #' Determine file path of executing script
 #'
 #' @return The file path to the executing script.
@@ -558,28 +622,6 @@ path_script <- function() {
   }
   
   rlang::abort("Couldn't determine script path!'")
-}
-
-#' Print `x` as newline-separated character vector using [`cat()`][base::cat()].
-#' 
-#' This is simply a convenience wrapper around [`cat()`][base::cat()], mainly intended for interactive use.
-#'
-#' @param x A vector to print.
-#'
-#' @inherit base::cat return
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' fs::path_package(package = "pal",
-#'                  "DESCRIPTION") %>%
-#'   readr::read_lines() %>%
-#'   cat_lines()
-cat_lines <- function(x) {
-  
-  cat(as.character(unlist(x)),
-      sep = "\n")
 }
 
 #' Set an attribute
