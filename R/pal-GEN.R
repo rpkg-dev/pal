@@ -714,13 +714,13 @@ check_dot_named <- function(dot,
 #' [column specification object][readr::cols] matching the respective column
 #' names.
 #'
-#' @param .col_names The column names which should be matched by `...`.
 #' @param ... Named arguments where the names are (Perl-compatible) regular
 #'   expressions and the values are column objects created by col_*(), or
 #'   their abbreviated character names (as described in the col_types argument
 #'   of [readr::read_delim()]).
 #' @param .default Any named columns not matched by any of the regular
 #'   expressions in `...` will be read with this column type.
+#' @param .col_names The column names which should be matched by `...`.
 #'
 #' @return A [column specification][readr::cols].
 #' @export
@@ -757,12 +757,12 @@ check_dot_named <- function(dot,
 #'     .default = "i"
 #'   )
 #' )
-cols_regex <- function(.col_names,
-                       ...,
-                       .default = readr::col_character()) {
+cols_regex <- function(...,
+                       .default = readr::col_character(),
+                       .col_names) {
   
   if (length(names(list(...))) < ...length()) {
-    stop("All items column specifications in `...` must be named by a regular expression.", call. = FALSE)
+    rlang::abort("All items column specifications in `...` must be named by a regular expression.")
   }
   
   patterns <- list(...)

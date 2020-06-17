@@ -4,11 +4,9 @@
 \alias{cols_regex}
 \title{Create column specification using regular expression matching}
 \usage{
-cols_regex(.col_names, ..., .default = readr::col_character())
+cols_regex(..., .default = readr::col_character(), .col_names)
 }
 \arguments{
-\item{.col_names}{The column names which should be matched by \code{...}.}
-
 \item{...}{Named arguments where the names are (Perl-compatible) regular
 expressions and the values are column objects created by col_*(), or
 their abbreviated character names (as described in the col_types argument
@@ -16,6 +14,8 @@ of \code{\link[readr:read_delim]{readr::read_delim()}}).}
 
 \item{.default}{Any named columns not matched by any of the regular
 expressions in \code{...} will be read with this column type.}
+
+\item{.col_names}{The column names which should be matched by \code{...}.}
 }
 \value{
 A \link[readr:cols]{column specification}.
