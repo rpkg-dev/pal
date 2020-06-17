@@ -301,6 +301,225 @@ ls_pkg <- function(pkg,
                                                        "$")))
 }
 
+#' List items concatenated in prose-style (..., ... and ...)
+#'
+#' This function takes a vector or list and concatenates its elements to a single string separated in prose-style.
+#'
+#' @param x A vector or a list.
+#' @param wrap The string (usually a single character) in which `x` is to be wrapped.
+#' @param separator The separator to delimit the elements of `x`.
+#' @param last_separator The separator to delimit the second-last and last element of `x`.
+#'
+#' @return A character scalar.
+#' @export
+#' @family spoken
+#'
+#' @examples
+#' prose_ls(1:5)
+prose_ls <- function(x,
+                     wrap = "",
+                     separator = ", ",
+                     last_separator = " and ") {
+  if (length(x) < 2) {
+    paste0(checkmate::assert_string(wrap), x, wrap)
+    
+  } else {
+    paste0(x[-length(x)],
+           collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
+      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, x[length(x)], wrap)
+  }
+}
+
+#' Convert to a character scalar (aka string)
+#'
+#' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all its elements to type character.
+#'
+#' @param ... The elements to be assembled to a single string.
+#' @param sep The separator to delimit `...`. Defaults to none (`""`).
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' input <-
+#'   sample.int(n = 5,
+#'              size = 3) %>%
+#'   paste0(", ") %>%
+#'   purrr::map(rep,
+#'              times = 20) %>%
+#'   list(c("This is a glut of ", "meaningless numbers: "), .)
+#'
+#' # while this just converts `input` in a lazy way
+#' paste0(input,
+#'        collapse = "")
+#'
+#' # this one works harder
+#' as_string(input)
+as_string <- function(...,
+                      sep = "") {
+  
+  list(...) %>%
+    purrr::map_chr(~ {
+      if (purrr::vec_depth(.x) == 1) {
+        paste0(as.character(.x), collapse = sep)
+      } else {
+        paste0(purrr::map_chr(.x,
+                              as_string,
+                              sep = sep),
+               collapse = sep)
+      }
+    }) %>%
+    paste0(collapse = sep)
+}
+
+#' Fuse regular expressions
+#'
+#' Combine a vector or list of regular expressions to a single one (by logical OR).
+#'
+#' @param ... The regular expressions. All elements will be converted to type character before fusing.
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # perform some (nonsense) Jane Austen text extraction
+#' regex <- c("My dear Jane",
+#'            "make haste, ",
+#'            "(?i)\\bevil")
+#'
+#' stringr::str_subset(string = janeaustenr::prideprejudice,
+#'                     pattern = fuse_regex(regex))}
+fuse_regex <- function(...) {
+  
+  paste0("(", as_string(..., sep = "|"), ")")
+}
+
+#' Get column names of a delimiter-separated string
+#'
+#' This function returns the column names of a string in a [delimiter-separated-value](https://en.wikipedia.org/wiki/Delimiter-separated_values) format like
+#' [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) or [TSV](https://en.wikipedia.org/wiki/Tab-separated_values).
+#'
+#' @param x The delimiter-separated string. A character scalar.
+#' @param delim Single character used to separate fields within `x`.
+#' @param quote Single character used to quote strings within `x`. Set to `NULL` for none.
+#'
+#' @return A character vector of column names.
+#' @export
+#'
+#' @examples
+#' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") %>%
+#'   httr::content(as = "text") %>%
+#'   pal::dsv_colnames()
+dsv_colnames <- function(x,
+                         delim = ",",
+                         quote = "\"") {
+  x %>%
+    regexpr(pattern = "[\r\n]") %>%
+    magrittr::subtract(1L) %>%
+    substr(x = x,
+           start = 1L) %>%
+    stringr::str_split(pattern = checkmate::assert_string(delim,
+                                                          min.chars = 1L,
+                                                          pattern = "^.$")) %>%
+    dplyr::first() %>%
+    stringr::str_remove_all(pattern = glue::glue("^", checkmate::assert_string(quote,
+                                                                                null.ok = TRUE,
+                                                                                pattern = "^.$"),
+                                                 "|{quote}$"))
+}
+
+#' Print `x` as newline-separated character vector using [`cat()`][base::cat()].
+#' 
+#' This is simply a convenience wrapper around [`cat()`][base::cat()], mainly intended for interactive use.
+#'
+#' @param x A vector to print.
+#'
+#' @inherit base::cat return
+#' @seealso [xfun::raw_string()], [xfun::file_string()]
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' fs::path_package(package = "pal",
+#'                  "DESCRIPTION") %>%
+#'   readr::read_lines() %>%
+#'   cat_lines()
+cat_lines <- function(x) {
+  
+  cat(as.character(unlist(x)),
+      sep = "\n")
+}
+
+#' Determine file path of executing script
+#'
+#' @return The file path to the executing script.
+#' @export
+path_script <- function() {
+  
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  needle <- "--file="
+  match <- grep(x = cmd_args,
+                pattern = needle)
+  
+  # Rscript
+  if (length(match) > 0L) {
+    
+    return(normalizePath(sub(needle, "", cmd_args[match])))
+    
+  }
+  
+  # `source()`d via R console
+  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
+    
+    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
+    
+    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
+  } else if (!is.null(rprojroot::thisfile())) {
+    
+    rprojroot::thisfile()
+    
+  } else if (is_installed("rstudioapi")) {
+    
+    path <- normalizePath(rstudioapi::getActiveDocumentContext()[["path"]])
+    
+    if ( path != "" ) {
+      return(path)
+    }
+  }
+  
+  rlang::abort("Couldn't determine script path!'")
+}
+
+#' Set an attribute
+#'
+#' This is simply a [pipeable](https://magrittr.tidyverse.org/articles/magrittr.html) version of [`attr(x, which) <- value`][base::attr()]. Unfortunately,
+#' [rlang::set_attrs()], a more powerful attribute setter, has been marked deprecated.
+#'
+#' @param object The object for which an attribute is to be changed.
+#' @param attribute The attribute to be changed. A character scalar.
+#' @param value The new value for the attribute.
+#'
+#' @return The `object` with the updated attribute, invisibly.
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' list(some = "element") %>%
+#'   set_attribute(attribute = "custom_attribute",
+#'                 value = "foo") %>%
+#'   print()
+set_attribute <- function(object,
+                          attribute,
+                          value) {
+  attr(x = object,
+       which = attribute) <- value
+  
+  invisible(object)
+}
+
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
 #'
 #' This function ensures that [dots (...)][base::dots()] are either empty (if `.empty_ok = TRUE`), or all named dot parameter names are a valid subset of a
@@ -391,7 +610,7 @@ check_dots_named <- function(...,
                              .empty_ok = TRUE,
                              .action = rlang::abort) {
   
-  if (length(list(...))) {
+  if (...length()) {
     
     # determine original function name the `...` will be passed on to
     fun_arg_name <- deparse1(substitute(.function))
@@ -489,165 +708,77 @@ check_dot_named <- function(dot,
   }
 }
 
-# assert_package("RSelenium")
-
-#' List items concatenated in prose-style (..., ... and ...)
+#' Create column specification using regular expression matching
 #'
-#' This function takes a vector or list and concatenates its elements to a single string separated in prose-style.
+#' This function allows to define a regular expression per desired
+#' [column specification object][readr::cols] matching the respective column
+#' names.
 #'
-#' @param x A vector or a list.
-#' @param wrap The string (usually a single character) in which `x` is to be wrapped.
-#' @param separator The separator to delimit the elements of `x`.
-#' @param last_separator The separator to delimit the second-last and last element of `x`.
+#' @param .col_names The column names which should be matched by `...`.
+#' @param ... Named arguments where the names are (Perl-compatible) regular
+#'   expressions and the values are column objects created by col_*(), or
+#'   their abbreviated character names (as described in the col_types argument
+#'   of [readr::read_delim()]).
+#' @param .default Any named columns not matched by any of the regular
+#'   expressions in `...` will be read with this column type.
 #'
-#' @return A character scalar.
-#' @export
-#' @family spoken
-#'
-#' @examples
-#' prose_ls(1:5)
-prose_ls <- function(x,
-                     wrap = "",
-                     separator = ", ",
-                     last_separator = " and ") {
-  if (length(x) < 2) {
-    paste0(checkmate::assert_string(wrap), x, wrap)
-    
-  } else {
-    paste0(x[-length(x)],
-           collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
-      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, x[length(x)], wrap)
-  }
-}
-
-#' Convert to a character scalar (aka string)
-#'
-#' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all its elements to type character.
-#'
-#' @param ... The elements to be assembled to a single string.
-#' @param sep The separator to delimit `...`. Defaults to none (`""`).
-#'
-#' @return A character scalar.
+#' @return A [column specification][readr::cols].
 #' @export
 #'
 #' @examples
-#' input <-
-#'   sample.int(n = 5,
-#'              size = 3) %>%
-#'   paste0(", ") %>%
-#'   purrr::map(rep,
-#'              times = 20) %>%
-#'   list(c("This is a glut of ", "meaningless numbers: "), .)
-#'
-#' # while this just converts `input` in a lazy way
-#' paste0(input,
-#'        collapse = "")
-#'
-#' # this one works harder
-#' as_string(input)
-as_string <- function(...,
-                      sep = "") {
-  
-  list(...) %>%
-    purrr::map_chr(~ {
-      if (purrr::vec_depth(.x) == 1) {
-        paste0(as.character(.x), collapse = sep)
-      } else {
-        paste0(purrr::map_chr(.x,
-                              as_string,
-                              sep = sep),
-               collapse = sep)
-      }
-    }) %>%
-    paste0(collapse = sep)
-}
-
-#' Print `x` as newline-separated character vector using [`cat()`][base::cat()].
+#' # some hypothetical CSV data column names
+#' cnames <- c("VAR1_Text",
+#'             "VAR2_Text",
+#'             "VAR3_Text_Other",
+#'             "VAR1_Code_R1",
+#'             "VAR2_Code_R2",
+#'             "HAS_R1_Lag",
+#'             "HAS_R2_Lag",
+#'             "GARBAGEX67",
+#'             "GARBAGEY09")
 #' 
-#' This is simply a convenience wrapper around [`cat()`][base::cat()], mainly intended for interactive use.
+#' # create column spec
+#' pal::cols_regex(.col_names   = cnames,
+#'                 "_Text[_$]" = "c",
+#'                 "_Code[_$]" = "i",
+#'                 "^GARBAGE"  = readr::col_skip(),
+#'                 .default     = "l")
 #'
-#' @param x A vector to print.
+#' # parse example data
+#' raw_data <- system.file("extdata/ch_communes_snapshot.csv",
+#'                         package = "readr")
 #'
-#' @inherit base::cat return
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' fs::path_package(package = "pal",
-#'                  "DESCRIPTION") %>%
-#'   readr::read_lines() %>%
-#'   cat_lines()
-cat_lines <- function(x) {
+#' readr::read_csv(
+#'   file = raw_data,
+#'   col_types = pal::cols_regex(
+#'     .col_names = pal::dsv_colnames(raw_data),
+#'     "(Name|_Title|_Text|^ABBREV)" = "c",
+#'     "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "%d.%m.%Y"),
+#'     .default = "i"
+#'   )
+#' )
+cols_regex <- function(.col_names,
+                       ...,
+                       .default = readr::col_character()) {
   
-  cat(as.character(unlist(x)),
-      sep = "\n")
-}
-
-#' Determine file path of executing script
-#'
-#' @return The file path to the executing script.
-#' @export
-path_script <- function() {
-  
-  cmd_args <- commandArgs(trailingOnly = FALSE)
-  needle <- "--file="
-  match <- grep(x = cmd_args,
-                pattern = needle)
-  
-  # Rscript
-  if (length(match) > 0L) {
-    
-    return(normalizePath(sub(needle, "", cmd_args[match])))
-    
+  if (length(names(list(...))) < ...length()) {
+    stop("All items column specifications in `...` must be named by a regular expression.", call. = FALSE)
   }
   
-  # `source()`d via R console
-  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
+  patterns <- list(...)
+  spec <- list()
+  
+  for (i in seq_along(patterns)) {
+    matched_vars <- grep(x = .col_names,
+                         pattern = names(patterns[i]),
+                         value = TRUE)
     
-    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
-    
-    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
-  } else if (!is.null(rprojroot::thisfile())) {
-    
-    rprojroot::thisfile()
-    
-  } else if (is_installed("rstudioapi")) {
-    
-    path <- normalizePath(rstudioapi::getActiveDocumentContext()[["path"]])
-    
-    if ( path != "" ) {
-      return(path)
-    }
+    spec <- c(spec, structure(rep(list(patterns[[i]]), length(matched_vars)),
+                              names = matched_vars))
   }
   
-  rlang::abort("Couldn't determine script path!'")
+  spec <- c(spec, alist(.default = .default))
+  do.call(readr::cols, spec)
 }
 
-#' Set an attribute
-#'
-#' This is simply a [pipeable](https://magrittr.tidyverse.org/articles/magrittr.html) version of [`attr(x, which) <- value`][base::attr()]. Unfortunately,
-#' [rlang::set_attrs()], a more powerful attribute setter, has been marked deprecated.
-#'
-#' @param object The object for which an attribute is to be changed.
-#' @param attribute The attribute to be changed. A character scalar.
-#' @param value The new value for the attribute.
-#'
-#' @return The `object` with the updated attribute, invisibly.
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' list(some = "element") %>%
-#'   set_attribute(attribute = "custom_attribute",
-#'                 value = "foo") %>%
-#'   print()
-set_attribute <- function(object,
-                          attribute,
-                          value) {
-  attr(x = object,
-       which = attribute) <- value
-  
-  invisible(object)
-}
+# assert_package("RSelenium")

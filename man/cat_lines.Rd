@@ -23,3 +23,6 @@ fs::path_package(package = "pal",
   readr::read_lines() \%>\%
   cat_lines()
 }
+\seealso{
+\code{\link[xfun:raw_string]{xfun::raw_string()}}, \code{\link[xfun:file_string]{xfun::file_string()}}
+}
