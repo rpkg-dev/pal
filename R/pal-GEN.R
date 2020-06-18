@@ -751,18 +751,28 @@ check_dot_named <- function(dot,
 #' readr::read_csv(
 #'   file = raw_data,
 #'   col_types = pal::cols_regex(
-#'     .col_names = pal::dsv_colnames(raw_data),
 #'     "(Name|_Title|_Text|^ABBREV)" = "c",
 #'     "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "%d.%m.%Y"),
-#'     .default = "i"
+#'     .default = "i",
+#'     .col_names = pal::dsv_colnames(raw_data)
 #'   )
 #' )
+#'
+#' # parse example data (alternative)
+#' readr::read_csv(file = raw_data,
+#'                 col_types = list(.default = "c")) %>%
+#'   readr::type_convert(col_types = pal::cols_regex(
+#'     "(Name|_Title|_Text|^ABBREV)" = "c",
+#'     "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "%d.%m.%Y"),
+#'     .default = "i",
+#'     .col_names = colnames(.)
+#'   ))
 cols_regex <- function(...,
                        .default = readr::col_character(),
                        .col_names) {
   
   if (length(names(list(...))) < ...length()) {
-    rlang::abort("All items column specifications in `...` must be named by a regular expression.")
+    rlang::abort("All column specifications in `...` must be named by a regular expression.")
   }
   
   patterns <- list(...)
@@ -771,7 +781,8 @@ cols_regex <- function(...,
   for (i in seq_along(patterns)) {
     matched_vars <- grep(x = .col_names,
                          pattern = names(patterns[i]),
-                         value = TRUE)
+                         value = TRUE,
+                         perl = TRUE)
     
     spec <- c(spec, structure(rep(list(patterns[[i]]), length(matched_vars)),
                               names = matched_vars))

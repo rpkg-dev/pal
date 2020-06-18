@@ -51,10 +51,20 @@ raw_data <- system.file("extdata/ch_communes_snapshot.csv",
 readr::read_csv(
   file = raw_data,
   col_types = pal::cols_regex(
-    .col_names = pal::dsv_colnames(raw_data),
     "(Name|_Title|_Text|^ABBREV)" = "c",
     "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "\%d.\%m.\%Y"),
-    .default = "i"
+    .default = "i",
+    .col_names = pal::dsv_colnames(raw_data)
   )
 )
+
+# parse example data (alternative)
+readr::read_csv(file = raw_data,
+                col_types = list(.default = "c")) \%>\%
+  readr::type_convert(col_types = pal::cols_regex(
+    "(Name|_Title|_Text|^ABBREV)" = "c",
+    "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "\%d.\%m.\%Y"),
+    .default = "i",
+    .col_names = colnames(.)
+  ))
 }
