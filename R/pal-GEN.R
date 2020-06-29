@@ -315,7 +315,8 @@ is_pkg_dir <- function(path = ".") {
 #' List a subset of all installed packages
 #'
 #' @param pkg A character vector of package names.
-#' @param ignore_case If `FALSE`, `pkg` is case-sensitive.
+#' @param ignore_case Do not distinguish between upper and lower case letters in `pkg`. If `FALSE`, `pkg` is treated case-sensitive.
+#' @param as_regex Interpret `pkg` as regular expression(s). If `FALSE`, `pkg` is interpreted literally.
 #'
 #' @return A [tibble][tibble::tbl_df].
 #' @export
@@ -324,15 +325,24 @@ is_pkg_dir <- function(path = ".") {
 #' @examples
 #' ls_pkg(pkg = c("pal", "tibble", "dplyr"))
 ls_pkg <- function(pkg,
-                   ignore_case = TRUE) {
+                   ignore_case = TRUE,
+                   as_regex = FALSE) {
+  
+  regex <-
+    checkmate::assert_character(pkg,
+                                any.missing = FALSE,
+                                min.chars = 1L) %>%
+    purrr::when(checkmate::assert_flag(as_regex) ~ .,
+                ~ paste0("\\Q", ., "\\E")) %>%
+    fuse_regex() %>%
+    purrr::when(checkmate::assert_flag(ignore_case) ~ paste0("^(?i)", .),
+                ~ paste0("^", .)) %>%
+    paste0("$")
   
   utils::installed.packages() %>%
     tibble::as_tibble() %>%
     dplyr::filter(stringr::str_detect(string = Package,
-                                      pattern = paste0(dplyr::if_else(ignore_case, "^(?i)", "^"),
-                                                       paste0(pkg,
-                                                              collapse = "|"),
-                                                       "$")))
+                                      pattern = regex))
 }
 
 #' List items concatenated in prose-style (..., ... and ...)

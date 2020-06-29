@@ -4,12 +4,14 @@
 \alias{ls_pkg}
 \title{List a subset of all installed packages}
 \usage{
-ls_pkg(pkg, ignore_case = TRUE)
+ls_pkg(pkg, ignore_case = TRUE, as_regex = FALSE)
 }
 \arguments{
 \item{pkg}{A character vector of package names.}
 
-\item{ignore_case}{If \code{FALSE}, \code{pkg} is case-sensitive.}
+\item{ignore_case}{Do not distinguish between upper and lower case letters in \code{pkg}. If \code{FALSE}, \code{pkg} is treated case-sensitive.}
+
+\item{as_regex}{Interpret \code{pkg} as regular expression(s). If \code{FALSE}, \code{pkg} is interpreted literally.}
 }
 \value{
 A \link[tibble:tbl_df-class]{tibble}.
