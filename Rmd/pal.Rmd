@@ -82,9 +82,9 @@ pipe_table <- function(x,
 ```{r}
 #' Build `README.Rmd`
 #'
-#' This function is a simpler, but considerabily faster alternative to [devtools::build_readme()] because it doesn't install your package in a temporary library
-#' before building the `README.Rmd`. This has the pleasant side effect that other than the latter function it also works for `.Rmd` files which aren't part of
-#' an R package.
+#' This function is a simpler, but considerabily faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library
+#' before building the `README.Rmd`. This has the pleasant side effect that, other than the latter function, it also works for `.Rmd` files which aren't part
+#' of an R package.
 #' 
 #' Note that for public package repositories it's recommended to use `devtools::build_readme()` since it ensures the `README.Rmd` can be built reproducibly,
 #' which means all the objects and files it references must be accessible from the repository.
@@ -475,7 +475,7 @@ as_string <- function(...,
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # perform some (nonsense) Jane Austen text extraction
 #' regex <- c("My dear Jane",
 #'            "make haste, ",
