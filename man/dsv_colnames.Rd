@@ -21,7 +21,8 @@ This function returns the column names of a string in a \href{https://en.wikiped
 \href{https://en.wikipedia.org/wiki/Comma-separated_values}{CSV} or \href{https://en.wikipedia.org/wiki/Tab-separated_values}{TSV}.
 }
 \examples{
+\donttest{
 httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") \%>\%
   httr::content(as = "text") \%>\%
-  pal::dsv_colnames()
+  pal::dsv_colnames()}
 }

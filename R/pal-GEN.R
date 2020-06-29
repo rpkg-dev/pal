@@ -452,9 +452,10 @@ fuse_regex <- function(...) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") %>%
 #'   httr::content(as = "text") %>%
-#'   pal::dsv_colnames()
+#'   pal::dsv_colnames()}
 dsv_colnames <- function(x,
                          delim = ",",
                          quote = "\"") {
@@ -566,8 +567,14 @@ set_attribute <- function(object,
 
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
 #'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
 #' This function ensures that [dots (...)][base::dots()] are either empty (if `.empty_ok = TRUE`), or all named dot parameter names are a valid subset of a
 #' function's parameter names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
+#'
+#' @details
 #'
 #' `check_dots_named()` is intended to combat the second one of the two major downsides that using `...` usually brings. In chapter 6.6 of the book
 #' _Advanced R_ it is [phrased](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot) as follows:
@@ -754,16 +761,15 @@ check_dot_named <- function(dot,
 
 #' Create column specification using regular expression matching
 #'
-#' This function allows to define a regular expression per desired
-#' [column specification object][readr::cols] matching the respective column
-#' names.
+#' @description
 #'
-#' @param ... Named arguments where the names are (Perl-compatible) regular
-#'   expressions and the values are column objects created by col_*(), or
-#'   their abbreviated character names (as described in the col_types argument
-#'   of [readr::read_delim()]).
-#' @param .default Any named columns not matched by any of the regular
-#'   expressions in `...` will be read with this column type.
+#' `r lifecycle::badge("experimental")`
+#'
+#' This function allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
+#'
+#' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by col_*(), or their
+#'   abbreviated character names (as described in the col_types argument of [readr::read_delim()]).
+#' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
 #' @param .col_names The column names which should be matched by `...`.
 #'
 #' @return A [column specification][readr::cols].

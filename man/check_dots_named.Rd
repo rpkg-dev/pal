@@ -27,6 +27,8 @@ check_dots_named(
 \item{.action}{The action to take when the check fails. One of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:abort]{rlang::warn()}}, \code{\link[rlang:abort]{rlang::inform()}} or \code{\link[rlang:abort]{rlang::signal()}}.}
 }
 \description{
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+
 This function ensures that \link[base:dots]{dots (...)} are either empty (if \code{.empty_ok = TRUE}), or all named dot parameter names are a valid subset of a
 function's parameter names. In case of an invalid or \code{.forbidden} argument, an informative message is shown and the defined \code{.action} is taken.
 }
