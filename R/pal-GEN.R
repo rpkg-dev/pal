@@ -110,6 +110,28 @@ build_readme <- function(input = "README.Rmd",
 #' [output format](https://bookdown.org/yihui/rmarkdown/output-formats.html). It basically ensures Pandoc is called with a custom set of options optimized for 
 #' maximum compatibility with [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
 #'
+#' ## Caveats regarding GitLab-Flavored-Markdown-specific features
+#'
+#' GitLab Flavored Markdown extends the [CommonMark](https://spec.commonmark.org/current/) Markdown specification with a bunch of
+#' [special features](https://gitlab.com/help/user/markdown.md#gfm-extends-standard-markdown). To be able to properly make use of them, observe the following
+#' points:
+#'
+#' - For [inline diffs](https://gitlab.com/help/user/markdown.md#inline-diff), only use curly braces (`{}`), not square brackets (`[]`). The latter will be
+#'   escaped by Pandoc during conversion and thus not recognized by GitLab as starting/ending an inline diff.
+#'
+#' - You have to set `smart_punctuation = FALSE` in order to leave certain
+#'   [special GitLab references](https://gitlab.com/help/user/markdown.md#special-gitlab-references) (like commit range comparisons) untouched for GitLab to
+#'   interpret them correctly.
+#'
+#'   All the special GitLab references for snippets and labels that start with a tilde (`~`) or a dollar sign (`$`) won't work because these characters will be
+#'   escaped by Pandoc during conversion.
+#'
+#' - The `[[_TOC_]]` tag to let GitLab [generate a table of contents](https://gitlab.com/help/user/markdown.md#table-of-contents) won't work because it will be
+#'   escaped by Pandoc during conversion. You can let Pandoc generate the TOC instead by setting `toc = TRUE`.
+#'
+#' - [Multiline blockquotes](https://gitlab.com/help/user/markdown.md#multiline-blockquote) won't work because the fence delimiters `>>>` will be escaped by
+#'   Pandoc during conversion.
+#'
 #' @param smart_punctuation Enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts
 #'   straight quotes to curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain
 #'   abbreviations, such as `Mr.`.

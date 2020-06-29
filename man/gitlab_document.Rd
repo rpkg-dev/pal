@@ -65,6 +65,26 @@ Format for converting from R Markdown to \href{https://gitlab.com/help/user/mark
 This is the GitLab equivalent to the \code{\link[rmarkdown:github_document]{github_document}} R Markdown
 \href{https://bookdown.org/yihui/rmarkdown/output-formats.html}{output format}. It basically ensures Pandoc is called with a custom set of options optimized for
 maximum compatibility with \href{https://gitlab.com/help/user/markdown.md}{GitLab Flavored Markdown}.
+\subsection{Caveats regarding GitLab-Flavored-Markdown-specific features}{
+
+GitLab Flavored Markdown extends the \href{https://spec.commonmark.org/current/}{CommonMark} Markdown specification with a bunch of
+\href{https://gitlab.com/help/user/markdown.md#gfm-extends-standard-markdown}{special features}. To be able to properly make use of them, observe the following
+points:
+\itemize{
+\item For \href{https://gitlab.com/help/user/markdown.md#inline-diff}{inline diffs}, only use curly braces (\code{{}}), not square brackets (\verb{[]}). The latter will be
+escaped by Pandoc during conversion and thus not recognized by GitLab as starting/ending an inline diff.
+\item You have to set \code{smart_punctuation = FALSE} in order to leave certain
+\href{https://gitlab.com/help/user/markdown.md#special-gitlab-references}{special GitLab references} (like commit range comparisons) untouched for GitLab to
+interpret them correctly.
+
+All the special GitLab references for snippets and labels that start with a tilde (\code{~}) or a dollar sign (\code{$}) won't work because these characters will be
+escaped by Pandoc during conversion.
+\item The \verb{[[_TOC_]]} tag to let GitLab \href{https://gitlab.com/help/user/markdown.md#table-of-contents}{generate a table of contents} won't work because it will be
+escaped by Pandoc during conversion. You can let Pandoc generate the TOC instead by setting \code{toc = TRUE}.
+\item \href{https://gitlab.com/help/user/markdown.md#multiline-blockquote}{Multiline blockquotes} won't work because the fence delimiters \verb{>>>} will be escaped by
+Pandoc during conversion.
+}
+}
 }
 \examples{
 \donttest{
