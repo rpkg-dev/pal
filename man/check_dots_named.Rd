@@ -24,7 +24,7 @@ check_dots_named(
 
 \item{.empty_ok}{Set to \code{TRUE} if empty \code{...} should be allowed, or to \code{FALSE} otherwise.}
 
-\item{.action}{The action to take when the check fails. One of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, \code{\link[rlang:inform]{rlang::inform()}} or \code{\link[rlang:signal]{rlang::signal()}}.}
+\item{.action}{The action to take when the check fails. One of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:abort]{rlang::warn()}}, \code{\link[rlang:abort]{rlang::inform()}} or \code{\link[rlang:abort]{rlang::signal()}}.}
 }
 \description{
 This function ensures that \link[base:dots]{dots (...)} are either empty (if \code{.empty_ok = TRUE}), or all named dot parameter names are a valid subset of a

@@ -13,7 +13,7 @@ is_pkg_dir(path = ".")
 \code{TRUE} if \code{path} is the root directory of an R package, \code{FALSE} otherwise.
 }
 \description{
-This is a simple convenience wrapper around the \code{\link[rprojroot:is_r_package]{rprojroot::is_r_package}} root criterion. Note that this function will only
+This is a simple convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_package}} root criterion. Note that this function will only
 return \code{TRUE} for the root of a package directory, not its subdirectories.
 }
 \examples{

@@ -31,7 +31,7 @@ This is a simple wrapper around \code{\link[pander:pandoc.table.return]{pander::
 \href{https://pandoc.org/MANUAL.html#extension-pipe_tables}{Markdown pipe table}.
 }
 \section{Create tables dynamically in roxygen2 documentation}{
-This function can be useful to create tables inside \link[roxygen2:roxygen2]{roxygen2} documentation programmatically from data using
+This function can be useful to create tables inside \link[roxygen2:roxygen2-package]{roxygen2} documentation programmatically from data using
 \href{https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1}{dynamic R code}.
 
 The inline code

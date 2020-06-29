@@ -58,7 +58,7 @@ readr::read_csv(
   )
 )
 
-# parse example data (alternative)
+# parse example data (alternative way)
 readr::read_csv(file = raw_data,
                 col_types = list(.default = "c")) \%>\%
   readr::type_convert(col_types = pal::cols_regex(

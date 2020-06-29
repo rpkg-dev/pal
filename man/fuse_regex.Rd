@@ -16,7 +16,7 @@ A character scalar.
 Combine a vector or list of regular expressions to a single one (by logical OR).
 }
 \examples{
-\dontrun{
+\donttest{
 # perform some (nonsense) Jane Austen text extraction
 regex <- c("My dear Jane",
            "make haste, ",

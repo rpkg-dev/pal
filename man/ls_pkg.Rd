@@ -12,7 +12,7 @@ ls_pkg(pkg, ignore_case = TRUE)
 \item{ignore_case}{If \code{FALSE}, \code{pkg} is case-sensitive.}
 }
 \value{
-A \link[tibble:tbl_df]{tibble}.
+A \link[tibble:tbl_df-class]{tibble}.
 }
 \description{
 List a subset of all installed packages

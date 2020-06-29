@@ -15,14 +15,14 @@ build_readme(
 
 \item{output}{The path of the built Markdown README. A character scalar.}
 
-\item{envir}{Environment in which code chunks are to be evaluated,
-for example, \code{\link{parent.frame}()}, \code{\link{new.env}()}, or
+\item{envir}{Environment in which code chunks are to be evaluated, for
+example, \code{\link{parent.frame}()}, \code{\link{new.env}()}, or
 \code{\link{globalenv}()}).}
 }
 \description{
-This function is a simpler, but considerabily faster alternative to \code{\link[devtools:build_readme]{devtools::build_readme()}} because it doesn't install your package in a temporary library
-before building the \code{README.Rmd}. This has the pleasant side effect that other than the latter function it also works for \code{.Rmd} files which aren't part of
-an R package.
+This function is a simpler, but considerabily faster alternative to \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it doesn't install your package in a temporary library
+before building the \code{README.Rmd}. This has the pleasant side effect that, other than the latter function, it also works for \code{.Rmd} files which aren't part
+of an R package.
 }
 \details{
 Note that for public package repositories it's recommended to use \code{devtools::build_readme()} since it ensures the \code{README.Rmd} can be built reproducibly,
