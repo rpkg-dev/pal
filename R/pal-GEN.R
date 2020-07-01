@@ -624,6 +624,58 @@ set_attribute <- function(object,
   invisible(object)
 }
 
+#' Evaluate an expression with cli process indication
+#'
+#' This is a convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
+#'
+#' @param expr An expression to be evaluated.
+#' @param env Environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
+#' @inheritParams cli::cli_process_start
+#'
+#' @return The result of the evaluated `expr`.
+#' @export
+#'
+#' @examples
+#' cli_process_expr(Sys.sleep(3L), "Zzzz")
+#'
+#' \dontrun{
+#' # "russian roulette"
+#' msg <- "Spinning the cylinder \U1F91E … "
+#' cli_process_expr(msg = msg,
+#'                  msg_done = paste0(msg, "and pulling the trigger – lucky again. \U1F60C"),
+#'                  msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                  {
+#'                    if (interactive()) Sys.sleep(1)
+#'                    if (runif(1L) < 0.4) stop("\U1F92F\U2620")
+#'                  })}
+cli_process_expr <- function(expr,
+                             msg,
+                             msg_done = paste(msg, "... done"),
+                             msg_failed = paste(msg, "... failed"),
+                             msg_class = "alert-info",
+                             done_class = "alert-success",
+                             failed_class = "alert-danger",
+                             env = parent.frame()) {
+  
+  status_bar_container_id <- cli::cli_process_start(msg = msg,
+                                                    msg_done = msg_done,
+                                                    msg_failed = msg_failed,
+                                                    msg_class = msg_class,
+                                                    done_class = done_class,
+                                                    failed_class = failed_class,
+                                                    .envir = env,
+                                                    on_exit = "done")
+  
+  rlang::with_handlers(.expr = eval(expr = rlang::enexpr(expr),
+                                    envir = env),
+                       error = ~ {
+                         cli::cli_process_failed(status_bar_container_id);
+                         rlang::cnd_signal(.x)
+                       })
+  
+  cli::cli_process_done(status_bar_container_id)
+}
+
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
 #'
 #' @description
