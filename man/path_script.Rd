@@ -12,3 +12,8 @@ The file path to the executing script.
 \description{
 Determine file path of executing script
 }
+\seealso{
+System interaction functions
+\code{\link{check_cli}()}
+}
+\concept{sys}

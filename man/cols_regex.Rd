@@ -18,8 +18,6 @@ abbreviated character names (as described in the col_types argument of \code{\li
 A \link[readr:cols]{column specification}.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
-
 This function allows to define a regular expression per desired \link[readr:cols]{column specification object} matching the respective column names.
 }
 \examples{

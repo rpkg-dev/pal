@@ -497,9 +497,69 @@ cat_lines <- function(x) {
       sep = "\n")
 }
 
+#' Check if CLI tool is available on the system
+#'
+#' This function checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally return its filesystem
+#' path.
+#'
+#' @param cmd The system command to invoke the CLI tool. A character scalar.
+#' @param get_cmd_path Return the path to the CLI tool. If `FALSE` (the default), a boolean is returned indicating if the CLI tool is found on the system or 
+#'   not.
+#' @param force_which If set to `TRUE`, [Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
+#'   availability of `cmd` on Unix-like systems. On Windows, `Sys.which()` is used in any case. `command -v` is
+#'   [generally recommended for bourne-like shells](https://unix.stackexchange.com/q/85249/201803) and therefore is the default on Linux, macOS and other
+#'   [Unixes](https://en.wikipedia.org/wiki/Unix-like).
+#'
+#' @return A logical scalar if `get_cmd_path = FALSE`, otherwise the filesystem [path][fs::path] to the `cmd` executable.
+#' @family sys
+#' @export
+#'
+#' @examples
+#' check_cli("Rscript")
+#'
+#' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
+#' check_cli(cmd, get_cmd_path = TRUE)
+check_cli <- function(cmd,
+                      get_cmd_path = FALSE,
+                      force_which = FALSE)
+{
+  # check argument validity
+  checkmate::assert_string(cmd)
+  checkmate::assert_flag(get_cmd_path)
+  checkmate::assert_flag(force_which)
+  
+  if (force_which | !xfun::is_unix()) {
+    
+    Sys.which(names = cmd) %>%
+      as.character() %>%
+      purrr::when(. == "" ~ character(0),
+                  ~ .) %>%
+      purrr::when(get_cmd_path ~ fs::path(.),
+                  length(.) == 0 ~ FALSE,
+                  ~ TRUE)
+    
+  } else {
+    
+    # define "defused" warning/error handler
+    defuse <- function(e) if (get_cmd_path) character(0) else FALSE
+    
+    rlang::with_handlers(system2(command = "command",
+                                 args = c("-v",
+                                          cmd),
+                                 stdout = get_cmd_path,
+                                 stderr = get_cmd_path),
+                         warning = defuse,
+                         error = defuse) %>%
+      purrr::when(get_cmd_path ~ fs::path(.),
+                  isFALSE(.) ~ .,
+                  ~ TRUE)
+  }
+}
+
 #' Determine file path of executing script
 #'
 #' @return The file path to the executing script.
+#' @family sys
 #' @export
 path_script <- function() {
   
@@ -512,7 +572,6 @@ path_script <- function() {
   if (length(match) > 0L) {
     
     return(normalizePath(sub(needle, "", cmd_args[match])))
-    
   }
   
   # `source()`d via R console
@@ -523,7 +582,7 @@ path_script <- function() {
     # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
   } else if (!is.null(rprojroot::thisfile())) {
     
-    rprojroot::thisfile()
+    return(rprojroot::thisfile())
     
   } else if (is_installed("rstudioapi")) {
     
@@ -762,8 +821,6 @@ check_dot_named <- function(dot,
 #' Create column specification using regular expression matching
 #'
 #' @description
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' This function allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
 #'
