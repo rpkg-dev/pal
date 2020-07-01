@@ -629,7 +629,6 @@ path_script <- function() {
   if (length(match) > 0L) {
     
     return(normalizePath(sub(needle, "", cmd_args[match])))
-    
   }
   
   # `source()`d via R console
@@ -640,7 +639,7 @@ path_script <- function() {
     # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
   } else if (!is.null(rprojroot::thisfile())) {
     
-    rprojroot::thisfile()
+    return(rprojroot::thisfile())
     
   } else if (is_installed("rstudioapi")) {
     
@@ -909,8 +908,6 @@ check_dot_named <- function(dot,
 #' Create column specification using regular expression matching
 #'
 #' @description
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' This function allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
 #'
