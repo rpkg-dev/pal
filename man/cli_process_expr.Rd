@@ -44,7 +44,8 @@ The result of the evaluated \code{expr}.
 This is a convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_start()}}, \code{\link[cli:cli_process_start]{cli::cli_process_done()}} and \code{\link[cli:cli_process_start]{cli::cli_process_failed()}}.
 }
 \examples{
-cli_process_expr(Sys.sleep(3L), "Zzzz")
+\donttest{
+cli_process_expr(Sys.sleep(3L), "Zzzz")}
 
 \dontrun{
 # "russian roulette"

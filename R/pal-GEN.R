@@ -636,7 +636,8 @@ set_attribute <- function(object,
 #' @export
 #'
 #' @examples
-#' cli_process_expr(Sys.sleep(3L), "Zzzz")
+#' \donttest{
+#' cli_process_expr(Sys.sleep(3L), "Zzzz")}
 #'
 #' \dontrun{
 #' # "russian roulette"
@@ -657,14 +658,15 @@ cli_process_expr <- function(expr,
                              failed_class = "alert-danger",
                              env = parent.frame()) {
   
+  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function will never be called because we actually throw
+  #       the error using `rlang::cnd_signal(.x)`.
   status_bar_container_id <- cli::cli_process_start(msg = msg,
                                                     msg_done = msg_done,
                                                     msg_failed = msg_failed,
                                                     msg_class = msg_class,
                                                     done_class = done_class,
                                                     failed_class = failed_class,
-                                                    .envir = env,
-                                                    on_exit = "done")
+                                                    .envir = env)
   
   rlang::with_handlers(.expr = eval(expr = rlang::enexpr(expr),
                                     envir = env),
