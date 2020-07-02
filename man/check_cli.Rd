@@ -9,8 +9,8 @@ check_cli(cmd, get_cmd_path = FALSE, force_which = FALSE)
 \arguments{
 \item{cmd}{The system command to invoke the CLI tool. A character scalar.}
 
-\item{get_cmd_path}{Return the path to the CLI tool. If \code{FALSE} (the default), a boolean is returned indicating if the CLI tool is found on the system or
-not.}
+\item{get_cmd_path}{Return the filesystem path to the CLI tool. If \code{FALSE} (the default), a boolean is returned indicating if the CLI tool is found on the
+system or not.}
 
 \item{force_which}{If set to \code{TRUE}, \code{\link[=Sys.which]{Sys.which()}}, which relies on the system command \code{which}, will be used instead of \code{command -v} to determine the
 availability of \code{cmd} on Unix-like systems. On Windows, \code{Sys.which()} is used in any case. \code{command -v} is
@@ -21,8 +21,8 @@ availability of \code{cmd} on Unix-like systems. On Windows, \code{Sys.which()} 
 A logical scalar if \code{get_cmd_path = FALSE}, otherwise the filesystem \link[fs:path]{path} to the \code{cmd} executable.
 }
 \description{
-This function checks if a CLI tool is found on the system's \href{https://en.wikipedia.org/wiki/PATH_(variable)}{\code{PATH}} and optionally return its filesystem
-path.
+This function checks if a CLI tool is found on the system's \href{https://en.wikipedia.org/wiki/PATH_(variable)}{\code{PATH}} and optionally returns the executable's
+filesystem path.
 }
 \examples{
 check_cli("Rscript")

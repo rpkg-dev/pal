@@ -499,12 +499,12 @@ cat_lines <- function(x) {
 
 #' Check if CLI tool is available on the system
 #'
-#' This function checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally return its filesystem
-#' path.
+#' This function checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's
+#' filesystem path.
 #'
 #' @param cmd The system command to invoke the CLI tool. A character scalar.
-#' @param get_cmd_path Return the path to the CLI tool. If `FALSE` (the default), a boolean is returned indicating if the CLI tool is found on the system or 
-#'   not.
+#' @param get_cmd_path Return the filesystem path to the CLI tool. If `FALSE` (the default), a boolean is returned indicating if the CLI tool is found on the
+#'   system or not.
 #' @param force_which If set to `TRUE`, [Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
 #'   availability of `cmd` on Unix-like systems. On Windows, `Sys.which()` is used in any case. `command -v` is
 #'   [generally recommended for bourne-like shells](https://unix.stackexchange.com/q/85249/201803) and therefore is the default on Linux, macOS and other
