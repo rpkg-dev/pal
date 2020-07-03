@@ -130,15 +130,6 @@ These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdow
 
 ### `gitlab_document`
 
-The equivalent in Pandoc command line options would be:
-
-```sh
-pandoc --from=markdown \
-       --to=markdown-simple_tables-multiline_tables-grid_tables-fenced_code_attributes-inline_code_attributes-raw_attribute-smart \
-       --atx-headers \
-       --columns=9999
-```
-
 TODO:
 
 - Finish the damn tocr package and switch to it for TOC generation instead of Pandoc's built-in but very limited `--table-of-contents` option!
