@@ -6,8 +6,10 @@ output: pal::gitlab_document
 
 `r pal::desc_value("Description")`[^notify].
 
+This is arguably a [_low-cohesion_](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
 
-[^notify]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider removing it. I strongly support standardization efforts and the avoidance of unnecessary duplication.
+
+[^notify]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the avoidance of unnecessary duplication.
 
 ## Installation
 ```{r, install-snippet-dev, child = pkgsnippets::snippet_path("installation-notice_dev-version_gitlab.Rmd")}
