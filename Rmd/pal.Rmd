@@ -418,6 +418,10 @@ ls_pkg <- function(pkg,
 }
 ```
 
+## Load R script(s) as package
+
+TODO: Create a function based upon [this StackOverflow answer](https://stackoverflow.com/a/15794201/7196903).
+
 # Spoken language
 
 ## List items concatenated in prose-style (..., ... and ...)
@@ -746,6 +750,8 @@ These functions are likely to be proposed upstream, and if accepted, will be rem
 ## cli
 
 ### Evaluate an expression with cli process indication
+
+TODO: Propose this function upstream!
 
 ```{r}
 #' Evaluate an expression with cli process indication
