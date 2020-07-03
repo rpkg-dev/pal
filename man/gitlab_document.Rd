@@ -51,9 +51,13 @@ placed \emph{before} the README's body, meaning also \emph{before} the first Mar
 
 \item{preserve_yaml}{Preserve YAML front matter in final document.}
 
-\item{autolink_bare_uris}{Enable the \href{https://pandoc.org/MANUAL.html#extension-autolink_bare_uris}{\code{autolink_bare_uris} Pandoc Markdown extension} which makes all absolute URIs into links, even when not surrounded by pointy braces \verb{<...>}.}
+\item{autolink_bare_uris}{Enable the \href{https://pandoc.org/MANUAL.html#extension-autolink_bare_uris}{\code{autolink_bare_uris} Pandoc Markdown extension} which
+makes all absolute URIs into links, even when not surrounded by pointy braces \verb{<...>}.}
 
-\item{tex_math_single_backslash}{Enable the \href{https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash}{\code{tex_math_single_backslash} Pandoc Markdown extension} which causes anything between \verb{\\(} and \verb{\\)} to be interpreted as inline TeX math, and anything between \verb{\[} and \verb{\]} to be interpreted as display TeX math. Note: a drawback of this extension is that it precludes escaping \code{(} and \code{[}.}
+\item{tex_math_single_backslash}{Enable the
+\href{https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash}{\code{tex_math_single_backslash} Pandoc Markdown extension} which causes anything between
+\verb{\\(} and \verb{\\)} to be interpreted as inline TeX math, and anything between \verb{\[} and \verb{\]} to be interpreted as display TeX math. Note: a drawback of this
+extension is that it precludes escaping \code{(} and \code{[}.}
 }
 \value{
 R Markdown output format to pass to \code{\link[rmarkdown:render]{rmarkdown::render()}}.
