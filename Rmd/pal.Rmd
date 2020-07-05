@@ -755,7 +755,26 @@ These functions are likely to be proposed upstream, and if accepted, will be rem
 
 ### Evaluate an expression with cli process indication
 
-TODO: Propose this function upstream!
+TODO:
+
+- Make this function work with tidyeval NSE verbs in `expr`!
+
+  Reprex:
+  
+  ```
+  pal::cli_process_expr(msg = "WTF",
+                        expr = {
+                            col_name <- "Species"
+                            
+                            iris %>% dplyr::select(!!col_name)
+                        })
+  ```
+
+- Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
+
+  The class of the condition has to be changed for this before feeding it to `rlang::cnd_signal`.
+
+- Propose this function upstream!
 
 ```{r}
 #' Evaluate an expression with cli process indication
