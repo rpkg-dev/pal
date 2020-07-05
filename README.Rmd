@@ -17,11 +17,11 @@ This is arguably a [_low-cohesion_](https://en.wikipedia.org/wiki/Cohesion_(comp
 
 ## Development
 
-### Literate Programming
-```{r, literate-programming-snippet, child = pkgsnippets::snippet_path("literate-programming-notice.Rmd")}
+### R Markdown format
+```{r, rmd-pkg-snippet, child = pkgsnippets::snippet_path("rmd-package-notice.Rmd")}
 ```
 
-### Coding Style
+### Coding style
 ```{r, coding-style-snippet, child = pkgsnippets::snippet_path("coding-style-notice.Rmd")}
 ```
 
