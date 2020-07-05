@@ -805,7 +805,7 @@ cli_process_expr <- function(expr,
   rlang::with_handlers(.expr = eval(expr = rlang::enexpr(expr),
                                     envir = env),
                        error = ~ {
-                         cli::cli_process_failed(status_bar_container_id);
+                         cli::cli_process_failed(status_bar_container_id)
                          rlang::cnd_signal(.x)
                        })
   
