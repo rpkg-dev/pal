@@ -378,6 +378,74 @@ prose_ls <- function(x,
   }
 }
 
+#' Statistical mode
+#'
+#' This function determines the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most
+#' frequent value or the value that is most likely to be sampled.
+#'
+#' See the package [modeest](https://cran.r-project.org/package=modeest) for more powerful mode estimation functions.
+#'
+#' @param x An \R object.
+#' @param type What the function should calculate.
+#'   - `"one"`: Return _the_ mode of `x`. If multiple modes or no mode at all exists, `NA` is returned.
+#'   - `"all"`: Return _all_ modes of `x`. If none exists (e.g. because all values of `x` are distinct), `NA` is returned.
+#'   - `"n"`: Return the number of modes of `x`.
+#' @param na_rm Ignore missing values in `x`. A logical scalar.
+#'
+#' @return If `type = "n"`, the number of modes in `x` (an integer). Otherwise, the mode(s) of `x` or `NA` if none exist(s) (same type as `x`).
+#' @export
+#'
+#' @examples
+#' stat_mode(c(rep(3L, times = 3), 1:9))
+#' stat_mode(c(1.5, 4, 9.9))
+#' 
+#' # if no mode exists, `NA` (of the same type as x) is returned
+#' stat_mode(letters)
+#' stat_mode(c(letters, "a"))
+#' 
+#' # if multiple modes exist, `NA` is returned by default
+#' stat_mode(c(letters, "a", "b"))
+#' # set `type = "all"` to return all modes instead
+#' stat_mode(c(letters, "a", "b"),
+#'           type = "all")
+#' 
+#' # `NA` is treated as any other value by default
+#' stat_mode(c(letters, "a", NA_character_, NA_character_),
+#'           type = "all")
+#' # set `rm_na = TRUE` to ignore `NA` values
+#' stat_mode(c(letters, "a", NA_character_, NA_character_),
+#'           type = "all",
+#'           na_rm = TRUE)
+stat_mode <- function(x,
+                      type = c("one", "all", "n"),
+                      na_rm = FALSE) {
+  x <- unlist(x)
+  type <- rlang::arg_match(type)
+  if (checkmate::assert_flag(na_rm)) x <- x[!is.na(x)]
+  
+  # get unique values
+  u_x <- unique(x)
+  n_u_x <- length(u_x)
+  
+  # get frequencies of all unique values
+  frequencies <- tabulate(match(x, u_x))
+  modes <- frequencies == max(frequencies)
+  
+  # determine number of modes
+  n_modes <- sum(modes) %>% dplyr::if_else(. == n_u_x, 0L, .)
+  
+  type %>% purrr::when(
+    # return the number of modes if requested
+    . == "n" ~
+      n_modes,
+    # or return mode(s) if requested and existing
+    (. == "one" & n_modes == 1L) | (. == "all" & n_modes > 0L) ~
+      u_x[which(modes)],
+    # else return `NA` (of the same type as `x`)
+    ~ x[NA][1L]
+  )
+}
+
 #' Convert to a character scalar (aka string)
 #'
 #' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all its elements to type character.
