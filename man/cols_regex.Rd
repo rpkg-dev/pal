@@ -21,7 +21,7 @@ A \link[readr:cols]{column specification}.
 This function allows to define a regular expression per desired \link[readr:cols]{column specification object} matching the respective column names.
 }
 \examples{
-# some hypothetical CSV data column names
+# for some hypothetical CSV data column names like these ...
 cnames <- c("VAR1_Text",
             "VAR2_Text",
             "VAR3_Text_Other",
@@ -32,33 +32,36 @@ cnames <- c("VAR1_Text",
             "GARBAGEX67",
             "GARBAGEY09")
 
-# create column spec
+# ... a column spec could be created concisely as follows:
 pal::cols_regex(.col_names   = cnames,
-                "_Text[_$]" = "c",
-                "_Code[_$]" = "i",
+                "_Text(_|$)" = "c",
+                "_Code(_|$)" = "i",
                 "^GARBAGE"  = readr::col_skip(),
                 .default     = "l")
 
-# parse example data
-raw_data <- system.file("extdata/ch_communes_snapshot.csv",
-                        package = "readr")
+# we can parse some real data:
+raw_data <-
+  httr::GET(paste0("https://www.web.statistik.zh.ch/ogd/data/",
+                   "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) \%>\%
+  httr::content(as = "text",
+                encoding = "UTF-8")
 
 readr::read_csv(
   file = raw_data,
   col_types = pal::cols_regex(
-    "(Name|_Title|_Text|^ABBREV)" = "c",
-    "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "\%d.\%m.\%Y"),
+    "^(Gemeindenamen|Partei)$" = "c",
+    "(?i)anteil" = "d",
     .default = "i",
     .col_names = pal::dsv_colnames(raw_data)
   )
 )
 
-# parse example data (alternative way)
+# an alternative way to process the same data using `readr::type_convert()`:
 readr::read_csv(file = raw_data,
                 col_types = list(.default = "c")) \%>\%
   readr::type_convert(col_types = pal::cols_regex(
-    "(Name|_Title|_Text|^ABBREV)" = "c",
-    "^(MutationDate|ValidFrom|ValidTo)$" = readr::col_date(format = "\%d.\%m.\%Y"),
+    "^(Gemeindenamen|Partei)$" = "c",
+    "(?i)anteil" = "d",
     .default = "i",
     .col_names = colnames(.)
   ))
