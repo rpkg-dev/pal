@@ -761,7 +761,7 @@ TODO:
 
   Reprex:
   
-  ```
+  ```r
   pal::cli_process_expr(msg = "WTF",
                         expr = {
                             col_name <- "Species"
