@@ -449,14 +449,23 @@ prose_ls <- function(x,
                      wrap = "",
                      separator = ", ",
                      last_separator = " and ") {
-  if (length(x) < 2L) {
-    paste0(checkmate::assert_string(wrap), x, wrap)
+  
+  result <- as_chr(x)
+  length_result <- length(result)
+  
+  if (length_result == 1L) {
     
-  } else {
-    paste0(x[-length(x)],
-           collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
-      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, x[length(x)], wrap)
+    result <- paste0(checkmate::assert_string(wrap), result, wrap)
+    
+  } else if (length_result > 1L) {
+    
+    result <-
+      paste0(result[-length_result],
+             collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
+      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, result[length_result], wrap)
   }
+  
+  result
 }
 ```
 
