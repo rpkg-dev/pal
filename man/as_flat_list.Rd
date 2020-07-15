@@ -41,7 +41,10 @@ unlist(nested_list) \%>\% str()
 # ... this function does not modify the list elements
 as_flat_list(nested_list) \%>\% str()
 
-nested_list <- list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))), list(tibble::as_tibble(mtcars[1:2, ]))) \%T>\% str()
+nested_list <-
+  list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))),
+       list(tibble::as_tibble(mtcars[1:2, ]))) \%T>\%
+  str()
 nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) \%T>\% str()
 
 # by default, attributes and thus custom objects are retained (except `xfun_strict_list`) ...

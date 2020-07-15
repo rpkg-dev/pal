@@ -7,7 +7,7 @@
 as_string(..., sep = "")
 }
 \arguments{
-\item{...}{The elements to be assembled to a single string.}
+\item{...}{The \R objects to be assembled to a single string. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
 \item{sep}{The separator to delimit \code{...}. Defaults to none (\code{""}).}
 }
@@ -15,7 +15,7 @@ as_string(..., sep = "")
 A character scalar.
 }
 \description{
-This function is like \code{paste0(..., collapse = TRUE)}, but \emph{recursively} converts all its elements to type character.
+This function is like \code{paste0(..., collapse = TRUE)}, but \emph{recursively} converts all elements to type character.
 }
 \examples{
 input <-
@@ -26,10 +26,18 @@ input <-
              times = 20) \%>\%
   list(c("This is a glut of ", "meaningless numbers: "), .)
 
-# while this just converts `input` in a lazy way
+# while this just converts `input` in a lazy way ...
 paste0(input,
        collapse = "")
 
-# this one works harder
+# ... this one works harder
 as_string(input)
 }
+\seealso{
+String functions
+\code{\link{as_chr}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()},
+\code{\link{fuse_regex}()}
+}
+\concept{string}

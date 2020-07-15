@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal-GEN.R
 \name{cat_lines}
 \alias{cat_lines}
-\title{Print \code{x} as newline-separated character vector using \code{\link[base:cat]{cat()}}.}
+\title{Print \code{x} as newline-separated character vector using \code{cat()}.}
 \usage{
 cat_lines(x)
 }
@@ -16,8 +16,6 @@ None (invisible \code{NULL}).
 This is simply a convenience wrapper around \code{\link[base:cat]{cat()}}, mainly intended for interactive use.
 }
 \examples{
-library(magrittr)
-
 fs::path_package(package = "pal",
                  "DESCRIPTION") \%>\%
   readr::read_lines() \%>\%
@@ -25,4 +23,11 @@ fs::path_package(package = "pal",
 }
 \seealso{
 \code{\link[xfun:raw_string]{xfun::raw_string()}}, \code{\link[xfun:file_string]{xfun::file_string()}}
+
+String functions
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{dsv_colnames}()},
+\code{\link{fuse_regex}()}
 }
+\concept{string}

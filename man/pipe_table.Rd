@@ -50,6 +50,5 @@ should produce the following table in \href{https://www.tidyverse.org/blog/2020/
 }
 
 \examples{
-library(magrittr)
 mtcars \%>\% head() \%>\% pipe_table() \%>\% cat()
 }

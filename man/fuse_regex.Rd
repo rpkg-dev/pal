@@ -25,3 +25,11 @@ regex <- c("My dear Jane",
 stringr::str_subset(string = janeaustenr::prideprejudice,
                     pattern = fuse_regex(regex))}
 }
+\seealso{
+String functions
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()}
+}
+\concept{string}

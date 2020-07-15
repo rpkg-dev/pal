@@ -32,7 +32,6 @@ utils::globalVariables(names = c(".",
 #' @export
 #'
 #' @examples
-#' library(magrittr)
 #' mtcars %>% head() %>% pipe_table() %>% cat()
 pipe_table <- function(x,
                        strong_colnames = TRUE,
@@ -446,14 +445,49 @@ stat_mode <- function(x,
   )
 }
 
+#' Convert to a character vector
+#'
+#' @param ... The \R objects to be converted to a character vector. [Dynamic dots][rlang::dyn-dots] are supported.
+#'
+#' @return A character vector.
+#' @family string
+#' @export
+#'
+#' @examples
+#' to_convert <-
+#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
+#'   print()
+#'
+#' as.character(to_convert)
+#' as_chr(!!!to_convert)
+as_chr <- function(...) {
+  
+  rlang::list2(...) %>%
+    purrr::map(~ {
+      
+      if (purrr::vec_depth(.x) == 1L) {
+        
+        as.character(.x)
+        
+      } else {
+        
+        .x %>%
+          purrr::map(as_chr) %>%
+          purrr::flatten_chr()
+      }
+    }) %>%
+    purrr::flatten_chr()
+}
+
 #' Convert to a character scalar (aka string)
 #'
-#' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all its elements to type character.
+#' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all elements to type character.
 #'
-#' @param ... The elements to be assembled to a single string.
+#' @param ... The \R objects to be assembled to a single string. [Dynamic dots][rlang::dyn-dots] are supported.
 #' @param sep The separator to delimit `...`. Defaults to none (`""`).
 #'
 #' @return A character scalar.
+#' @family string
 #' @export
 #'
 #' @examples
@@ -465,27 +499,17 @@ stat_mode <- function(x,
 #'              times = 20) %>%
 #'   list(c("This is a glut of ", "meaningless numbers: "), .)
 #'
-#' # while this just converts `input` in a lazy way
+#' # while this just converts `input` in a lazy way ...
 #' paste0(input,
 #'        collapse = "")
 #'
-#' # this one works harder
+#' # ... this one works harder
 #' as_string(input)
 as_string <- function(...,
                       sep = "") {
   
-  list(...) %>%
-    purrr::map_chr(~ {
-      if (purrr::vec_depth(.x) == 1L) {
-        paste0(as.character(.x), collapse = sep)
-      } else {
-        paste0(purrr::map_chr(.x,
-                              as_string,
-                              sep = sep),
-               collapse = sep)
-      }
-    }) %>%
-    paste0(collapse = sep)
+  as_chr(...) %>% purrr::when(length(.) > 0L ~ paste0(collapse = sep),
+                              ~ .)
 }
 
 #' Fuse regular expressions
@@ -495,6 +519,7 @@ as_string <- function(...,
 #' @param ... The regular expressions. All elements will be converted to type character before fusing.
 #'
 #' @return A character scalar.
+#' @family string
 #' @export
 #'
 #' @examples
@@ -521,6 +546,7 @@ fuse_regex <- function(...) {
 #' @param quote Single character used to quote strings within `x`. Set to `NULL` for none.
 #'
 #' @return A character vector of column names.
+#' @family string
 #' @export
 #'
 #' @examples
@@ -546,26 +572,25 @@ dsv_colnames <- function(x,
                                                  "|{quote}$"))
 }
 
-#' Print `x` as newline-separated character vector using [`cat()`][base::cat()].
+#' Print `x` as newline-separated character vector using `cat()`.
 #' 
 #' This is simply a convenience wrapper around [`cat()`][base::cat()], mainly intended for interactive use.
 #'
 #' @param x A vector to print.
 #'
 #' @inherit base::cat return
+#' @family string
 #' @seealso [xfun::raw_string()], [xfun::file_string()]
 #' @export
 #'
 #' @examples
-#' library(magrittr)
-#'
 #' fs::path_package(package = "pal",
 #'                  "DESCRIPTION") %>%
 #'   readr::read_lines() %>%
 #'   cat_lines()
 cat_lines <- function(x) {
   
-  cat(as.character(unlist(x)),
+  cat(as_chr(x),
       sep = "\n")
 }
 
@@ -703,7 +728,10 @@ path_script <- function() {
 #' # ... this function does not modify the list elements
 #' as_flat_list(nested_list) %>% str()
 #' 
-#' nested_list <- list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))), list(tibble::as_tibble(mtcars[1:2, ]))) %T>% str()
+#' nested_list <-
+#'   list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))),
+#'        list(tibble::as_tibble(mtcars[1:2, ]))) %T>%
+#'   str()
 #' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
 #'
 #' # by default, attributes and thus custom objects are retained (except `xfun_strict_list`) ...

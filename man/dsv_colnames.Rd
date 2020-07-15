@@ -26,3 +26,11 @@ httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata
   httr::content(as = "text") \%>\%
   pal::dsv_colnames()}
 }
+\seealso{
+String functions
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{fuse_regex}()}
+}
+\concept{string}
