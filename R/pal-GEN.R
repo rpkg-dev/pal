@@ -774,34 +774,6 @@ rm_list_level <- function(x,
   result
 }
 
-#' Set an attribute
-#'
-#' This is simply a [pipeable](https://magrittr.tidyverse.org/articles/magrittr.html) version of [`attr(x, which) <- value`][base::attr()]. Unfortunately,
-#' [rlang::set_attrs()], a more powerful attribute setter, has been marked deprecated.
-#'
-#' @param object The object for which an attribute is to be changed.
-#' @param attribute The attribute to be changed. A character scalar.
-#' @param value The new value for the attribute.
-#'
-#' @return The `object` with the updated attribute, invisibly.
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' list(some = "element") %>%
-#'   set_attribute(attribute = "custom_attribute",
-#'                 value = "foo") %>%
-#'   print()
-set_attribute <- function(object,
-                          attribute,
-                          value) {
-  attr(x = object,
-       which = attribute) <- value
-  
-  invisible(object)
-}
-
 #' Evaluate an expression with cli process indication
 #'
 #' This is a convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
