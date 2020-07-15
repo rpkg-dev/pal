@@ -22,8 +22,8 @@ stat_mode(x, type = c("one", "all", "n"), na_rm = FALSE)
 If \code{type = "n"}, the number of modes in \code{x} (an integer). Otherwise, the mode(s) of \code{x} or \code{NA} if none exist(s) (same type as \code{x}).
 }
 \description{
-This function determines the \href{https://en.wikipedia.org/wiki/Mode_(statistics)}{statistical mode} of a set of values. The mode is defined as the most
-frequent value or the value that is most likely to be sampled.
+Compute the \href{https://en.wikipedia.org/wiki/Mode_(statistics)}{statistical mode} of a set of values. The mode is defined as the most frequent value, i.e. the
+value that is most likely to be sampled.
 }
 \details{
 See the package \href{https://cran.r-project.org/package=modeest}{modeest} for more powerful mode estimation functions.

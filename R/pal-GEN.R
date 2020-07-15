@@ -380,8 +380,8 @@ prose_ls <- function(x,
 
 #' Statistical mode
 #'
-#' This function determines the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most
-#' frequent value or the value that is most likely to be sampled.
+#' Compute the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most frequent value, i.e. the
+#' value that is most likely to be sampled.
 #'
 #' See the package [modeest](https://cran.r-project.org/package=modeest) for more powerful mode estimation functions.
 #'
