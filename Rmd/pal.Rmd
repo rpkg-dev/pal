@@ -354,9 +354,8 @@ This function [was originally proposed by Stack Overflow user Artem Klevtsov](ht
 #' is_installed(pkg = "tidyverse")
 is_installed <- function(pkg) {
   
-  pkg %>%
-    magrittr::set_names(., .) %>%
-    purrr::map_lgl(~ nzchar(system.file(package = .x)))
+  purrr::map_lgl(magrittr::set_names(pkg, pkg),
+                 ~ nzchar(system.file(package = .x)))
 }
 ```
 
