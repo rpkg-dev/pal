@@ -38,8 +38,8 @@ utils::globalVariables(names = c(".",
 #' `r mtcars %>% head() %>% pipe_table()`
 #'
 #' @param x The dataframe/tibble/matrix to be converted to a pipe table.
-#' @param strong_colnames Highlight column names by formatting them `<strong>`. Enabled by default.
-#' @param strong_rownames Highlight row names by formatting them `<strong>`. Enabled by default.
+#' @param strong_colnames Highlight column names by formatting them `<strong>`.
+#' @param strong_rownames Highlight row names by formatting them `<strong>`.
 #' @inheritParams pander::pandoc.table.return
 #' @param ... Additional arguments passed to [pander::pandoc.table.return()].
 #'
