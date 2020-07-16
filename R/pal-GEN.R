@@ -689,7 +689,7 @@ dsv_colnames <- function(x,
 
 #' Print `x` as newline-separated character vector using `cat()`.
 #' 
-#' This is simply a convenience wrapper around [`cat()`][base::cat()], mainly intended for interactive use.
+#' This is a convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
 #'
 #' @param x A vector to print.
 #'
