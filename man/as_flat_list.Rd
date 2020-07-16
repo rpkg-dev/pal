@@ -19,7 +19,8 @@ A \link[base:list]{list}.
 \description{
 This function is similar to \code{\link[=unlist]{unlist()}}, i.e. it \emph{recursively} flattens a list. But unlike \code{unlist()}, it
 \itemize{
-\item always returns a list, i.e. wraps \code{x} in a list if necessary, and will never remove the last list level. Thus it is type-safe!
+\item always returns a list, i.e. wraps \code{x} in a list if necessary, and will never remove the last list level. Thus it is
+\href{https://en.wikipedia.org/wiki/Type_safety}{type-safe}.
 \item won't treat any of the list leafs specially (like \code{unlist()} does with factors). Thus leaf values will never be modified.
 \item removes list names. \code{unlist()} concatenates nested names (separated by a dot).
 }

@@ -9,7 +9,8 @@ utils::globalVariables(names = c(".",
 #' @description
 #' This function is similar to [unlist()], i.e. it _recursively_ flattens a list. But unlike `unlist()`, it
 #'
-#' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is type-safe!
+#' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is
+#'   [type-safe](https://en.wikipedia.org/wiki/Type_safety).
 #'
 #' - won't treat any of the list leafs specially (like `unlist()` does with factors). Thus leaf values will never be modified.
 #'
