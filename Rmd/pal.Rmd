@@ -551,7 +551,7 @@ stat_mode <- function(x,
 ```{r}
 #' Convert to a character vector
 #'
-#' @param ... The \R objects to be converted to a character vector. [Dynamic dots][rlang::dyn-dots] are supported.
+#' @param ... The \R objects to be converted to a character vector. `r pkgsnippets::roxy_label("dyn_dots_support")`
 #'
 #' @return A character vector.
 #' @family string
@@ -591,7 +591,7 @@ as_chr <- function(...) {
 #'
 #' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all elements to type character.
 #'
-#' @param ... The \R objects to be assembled to a single string. [Dynamic dots][rlang::dyn-dots] are supported.
+#' @param ... The \R objects to be assembled to a single string. `r pkgsnippets::roxy_label("dyn_dots_support")`
 #' @param sep The separator to delimit `...`. Defaults to none (`""`).
 #'
 #' @return A character scalar.
