@@ -955,7 +955,41 @@ run_cli <- function(cmd,
 
 # Miscellaneous
 
-...
+## Test if an HTTP request is successful
+
+A shorter way to define a very similar function would be:
+
+```r
+is_http_success <- purrr::possibly(~ httr::http_status(httr::HEAD(.x))$category == "Success",
+                                   otherwise = FALSE)
+```
+
+```{r}
+#' Test if an HTTP request is successful
+#'
+#' This sends a [`HEAD` request](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) to the specified `url` and returns `TRUE` if the
+#' request could be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) or `FALSE` otherwise.
+#'
+#' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
+#' based on [curl](https://jeroen.cran.dev/curl/).
+#'
+#' @param url The HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
+#'
+#' @return A logical scalar.
+#' @seealso [RCurl::url.exists()]
+#' @export
+#'
+#' @examples
+#' is_http_success("goo.gl")
+#' is_http_success("https://google.com/")
+#' is_http_success("https://google.not/")
+is_http_success <- function(url) {
+  
+  rlang::with_handlers(httr::http_status(httr::HEAD(url))$category == "Success",
+                       error = ~ FALSE,
+                       interrupt = ~ rlang::abort("Terminated by the user"))
+}
+```
 
 # Extending other R packages
 
