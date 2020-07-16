@@ -796,7 +796,7 @@ path_script <- function() {
     
     return(rprojroot::thisfile())
     
-  } else if (is_installed("rstudioapi")) {
+  } else {
     
     path <- normalizePath(rstudioapi::getActiveDocumentContext()[["path"]])
     
