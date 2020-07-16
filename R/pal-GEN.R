@@ -339,7 +339,7 @@ gitlab_document <- function(#add_toc = FALSE,
 assert_pkg <- function(pkg,
                        message = NULL) {
   
-  if (!is_installed(checkmate::assert_string(pkg))) {
+  if (!is_pkg_installed(checkmate::assert_string(pkg))) {
     
     if (is.null(message)) {
       
@@ -376,25 +376,26 @@ desc_value <- function(key,
 
 #' Test if packages are installed
 #'
-#' This function returns `TRUE` for each `pkg` that is installed on the current system and `FALSE` otherwise.
+#' This function returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not.
 #'
 #' In contrast to [base::require()], it checks if a package is installed without attaching its namespace if so.
 #' 
-#' In contrast to [rlang::is_installed()], it is fully vectorized, i.e. returns a (named) logical vector of the same length as `pkg`.
+#' In contrast to [rlang::is_installed()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns a (named) logical vector
+#' of the same length as `pkg`.
 #' 
 #' It is
 #' [considerably faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the
 #' commonly used `pkg %in% rownames(installed.packages())` check.
 #'
-#' @param pkg Package names.
+#' @param pkg Package names. A character vector.
 #'
 #' @return A named logical vector of the same length as `pkg`.
 #' @export
 #' @family rpkgs
 #'
 #' @examples
-#' is_installed(pkg = "tidyverse")
-is_installed <- function(pkg) {
+#' is_pkg_installed(pkg = "tidyverse")
+is_pkg_installed <- function(pkg) {
   
   purrr::map_lgl(magrittr::set_names(pkg, pkg),
                  ~ nzchar(system.file(package = .x)))

@@ -22,7 +22,7 @@ is_pkg_dir(fs::path_package("pal"))
 }
 \seealso{
 R package functions
-\code{\link{is_installed}()},
+\code{\link{is_pkg_installed}()},
 \code{\link{ls_pkg}()}
 }
 \concept{rpkgs}
