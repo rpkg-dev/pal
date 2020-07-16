@@ -4,6 +4,112 @@
 utils::globalVariables(names = c(".",
                                  "Package"))
 
+#' Convert to a flat list
+#'
+#' @description
+#' This function is similar to [unlist()], i.e. it _recursively_ flattens a list. But unlike `unlist()`, it
+#'
+#' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is type-safe!
+#'
+#' - won't treat any of the list leafs specially (like `unlist()` does with factors). Thus leaf values will never be modified.
+#'
+#' - removes list names. `unlist()` concatenates nested names (separated by a dot).
+#'
+#' @param x `r pkgsnippets::param_label("r_object")`
+#' @param keep_attrs Keep [attributes][base::attr()] (and thereby retain list structure of custom objects). A logical scalar.
+#' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
+#'
+#' @return A [list][base::list()].
+#' @export
+#'
+#' @examples
+#' nested_list <- list(1:3, list("foo", list("bar"))) %T>% str()
+#' 
+#' # unlike `unlist()` which also removes the last list tier in many cases ...
+#' unlist("foobar")
+#' unlist(nested_list) %>% str()
+#' # ... this function always returns an (unnested) list
+#' as_flat_list("foobar") %>% str()
+#' as_flat_list(nested_list) %>% str()
+#' 
+#' nested_list <- list(list(factor("a"), factor("b")), factor("c")) %T>% str()
+#' 
+#' # unlike `unlist()` which combines factors ...
+#' unlist(nested_list) %>% str()
+#' # ... this function does not modify the list elements
+#' as_flat_list(nested_list) %>% str()
+#' 
+#' nested_list <-
+#'   list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))),
+#'        list(tibble::as_tibble(mtcars[1:2, ]))) %T>%
+#'   str()
+#' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
+#'
+#' # by default, attributes and thus custom objects are retained (except `xfun_strict_list`) ...
+#' as_flat_list(nested_list) %>% str()
+#' as_flat_list(nested_list_2) %>% str()
+#' # ... but you can drop them and thereby flatten custom objects if needed ...
+#' as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
+#' # ... or retain `xfun_strict_list`s
+#' as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
+as_flat_list <- function(x,
+                         keep_attrs = TRUE,
+                         attrs_to_drop = "xfun_strict_list") {
+  
+  regard_attrs <- checkmate::assert_flag(keep_attrs) & length(setdiff(attributes(x),
+                                                                      checkmate::assert_character(attrs_to_drop,
+                                                                                                  any.missing = FALSE,
+                                                                                                  null.ok = TRUE)))
+  depth <- purrr::vec_depth(x)
+  
+  # wrap `x` in a list if it's not
+  if (regard_attrs | depth < 2L) {
+    result <- list(x)
+    
+    # return `x` as-is if it is an unnested list
+  } else if (depth < 3L) {
+    result <- x
+    
+    # flatten the two last list levels (keeping attributes if requested)
+  } else if (depth < 4L) {
+    result <- x %>% purrr::when(keep_attrs ~ rm_list_level(.,
+                                                           attrs_to_drop = attrs_to_drop),
+                                ~ purrr::flatten(.))
+  } else {
+    
+    # recursively feed the elements of `x` to this function and flatten the two last list levels (keeping attributes if requested)
+    result <-
+      x %>%
+      purrr::map(.f = as_flat_list,
+                 keep_attrs = keep_attrs,
+                 attrs_to_drop = attrs_to_drop) %>%
+      purrr::when(keep_attrs ~ rm_list_level(.,
+                                             attrs_to_drop = attrs_to_drop),
+                  ~ purrr::flatten(.))
+  }
+  
+  result
+}
+
+rm_list_level <- function(x,
+                          attrs_to_drop = "xfun_strict_list") {
+  
+  result <- list()
+  
+  for (i in seq_along(checkmate::assert_list(x))) {
+    
+    regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop))
+    
+    if (!regard_attrs & purrr::vec_depth(x[[i]]) > 1L) {
+      result %<>% c(x[[i]])
+    } else {
+      result %<>% c(list(x[[i]]))
+    }
+  }
+  
+  result
+}
+
 #' Convert dataframe/tibble to Markdown pipe table
 #'
 #' This is a simple wrapper around [pander::pandoc.table.return()] with sensible defaults to create a
@@ -23,8 +129,8 @@ utils::globalVariables(names = c(".",
 #' `r mtcars %>% head() %>% pipe_table()`
 #'
 #' @param x The dataframe/tibble/matrix to be converted to a pipe table.
-#' @param strong_colnames Highlight column names by formatting them `<strong>`. Enabled by default.
-#' @param strong_rownames Highlight row names by formatting them `<strong>`. Enabled by default.
+#' @param strong_colnames Highlight column names by formatting them `<strong>`.
+#' @param strong_rownames Highlight row names by formatting them `<strong>`.
 #' @inheritParams pander::pandoc.table.return
 #' @param ... Additional arguments passed to [pander::pandoc.table.return()].
 #'
@@ -60,7 +166,7 @@ pipe_table <- function(x,
 
 #' Build `README.Rmd`
 #'
-#' This function is a simpler, but considerabily faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library
+#' This function is a simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library
 #' before building the `README.Rmd`. This has the pleasant side effect that, other than the latter function, it also works for `.Rmd` files which aren't part
 #' of an R package.
 #' 
@@ -290,9 +396,8 @@ desc_value <- function(key,
 #' is_installed(pkg = "tidyverse")
 is_installed <- function(pkg) {
   
-  pkg %>%
-    magrittr::set_names(., .) %>%
-    purrr::map_lgl(~ nzchar(system.file(package = .x)))
+  purrr::map_lgl(magrittr::set_names(pkg, pkg),
+                 ~ nzchar(system.file(package = .x)))
 }
 
 #' Test if a directory is an R package
@@ -456,7 +561,7 @@ stat_mode <- function(x,
 
 #' Convert to a character vector
 #'
-#' @param ... The \R objects to be converted to a character vector. [Dynamic dots][rlang::dyn-dots] are supported.
+#' @param ... The \R objects to be converted to a character vector. `r pkgsnippets::roxy_label("dyn_dots_support")`
 #'
 #' @return A character vector.
 #' @family string
@@ -492,7 +597,7 @@ as_chr <- function(...) {
 #'
 #' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all elements to type character.
 #'
-#' @param ... The \R objects to be assembled to a single string. [Dynamic dots][rlang::dyn-dots] are supported.
+#' @param ... The \R objects to be assembled to a single string. `r pkgsnippets::roxy_label("dyn_dots_support")`
 #' @param sep The separator to delimit `...`. Defaults to none (`""`).
 #'
 #' @return A character scalar.
@@ -702,113 +807,10 @@ path_script <- function() {
   rlang::abort("Couldn't determine script path!'")
 }
 
-#' Convert to a flat list
-#'
-#' @description
-#' This function is similar to [unlist()], i.e. it _recursively_ flattens a list. But unlike `unlist()`, it
-#'
-#' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is type-safe!
-#'
-#' - won't treat any of the list leafs specially (like `unlist()` does with factors). Thus leaf values will never be modified.
-#'
-#' - removes list names. `unlist()` concatenates nested names (separated by a dot).
-#'
-#' @param x `r pkgsnippets::param_label("r_object")`
-#' @param keep_attrs Keep [attributes][base::attr()] (and thereby retain list structure of custom objects). A logical scalar.
-#' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
-#'
-#' @return A [list][base::list()].
-#' @export
-#'
-#' @examples
-#' nested_list <- list(1:3, list("foo", list("bar"))) %T>% str()
-#' 
-#' # unlike `unlist()` which also removes the last list tier in many cases ...
-#' unlist("foobar")
-#' unlist(nested_list) %>% str()
-#' # ... this function always returns an (unnested) list
-#' as_flat_list("foobar") %>% str()
-#' as_flat_list(nested_list) %>% str()
-#' 
-#' nested_list <- list(list(factor("a"), factor("b")), factor("c")) %T>% str()
-#' 
-#' # unlike `unlist()` which combines factors ...
-#' unlist(nested_list) %>% str()
-#' # ... this function does not modify the list elements
-#' as_flat_list(nested_list) %>% str()
-#' 
-#' nested_list <-
-#'   list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))),
-#'        list(tibble::as_tibble(mtcars[1:2, ]))) %T>%
-#'   str()
-#' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
-#'
-#' # by default, attributes and thus custom objects are retained (except `xfun_strict_list`) ...
-#' as_flat_list(nested_list) %>% str()
-#' as_flat_list(nested_list_2) %>% str()
-#' # ... but you can drop them and thereby flatten custom objects if needed ...
-#' as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
-#' # ... or retain `xfun_strict_list`s
-#' as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
-as_flat_list <- function(x,
-                         keep_attrs = TRUE,
-                         attrs_to_drop = "xfun_strict_list") {
+run_cli <- function(cmd,
+                    ...) {
   
-  regard_attrs <- checkmate::assert_flag(keep_attrs) & length(setdiff(attributes(x),
-                                                                      checkmate::assert_character(attrs_to_drop,
-                                                                                                  any.missing = FALSE,
-                                                                                                  null.ok = TRUE)))
-  depth <- purrr::vec_depth(x)
   
-  # wrap `x` in a list if it's not
-  if (regard_attrs | depth < 2L) {
-    
-    result <- list(x)
-    
-    # return `x` as-is if it is an unnested list
-  } else if (depth < 3L) {
-    
-    result <- x
-    
-    # flatten the two last list levels (keeping attributes if requested)
-  } else if (depth < 4L) {
-    
-    result <- x %>% purrr::when(keep_attrs ~ rm_list_level(.,
-                                                           attrs_to_drop = attrs_to_drop),
-                                ~ purrr::flatten(.))
-  } else {
-    
-    # recursively feed the elements of `x` to this very function and flatten the two last list levels (keeping attributes if requested)
-    result <-
-      x %>%
-      purrr::map(.f = as_flat_list,
-                 keep_attrs = keep_attrs,
-                 attrs_to_drop = attrs_to_drop) %>%
-      purrr::when(keep_attrs ~ rm_list_level(.,
-                                             attrs_to_drop = attrs_to_drop),
-                  ~ purrr::flatten(.))
-  }
-  
-  result
-}
-
-rm_list_level <- function(x,
-                          attrs_to_drop = "xfun_strict_list") {
-  
-  result <- list()
-  
-  for (i in seq_along(checkmate::assert_list(x))) {
-    
-    regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop))
-    
-    if (!regard_attrs & purrr::vec_depth(x[[i]]) > 1L) {
-      result %<>% c(x[[i]])
-    } else {
-      result %<>% c(list(x[[i]]))
-    }
-  }
-  
-  result
 }
 
 #' Evaluate an expression with cli process indication

@@ -15,9 +15,9 @@ pipe_table(
 \arguments{
 \item{x}{The dataframe/tibble/matrix to be converted to a pipe table.}
 
-\item{strong_colnames}{Highlight column names by formatting them \verb{<strong>}. Enabled by default.}
+\item{strong_colnames}{Highlight column names by formatting them \verb{<strong>}.}
 
-\item{strong_rownames}{Highlight row names by formatting them \verb{<strong>}. Enabled by default.}
+\item{strong_rownames}{Highlight row names by formatting them \verb{<strong>}.}
 
 \item{justify}{defines alignment in cells passed to \code{format}. Can be \code{left}, \code{right} or \code{centre}, which latter can be also spelled as \code{center}. Defaults to \code{centre}. Can be abbreviated to a string consisting of the letters \code{l}, \code{c} and \code{r} (e.g. 'lcr' instead of c('left', 'centre', 'right').}
 

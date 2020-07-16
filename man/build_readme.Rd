@@ -20,7 +20,7 @@ example, \code{\link{parent.frame}()}, \code{\link{new.env}()}, or
 \code{\link{globalenv}()}).}
 }
 \description{
-This function is a simpler, but considerabily faster alternative to \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it doesn't install your package in a temporary library
+This function is a simpler, but considerably faster alternative to \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it doesn't install your package in a temporary library
 before building the \code{README.Rmd}. This has the pleasant side effect that, other than the latter function, it also works for \code{.Rmd} files which aren't part
 of an R package.
 }
