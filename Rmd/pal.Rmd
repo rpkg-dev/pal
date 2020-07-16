@@ -18,6 +18,10 @@ utils::globalVariables(names = c(".",
 
 ## Convert dataframe/tibble to Markdown pipe table
 
+TODO:
+
+- Switch to using `knitr::kable()`; we would have to rely on `magrittr::set_rownames(paste("**", ., "**"))` to implement `strong_colnames`.
+
 ```{r}
 #' Convert dataframe/tibble to Markdown pipe table
 #'
