@@ -16,7 +16,7 @@ utils::globalVariables(names = c(".",
 #'
 #' - removes list names. `unlist()` concatenates nested names (separated by a dot).
 #'
-#' @param x `r pkgsnippets::param_label("r_object")`
+#' @param x `r pkgsnip::param_label("r_object")`
 #' @param keep_attrs Keep [attributes][base::attr()] (and thereby retain list structure of custom objects). A logical scalar.
 #' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
 #'
@@ -174,7 +174,7 @@ pipe_table <- function(x,
 #' Note that for public package repositories it's recommended to use `devtools::build_readme()` since it ensures the `README.Rmd` can be built reproducibly,
 #' which means all the objects and files it references must be accessible from the repository.
 #' 
-#' `r pkgsnippets::md_snippet("rstudio_addin_hint")`
+#' `r pkgsnip::md_snip("rstudio_addin_hint")`
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
@@ -563,7 +563,7 @@ stat_mode <- function(x,
 
 #' Convert to a character vector
 #'
-#' @param ... The \R objects to be converted to a character vector. `r pkgsnippets::roxy_label("dyn_dots_support")`
+#' @param ... The \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character vector.
 #' @family string
@@ -599,7 +599,7 @@ as_chr <- function(...) {
 #'
 #' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all elements to type character.
 #'
-#' @param ... The \R objects to be assembled to a single string. `r pkgsnippets::roxy_label("dyn_dots_support")`
+#' @param ... The \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param sep The separator to delimit `...`. Defaults to none (`""`).
 #'
 #' @return A character scalar.
