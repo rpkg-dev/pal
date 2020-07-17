@@ -38,8 +38,11 @@ Imports:
     utils
 Suggests: 
     janeaustenr,
+    pkgsnip,
     testthat,
     xfun
+Remotes:
+    gitlab::salim_b/r/pkgs/pkgsnip
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
