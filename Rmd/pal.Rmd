@@ -1378,6 +1378,87 @@ cols_regex <- function(...,
 }
 ```
 
+## roxygen2
+
+### Get an object's roxygen2 tag value
+
+```{r}
+#' Get an object's roxygen2 tag value
+#'
+#' This function parses `text` for [roxygen2 blocks][roxygen2::roxy_block()] and extracts the value(s) belonging to the `tag_name`s documenting `obj_name`.
+#'
+#' @param text The R source code to extract the object's roxygen2 tag value from. A character vector.
+#' @param obj_name The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.
+#' @param tag_name The name of the [roxygen2 tag](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value from. A character scalar.
+#' @param param_name The parameter name to extract the value from. Only relevant if `tag_name = "param"`. A character scalar.
+#'
+#' @return A character scalar if `tag_name = "param"` and `param_name != NULL`, otherwise a list.
+#' @export
+#'
+#' @examples
+#' text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
+#'                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
+#'
+#' roxy_tag_value(text = text,
+#'                obj_name = "as_function",
+#'                param_name = "x")
+roxy_tag_value <- function(text,
+                           obj_name,
+                           tag_name = "param",
+                           param_name = NULL) {
+  
+  roxy_blocks <- roxygen2::parse_text(text = text)
+  
+  i_obj <- 
+    roxy_blocks %>%
+    purrr::map_depth(.depth = 1L,
+                     .f = purrr::pluck,
+                     "object", "topic") %>%
+    purrr::compact() %>%
+    purrr::flatten_chr() %>%
+    magrittr::equals(obj_name) %>%
+    which()
+  
+  i_tag <-
+    roxy_blocks[[i_obj]]$tags %>%
+    purrr::map_depth(.depth = 1L,
+                     .f = purrr::pluck,
+                     "tag") %>%
+    purrr::compact() %>%
+    purrr::flatten_chr() %>%
+    magrittr::equals(tag_name) %>%
+    which()
+  
+  tag_values <-
+    i_tag %>%
+    purrr::map(~ roxy_blocks[[i_obj]]$tags[[.x]]) %>%
+    purrr::map_depth(.depth = 1L,
+                     .f = purrr::pluck,
+                     "val") %>%
+    purrr::compact()
+  
+  if (tag_name == "param" & !is.null(param_name)) {
+    
+    i_param <-
+      tag_values %>%
+      purrr::map_depth(.depth = 1L,
+                       .f = purrr::pluck,
+                       "name") %>%
+      purrr::compact() %>%
+      purrr::flatten_chr() %>%
+      magrittr::equals(checkmate::assert_string(param_name)) %>%
+      which()
+    
+    result <- tag_values[[i_param]]$description
+    
+  } else {
+    result <- tag_values
+  }
+  
+  result
+}
+```
+
 ## RSelenium
 
 ### ...
