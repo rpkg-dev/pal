@@ -13,7 +13,7 @@ as_chr(...)
 A character vector.
 }
 \description{
-Convert to a character vector
+This function \emph{recursively} applies \code{\link[=as.character]{as.character()}} to its inputs.
 }
 \examples{
 to_convert <-

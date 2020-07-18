@@ -669,6 +669,8 @@ stat_mode <- function(x,
 ```{r}
 #' Convert to a character vector
 #'
+#' This function _recursively_ applies [as.character()] to its inputs.
+#'
 #' @param ... The \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character vector.
@@ -707,7 +709,7 @@ as_chr <- function(...) {
 ```{r}
 #' Convert to a character scalar (aka string)
 #'
-#' This function is like `paste0(..., collapse = TRUE)`, but _recursively_ converts all elements to type character.
+#' This function is like [`paste0(..., collapse = TRUE)`][paste0()], but _recursively_ converts its inputs to type character.
 #'
 #' @param ... The \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param sep The separator to delimit `...`. Defaults to none (`""`).
