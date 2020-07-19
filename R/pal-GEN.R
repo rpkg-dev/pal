@@ -455,44 +455,6 @@ ls_pkg <- function(pkg,
                                       pattern = regex))
 }
 
-#' List items concatenated in prose-style (..., ... and ...)
-#'
-#' This function takes a vector or list and concatenates its elements to a single string separated in prose-style.
-#'
-#' @param x A vector or a list.
-#' @param wrap The string (usually a single character) in which `x` is to be wrapped.
-#' @param separator The separator to delimit the elements of `x`.
-#' @param last_separator The separator to delimit the second-last and last element of `x`.
-#'
-#' @return A character scalar.
-#' @export
-#' @family spoken
-#'
-#' @examples
-#' prose_ls(1:5)
-prose_ls <- function(x,
-                     wrap = "",
-                     separator = ", ",
-                     last_separator = " and ") {
-  
-  result <- as_chr(x)
-  length_result <- length(result)
-  
-  if (length_result == 1L) {
-    
-    result <- paste0(checkmate::assert_string(wrap), result, wrap)
-    
-  } else if (length_result > 1L) {
-    
-    result <-
-      paste0(result[-length_result],
-             collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
-      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, result[length_result], wrap)
-  }
-  
-  result
-}
-
 #' Statistical mode
 #'
 #' Compute the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most frequent value, i.e. the
@@ -688,6 +650,44 @@ dsv_colnames <- function(x,
                                                                                 null.ok = TRUE,
                                                                                 pattern = "^.$"),
                                                  "|{quote}$"))
+}
+
+#' List items concatenated in prose-style (..., ... and ...)
+#'
+#' This function takes a vector or list and concatenates its elements to a single string separated in prose-style.
+#'
+#' @param x A vector or a list.
+#' @param wrap The string (usually a single character) in which `x` is to be wrapped.
+#' @param separator The separator to delimit the elements of `x`.
+#' @param last_separator The separator to delimit the second-last and last element of `x`.
+#'
+#' @return A character scalar.
+#' @export
+#' @family spoken
+#'
+#' @examples
+#' prose_ls(1:5)
+prose_ls <- function(x,
+                     wrap = "",
+                     separator = ", ",
+                     last_separator = " and ") {
+  
+  result <- as_chr(x)
+  length_result <- length(result)
+  
+  if (length_result == 1L) {
+    
+    result <- paste0(checkmate::assert_string(wrap), result, wrap)
+    
+  } else if (length_result > 1L) {
+    
+    result <-
+      paste0(result[-length_result],
+             collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
+      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, result[length_result], wrap)
+  }
+  
+  result
 }
 
 #' Print `x` as newline-separated character vector using `cat()`.
