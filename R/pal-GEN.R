@@ -588,7 +588,7 @@ as_chr <- function(...) {
 as_string <- function(...,
                       sep = "") {
   
-  as_chr(...) %>% purrr::when(length(.) > 0L ~ paste0(collapse = sep),
+  as_chr(...) %>% purrr::when(length(.) > 0L ~ paste0(., collapse = sep),
                               ~ .)
 }
 
