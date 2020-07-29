@@ -819,9 +819,15 @@ run_cli <- function(cmd,
 
 #' Test if an HTTP request is successful
 #'
-#' This sends a [`HEAD` request](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) to the specified `url` and returns `TRUE` if the
-#' request could be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) or `FALSE` otherwise.
+#' @description
+#' This is a convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
 #'
+#' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD` request](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) could
+#'   be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), or
+#'
+#' - `FALSE` in any other case.
+#'
+#' @details
 #' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
 #' based on [curl](https://jeroen.cran.dev/curl/).
 #'
@@ -837,7 +843,7 @@ run_cli <- function(cmd,
 #' is_http_success("https://google.not/")
 is_http_success <- function(url) {
   
-  rlang::with_handlers(httr::http_status(httr::HEAD(url))$category == "Success",
+  rlang::with_handlers(!httr::http_error(url),
                        error = ~ FALSE,
                        interrupt = ~ rlang::abort("Terminated by the user"))
 }

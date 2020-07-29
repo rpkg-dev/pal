@@ -13,8 +13,12 @@ is_http_success(url)
 A logical scalar.
 }
 \description{
-This sends a \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}{\code{HEAD} request} to the specified \code{url} and returns \code{TRUE} if the
-request could be \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{successfully completed} or \code{FALSE} otherwise.
+This is a convenience wrapper around \code{\link[httr:http_error]{!httr::http_error()}} that returns
+\itemize{
+\item \code{TRUE} if the specified \code{url} could be resolved \emph{and} a \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}{\code{HEAD} request} could
+be \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{successfully completed}, or
+\item \code{FALSE} in any other case.
+}
 }
 \details{
 This function is similar to \code{\link[RCurl:url.exists]{RCurl::url.exists()}}, i.e. it only retrieves the header, no body, but is based on \link[httr:httr-package]{httr} which in turn is
