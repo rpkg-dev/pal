@@ -822,7 +822,7 @@ run_cli <- function(cmd,
 #' @description
 #' This is a convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
 #'
-#' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD` request](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) could
+#' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD`](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) request could
 #'   be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), or
 #'
 #' - `FALSE` in any other case.
