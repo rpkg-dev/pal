@@ -1025,6 +1025,8 @@ TODO:
                             iris %>% dplyr::select(!!col_name)
                         })
   ```
+  
+  The root cause of the problem might be similar to the one in `pkgpins::call_to_name()`...
 
 - Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
 
