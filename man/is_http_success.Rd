@@ -4,10 +4,15 @@
 \alias{is_http_success}
 \title{Test if an HTTP request is successful}
 \usage{
-is_http_success(url)
+is_http_success(url, retries = 0L, quiet = TRUE)
 }
 \arguments{
 \item{url}{The HTTP protocol address. The scheme is optional, so both \code{"google.com"} and \code{"https://google.com"} will work. A character scalar.}
+
+\item{retries}{The maximum number of retries of the \code{HEAD} request in case of an HTTP error. An integer scalar >= \code{0}. The retries are performed using
+exponential backoff and jitter, see \code{\link[httr:RETRY]{httr::RETRY()}} for details.}
+
+\item{quiet}{Suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant if \code{retries > 0}.}
 }
 \value{
 A logical scalar.
@@ -28,6 +33,9 @@ based on \href{https://jeroen.cran.dev/curl/}{curl}.
 is_http_success("goo.gl")
 is_http_success("https://google.com/")
 is_http_success("https://google.not/")
+is_http_success("https://google.not/",
+                retries = 3,
+                quiet = FALSE)
 }
 \seealso{
 \code{\link[RCurl:url.exists]{RCurl::url.exists()}}

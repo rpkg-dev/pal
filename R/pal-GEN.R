@@ -113,7 +113,7 @@ rm_list_level <- function(x,
 
 #' Convert dataframe/tibble to Markdown pipe table
 #'
-#' This is a simple wrapper around [pander::pandoc.table.return()] with sensible defaults to create a
+#' This is a convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a
 #' [Markdown pipe table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
 #' 
 #' # Create tables dynamically in roxygen2 documentation
@@ -129,40 +129,60 @@ rm_list_level <- function(x,
 #'
 #' `r mtcars %>% head() %>% pipe_table()`
 #'
-#' @param x The dataframe/tibble/matrix to be converted to a pipe table.
-#' @param strong_colnames Highlight column names by formatting them `<strong>`.
-#' @param strong_rownames Highlight row names by formatting them `<strong>`.
-#' @inheritParams pander::pandoc.table.return
-#' @param ... Additional arguments passed to [pander::pandoc.table.return()].
+#' @inherit knitr::kable details
 #'
-#' @return A character scalar.
+#' @param x The dataframe/tibble/matrix to be converted to a pipe table.
+#' @param incl_rownames Whether to include row names or not. A logical scalar or `NULL`. If `NULL`, row names are included if `rownames(x)` is neither `NULL`
+#'   nor identical to `seq_len(nrow(x))`.
+#' @param strong_colnames Highlight column names by formatting them `<strong>` (wrapping them in two asterisks).
+#' @param strong_rownames Highlight row names by formatting them `<strong>` (wrapping them in two asterisks).
+#' @param align Column alignment. Either `NULL` for auto-alignment or a character vector consisting of `'l'` (left), `'c'` (center) and/or `'r'` (right). If
+#'   `align = NULL`, numeric columns are right-aligned, and other columns are left-aligned. If `length(align) == 1L`, the string will be expanded to a vector
+#'   of individual letters, e.g. `'clc'` becomes `c('c', 'l', 'c')`.
+#' @param format_args A list of arguments to be passed to [format()] to format table values, e.g. `list(big.mark = ',')`.
+#' @inheritParams knitr::kable
+#'
+#' @return A character vector.
 #' @export
 #'
 #' @examples
-#' mtcars %>% head() %>% pipe_table() %>% cat()
+#' mtcars %>% head() %>% pipe_table() %>% cat_lines()
 pipe_table <- function(x,
+                       incl_rownames = NULL,
                        strong_colnames = TRUE,
                        strong_rownames = TRUE,
-                       justify = "left",
-                       ...) {
+                       align = NULL,
+                       label = NULL,
+                       digits = getOption("digits"),
+                       format_args = list()) {
   
-  check_dots_named(...,
-                   .function = pander::pandoc.table.return,
-                   .forbidden = c("t",
-                                  "style",
-                                  "justify", 
-                                  "emphasize.rownames",
-                                  "split.tables"))
+  assert_pkg("knitr")
+  checkmate::assert_flag(incl_rownames,
+                         null.ok = TRUE)
   
-  x %>%
-    purrr::when(strong_colnames ~ magrittr::set_colnames(x = .,
-                                                         value = pander::pandoc.strong.return(names(.))),
-                ~ .) %>%
-    pander::pandoc.table.return(style = "rmarkdown",
-                                justify = justify,
-                                emphasize.rownames = strong_rownames,
-                                split.tables = Inf,
-                                ...)
+  # format rownames <strong> if requested and sensible
+  if ((isTRUE(incl_rownames) && !is.null(rownames(x))) ||
+      (is.null(incl_rownames) && !identical(rownames(x), as.character(seq_len(nrow(x)))))) {
+    
+    rownames(x) %<>% paste0("**", ., "**")
+  }
+  
+  kable_args <-
+    alist(x = x,
+          format = "pipe",
+          digits = digits,
+          row.names = ifelse(is.null(incl_rownames),
+                             NA,
+                             incl_rownames),
+          col.names = colnames(x) %>% purrr::when(checkmate::assert_flag(strong_colnames) ~ paste0("**", ., "**"),
+                                                  ~ .),
+          label = label,
+          format.args = format_args) %>%
+    purrr::when(!is.null(align) ~ c(., alist(align = align)),
+                ~ .)
+  
+  do.call(what = knitr::kable,
+          args = kable_args)
 }
 
 #' Build `README.Rmd`
@@ -186,7 +206,12 @@ build_readme <- function(input = "README.Rmd",
                          output = "README.md",
                          envir = parent.frame()) {
   
+  assert_pkg("knitr")
+  assert_pkg("rmarkdown")
+  
   if (is_pkg_dir()) {
+    
+    assert_pkg("desc")
     
     assign(x = "pkg_metadata",
            value = desc::desc_get(desc::desc_fields()),
@@ -278,6 +303,7 @@ gitlab_document <- function(#add_toc = FALSE,
                             preserve_yaml = FALSE,
                             autolink_bare_uris = FALSE,
                             tex_math_single_backslash = FALSE) {
+  assert_pkg("rmarkdown")
   
   rmarkdown::output_format(
     knitr = rmarkdown::knitr_options_html(fig_width = fig_width,
@@ -369,6 +395,8 @@ assert_pkg <- function(pkg,
 desc_value <- function(key,
                        file = ".") {
   
+  assert_pkg("desc")
+  
   desc::desc_get_field(key = key,
                        default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
                        file = file) %>%
@@ -379,7 +407,7 @@ desc_value <- function(key,
 #'
 #' This function returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not.
 #'
-#' In contrast to [base::require()], it checks if a package is installed without attaching its namespace if so.
+#' In contrast to [base::require()], it checks if the packages are installed without attaching their namespaces if so.
 #' 
 #' In contrast to [rlang::is_installed()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns a (named) logical vector
 #' of the same length as `pkg`.
@@ -417,6 +445,8 @@ is_pkg_installed <- function(pkg) {
 #' is_pkg_dir()
 #' is_pkg_dir(fs::path_package("pal"))
 is_pkg_dir <- function(path = ".") {
+  
+  assert_pkg("rprojroot")
   
   rprojroot::is_r_package$testfun[[1L]](path = checkmate::assert_directory(path,
                                                                            access = "r"))
@@ -738,7 +768,8 @@ check_cli <- function(cmd,
                       get_cmd_path = FALSE,
                       force_which = FALSE) {
   
-  # check argument validity
+  # check deps and argument validity
+  assert_pkg("fs")
   checkmate::assert_string(cmd)
   checkmate::assert_flag(get_cmd_path)
   checkmate::assert_flag(force_which)
@@ -778,6 +809,8 @@ check_cli <- function(cmd,
 #' @export
 path_script <- function() {
   
+  assert_pkg("rprojroot")
+  assert_pkg("rstudioapi")
   cmd_args <- commandArgs(trailingOnly = FALSE)
   needle <- "--file="
   match <- grep(x = cmd_args,
@@ -832,6 +865,9 @@ run_cli <- function(cmd,
 #' based on [curl](https://jeroen.cran.dev/curl/).
 #'
 #' @param url The HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
+#' @param retries The maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar >= `0`. The retries are performed using
+#'   exponential backoff and jitter, see [httr::RETRY()] for details.
+#' @param quiet Suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant if `retries > 0`.
 #'
 #' @return A logical scalar.
 #' @seealso [RCurl::url.exists()]
@@ -841,11 +877,29 @@ run_cli <- function(cmd,
 #' is_http_success("goo.gl")
 #' is_http_success("https://google.com/")
 #' is_http_success("https://google.not/")
-is_http_success <- function(url) {
+#' is_http_success("https://google.not/",
+#'                 retries = 3,
+#'                 quiet = FALSE)
+is_http_success <- function(url,
+                            retries = 0L,
+                            quiet = TRUE) {
   
-  rlang::with_handlers(!httr::http_error(url),
-                       error = ~ FALSE,
-                       interrupt = ~ rlang::abort("Terminated by the user"))
+  assert_pkg("httr")
+  
+  if (checkmate::assert_count(retries) == 0L) {
+    
+    rlang::with_handlers(!httr::http_error(url),
+                         error = ~ FALSE,
+                         interrupt = ~ rlang::abort("Terminated by the user"))
+  } else {
+    
+    rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
+                                                       url = url,
+                                                       times = retries,
+                                                       quiet = quiet)),
+                         error = ~ FALSE,
+                         interrupt = ~ rlang::abort("Terminated by the user"))
+  }
 }
 
 #' Evaluate an expression with cli process indication
@@ -881,6 +935,7 @@ cli_process_expr <- function(expr,
                              done_class = "alert-success",
                              failed_class = "alert-danger",
                              env = parent.frame()) {
+  assert_pkg("cli")
   
   # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function will never be called because we actually throw
   #       the error using `rlang::cnd_signal(.x)`.
@@ -1129,7 +1184,7 @@ check_dot_named <- function(dot,
 #'
 #' # we can parse some real data:
 #' raw_data <-
-#'   httr::GET(paste0("https://www.web.statistik.zh.ch/ogd/data/",
+#'   httr::GET(paste0("http://www.web.statistik.zh.ch/ogd/data/",
 #'                    "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) %>%
 #'   httr::content(as = "text",
 #'                 encoding = "UTF-8")
@@ -1156,6 +1211,8 @@ check_dot_named <- function(dot,
 cols_regex <- function(...,
                        .default = readr::col_character(),
                        .col_names) {
+  
+  assert_pkg("readr")
   
   if (length(names(list(...))) < ...length()) {
     rlang::abort("All column specifications in `...` must be named by a regular expression.")
@@ -1202,6 +1259,7 @@ roxy_tag_value <- function(text,
                            tag_name = "param",
                            param_name = NULL) {
   
+  assert_pkg("roxygen2")
   roxy_blocks <- roxygen2::parse_text(text = text)
   
   i_obj <- 

@@ -16,7 +16,7 @@ A named logical vector of the same length as \code{pkg}.
 This function returns \code{TRUE} or \code{FALSE} for each \code{pkg}, depending on whether the \code{pkg} is installed on the current system or not.
 }
 \details{
-In contrast to \code{\link[base:library]{base::require()}}, it checks if a package is installed without attaching its namespace if so.
+In contrast to \code{\link[base:library]{base::require()}}, it checks if the packages are installed without attaching their namespaces if so.
 
 In contrast to \code{\link[rlang:is_installed]{rlang::is_installed()}}, it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns a (named) logical vector
 of the same length as \code{pkg}.

@@ -6,29 +6,50 @@
 \usage{
 pipe_table(
   x,
+  incl_rownames = NULL,
   strong_colnames = TRUE,
   strong_rownames = TRUE,
-  justify = "left",
-  ...
+  align = NULL,
+  label = NULL,
+  digits = getOption("digits"),
+  format_args = list()
 )
 }
 \arguments{
 \item{x}{The dataframe/tibble/matrix to be converted to a pipe table.}
 
-\item{strong_colnames}{Highlight column names by formatting them \verb{<strong>}.}
+\item{incl_rownames}{Whether to include row names or not. A logical scalar or \code{NULL}. If \code{NULL}, row names are included if \code{rownames(x)} is neither \code{NULL}
+nor identical to \code{seq_len(nrow(x))}.}
 
-\item{strong_rownames}{Highlight row names by formatting them \verb{<strong>}.}
+\item{strong_colnames}{Highlight column names by formatting them \verb{<strong>} (wrapping them in two asterisks).}
 
-\item{justify}{defines alignment in cells passed to \code{format}. Can be \code{left}, \code{right} or \code{centre}, which latter can be also spelled as \code{center}. Defaults to \code{centre}. Can be abbreviated to a string consisting of the letters \code{l}, \code{c} and \code{r} (e.g. 'lcr' instead of c('left', 'centre', 'right').}
+\item{strong_rownames}{Highlight row names by formatting them \verb{<strong>} (wrapping them in two asterisks).}
 
-\item{...}{Additional arguments passed to \code{\link[pander:pandoc.table.return]{pander::pandoc.table.return()}}.}
+\item{align}{Column alignment. Either \code{NULL} for auto-alignment or a character vector consisting of \code{'l'} (left), \code{'c'} (center) and/or \code{'r'} (right). If
+\code{align = NULL}, numeric columns are right-aligned, and other columns are left-aligned. If \code{length(align) == 1L}, the string will be expanded to a vector
+of individual letters, e.g. \code{'clc'} becomes \code{c('c', 'l', 'c')}.}
+
+\item{label}{The table reference label. By default, the label is obtained
+from \code{knitr::\link[knitr]{opts_current}$get('label')}.}
+
+\item{digits}{Maximum number of digits for numeric columns, passed to
+\code{round()}. This can also be a vector of length \code{ncol(x)}, to set
+the number of digits for individual columns.}
+
+\item{format_args}{A list of arguments to be passed to \code{\link[=format]{format()}} to format table values, e.g. \code{list(big.mark = ',')}.}
 }
 \value{
-A character scalar.
+A character vector.
 }
 \description{
-This is a simple wrapper around \code{\link[pander:pandoc.table.return]{pander::pandoc.table.return()}} with sensible defaults to create a
+This is a convenience wrapper around \code{\link[knitr:kable]{knitr::kable(format = "pipe")}} to create a
 \href{https://pandoc.org/MANUAL.html#extension-pipe_tables}{Markdown pipe table}.
+}
+\details{
+Missing values (\code{NA}) in the table are displayed as \code{NA} by
+default. If you want to display them with other characters, you can set the
+option \code{knitr.kable.NA}, e.g. \code{options(knitr.kable.NA = '')} to
+hide \code{NA} values.
 }
 \section{Create tables dynamically in roxygen2 documentation}{
 This function can be useful to create tables inside \link[roxygen2:roxygen2-package]{roxygen2} documentation programmatically from data using
@@ -38,17 +59,17 @@ The inline code
 
 \code{`r mtcars \%>\% head() \%>\% pipe_table()`}
 
-should produce the following table in \href{https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/}{roxygen2 7.1.0} and above:\tabular{llllllllllll}{
-     \tab \strong{mpg} \tab \strong{cyl} \tab \strong{disp} \tab \strong{hp} \tab \strong{drat} \tab \strong{wt} \tab \strong{qsec} \tab \strong{vs} \tab \strong{am} \tab \strong{gear} \tab \strong{carb} \cr
-   \strong{Mazda RX4} \tab 21 \tab 6 \tab 160 \tab 110 \tab 3.9 \tab 2.62 \tab 16.46 \tab 0 \tab 1 \tab 4 \tab 4 \cr
-   \strong{Mazda RX4 Wag} \tab 21 \tab 6 \tab 160 \tab 110 \tab 3.9 \tab 2.875 \tab 17.02 \tab 0 \tab 1 \tab 4 \tab 4 \cr
-   \strong{Datsun 710} \tab 22.8 \tab 4 \tab 108 \tab 93 \tab 3.85 \tab 2.32 \tab 18.61 \tab 1 \tab 1 \tab 4 \tab 1 \cr
+should produce the following table in \href{https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/}{roxygen2 7.1.0} and above:\tabular{lrrrrrrrrrrr}{
+    \tab \strong{mpg} \tab \strong{cyl} \tab \strong{disp} \tab \strong{hp} \tab \strong{drat} \tab \strong{wt} \tab \strong{qsec} \tab \strong{vs} \tab \strong{am} \tab \strong{gear} \tab \strong{carb} \cr
+   \strong{Mazda RX4} \tab 21.0 \tab 6 \tab 160 \tab 110 \tab 3.90 \tab 2.620 \tab 16.46 \tab 0 \tab 1 \tab 4 \tab 4 \cr
+   \strong{Mazda RX4 Wag} \tab 21.0 \tab 6 \tab 160 \tab 110 \tab 3.90 \tab 2.875 \tab 17.02 \tab 0 \tab 1 \tab 4 \tab 4 \cr
+   \strong{Datsun 710} \tab 22.8 \tab 4 \tab 108 \tab 93 \tab 3.85 \tab 2.320 \tab 18.61 \tab 1 \tab 1 \tab 4 \tab 1 \cr
    \strong{Hornet 4 Drive} \tab 21.4 \tab 6 \tab 258 \tab 110 \tab 3.08 \tab 3.215 \tab 19.44 \tab 1 \tab 0 \tab 3 \tab 1 \cr
-   \strong{Hornet Sportabout} \tab 18.7 \tab 8 \tab 360 \tab 175 \tab 3.15 \tab 3.44 \tab 17.02 \tab 0 \tab 0 \tab 3 \tab 2 \cr
-   \strong{Valiant} \tab 18.1 \tab 6 \tab 225 \tab 105 \tab 2.76 \tab 3.46 \tab 20.22 \tab 1 \tab 0 \tab 3 \tab 1 \cr
+   \strong{Hornet Sportabout} \tab 18.7 \tab 8 \tab 360 \tab 175 \tab 3.15 \tab 3.440 \tab 17.02 \tab 0 \tab 0 \tab 3 \tab 2 \cr
+   \strong{Valiant} \tab 18.1 \tab 6 \tab 225 \tab 105 \tab 2.76 \tab 3.460 \tab 20.22 \tab 1 \tab 0 \tab 3 \tab 1 \cr
 }
 }
 
 \examples{
-mtcars \%>\% head() \%>\% pipe_table() \%>\% cat()
+mtcars \%>\% head() \%>\% pipe_table() \%>\% cat_lines()
 }
