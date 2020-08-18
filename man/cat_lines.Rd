@@ -4,10 +4,10 @@
 \alias{cat_lines}
 \title{Print \code{x} as newline-separated character vector using \code{cat()}.}
 \usage{
-cat_lines(x)
+cat_lines(...)
 }
 \arguments{
-\item{x}{A vector to print.}
+\item{...}{The \R object(s) to print. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 }
 \value{
 None (invisible \code{NULL}).
@@ -28,6 +28,8 @@ String functions
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{dsv_colnames}()},
-\code{\link{fuse_regex}()}
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()},
+\code{\link{prose_ls}()}
 }
 \concept{string}

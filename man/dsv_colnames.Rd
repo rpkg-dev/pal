@@ -31,6 +31,8 @@ String functions
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},
-\code{\link{fuse_regex}()}
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()},
+\code{\link{prose_ls}()}
 }
 \concept{string}

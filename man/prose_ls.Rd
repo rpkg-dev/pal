@@ -24,4 +24,13 @@ This function takes a vector or list and concatenates its elements to a single s
 \examples{
 prose_ls(1:5)
 }
-\concept{spoken}
+\seealso{
+String functions
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()},
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()}
+}
+\concept{string}

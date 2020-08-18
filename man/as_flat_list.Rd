@@ -48,11 +48,12 @@ nested_list <-
   str()
 nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) \%T>\% str()
 
-# by default, attributes and thus custom objects are retained (except `xfun_strict_list`) ...
+# by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
+# not flattened ...
 as_flat_list(nested_list) \%>\% str()
 as_flat_list(nested_list_2) \%>\% str()
 # ... but you can drop them and thereby flatten custom objects if needed ...
 as_flat_list(nested_list, keep_attrs = FALSE) \%>\% str()
-# ... or retain `xfun_strict_list`s
+# ... or retain `xfun_strict_list`s, too
 as_flat_list(nested_list_2, attrs_to_drop = NULL) \%>\% str()
 }

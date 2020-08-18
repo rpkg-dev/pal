@@ -4,6 +4,9 @@
 utils::globalVariables(names = c(".",
                                  "Package"))
 
+bgGrey <- crayon::make_style("darkslategrey",
+                             bg = TRUE)
+
 #' Convert to a flat list
 #'
 #' @description
@@ -46,12 +49,13 @@ utils::globalVariables(names = c(".",
 #'   str()
 #' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
 #'
-#' # by default, attributes and thus custom objects are retained (except `xfun_strict_list`) ...
+#' # by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
+#' # not flattened ...
 #' as_flat_list(nested_list) %>% str()
 #' as_flat_list(nested_list_2) %>% str()
 #' # ... but you can drop them and thereby flatten custom objects if needed ...
 #' as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
-#' # ... or retain `xfun_strict_list`s
+#' # ... or retain `xfun_strict_list`s, too
 #' as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
 as_flat_list <- function(x,
                          keep_attrs = TRUE,
@@ -622,6 +626,42 @@ as_string <- function(...,
                               ~ .)
 }
 
+#' Escape line feeds / newlines
+#'
+#' This function escapes the [POSIX-standard newline control character `LF`](https://en.wikipedia.org/wiki/Newline) (aka `\n`) which is the standard on
+#' Unix/Linux and recent versions of macOS. Set `escape_cr = TRUE` in order to also escape the carriage return character `CR` (aka `\r`) commonly used on
+#' Microsoft Windows.
+#'
+#' @param x A character vector.
+#' @param escape_cr Whether or not to also escape the carriage return character `CR` (aka `\r`). A logical scalar.
+#'
+#' @return A character vector of the same length as `x`.
+#' @family string
+#' @export
+#'
+#' @examples
+#' # read in and print package description as-is
+#' text <-
+#'   fs::path_package(package = "pal",
+#'                    "DESCRIPTION") %>%
+#'   readr::read_file() %T>%
+#'   cat_lines()
+#'
+#' # escape newlines and print again
+#' escape_lf(text) %>% cat_lines()
+escape_lf <- function(x,
+                      escape_cr = FALSE) {
+  
+  checkmate::assert_character(x,
+                              null.ok = TRUE) %>%
+  stringr::str_replace_all(pattern = "\\n",
+                           replacement = "\\\\n") %>%
+    purrr::when(escape_cr ~ stringr::str_replace_all(string = .,
+                                                     pattern = "\\r",
+                                                     replacement = "\\\\r"),
+                ~ .)
+}
+
 #' Fuse regular expressions
 #'
 #' Combine a vector or list of regular expressions to a single one (by logical OR).
@@ -692,8 +732,8 @@ dsv_colnames <- function(x,
 #' @param last_separator The separator to delimit the second-last and last element of `x`.
 #'
 #' @return A character scalar.
+#' @family string
 #' @export
-#' @family spoken
 #'
 #' @examples
 #' prose_ls(1:5)
@@ -724,7 +764,7 @@ prose_ls <- function(x,
 #' 
 #' This is a convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
 #'
-#' @param x A vector to print.
+#' @param ... The \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @inherit base::cat return
 #' @family string
@@ -736,9 +776,9 @@ prose_ls <- function(x,
 #'                  "DESCRIPTION") %>%
 #'   readr::read_lines() %>%
 #'   cat_lines()
-cat_lines <- function(x) {
+cat_lines <- function(...) {
   
-  cat(as_chr(x),
+  cat(as_chr(...),
       sep = "\n")
 }
 
