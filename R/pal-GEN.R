@@ -7,6 +7,25 @@ utils::globalVariables(names = c(".",
 bgGrey <- crayon::make_style("darkslategrey",
                              bg = TRUE)
 
+#' Determine if row sum is greater than zero
+#'
+#' This is a convenience function intended to be used in combination with dplyr's [`across()`][dplyr::across()] to turn it from its default "all of" into an
+#' "any of" behavior. It's identical to the `rowAny()` helper function suggested in dplyr's
+#' [`"colwise"` vignette](https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code).
+#'
+#' @param x An array of two or more dimensions, containing numeric, complex, integer or logical values, or a numeric data frame. Row sums are always calculated
+#'   over the first two dimensions, i.e. always the first two dimensions are regarded as rows.
+#'
+#' @return A logical vector. The `names` are taken from the original array.
+#' @export
+#'
+#' @examples
+#' # Find all rows where *any* numeric variable is exactly 1
+#' mtcars %>% dplyr::filter(rowsum_gt_zero(dplyr::across(where(is.numeric), ~ .x == 1L)))
+rowsum_gt_zero <- function(x) {
+  rowSums(x) > 0L
+}
+
 #' Convert to a flat list
 #'
 #' @description

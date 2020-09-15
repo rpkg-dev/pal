@@ -21,6 +21,35 @@ bgGrey <- crayon::make_style("darkslategrey",
                              bg = TRUE)
 ```
 
+# Dataframes / Tibbles
+
+## Determine if row sum is greater than `zero`
+
+- There might be a better dplyr API introduced for this in the future, see [issue #4770](https://github.com/tidyverse/dplyr/issues/4770).
+
+- Performance-wise it outperforms other known "any of" workarounds [by far](https://github.com/tidyverse/dplyr/issues/4770#issuecomment-692865538).
+
+```{r}
+#' Determine if row sum is greater than zero
+#'
+#' This is a convenience function intended to be used in combination with dplyr's [`across()`][dplyr::across()] to turn it from its default "all of" into an
+#' "any of" behavior. It's identical to the `rowAny()` helper function suggested in dplyr's
+#' [`"colwise"` vignette](https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code).
+#'
+#' @param x An array of two or more dimensions, containing numeric, complex, integer or logical values, or a numeric data frame. Row sums are always calculated
+#'   over the first two dimensions, i.e. always the first two dimensions are regarded as rows.
+#'
+#' @return A logical vector. The `names` are taken from the original array.
+#' @export
+#'
+#' @examples
+#' # Find all rows where *any* numeric variable is exactly 1
+#' mtcars %>% dplyr::filter(rowsum_gt_zero(dplyr::across(where(is.numeric), ~ .x == 1L)))
+rowsum_gt_zero <- function(x) {
+  rowSums(x) > 0L
+}
+```
+
 # Lists
 
 ## Convert to a flat list
@@ -1406,7 +1435,7 @@ check_dot_named <- function(dot,
 - The "real" data in the examples stems from
   [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
   
-- Function has been proposed upstream in [PR #1112](https://github.com/tidyverse/readr/pull/1112).
+- Function has been proposed upstream in [PR #1112](https://github.com/tidyverse/readr/pull/1112) but was rejected.
 
 ```{r}
 #' Create column specification using regular expression matching
