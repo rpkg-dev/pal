@@ -14,14 +14,39 @@ utils::globalVariables(names = c(".",
                                  "Package"))
 ```
 
-## Define `bgGrey()` missing from package crayon
+## Functions
+
+### Terminal styling based on ANSI escape sequences
 
 ```{r}
-bgGrey <- crayon::make_style("darkslategrey",
-                             bg = TRUE)
+# `bg_grey()` missing from packages cli/crayon
+bg_grey <- crayon::make_style("darkslategrey",
+                              bg = TRUE)
 ```
 
 # Dataframes / Tibbles
+
+## Apply `all()` rowwise to a data frame
+
+```{r}
+#' Apply `all()` rowwise to a data frame
+#'
+#' This is a convenience function that helps to combine multiple [`across()`][dplyr::across()] statements in dplyr's [`filter()`](dplyr::filter()) function.
+#' See the examples.
+#'
+#' @param x A data frame or a tibble.
+#'
+#' @return A logical vector with the result of `all()` for each row of `x`.
+#' @export
+#'
+#' @examples
+#' # select all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
+#' mtcars %>% dplyr::filter(rowwise_all(dplyr::across(one_of("vs", "am"), ~ .x > 0))
+#'                          | rowwise_all(dplyr::across(one_of("gear", "carb"), ~ .x > 2)))
+rowwise_all <- function(x) {
+  purrr::pmap_lgl(x, all)
+}
+```
 
 ## Determine if row sum is greater than `zero`
 
@@ -733,7 +758,7 @@ as_chr <- function(...) {
 ```{r}
 #' Convert to a character scalar (aka string)
 #'
-#' This function is like [`paste0(..., collapse = TRUE)`][paste0()], but _recursively_ converts its inputs to type character.
+#' This function is like [`paste0(..., collapse = "")`][paste0()], but _recursively_ converts its inputs to type character.
 #'
 #' @param ... The \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param sep The separator to delimit `...`. Defaults to none (`""`).
@@ -798,9 +823,9 @@ escape_lf <- function(x,
                               null.ok = TRUE) %>%
   stringr::str_replace_all(pattern = "\\n",
                            replacement = "\\\\n") %>%
-    purrr::when(escape_cr ~ stringr::str_replace_all(string = .,
-                                                     pattern = "\\r",
-                                                     replacement = "\\\\r"),
+    purrr::when(checkmate::assert_flag(escape_cr) ~ stringr::str_replace_all(string = .,
+                                                                             pattern = "\\r",
+                                                                             replacement = "\\\\r"),
                 ~ .)
 }
 ```
@@ -1611,4 +1636,164 @@ roxy_tag_value <- function(text,
 
 ```{r}
 # assert_package("RSelenium")
+```
+
+## stringr
+
+### Replace matched patterns in text files
+
+```{r}
+#' Replace matched patterns in text files
+#'
+#' @param path Paths to the text files. A character vector.
+#' @param pattern A named character vector with patterns as names and replacements as values (`c(pattern1 = replacement1)`). Patterns are interpreted as
+#'   regular expressions as described in [stringi::stringi-search-regex()]. Replacements are interpreted as-is, except that references of the form `\1`, `\2`,
+#'   etc. will be replaced with the contents of the respective matched group (created in patterns using `()`). Pattern-replacement pairs are processed in the
+#'   order given, meaning that first listed pairs are applied before later listed ones.
+#' @param process_line_by_line Whether each line in a file should be treated as a separate string or the whole file as one single string. While the latter is 
+#'   more performant, you probably want the former if you're using `"^"` or `"$"` in your `pattern`s.
+#' @param verbose Whether to display replacements on the console.
+#' @param show_rel_path Whether to display file `path`s as relative from the current working directory. If `FALSE`, absolute paths are displayed. Only relevant
+#'   if `verbose = TRUE`.
+#'
+#' @return `path` invisibly.
+#' @export
+str_replace_file <- function(path,
+                             pattern,
+                             process_line_by_line = FALSE,
+                             verbose = TRUE,
+                             show_rel_path = TRUE) {
+  
+  assert_pkg("cli")
+  checkmate::assert_file(path,
+                         access = "r")
+  checkmate::assert_character(pattern,
+                              any.missing = FALSE)
+  checkmate::assert_flag(process_line_by_line)
+  checkmate::assert_flag(verbose)
+  checkmate::assert_flag(show_rel_path)
+  
+  all_named <- checkmate::test_named(pattern)
+  if (!all_named) rlang::abort("All elements of `pattern` must be named (names are patterns, values are replacements).")
+  
+  purrr::walk(.x = path,
+              .f = function(path) {
+                
+                # print file progress info
+                if (verbose) {
+                  
+                  path_show <- dplyr::if_else(show_rel_path,
+                                              fs::path_abs(path),
+                                              fs::path_rel(path))
+                  
+                  cli::cli_alert_info(text = "Processing file {.file {path_show}}\u2026")
+                }
+                
+                # perform replacement
+                if (process_line_by_line) {
+                  
+                  readr::read_lines(path) %>%
+                    purrr::map_chr(.f = str_replace_all_verbose,
+                                   pattern = pattern,
+                                   verbose = verbose,
+                                   cli_id = path) %>%
+                    readr::write_lines(path = path,
+                                       na = NA_character_)
+                } else {
+                  
+                  readr::read_file(path) %>%
+                    str_replace_all_verbose(pattern = pattern,
+                                            verbose = verbose,
+                                            cli_id = path) %>%
+                    readr::write_file(path = path)
+                }
+              })
+  
+  invisible(path)
+}
+
+str_replace_all_verbose <- function(string,
+                                    pattern,
+                                    verbose,
+                                    cli_id = NULL) {
+  
+  checkmate::assert_string(string)
+  checkmate::assert_string(cli_id,
+                           null.ok = !verbose)
+  
+  # print replacement info for humans
+  if (verbose) {
+    
+    cli::cli_ul(id = cli_id,
+                .auto_close = FALSE)
+    
+    # we have to process each pattern-replacement pair one-by-one because other than `stringr::str_replace_all()`, `stringr::str_locate_all()` doesn't support
+    # the pair-wise spec
+    for (i in seq_along(pattern)) {
+      
+      hit <-
+        string %>%
+        stringr::str_locate_all(pattern = names(pattern[i])) %>%
+        dplyr::first()
+      
+      purrr::walk2(.x = hit[, "start"],
+                   .y = hit[, "end"],
+                   .f = function(start, end) {
+                     
+                     # reduce to `string` excerpt of +/- 20 chars
+                     ## determine if we prune
+                     prune_start <- (start - 20L) > 1L 
+                     prune_end <- (end + 20L) < nchar(string)
+                     
+                     ## extract excerpt
+                     ### begin (part before `pattern`)
+                     excerpt_begin <- string %>% stringr::str_sub(start = dplyr::if_else(prune_start,
+                                                                                         start - 20L,
+                                                                                         1L),
+                                                                  end = start - 1L)
+                     ### the `pattern` as-is, i.e. without regex syntax
+                     pattern_asis <- string %>% stringr::str_sub(start = start,
+                                                                 end = end)
+                     
+                     ### end (part after `pattern`)
+                     excerpt_end <- string %>% stringr::str_sub(start = end + 1L,
+                                                                end = dplyr::if_else(prune_end,
+                                                                                     end + 20L,
+                                                                                     -1L))
+                     
+                     # replace excerpt start/end with ellipsis dots (pruned to whole words if appropriate)
+                     if (prune_start) excerpt_begin %<>% stringr::str_replace(pattern = "^.*?\\b(?=\\W)", # "^.\\S*",
+                                                                              replacement = "\u2026")
+                     
+                     if (prune_end) excerpt_end %<>% stringr::str_replace(pattern = "\\b(?=\\W).*?$", # "\\S*?.$",
+                                                                          replacement = "\u2026")
+                     
+                     # escape newlines (only relevant if we don't `process_line_by_line` and/or patterns/replacements contain newlines)
+                     excerpt_begin %<>% escape_lf()
+                     pattern %<>% escape_lf()
+                     names(pattern) %<>% escape_lf()
+                     excerpt_end %<>% escape_lf()
+                     
+                     # print info
+                     cli::cli_li(items = as_string("Replaced ", bg_grey(excerpt_begin), cli::bg_magenta(pattern_asis), bg_grey(excerpt_end)),
+                                 id = paste0(cli_id, "-li"),
+                                 .auto_close = FALSE)
+                     cli::cli_text(as_string(rep("\u00A0", 4L), "with ",
+                                             bg_grey(excerpt_begin), cli::bg_blue(pattern[i]),bg_grey(excerpt_end)))
+                     cli::cli_end(id = paste0(cli_id, "-li"))
+                   })
+      
+      string %<>% stringr::str_replace_all(pattern = pattern[i])
+    }
+    
+    cli::cli_end(id = cli_id)
+    return(string)
+    
+    # non-verbose shortcut
+  } else {
+    
+    return(stringr::str_replace_all(string = string,
+                                    pattern = pattern))
+  }
+}
 ```

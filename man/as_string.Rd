@@ -15,7 +15,7 @@ as_string(..., sep = "")
 A character scalar.
 }
 \description{
-This function is like \code{\link[=paste0]{paste0(..., collapse = TRUE)}}, but \emph{recursively} converts its inputs to type character.
+This function is like \code{\link[=paste0]{paste0(..., collapse = "")}}, but \emph{recursively} converts its inputs to type character.
 }
 \examples{
 input <-

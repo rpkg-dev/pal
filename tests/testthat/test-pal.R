@@ -69,3 +69,49 @@ test_that("`stat_mode()` ignores `NA`s if requested", {
 })
 
 # Miscellaneous ----
+
+# Extending other R packages ----
+test_that("`str_replace_file()` basically works", {
+
+  before <- c('"Tulips are not durable, ',
+              ' not scarce, ',
+              ' not programmable, ',
+              ' not fungible, ',
+              ' not verifiable, ',
+              ' not divisible, ',
+              ' and hard to transfer. ',
+              ' But tell me more about your analogy..." ',
+              '',
+              '-[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)')
+
+  after <- c('"Tulips are TULIPS \U0001F911, ',
+             ' TULIPS \U0001F911, ',
+             rep(" TUUULIPS \U0001F92A, ",
+                 times = 4L),
+             ' and TULIPS \U0001F911. ',
+             ' But go home already..." ',
+             '',
+             '-Nobody')
+
+  tmp_file <- fs::file_temp(ext = "txt")
+  tmp_file2 <- fs::file_temp(ext = "txt")
+  teardown(unlink(tmp_file))
+  setup(readr::write_lines(x = before,
+                           path = tmp_file),
+        readr::write_lines(x = before,
+                           path = tmp_file2))
+
+  str_replace_file(path = c(tmp_file,
+                            tmp_file2),
+                   pattern = c("(not (scarce|durable)|hard to transfer)" = "TULIPS \U0001F911",
+                               ".*?[^r][ai]ble(?=, )" = " TUUULIPS \U0001F92A",
+                               "tell me more about your analogy" = "go home already",
+                               "\\Q[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)" = "Nobody"),
+                   process_line_by_line = TRUE,
+                   verbose = FALSE)
+
+  expect_identical(readr::read_lines(tmp_file),
+                   after)
+  expect_identical(readr::read_lines(tmp_file2),
+                   after)
+})
