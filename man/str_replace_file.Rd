@@ -9,7 +9,7 @@ str_replace_file(
   pattern,
   process_line_by_line = FALSE,
   verbose = TRUE,
-  show_rel_path = TRUE,
+  show_rel_path = FALSE,
   dry_run = FALSE
 )
 }

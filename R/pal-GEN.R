@@ -967,7 +967,7 @@ str_replace_file <- function(path,
                              pattern,
                              process_line_by_line = FALSE,
                              verbose = TRUE,
-                             show_rel_path = TRUE,
+                             show_rel_path = FALSE,
                              dry_run = FALSE) {
   
   assert_pkg("cli")
@@ -989,8 +989,8 @@ str_replace_file <- function(path,
                 if (verbose) {
                   
                   path_show <- dplyr::if_else(show_rel_path,
-                                              fs::path_abs(path),
-                                              fs::path_rel(path))
+                                              fs::path_rel(path),
+                                              fs::path_abs(path))
                   
                   cli::cli_alert_info(text = "Processing file {.file {path_show}}\u2026")
                 }
