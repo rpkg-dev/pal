@@ -9,7 +9,8 @@ str_replace_file(
   pattern,
   process_line_by_line = FALSE,
   verbose = TRUE,
-  show_rel_path = TRUE
+  show_rel_path = TRUE,
+  dry_run = FALSE
 )
 }
 \arguments{
@@ -27,10 +28,25 @@ more performant, you probably want the former if you're using \code{"^"} or \cod
 
 \item{show_rel_path}{Whether to display file \code{path}s as relative from the current working directory. If \code{FALSE}, absolute paths are displayed. Only relevant
 if \code{verbose = TRUE}.}
+
+\item{dry_run}{Show replacements on the console only, without actually modifiying any files. Implies \code{verbose = TRUE}.}
 }
 \value{
 \code{path} invisibly.
 }
 \description{
-Replace matched patterns in text files
+Apply pattern-based string replacement to multiple files at once. A series of regular-expression-replacement pairs can be provided and all performed
+replacements can be displayed on the console (\code{verbose = TRUE}), optionally without actually changing any file content (\code{dry_run = TRUE}).
 }
+\seealso{
+String functions
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()},
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()},
+\code{\link{prose_ls}()},
+\code{\link{str_replace_verbose}()}
+}
+\concept{string}

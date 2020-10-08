@@ -31,6 +31,8 @@ String functions
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
-\code{\link{fuse_regex}()}
+\code{\link{fuse_regex}()},
+\code{\link{str_replace_file}()},
+\code{\link{str_replace_verbose}()}
 }
 \concept{string}

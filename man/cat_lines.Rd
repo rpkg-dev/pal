@@ -30,6 +30,8 @@ String functions
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},
-\code{\link{prose_ls}()}
+\code{\link{prose_ls}()},
+\code{\link{str_replace_file}()},
+\code{\link{str_replace_verbose}()}
 }
 \concept{string}
