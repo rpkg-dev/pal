@@ -7,16 +7,16 @@ utils::globalVariables(names = c(".",
 # grey background (the `bg_grey()` missing from packages cli/crayon)
 bg_grey <- cli::make_ansi_style("darkslategrey",
                                 bg = TRUE,
-                                colors = 256L)
+                                colors = 2^24)
 
 # dark background colors that are easy on the eyes
-bg_red_dark <- cli::make_ansi_style("#5f0000",
+bg_red_dark <- cli::make_ansi_style("#330000",
                                     bg = TRUE,
-                                    colors = 256L)
+                                    colors = 2^24)
 
-bg_green_dark <- cli::make_ansi_style("#005f00",
+bg_green_dark <- cli::make_ansi_style("#003300",
                                       bg = TRUE,
-                                      colors = 256L)
+                                      colors = 2^24)
 
 #' Apply `all()` rowwise to a data frame
 #'
