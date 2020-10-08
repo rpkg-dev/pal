@@ -34,7 +34,7 @@ is_http_success("goo.gl")
 is_http_success("https://google.com/")
 is_http_success("https://google.not/")
 is_http_success("https://google.not/",
-                retries = 3,
+                retries = 2,
                 quiet = FALSE)
 }
 \seealso{

@@ -1152,7 +1152,7 @@ run_cli <- function(cmd,
 #' is_http_success("https://google.com/")
 #' is_http_success("https://google.not/")
 #' is_http_success("https://google.not/",
-#'                 retries = 3,
+#'                 retries = 2,
 #'                 quiet = FALSE)
 is_http_success <- function(url,
                             retries = 0L,
@@ -1160,20 +1160,12 @@ is_http_success <- function(url,
   
   assert_pkg("httr")
   
-  if (checkmate::assert_count(retries) == 0L) {
-    
-    rlang::with_handlers(!httr::http_error(url),
-                         error = ~ FALSE,
-                         interrupt = ~ rlang::abort("Terminated by the user"))
-  } else {
-    
-    rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
-                                                       url = url,
-                                                       times = retries,
-                                                       quiet = quiet)),
-                         error = ~ FALSE,
-                         interrupt = ~ rlang::abort("Terminated by the user"))
-  }
+  rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
+                                                     url = url,
+                                                     times = checkmate::assert_count(retries) + 1L,
+                                                     quiet = quiet)),
+                       error = ~ FALSE,
+                       interrupt = ~ rlang::abort("Terminated by the user"))
 }
 
 #' Evaluate an expression with cli process indication
