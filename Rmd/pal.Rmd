@@ -50,9 +50,9 @@ rowwise_all <- function(x) {
 
 ## Determine if row sum is greater than `zero`
 
-- There might be a better dplyr API introduced for this in the future, see [issue #4770](https://github.com/tidyverse/dplyr/issues/4770).
+-   There might be a better dplyr API introduced for this in the future, see [issue \#4770](https://github.com/tidyverse/dplyr/issues/4770).
 
-- Performance-wise it outperforms other known "any of" workarounds [by far](https://github.com/tidyverse/dplyr/issues/4770#issuecomment-692865538).
+-   Performance-wise it outperforms other known "any of" workarounds [by far](https://github.com/tidyverse/dplyr/issues/4770#issuecomment-692865538).
 
 ```{r}
 #' Determine if row sum is greater than zero
@@ -331,14 +331,13 @@ These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdow
 
 TODO:
 
-- Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to
-  `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?`
-  
-  Setting `df_print = "kable"` should actually produce a [pipe table](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats)...
+-   Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?\`
 
-- Finish the damn tocr package and switch to it for TOC generation instead of Pandoc's built-in but very limited `--table-of-contents` option!
+    Setting `df_print = "kable"` should actually produce a [pipe table](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats)...
 
-- As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://github.com/jgm/pandoc/issues/3977), switching to that will be the next step.
+-   Finish the damn tocr package and switch to it for TOC generation instead of Pandoc's built-in but very limited `--table-of-contents` option!
+
+-   As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://github.com/jgm/pandoc/issues/3977), switching to that will be the next step.
 
 ```{r}
 #' Convert to GitLab Flavored Markdown
@@ -462,16 +461,13 @@ gitlab_document <- function(#add_toc = FALSE,
 
 ## Assert a package is installed
 
-There is a similar (but way simpler) function
-[`pkgsearch:::needs_packages()`](https://github.com/r-hub/pkgsearch/blob/9c0102e85929f25d23cb4f497ba4f01c3d3c0cd9/R/utils.R#L100-L127) and
-[I've asked](https://github.com/r-hub/pkgsearch/issues/102) if there are any plans on standardizing this.
+There is a similar (but way simpler) function [`pkgsearch:::needs_packages()`](https://github.com/r-hub/pkgsearch/blob/9c0102e85929f25d23cb4f497ba4f01c3d3c0cd9/R/utils.R#L100-L127) and [I've asked](https://github.com/r-hub/pkgsearch/issues/102) if there are any plans on standardizing this.
 
 TODO:
 
-- Incorporate code from FA.
+-   Incorporate code from FA.
 
-- Add additional params `install_source`. Open question: How to best handle multiple pkgs at once if they don't share the install source? Just recycle
-  `install_source`?
+-   Add additional params `install_source`. Open question: How to best handle multiple pkgs at once if they don't share the install source? Just recycle `install_source`?
 
 ```{r}
 #' Assert a package is installed
@@ -639,7 +635,7 @@ TODO: Create a function based upon [this StackOverflow answer](https://stackover
 
 ## Statistical mode
 
-- Solution borrowed from [hugovdberg](https://stackoverflow.com/a/38097776/7196903) and others.
+-   Solution borrowed from [hugovdberg](https://stackoverflow.com/a/38097776/7196903) and others.
 
 ```{r}
 #' Statistical mode
@@ -1096,7 +1092,7 @@ run_cli <- function(cmd,
 
 A shorter way to define a very similar function would be:
 
-```r
+``` {.r}
 is_http_success <- purrr::possibly(~ !httr::http_error(.x),
                                    otherwise = FALSE)
 ```
@@ -1167,26 +1163,26 @@ These functions are likely to be proposed upstream, and if accepted, will be rem
 
 TODO:
 
-- Make this function work with tidyeval NSE verbs in `expr`!
+-   Make this function work with tidyeval NSE verbs in `expr`!
 
-  Reprex:
-  
-  ```r
-  pal::cli_process_expr(msg = "WTF",
-                        expr = {
-                            col_name <- "Species"
-                            
-                            iris %>% dplyr::select(!!col_name)
-                        })
-  ```
-  
-  The root cause of the problem might be similar to the one in `pkgpins::call_to_name()`...
+    Reprex:
 
-- Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
+    ``` {.r}
+    pal::cli_process_expr(msg = "WTF",
+                          expr = {
+                              col_name <- "Species"
 
-  The class of the condition has to be changed for this before feeding it to `rlang::cnd_signal`.
+                              iris %>% dplyr::select(!!col_name)
+                          })
+    ```
 
-- Propose this function upstream!
+    The root cause of the problem might be similar to the one in `pkgpins::call_to_name()`...
+
+-   Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
+
+    The class of the condition has to be changed for this before feeding it to `rlang::cnd_signal`.
+
+-   Propose this function upstream!
 
 ```{r}
 #' Evaluate an expression with cli process indication
@@ -1251,9 +1247,9 @@ cli_process_expr <- function(expr,
 
 **Remarks:**
 
-- Code to suggest proper dots params largely borrowed from `rlang::arg_match()`.
+-   Code to suggest proper dots params largely borrowed from `rlang::arg_match()`.
 
-- Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35).
+-   Function has been proposed upstream in [PR \#35](https://github.com/r-lib/ellipsis/pull/35).
 
 ```{r}
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
@@ -1457,10 +1453,9 @@ check_dot_named <- function(dot,
 
 **Remarks:**
 
-- The "real" data in the examples stems from
-  [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
-  
-- Function has been proposed upstream in [PR #1112](https://github.com/tidyverse/readr/pull/1112) but was rejected.
+-   The "real" data in the examples stems from [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
+
+-   Function has been proposed upstream in [PR \#1112](https://github.com/tidyverse/readr/pull/1112) but was rejected.
 
 ```{r}
 #' Create column specification using regular expression matching
