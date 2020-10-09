@@ -842,6 +842,8 @@ cat_lines <- function(...) {
 #'   etc. will be replaced with the contents of the respective matched group (created in patterns using `()`). Pattern-replacement pairs are processed in the
 #'   order given, meaning that first listed pairs are applied before later listed ones.
 #' @param verbose Whether to display replacements on the console.
+#' @param n_context_chrs The (maximum) number of characters displayed around the actual `string` and its replacement. The number refers to a single side of
+#'   `string`/replacement, so the total number of context characters is at the maximum `2 * n_context_chrs`. Only relevant if `verbose = TRUE`.
 #' @inheritParams stringr::str_replace_all
 #'
 #' @return A character vector.
@@ -853,21 +855,26 @@ cat_lines <- function(...) {
 #'                                                          "war" = "walls"))
 str_replace_verbose <- function(string,
                                 pattern,
-                                verbose = TRUE) {
+                                verbose = TRUE,
+                                n_context_chrs = 20L) {
   
   purrr::map_chr(.x = string,
                  .f = str_replace_verbose_single,
                  pattern = pattern,
-                 verbose = verbose)
+                 verbose = verbose,
+                 n_context_chrs = n_context_chrs)
 }
 
 # non-vectorized helper
 str_replace_verbose_single <- function(string,
                                        pattern,
-                                       verbose) {
+                                       verbose,
+                                       n_context_chrs) {
   
   checkmate::assert_string(string)
   checkmate::assert_flag(verbose)
+  n_context_chrs <- checkmate::assert_count(n_context_chrs,
+                                            coerce = TRUE)
   checkmate::assert_character(pattern,
                               any.missing = FALSE)
   all_named <- checkmate::test_named(pattern)
@@ -893,13 +900,13 @@ str_replace_verbose_single <- function(string,
                      
                      # reduce to `string` excerpt of +/- 20 chars
                      ## determine if we prune
-                     prune_start <- (start - 20L) > 1L 
-                     prune_end <- (end + 20L) < nchar(string)
+                     prune_start <- (start - n_context_chrs) > 1L 
+                     prune_end <- (end + n_context_chrs) < nchar(string)
                      
                      ## extract excerpt
                      ### begin (part before `pattern`)
                      excerpt_begin <- string %>% stringr::str_sub(start = dplyr::if_else(prune_start,
-                                                                                         start - 20L,
+                                                                                         start - n_context_chrs,
                                                                                          1L),
                                                                   end = start - 1L)
                      ### the `pattern` as-is, i.e. without regex syntax
@@ -909,15 +916,13 @@ str_replace_verbose_single <- function(string,
                      ### end (part after `pattern`)
                      excerpt_end <- string %>% stringr::str_sub(start = end + 1L,
                                                                 end = dplyr::if_else(prune_end,
-                                                                                     end + 20L,
+                                                                                     end + n_context_chrs,
                                                                                      -1L))
                      
                      # replace excerpt start/end with ellipsis dots (pruned to whole words if appropriate)
-                     if (prune_start) excerpt_begin %<>% stringr::str_replace(pattern = "^.*?\\b(?=\\W)", # "^.\\S*",
-                                                                              replacement = "\u2026")
+                     if (prune_start) excerpt_begin %<>% paste0("\u2026", .)
                      
-                     if (prune_end) excerpt_end %<>% stringr::str_replace(pattern = "\\b(?=\\W).*?$", # "\\S*?.$",
-                                                                          replacement = "\u2026")
+                     if (prune_end) excerpt_end %<>% paste0("\u2026")
                      
                      # escape newlines (only relevant if we don't `process_line_by_line` and/or patterns/replacements contain newlines)
                      excerpt_begin %<>% escape_lf()
@@ -967,6 +972,7 @@ str_replace_file <- function(path,
                              pattern,
                              process_line_by_line = FALSE,
                              verbose = TRUE,
+                             n_context_chrs = 20L,
                              show_rel_path = FALSE,
                              dry_run = FALSE) {
   
@@ -1003,7 +1009,8 @@ str_replace_file <- function(path,
                 }
                 
                 result %<>% str_replace_verbose(pattern = pattern,
-                                                verbose = verbose)
+                                                verbose = verbose,
+                                                n_context_chrs = n_context_chrs)
                 
                 if (!dry_run) {
                   

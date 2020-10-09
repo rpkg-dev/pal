@@ -9,6 +9,7 @@ str_replace_file(
   pattern,
   process_line_by_line = FALSE,
   verbose = TRUE,
+  n_context_chrs = 20L,
   show_rel_path = FALSE,
   dry_run = FALSE
 )
@@ -25,6 +26,9 @@ order given, meaning that first listed pairs are applied before later listed one
 more performant, you probably want the former if you're using \code{"^"} or \code{"$"} in your \code{pattern}s.}
 
 \item{verbose}{Whether to display replacements on the console.}
+
+\item{n_context_chrs}{The (maximum) number of characters displayed around the actual \code{string} and its replacement. The number refers to a single side of
+\code{string}/replacement, so the total number of context characters is at the maximum \code{2 * n_context_chrs}. Only relevant if \code{verbose = TRUE}.}
 
 \item{show_rel_path}{Whether to display file \code{path}s as relative from the current working directory. If \code{FALSE}, absolute paths are displayed. Only relevant
 if \code{verbose = TRUE}.}

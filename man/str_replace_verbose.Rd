@@ -4,7 +4,7 @@
 \alias{str_replace_verbose}
 \title{Replace matched patterns in a string \emph{verbosely}}
 \usage{
-str_replace_verbose(string, pattern, verbose = TRUE)
+str_replace_verbose(string, pattern, verbose = TRUE, n_context_chrs = 20L)
 }
 \arguments{
 \item{string}{Input vector. Either a character vector, or something
@@ -16,6 +16,9 @@ etc. will be replaced with the contents of the respective matched group (created
 order given, meaning that first listed pairs are applied before later listed ones.}
 
 \item{verbose}{Whether to display replacements on the console.}
+
+\item{n_context_chrs}{The (maximum) number of characters displayed around the actual \code{string} and its replacement. The number refers to a single side of
+\code{string}/replacement, so the total number of context characters is at the maximum \code{2 * n_context_chrs}. Only relevant if \code{verbose = TRUE}.}
 }
 \value{
 A character vector.
