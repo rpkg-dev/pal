@@ -6,9 +6,11 @@ output: pal::gitlab_document
 
 `r pal::desc_value("Description")`[^1].
 
-[^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the avoidance of unnecessary duplication.
-
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
+
+[^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report
+    it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the
+    avoidance of unnecessary duplication.
 
 ## Installation
 
@@ -31,4 +33,4 @@ This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(comp
 
 -   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.
 
-------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------

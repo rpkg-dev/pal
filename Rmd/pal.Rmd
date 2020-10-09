@@ -18,7 +18,7 @@ utils::globalVariables(names = c(".",
 
 ### Terminal styling based on ANSI escape sequences
 
-Note that the colors defined here are intended for terminals capable to display a [ANSI 24-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit).
+Note that the colors defined here are intended for terminals capable to display [ANSI 24-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit).
 
 ```{r}
 # grey background (the `bg_grey()` missing from packages cli/crayon)
@@ -337,13 +337,15 @@ build_readme <- function(input = "README.Rmd",
 
 ## Output formats
 
-These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
+These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output
+formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
 
 ### `gitlab_document`
 
 TODO:
 
--   Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?\`
+-   Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to
+    `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?\`
 
     Setting `df_print = "kable"` should actually produce a [pipe table](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats)...
 
@@ -473,13 +475,16 @@ gitlab_document <- function(#add_toc = FALSE,
 
 ## Assert a package is installed
 
-There is a similar (but way simpler) function [`pkgsearch:::needs_packages()`](https://github.com/r-hub/pkgsearch/blob/9c0102e85929f25d23cb4f497ba4f01c3d3c0cd9/R/utils.R#L100-L127) and [I've asked](https://github.com/r-hub/pkgsearch/issues/102) if there are any plans on standardizing this.
+There is a similar (but way simpler) function
+[`pkgsearch:::needs_packages()`](https://github.com/r-hub/pkgsearch/blob/9c0102e85929f25d23cb4f497ba4f01c3d3c0cd9/R/utils.R#L100-L127) and [I've
+asked](https://github.com/r-hub/pkgsearch/issues/102) if there are any plans on standardizing this.
 
 TODO:
 
 -   Incorporate code from FA.
 
--   Add additional params `install_source`. Open question: How to best handle multiple pkgs at once if they don't share the install source? Just recycle `install_source`?
+-   Add additional params `install_source`. Open question: How to best handle multiple pkgs at once if they don't share the install source? Just recycle
+    `install_source`?
 
 ```{r}
 #' Assert a package is installed
@@ -1651,7 +1656,8 @@ check_dot_named <- function(dot,
 
 **Remarks:**
 
--   The "real" data in the examples stems from [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
+-   The "real" data in the examples stems from
+    [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
 
 -   Function has been proposed upstream in [PR \#1112](https://github.com/tidyverse/readr/pull/1112) but was rejected.
 
