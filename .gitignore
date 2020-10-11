@@ -5,7 +5,8 @@
 .DS_Store
 Thumbs.db
 
-# R(Studio) specific (temp) files
+# R(Studio)-specific (temp) files
+.Rapp.history
 .RData
 .Rhistory
 .Rproj.user
