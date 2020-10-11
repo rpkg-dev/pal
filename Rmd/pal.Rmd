@@ -1029,13 +1029,12 @@ str_replace_verbose_single <- function(string,
                                             coerce = TRUE)
   checkmate::assert_character(pattern,
                               any.missing = FALSE)
-  all_named <- checkmate::test_named(pattern)
-  if (!all_named) rlang::abort("All elements of `pattern` must be named (names are patterns, values are replacements).")
+  if (!checkmate::test_named(pattern)) rlang::abort("All elements of `pattern` must be named (names are patterns, values are replacements).")
   
   # print replacement info for humans
   if (verbose) {
     
-    cli_id_ul <- cli::cli_ul(.auto_close = FALSE)
+    cli_id_ul <- cli::cli_ul()
     
     # we have to process each pattern-replacement pair one-by-one because other than `stringr::str_replace_all()`, `stringr::str_locate_all()` doesn't support
     # the pair-wise spec
@@ -1084,8 +1083,7 @@ str_replace_verbose_single <- function(string,
                      
                      # print info
                      cli_id_li <- cli::cli_li(as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin), bg_red_dark(pattern_asis),
-                                                        cli::bg_black(excerpt_end)),
-                                              .auto_close = FALSE)
+                                                        cli::bg_black(excerpt_end)))
                      cli::cli_text(as_string(cli::col_green("+"), " ", cli::bg_black(excerpt_begin), bg_green_dark(pattern[i]), cli::bg_black(excerpt_end)))
                      cli::cli_end(id = cli_id_li)
                    })
