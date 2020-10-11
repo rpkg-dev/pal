@@ -897,7 +897,7 @@ str_replace_verbose_single <- function(string,
                    .y = hit[, "end"],
                    .f = function(start, end) {
                      
-                     # reduce to `string` excerpt of +/- 20 chars
+                     # reduce to `string` excerpt of +/- `n_context_chrs`
                      ## determine if we prune
                      prune_start <- (start - n_context_chrs) > 1L 
                      prune_end <- (end + n_context_chrs) < nchar(string)
@@ -930,9 +930,11 @@ str_replace_verbose_single <- function(string,
                      excerpt_end %<>% escape_lf()
                      
                      # print info
-                     cli_id_li <- cli::cli_li(as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin), bg_red_dark(pattern_asis),
-                                                        cli::bg_black(excerpt_end)))
-                     cli::cli_text(as_string(cli::col_green("+"), " ", cli::bg_black(excerpt_begin), bg_green_dark(pattern[i]), cli::bg_black(excerpt_end)))
+                     ## write message to separate v ensuring `{` and `}` are escaped, cf. ?cli::`inline-markup`
+                     msg <- as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin), bg_red_dark(pattern_asis), cli::bg_black(excerpt_end))
+                     cli_id_li <- cli::cli_li("{msg}")
+                     msg <- as_string(cli::col_green("+"), " ", cli::bg_black(excerpt_begin), bg_green_dark(pattern[i]), cli::bg_black(excerpt_end))
+                     cli::cli_text("{msg}")
                      cli::cli_end(id = cli_id_li)
                    })
       
@@ -944,7 +946,6 @@ str_replace_verbose_single <- function(string,
     
     # non-verbose shortcut
   } else {
-    
     return(stringr::str_replace_all(string = string,
                                     pattern = pattern))
   }
