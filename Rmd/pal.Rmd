@@ -1215,7 +1215,7 @@ str_replace_file <- function(path,
                 if (!dry_run) {
                   
                   readr::write_lines(x = result,
-                                     path = path,
+                                     file = path,
                                      na = NA_character_)
                 }
               })
