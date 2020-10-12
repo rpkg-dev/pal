@@ -12,6 +12,7 @@ Cf. <https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262>
 ```{r}
 utils::globalVariables(names = c(".",
                                  "end",
+                                 "i_pattern",
                                  "minus",
                                  "Package",
                                  "plus",
@@ -1064,22 +1065,27 @@ str_replace_verbose <- function(string,
     # the pair-wise spec
     string_changed <- string
     msgs <- tibble::tibble(minus = character(),
-                           plus = character())
+                           plus = character(),
+                           i_pattern = integer())
     
     for (i in seq_along(pattern)) {
       
       msgs %<>% dplyr::bind_rows(str_replace_verbose_single_info(string = string_changed,
                                                                  pattern = pattern[i],
-                                                                 n_context_chrs = n_context_chrs))
+                                                                 n_context_chrs = n_context_chrs),
+                                 .id = "i_pattern")
       
       string_changed %<>% stringr::str_replace_all(pattern = pattern[i])
     }
     
     msgs %>%
       dplyr::group_by(minus, plus) %>%
-      dplyr::summarise(n = dplyr::n(),
+      dplyr::summarise(i_pattern = min(i_pattern),
+                       n = dplyr::n(),
                        .groups = "drop") %>%
-      purrr::pwalk(function(minus, plus, n) {
+      # since summarizing can change row order, we need to restore the original order
+      dplyr::arrange(i_pattern) %>%
+      purrr::pwalk(function(minus, plus, i_pattern, n) {
         
         # using string interpolation ensures `{` and `}` are escaped, cf. ?cli::`inline-markup`
         cat(n, "\u00D7 ", minus, "\n",
