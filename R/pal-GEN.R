@@ -3,6 +3,7 @@
 
 utils::globalVariables(names = c(".",
                                  "end",
+                                 "i_pattern",
                                  "minus",
                                  "Package",
                                  "plus",
@@ -902,22 +903,27 @@ str_replace_verbose <- function(string,
     # the pair-wise spec
     string_changed <- string
     msgs <- tibble::tibble(minus = character(),
-                           plus = character())
+                           plus = character(),
+                           i_pattern = integer())
     
     for (i in seq_along(pattern)) {
       
       msgs %<>% dplyr::bind_rows(str_replace_verbose_single_info(string = string_changed,
                                                                  pattern = pattern[i],
-                                                                 n_context_chrs = n_context_chrs))
+                                                                 n_context_chrs = n_context_chrs),
+                                 .id = "i_pattern")
       
       string_changed %<>% stringr::str_replace_all(pattern = pattern[i])
     }
     
     msgs %>%
       dplyr::group_by(minus, plus) %>%
-      dplyr::summarise(n = dplyr::n(),
+      dplyr::summarise(i_pattern = min(i_pattern),
+                       n = dplyr::n(),
                        .groups = "drop") %>%
-      purrr::pwalk(function(minus, plus, n) {
+      # since summarizing can change row order, we need to restore the original order
+      dplyr::arrange(i_pattern) %>%
+      purrr::pwalk(function(minus, plus, i_pattern, n) {
         
         # using string interpolation ensures `{` and `}` are escaped, cf. ?cli::`inline-markup`
         cat(n, "\u00D7 ", minus, "\n",
@@ -983,8 +989,8 @@ str_replace_verbose_single_info <- function(string,
                                         excerpt_end %<>% escape_lf()
                                         
                                         # assemble info msgs
-                                        tibble::tibble(minus = as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin), bg_red_dark(pattern_asis),
-                                                                         cli::bg_black(excerpt_end)),
+                                        tibble::tibble(minus = as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin),
+                                                                         cli::style_strikethrough(bg_red_dark(pattern_asis)), cli::bg_black(excerpt_end)),
                                                        plus = as_string(cli::col_green("+"), " ", cli::bg_black(excerpt_begin), bg_green_dark(replacement),
                                                                         cli::bg_black(excerpt_end)))
                                       })
@@ -995,14 +1001,14 @@ str_replace_verbose_single_info <- function(string,
 #'
 #' Apply pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied one-by-one
 #' in the given order. All performed replacements are displayed on the console by default (`verbose = TRUE`), optionally without actually changing any file
-#' content (`dry_run = TRUE`).
+#' content (`run_dry = TRUE`).
 #'
 #' @param path Paths to the text files. A character vector.
 #' @param process_line_by_line Whether each line in a file should be treated as a separate string or the whole file as one single string. While the latter is 
 #'   more performant, you probably want the former if you're using `"^"` or `"$"` in your `pattern`s.
 #' @param show_rel_path Whether to display file `path`s as relative from the current working directory. If `FALSE`, absolute paths are displayed. Only relevant
 #'   if `verbose = TRUE`.
-#' @param dry_run Show replacements on the console only, without actually modifiying any files. Implies `verbose = TRUE`.
+#' @param run_dry Show replacements on the console only, without actually modifiying any files. Implies `verbose = TRUE`.
 #' @inheritParams str_replace_verbose
 #'
 #' @return `path` invisibly.
@@ -1014,7 +1020,7 @@ str_replace_file <- function(path,
                              verbose = TRUE,
                              n_context_chrs = 20L,
                              show_rel_path = TRUE,
-                             dry_run = FALSE) {
+                             run_dry = FALSE) {
   
   assert_pkg("readr")
   checkmate::assert_file(path,
@@ -1022,10 +1028,10 @@ str_replace_file <- function(path,
   checkmate::assert_flag(process_line_by_line)
   checkmate::assert_flag(verbose)
   checkmate::assert_flag(show_rel_path)
-  checkmate::assert_flag(dry_run)
+  checkmate::assert_flag(run_dry)
   
-  if (dry_run && !verbose) {
-    rlang::abort("Setting `dry_run = TRUE` and `verbose = FALSE` at the same time is pointless.")
+  if (run_dry && !verbose) {
+    rlang::abort("Setting `run_dry = TRUE` and `verbose = FALSE` at the same time is pointless.")
   }
   
   purrr::walk(.x = path,
@@ -1054,7 +1060,7 @@ str_replace_file <- function(path,
                                                 verbose = verbose,
                                                 n_context_chrs = n_context_chrs)
                 
-                if (!dry_run) {
+                if (!run_dry) {
                   
                   readr::write_lines(x = result,
                                      file = path,

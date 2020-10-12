@@ -11,7 +11,7 @@ str_replace_file(
   verbose = TRUE,
   n_context_chrs = 20L,
   show_rel_path = TRUE,
-  dry_run = FALSE
+  run_dry = FALSE
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ more performant, you probably want the former if you're using \code{"^"} or \cod
 \item{show_rel_path}{Whether to display file \code{path}s as relative from the current working directory. If \code{FALSE}, absolute paths are displayed. Only relevant
 if \code{verbose = TRUE}.}
 
-\item{dry_run}{Show replacements on the console only, without actually modifiying any files. Implies \code{verbose = TRUE}.}
+\item{run_dry}{Show replacements on the console only, without actually modifiying any files. Implies \code{verbose = TRUE}.}
 }
 \value{
 \code{path} invisibly.
@@ -41,7 +41,7 @@ if \code{verbose = TRUE}.}
 \description{
 Apply pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied one-by-one
 in the given order. All performed replacements are displayed on the console by default (\code{verbose = TRUE}), optionally without actually changing any file
-content (\code{dry_run = TRUE}).
+content (\code{run_dry = TRUE}).
 }
 \seealso{
 String functions
