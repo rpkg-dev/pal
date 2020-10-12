@@ -982,6 +982,10 @@ cat_lines <- function(...) {
 
 TODO:
 
+-   Implement param `n_context_lines` (default = `0L`) to optionally add *vertical* context for console output.
+
+    If `n_context_lines > 0L`, we do not `escape_lf()` -\> we'd need to tokenize by LF's instead it seems...
+
 -   Currently, the regex-group-based replacements are not properly displayed on the console (`\1` instead of the parsed first group etc.).
 
     -\> Check if it's possible to change this (without too much hassle).
@@ -1155,7 +1159,9 @@ str_replace_verbose_single_info <- function(string,
 TODO:
 
 -   [ ] Promote functionality in SO questions and the like, e.g.
-    <https://stackoverflow.com/questions/45894069/find-and-replace-text-in-all-files-rstudio/52096986>
+
+    -   <https://stackoverflow.com/questions/45894069/find-and-replace-text-in-all-files-rstudio/52096986>
+    -   <https://stackoverflow.com/questions/25548333/r-find-and-replace-multiple-scripts-at-once>
 
 ```{r}
 #' Replace matched patterns in text files
