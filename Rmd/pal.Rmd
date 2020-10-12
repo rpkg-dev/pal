@@ -1128,7 +1128,7 @@ str_replace_file <- function(path,
                              process_line_by_line = FALSE,
                              verbose = TRUE,
                              n_context_chrs = 20L,
-                             show_rel_path = FALSE,
+                             show_rel_path = TRUE,
                              dry_run = FALSE) {
   
   assert_pkg("cli")
