@@ -896,6 +896,8 @@ str_replace_verbose <- function(string,
   # print replacement info for humans
   if (verbose) {
     
+    assert_pkg("cli")
+    
     # we have to process each pattern-replacement pair one-by-one because other than `stringr::str_replace_all()`, `stringr::str_locate_all()` doesn't support
     # the pair-wise spec
     string_changed <- string
@@ -1014,7 +1016,7 @@ str_replace_file <- function(path,
                              show_rel_path = TRUE,
                              dry_run = FALSE) {
   
-  assert_pkg("cli")
+  assert_pkg("readr")
   checkmate::assert_file(path,
                          access = "r")
   checkmate::assert_flag(process_line_by_line)
@@ -1031,6 +1033,8 @@ str_replace_file <- function(path,
                 
                 # print file progress info
                 if (verbose) {
+                  
+                  assert_pkg("cli")
                   
                   path_show <- dplyr::if_else(show_rel_path,
                                               fs::path_rel(path),
@@ -1053,7 +1057,7 @@ str_replace_file <- function(path,
                 if (!dry_run) {
                   
                   readr::write_lines(x = result,
-                                     path = path,
+                                     file = path,
                                      na = NA_character_)
                 }
               })
