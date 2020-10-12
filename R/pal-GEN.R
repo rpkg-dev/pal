@@ -421,7 +421,7 @@ assert_pkg <- function(pkg,
     
     if (is.null(message)) {
       
-      message <- glue::glue("Package '{pkg}' is required for this operation but not installed!\n",
+      message <- glue::glue("Package '{pkg}' is required for this operation but not installed.\n",
                             "Please first install it (e.g. via `install.packages('{pkg}')`) and then try again.")
     }
     
