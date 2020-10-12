@@ -10,7 +10,7 @@ str_replace_file(
   process_line_by_line = FALSE,
   verbose = TRUE,
   n_context_chrs = 20L,
-  show_rel_path = FALSE,
+  show_rel_path = TRUE,
   dry_run = FALSE
 )
 }
@@ -39,8 +39,9 @@ if \code{verbose = TRUE}.}
 \code{path} invisibly.
 }
 \description{
-Apply pattern-based string replacement to multiple files at once. A series of regular-expression-replacement pairs can be provided and all performed
-replacements can be displayed on the console (\code{verbose = TRUE}), optionally without actually changing any file content (\code{dry_run = TRUE}).
+Apply pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied one-by-one
+in the given order. All performed replacements are displayed on the console by default (\code{verbose = TRUE}), optionally without actually changing any file
+content (\code{dry_run = TRUE}).
 }
 \seealso{
 String functions

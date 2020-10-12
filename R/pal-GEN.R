@@ -2,12 +2,11 @@
 # See `README.md#r-markdown-format` for more information on the literature programming approach used applying the R Markdown format.
 
 utils::globalVariables(names = c(".",
-                                 "Package"))
-
-# grey background (the `bg_grey()` missing from packages cli/crayon)
-bg_grey <- cli::make_ansi_style("darkslategrey",
-                                bg = TRUE,
-                                colors = 2^24)
+                                 "end",
+                                 "minus",
+                                 "Package",
+                                 "plus",
+                                 "start"))
 
 # dark background colors that are easy on the eyes
 bg_red_dark <- cli::make_ansi_style("#330000",
@@ -853,108 +852,148 @@ cat_lines <- function(...) {
 #' @examples
 #' "Make love, not war" %>% str_replace_verbose(pattern = c("love" = "hummus",
 #'                                                          "war" = "walls"))
+#'
+#' # pattern-replacement pairs are processed one-by-one, so the following gives the same result
+#' "Make love, not war" %>% str_replace_verbose(pattern = c("love" = "hummus",
+#'                                                          "hummus, not war" = "hummus, not walls"))
+#'
+#' # varying `n_context_chrs` affects console output summarization
+#' input <- c("Tulips are not durable, ",
+#'            "not scarce, ",
+#'            "not programmable, ",
+#'            "not fungible, ",
+#'            "not verifiable, ",
+#'            "not divisible, ",
+#'            "and hard to transfer. ",
+#'            "But tell me more about your analogy...",
+#'            "",
+#'            "-[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)")
+#'
+#' pattern <- c("not" = "extremely",
+#'              "hard" = "ridiculously easy",
+#'              "^But.*" = "So... flower power?",
+#'              "(^-).*Naval.*" = "\\1\U0001F92A")
+#'
+#' str_replace_verbose(string = input,
+#'                     pattern = pattern,
+#'                     n_context_chrs = 5L) %>%
+#'   cat_lines()
+#'
+#' str_replace_verbose(string = input,
+#'                     pattern = pattern,
+#'                     n_context_chrs = 0L) %>%
+#'   cat_lines()
 str_replace_verbose <- function(string,
                                 pattern,
                                 verbose = TRUE,
                                 n_context_chrs = 20L) {
   
-  purrr::map_chr(.x = string,
-                 .f = str_replace_verbose_single,
-                 pattern = pattern,
-                 verbose = verbose,
-                 n_context_chrs = n_context_chrs)
-}
-
-# non-vectorized helper
-str_replace_verbose_single <- function(string,
-                                       pattern,
-                                       verbose,
-                                       n_context_chrs) {
-  
-  checkmate::assert_string(string)
   checkmate::assert_flag(verbose)
-  n_context_chrs <- checkmate::assert_count(n_context_chrs,
-                                            coerce = TRUE)
-  checkmate::assert_character(pattern,
-                              any.missing = FALSE)
+  checkmate::assert_character(pattern, any.missing = FALSE)
   if (!checkmate::test_named(pattern)) rlang::abort("All elements of `pattern` must be named (names are patterns, values are replacements).")
+  n_context_chrs <- checkmate::assert_count(n_context_chrs, coerce = TRUE)
   
   # print replacement info for humans
   if (verbose) {
     
-    cli_id_ul <- cli::cli_ul()
-    
     # we have to process each pattern-replacement pair one-by-one because other than `stringr::str_replace_all()`, `stringr::str_locate_all()` doesn't support
     # the pair-wise spec
+    string_changed <- string
+    msgs <- tibble::tibble(minus = character(),
+                           plus = character())
+    
     for (i in seq_along(pattern)) {
       
-      hit <-
-        string %>%
-        stringr::str_locate_all(pattern = names(pattern[i])) %>%
-        dplyr::first()
+      msgs %<>% dplyr::bind_rows(str_replace_verbose_single_info(string = string_changed,
+                                                                 pattern = pattern[i],
+                                                                 n_context_chrs = n_context_chrs))
       
-      purrr::walk2(.x = hit[, "start"],
-                   .y = hit[, "end"],
-                   .f = function(start, end) {
-                     
-                     # reduce to `string` excerpt of +/- `n_context_chrs`
-                     ## determine if we prune
-                     prune_start <- (start - n_context_chrs) > 1L 
-                     prune_end <- (end + n_context_chrs) < nchar(string)
-                     
-                     ## extract excerpt
-                     ### begin (part before `pattern`)
-                     excerpt_begin <- string %>% stringr::str_sub(start = dplyr::if_else(prune_start,
-                                                                                         start - n_context_chrs,
-                                                                                         1L),
-                                                                  end = start - 1L)
-                     ### the `pattern` as-is, i.e. without regex syntax
-                     pattern_asis <- string %>% stringr::str_sub(start = start,
-                                                                 end = end)
-                     
-                     ### end (part after `pattern`)
-                     excerpt_end <- string %>% stringr::str_sub(start = end + 1L,
-                                                                end = dplyr::if_else(prune_end,
-                                                                                     end + n_context_chrs,
-                                                                                     -1L))
-                     
-                     # replace excerpt start/end with ellipsis dots (pruned to whole words if appropriate)
-                     if (prune_start) excerpt_begin %<>% paste0("\u2026", .)
-                     
-                     if (prune_end) excerpt_end %<>% paste0("\u2026")
-                     
-                     # escape newlines (only relevant if we don't `process_line_by_line` and/or patterns/replacements contain newlines)
-                     excerpt_begin %<>% escape_lf()
-                     pattern %<>% escape_lf()
-                     names(pattern) %<>% escape_lf()
-                     excerpt_end %<>% escape_lf()
-                     
-                     # print info
-                     ## write message to separate v ensuring `{` and `}` are escaped, cf. ?cli::`inline-markup`
-                     msg <- as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin), bg_red_dark(pattern_asis), cli::bg_black(excerpt_end))
-                     cli_id_li <- cli::cli_li("{msg}")
-                     msg <- as_string(cli::col_green("+"), " ", cli::bg_black(excerpt_begin), bg_green_dark(pattern[i]), cli::bg_black(excerpt_end))
-                     cli::cli_text("{msg}")
-                     cli::cli_end(id = cli_id_li)
-                   })
-      
-      string %<>% stringr::str_replace_all(pattern = pattern[i])
+      string_changed %<>% stringr::str_replace_all(pattern = pattern[i])
     }
     
-    cli::cli_end(id = cli_id_ul)
-    return(string)
-    
-    # non-verbose shortcut
-  } else {
-    return(stringr::str_replace_all(string = string,
-                                    pattern = pattern))
+    msgs %>%
+      dplyr::group_by(minus, plus) %>%
+      dplyr::summarise(n = dplyr::n(),
+                       .groups = "drop") %>%
+      purrr::pwalk(function(minus, plus, n) {
+        
+        # using string interpolation ensures `{` and `}` are escaped, cf. ?cli::`inline-markup`
+        cat(n, "\u00D7 ", minus, "\n",
+            sep = "")
+        cat(rep("\u00A0", times = nchar(n) + 2L), plus, "\n",
+            sep = "")
+      })
   }
+  
+  # perform actual replacement
+  stringr::str_replace_all(string = string,
+                           pattern = pattern)
+}
+
+# helper to generate info for single replacement 
+str_replace_verbose_single_info <- function(string,
+                                            pattern,
+                                            n_context_chrs) {
+  
+  # escape newlines (in case replacement contains newlines)
+  replacement <- escape_lf(as.character(pattern))
+  
+  stringr::str_locate_all(string = string,
+                          pattern = names(pattern)) %>%
+    purrr::map2_dfr(.y = string,
+                    .f = function(positions, string) {
+                      
+                      positions %<>% dplyr::as_tibble() %>% dplyr::filter(start <= end)
+                      
+                      purrr::map2_dfr(.x = positions$start,
+                                      .y = positions$end,
+                                      .f = function(start, end) {
+                                        
+                                        # reduce to `string` excerpt of +/- `n_context_chrs`
+                                        ## determine if we prune
+                                        prune_start <- (start - n_context_chrs) > 1L 
+                                        prune_end <- (end + n_context_chrs) < nchar(string)
+                                        
+                                        ## extract excerpt
+                                        ### begin (part before `pattern`)
+                                        excerpt_begin <- string %>% stringr::str_sub(start = dplyr::if_else(prune_start,
+                                                                                                            start - n_context_chrs,
+                                                                                                            1L),
+                                                                                     end = start - 1L)
+                                        ### the `pattern` as-is, i.e. without regex syntax
+                                        pattern_asis <- string %>% stringr::str_sub(start = start,
+                                                                                    end = end)
+                                        
+                                        ### end (part after `pattern`)
+                                        excerpt_end <- string %>% stringr::str_sub(start = end + 1L,
+                                                                                   end = dplyr::if_else(prune_end,
+                                                                                                        end + n_context_chrs,
+                                                                                                        -1L))
+                                        
+                                        # replace excerpt start/end with ellipsis dots (pruned to whole words if appropriate)
+                                        if (prune_start) excerpt_begin %<>% paste0("\u2026", .)
+                                        
+                                        if (prune_end) excerpt_end %<>% paste0("\u2026")
+                                        
+                                        # escape newlines (in case pattern contains newlines)
+                                        excerpt_begin %<>% escape_lf()
+                                        pattern_asis %<>% escape_lf()
+                                        excerpt_end %<>% escape_lf()
+                                        
+                                        # assemble info msgs
+                                        tibble::tibble(minus = as_string(cli::col_red("-"), " ", cli::bg_black(excerpt_begin), bg_red_dark(pattern_asis),
+                                                                         cli::bg_black(excerpt_end)),
+                                                       plus = as_string(cli::col_green("+"), " ", cli::bg_black(excerpt_begin), bg_green_dark(replacement),
+                                                                        cli::bg_black(excerpt_end)))
+                                      })
+                    })
 }
 
 #' Replace matched patterns in text files
 #'
-#' Apply pattern-based string replacement to multiple files at once. A series of regular-expression-replacement pairs can be provided and all performed
-#' replacements can be displayed on the console (`verbose = TRUE`), optionally without actually changing any file content (`dry_run = TRUE`).
+#' Apply pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied one-by-one
+#' in the given order. All performed replacements are displayed on the console by default (`verbose = TRUE`), optionally without actually changing any file
+#' content (`dry_run = TRUE`).
 #'
 #' @param path Paths to the text files. A character vector.
 #' @param process_line_by_line Whether each line in a file should be treated as a separate string or the whole file as one single string. While the latter is 

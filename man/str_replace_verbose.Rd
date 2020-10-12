@@ -33,6 +33,37 @@ resort to that function.
 \examples{
 "Make love, not war" \%>\% str_replace_verbose(pattern = c("love" = "hummus",
                                                          "war" = "walls"))
+
+# pattern-replacement pairs are processed one-by-one, so the following gives the same result
+"Make love, not war" \%>\% str_replace_verbose(pattern = c("love" = "hummus",
+                                                         "hummus, not war" = "hummus, not walls"))
+
+# varying `n_context_chrs` affects console output summarization
+input <- c("Tulips are not durable, ",
+           "not scarce, ",
+           "not programmable, ",
+           "not fungible, ",
+           "not verifiable, ",
+           "not divisible, ",
+           "and hard to transfer. ",
+           "But tell me more about your analogy...",
+           "",
+           "-[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)")
+
+pattern <- c("not" = "extremely",
+             "hard" = "ridiculously easy",
+             "^But.*" = "So... flower power?",
+             "(^-).*Naval.*" = "\\\\1\U0001F92A")
+
+str_replace_verbose(string = input,
+                    pattern = pattern,
+                    n_context_chrs = 5L) \%>\%
+  cat_lines()
+
+str_replace_verbose(string = input,
+                    pattern = pattern,
+                    n_context_chrs = 0L) \%>\%
+  cat_lines()
 }
 \seealso{
 String functions

@@ -49,12 +49,12 @@ cli_process_expr(Sys.sleep(3L), "Zzzz")}
 
 \dontrun{
 # "russian roulette"
-msg <- "Spinning the cylinder \U1F91E … "
+msg <- "Spinning the cylinder \U0001F91E … "
 cli_process_expr(msg = msg,
-                 msg_done = paste0(msg, "and pulling the trigger – lucky again. \U1F60C"),
+                 msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
                  msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
                  {
                    if (interactive()) Sys.sleep(1)
-                   if (runif(1L) < 0.4) stop("\U1F92F\U2620")
+                   if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
                  })}
 }
