@@ -1151,18 +1151,19 @@ str_replace_file <- function(path,
                 
                 # perform replacement
                 if (process_line_by_line) {
-                  result <- readr::read_lines(path)
+                  input <- readr::read_lines(path)
                 } else {
-                  result <- readr::read_file(path)
+                  input <- readr::read_file(path)
                 }
                 
-                result %<>% str_replace_verbose(pattern = pattern,
-                                                verbose = verbose,
-                                                n_context_chrs = n_context_chrs)
+                output <- str_replace_verbose(string = input,
+                                              pattern = pattern,
+                                              verbose = verbose,
+                                              n_context_chrs = n_context_chrs)
                 
-                if (!run_dry) {
+                if (!run_dry && !identical(input, output)) {
                   
-                  readr::write_lines(x = result,
+                  readr::write_lines(x = output,
                                      file = path,
                                      na = NA_character_)
                 }
