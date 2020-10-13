@@ -11,7 +11,7 @@ output: github_document
 # hi there
 
 nothing `r 'here.'`",
-                    path = "README.Rmd")
+                    file = "README.Rmd")
 
   pal::build_readme()
 
@@ -143,6 +143,11 @@ test_that("`str_replace_file()` basically works", {
              '',
              '-Nobody')
 
+  pattern = c("(not (scarce|durable)|hard to transfer)" = "TULIPS \U0001F911",
+              " not \\w+?[^r][ai]ble(?=, )" = " TUUULIPS \U0001F92A",
+              "tell me more about your analog(y)" = "go home alread\\1",
+              "\\Q[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)" = "Nobody")
+
   tmp_file <- fs::file_temp(ext = "txt")
   tmp_file2 <- fs::file_temp(ext = "txt")
   teardown(unlink(tmp_file))
@@ -153,11 +158,14 @@ test_that("`str_replace_file()` basically works", {
 
   str_replace_file(path = c(tmp_file,
                             tmp_file2),
-                   pattern = c("(not (scarce|durable)|hard to transfer)" = "TULIPS \U0001F911",
-                               ".*?[^r][ai]ble(?=, )" = " TUUULIPS \U0001F92A",
-                               "tell me more about your analogy" = "go home already",
-                               "\\Q[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)" = "Nobody"),
+                   pattern,
                    process_line_by_line = TRUE,
+                   verbose = FALSE)
+
+  str_replace_file(path = c(tmp_file,
+                            tmp_file2),
+                   pattern,
+                   process_line_by_line = FALSE,
                    verbose = FALSE)
 
   expect_identical(readr::read_lines(tmp_file),
