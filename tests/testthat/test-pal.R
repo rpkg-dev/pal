@@ -147,9 +147,9 @@ test_that("`str_replace_file()` basically works", {
   tmp_file2 <- fs::file_temp(ext = "txt")
   teardown(unlink(tmp_file))
   setup(readr::write_lines(x = before,
-                           path = tmp_file),
+                           file = tmp_file),
         readr::write_lines(x = before,
-                           path = tmp_file2))
+                           file = tmp_file2))
 
   str_replace_file(path = c(tmp_file,
                             tmp_file2),
