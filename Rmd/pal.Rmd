@@ -1182,17 +1182,19 @@ str_replace_verbose <- function(string,
     
     for (i in seq_along(pattern)) {
       
-      msgs %<>% dplyr::bind_rows(str_replace_verbose_single_info(string = string_changed,
-                                                                 pattern = pattern[i],
-                                                                 n_context_chrs = n_context_chrs),
-                                 .id = "i_pattern")
+      msgs <-
+        str_replace_verbose_single_info(string = string_changed,
+                                        pattern = pattern[i],
+                                        n_context_chrs = n_context_chrs) %>%
+        dplyr::mutate(i_pattern = i) %>%
+        dplyr::bind_rows(msgs, .)
       
       string_changed %<>% stringr::str_replace_all(pattern = pattern[i])
     }
     
     msgs %>%
       dplyr::group_by(minus, plus) %>%
-      dplyr::summarise(i_pattern = min(i_pattern),
+      dplyr::summarise(i_pattern = safe_min(i_pattern),
                        n = dplyr::n(),
                        .groups = "drop") %>%
       # since summarizing can change row order, we need to restore the original order
