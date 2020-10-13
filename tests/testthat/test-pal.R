@@ -64,7 +64,7 @@ test_that("`stat_mode()` ignores `NA`s if requested", {
 
   expect_identical(stat_mode(c(letters, "a", NA_character_, NA_character_),
                              type = "all",
-                             na_rm = TRUE),
+                             rm_na = TRUE),
                    "a")
 })
 

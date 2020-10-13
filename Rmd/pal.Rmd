@@ -667,7 +667,7 @@ TODO: Create a function based upon [this StackOverflow answer](https://stackover
 #'   - `"one"`: Return _the_ mode of `x`. If multiple modes or no mode at all exists, `NA` is returned.
 #'   - `"all"`: Return _all_ modes of `x`. If none exists (e.g. because all values of `x` are distinct), `NA` is returned.
 #'   - `"n"`: Return the number of modes of `x`.
-#' @param na_rm Ignore missing values in `x`. A logical scalar.
+#' @param rm_na Ignore missing values in `x`. A logical scalar.
 #'
 #' @return If `type = "n"`, the number of modes in `x` (an integer). Otherwise, the mode(s) of `x` or `NA` if none exist(s) (same type as `x`).
 #' @export
@@ -692,13 +692,13 @@ TODO: Create a function based upon [this StackOverflow answer](https://stackover
 #' # set `rm_na = TRUE` to ignore `NA` values
 #' stat_mode(c(letters, "a", NA_character_, NA_character_),
 #'           type = "all",
-#'           na_rm = TRUE)
+#'           rm_na = TRUE)
 stat_mode <- function(x,
                       type = c("one", "all", "n"),
-                      na_rm = FALSE) {
+                      rm_na = FALSE) {
   x <- unlist(x)
   type <- rlang::arg_match(type)
-  if (checkmate::assert_flag(na_rm)) x <- x[!is.na(x)]
+  if (checkmate::assert_flag(rm_na)) x <- x[!is.na(x)]
   
   # get unique values
   u_x <- unique(x)

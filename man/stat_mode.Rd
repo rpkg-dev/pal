@@ -4,7 +4,7 @@
 \alias{stat_mode}
 \title{Statistical mode}
 \usage{
-stat_mode(x, type = c("one", "all", "n"), na_rm = FALSE)
+stat_mode(x, type = c("one", "all", "n"), rm_na = FALSE)
 }
 \arguments{
 \item{x}{An \R object.}
@@ -16,7 +16,7 @@ stat_mode(x, type = c("one", "all", "n"), na_rm = FALSE)
 \item \code{"n"}: Return the number of modes of \code{x}.
 }}
 
-\item{na_rm}{Ignore missing values in \code{x}. A logical scalar.}
+\item{rm_na}{Ignore missing values in \code{x}. A logical scalar.}
 }
 \value{
 If \code{type = "n"}, the number of modes in \code{x} (an integer). Otherwise, the mode(s) of \code{x} or \code{NA} if none exist(s) (same type as \code{x}).
@@ -48,5 +48,5 @@ stat_mode(c(letters, "a", NA_character_, NA_character_),
 # set `rm_na = TRUE` to ignore `NA` values
 stat_mode(c(letters, "a", NA_character_, NA_character_),
           type = "all",
-          na_rm = TRUE)
+          rm_na = TRUE)
 }
