@@ -23,6 +23,56 @@ nothing `r 'here.'`",
 })
 
 # Statistical computing ----
+test_that("`safe_min()` returns proper output types", {
+
+  expect_identical(safe_min(NULL),
+                   NULL)
+  expect_identical(safe_min(NA),
+                   NA)
+  expect_identical(safe_min(NA_character_),
+                   NA_character_)
+  expect_identical(safe_min(NA_integer_),
+                   NA_integer_)
+  expect_identical(safe_min(NA_real_),
+                   NA_real_)
+  expect_identical(safe_min(character()),
+                   character())
+  expect_identical(safe_min(integer()),
+                   integer())
+  expect_identical(safe_min(numeric()),
+                   numeric())
+  expect_identical(safe_min(1L, 2),
+                   1)
+  expect_identical(safe_min(1L, 2L),
+                   1L)
+  expect_error(safe_min("one", 1))
+})
+
+test_that("`safe_max()` returns proper output types", {
+
+  expect_identical(safe_max(NULL),
+                   NULL)
+  expect_identical(safe_max(NA),
+                   NA)
+  expect_identical(safe_max(NA_character_),
+                   NA_character_)
+  expect_identical(safe_max(NA_integer_),
+                   NA_integer_)
+  expect_identical(safe_max(NA_real_),
+                   NA_real_)
+  expect_identical(safe_max(character()),
+                   character())
+  expect_identical(safe_max(integer()),
+                   integer())
+  expect_identical(safe_max(numeric()),
+                   numeric())
+  expect_identical(safe_max(1L, 2),
+                   2)
+  expect_identical(safe_max(1L, 2L),
+                   2L)
+  expect_error(safe_max("one", 1))
+})
+
 test_that("`stat_mode()` properly determines a single mode", {
 
   # integer

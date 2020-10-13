@@ -650,6 +650,118 @@ TODO: Create a function based upon [this StackOverflow answer](https://stackover
 
 # Statistical computing
 
+## Maximum (safe)
+
+Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
+Thus it is possible to feed `NA_character_` to this function.
+
+```{r}
+#' Maximum (safe)
+#'
+#' @description
+#' This is a modified version of [`max()`][base::max()] that differs in the following ways:
+#'
+#' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
+#' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
+#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
+#' - `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @param ... The numeric objects of which to determine the maximum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param rm_na Ignore missing values in `...`. If missing values are present and `rm_na = FALSE`, the result will always be `NA`.
+#'
+#' @return A numeric scalar or empty value, of the same type as `...`.
+#' @export
+#'
+#' @examples
+#' # other than `base::max()`, this function removes `NA`s by default
+#' max(1, NA, 2)
+#' safe_max(1, NA, 2)
+#'
+#' # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
+#' # zero-length inputs
+#' \dontrun{
+#' max(NULL)
+#' max(character())
+#' max(integer())
+#' safe_max(NULL)
+#' safe_max(character())
+#' safe_max(integer())
+#' 
+#' # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
+#' max("zero", 1L)
+#' max("zero", "one")
+#' safe_max("zero", 1L)
+#' safe_max("zero", "one")}
+safe_max <- function(...,
+                     rm_na = TRUE) {
+  
+  rlang::list2(...) %>%
+    purrr::map(checkmate::assert_numeric,
+               null.ok = TRUE,
+               .var.name = "...") %>%
+    unlist() %>%
+    purrr::when(length(.) == 0L ~ .[0L],
+                all(is.na(.)) && rm_na ~ .[NA],
+                ~ max(., na.rm = rm_na))
+}
+```
+
+## Minimum (safe)
+
+Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
+Thus it is possible to feed `NA_character_` to this function.
+
+```{r}
+#' Minimum (safe)
+#'
+#' @description
+#' This is a modified version of [`min()`][base::min()] that differs in the following ways:
+#'
+#' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
+#' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
+#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
+#' - `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @param ... The numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @inheritParams safe_max
+#'
+#' @inherit safe_max return
+#' @export
+#'
+#' @examples
+#' # other than `base::min()`, this function removes `NA`s by default
+#' min(1, NA, 2)
+#' safe_min(1, NA, 2)
+#'
+#' # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
+#' # zero-length inputs
+#' \dontrun{
+#' min(NULL)
+#' min(character())
+#' min(integer())
+#' safe_min(NULL)
+#' safe_min(character())
+#' safe_min(integer())
+#' 
+#' # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
+#' min("zero", 1L)
+#' min("zero", "one")
+#' safe_min("zero", 1L)
+#' safe_min("zero", "one")}
+safe_min <- function(...,
+                     rm_na = TRUE) {
+  
+  rlang::list2(...) %>%
+    purrr::map(checkmate::assert_numeric,
+               null.ok = TRUE,
+               .var.name = "...") %>%
+    unlist() %>%
+    purrr::when(length(.) == 0L ~ .[0L],
+                all(is.na(.)) && rm_na ~ .[NA],
+                ~ min(., na.rm = rm_na))
+}
+```
+
 ## Statistical mode
 
 -   Solution borrowed from [hugovdberg](https://stackoverflow.com/a/38097776/7196903) and others.
