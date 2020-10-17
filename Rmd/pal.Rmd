@@ -666,7 +666,8 @@ TODO: Create a function based upon [this StackOverflow answer](https://stackover
 ## Maximum (safe)
 
 Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
-Thus it is possible to feed `NA_character_` to this function.
+Thus it is possible to feed `NA_character_` to the two functions below. A new param `typed.missing` has been [introduced in checkmate
+devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon as a new stable release is published!
 
 ```{r}
 #' Maximum (safe)
@@ -720,9 +721,6 @@ safe_max <- function(...,
 ```
 
 ## Minimum (safe)
-
-Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
-Thus it is possible to feed `NA_character_` to this function.
 
 ```{r}
 #' Minimum (safe)
