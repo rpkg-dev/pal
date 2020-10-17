@@ -41,7 +41,9 @@ Suggests:
     rprojroot (>= 1.3.2),
     rstudioapi (>= 0.11),
     testthat,
-    xfun
+    writexl (>= 1.3.1),
+    xfun,
+    xopen (>= 1.0.0)
 Remotes:
     gitlab::salim_b/r/pkgs/pkgsnip
 Encoding: UTF-8

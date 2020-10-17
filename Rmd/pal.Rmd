@@ -100,6 +100,58 @@ rowsum_gt_zero <- function(x) {
 }
 ```
 
+## Open as temporary spreadsheet
+
+```{r}
+#' Open as temporary spreadsheet
+#'
+#' This is a convenience function to write an R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and
+#' and subsequently open that spreadsheet in the system's default application using [xopen::xopen()]. The latter is usually equivalent to double-clicking on
+#' the file in a file browser.
+#'
+#' @param x A dataframe or [tibble][tibble::tibble()], or something coercible to.
+#' @param format The spreadsheet format to use. One of
+#'   - `"csv"` for [comma-separated values](https://en.wikipedia.org/wiki/Comma-separated_values) file written using [readr::write_csv()]. The default.
+#'   - `"xlsx"` for an [Office Open XML](https://en.wikipedia.org/wiki/Office_Open_XML) file commonly used by Microsoft Excel 2007+, written using
+#'     [writexl::write_xlsx()].
+#' @param quiet Whether or not to echo the command to open the temporary spreadsheet on the console before running it.
+#'
+#' @return `x` invisibly.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' open_as_tmp_spreadsheet(mtcars,
+#'                         format = "xslx")}
+open_as_tmp_spreadsheet <- function(x,
+                                    format = c("csv", "xlsx"),
+                                    quiet = TRUE) {
+  
+  assert_pkg("xopen")
+  format <- rlang::arg_match(format)
+  tmp_file <- tempfile(pattern = "tmp_spreadsheet",
+                       fileext = paste0(".", format))
+  
+  if (format == "csv") {
+    
+    assert_pkg("readr")
+    readr::write_csv(x = x,
+                     file = tmp_file)
+    
+  } else if (format == "xlsx") {
+    
+    assert_pkg("writexl")
+    writexl::write_xlsx(x = x,
+                        path = tmp_file)
+  }
+  
+  xopen::xopen(target = tmp_file,
+               quiet = quiet)
+  
+  invisible(x)
+}
+```
+
 # Lists
 
 ## Convert to a flat list
