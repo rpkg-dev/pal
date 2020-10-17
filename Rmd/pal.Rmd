@@ -100,6 +100,162 @@ rowsum_gt_zero <- function(x) {
 }
 ```
 
+## Determine if two dataframes/tibbles are equal
+
+TODO:
+
+-   Internally we rely on a modified version of `dplyr:::is_equal_data_frame()`, exposing the `name_repair` argument. It can be retired if [this
+    PR](https://github.com/tidyverse/dplyr/pull/5565) gets merged upstream.
+
+```{r}
+#' Determine if two data frames/tibbles are equal
+#'
+#' This function compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to data frames like
+#' [matrices][base::matrix()]), optionally ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the
+#' case and `quiet = FALSE`, information about detected differences is printed to the console.
+#'
+#' @param x,y Two data frames/tibbles to compare.
+#' @param ignore_col_order Whether or not to ignore the order of columns.
+#' @param ignore_row_order Whether or not to ignore the order of rows.
+#' @param convert Whether or not to convert similar column types. Currently, this will convert factor to character and integer to double.
+#' @param name_repair One of `"unique"`, `"universal"`, or `"check_unique"`. See [vctrs::vec_as_names()] for the meaning of these options.
+#' @param quiet Whether or not to output information about detected differences between `x` and `y` to the console.
+#'
+#' @return A logical scalar indicating the result of the comparison.
+#' @export
+#'
+#' @examples
+#' scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
+#'
+#' # by default, ordering of rows and columns is ignored ...
+#' is_equal_df(x = mtcars,
+#'             y = scramble(mtcars))
+#'
+#' # ... but those can be overriden if desired
+#' is_equal_df(x = mtcars,
+#'             y = scramble(mtcars),
+#'             ignore_col_order = FALSE)
+#' is_equal_df(x = mtcars,
+#'             y = scramble(mtcars),
+#'             ignore_row_order = FALSE)
+#'
+#' # by default, `is_equal_df()` is sensitive to variable type differences ...
+#' df1 <- data.frame(x = "a",
+#'                   stringsAsFactors = FALSE)
+#' df2 <- data.frame(x = factor("a"))
+#' is_equal_df(df1, df2)
+#'
+#' # ... but you can request it to convert similar types
+#' is_equal_df(df1, df2,
+#'             convert = TRUE)
+is_equal_df <- function(x,
+                        y,
+                        ignore_col_order = TRUE,
+                        ignore_row_order = TRUE,
+                        convert = FALSE,
+                        name_repair = "minimal",
+                        quiet = TRUE) {
+  
+  result <- is_equal_data_frame(x = x,
+                                y = y,
+                                ignore_col_order = checkmate::assert_flag(ignore_col_order),
+                                ignore_row_order = checkmate::assert_flag(ignore_row_order),
+                                convert = checkmate::assert_flag(convert),
+                                name_repair = name_repair)
+  
+  if (!isTRUE(result)) {
+    
+    if (!checkmate::assert_flag(quiet)) message(result)
+    return(FALSE)
+    
+  } else {
+    return(result)
+  }
+}
+
+# modified helper borrowed from dplyr: https://github.com/tidyverse/dplyr/blob/master/R/all-equal.r
+is_equal_data_frame <- function(x,
+                                y,
+                                ignore_col_order,
+                                ignore_row_order,
+                                convert,
+                                name_repair) {
+  
+  assert_pkg("vctrs")
+  
+  compat <- is_compatible_data_frame(x,
+                                     y,
+                                     ignore_col_order = ignore_col_order,
+                                     convert = convert)
+  
+  if (!isTRUE(compat)) {
+    return(compat)
+  }
+  
+  nrows_x <- nrow(x)
+  nrows_y <- nrow(y)
+  
+  if (nrows_x != nrows_y) {
+    return("Different number of rows")
+  }
+  
+  if (ncol(x) == 0L) {
+    return(TRUE)
+  }
+  
+  x <- tibble::as_tibble(x, .name_repair = name_repair)
+  y <- tibble::as_tibble(y, .name_repair = name_repair)
+  
+  x_split <- vec_split_id_order(x)
+  y_split <- vec_split_id_order(y[, names(x), drop = FALSE])
+  
+  # keys must be identical
+  msg <- ""
+  wrong <- !vctrs::vec_in(x_split$key, y_split$key)
+  
+  if (any(wrong)) {
+    rows <- sort(purrr::map_int(x_split$loc[which(wrong)], function(.x) .x[1L]))
+    msg <- paste0(msg, "- Rows in x but not in y: ", glue::glue_collapse(rows, sep = ", "), "\n")
+  }
+  
+  wrong <- !vctrs::vec_in(y_split$key, x_split$key)
+  
+  if (any(wrong)) {
+    rows <- sort(purrr::map_int(y_split$loc[which(wrong)], function(.x) .x[1L]))
+    msg <- paste0(msg, "- Rows in y but not in x: ", glue::glue_collapse(rows, sep = ", "), "\n")
+  }
+  
+  if (msg != "") {
+    return(msg)
+  }
+  
+  wrong <- lengths(x_split$loc) != lengths(y_split$loc)
+  
+  # keys are identical, check that rows occur the same number of times
+  if (any(wrong)) {
+    rows <- sort(purrr::map_int(x_split$loc[which(wrong)], function(.x) .x[1L]))
+    return(paste0("- Rows with difference occurences in x and y: ",
+                  glue::glue_collapse(rows, sep = ", "),
+                  "\n"
+    ))
+  }
+  
+  # then if we care about row order, the id need to be identical
+  if (!ignore_row_order && !all(vctrs::vec_equal(x_split$loc, y_split$loc))) {
+    return("Same row values, but different order")
+  }
+  
+  TRUE
+}
+
+# import necessary helpers from dplyr
+is_compatible_data_frame <- utils::getFromNamespace(x = "is_compatible_data_frame",
+                                                    ns = "dplyr")
+
+vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
+                                              ns = "dplyr")
+```
+
 ## Open as temporary spreadsheet
 
 ```{r}

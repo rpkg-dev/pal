@@ -1,3 +1,60 @@
+# Dataframes / Tibbles ----
+test_that("`is_equal_df()` works as expected", {
+
+  # different df's
+  expect_true(is_equal_df(mtcars,
+                          mtcars))
+
+  expect_false(is_equal_df(mtcars,
+                           cars))
+
+  #
+  expect_false(is_equal_df(mtcars,
+                           cars))
+
+  # column order
+  expect_true(is_equal_df(mtcars,
+                          mtcars %>% dplyr::select(3, everything()),
+                          ignore_col_order = TRUE))
+
+  expect_false(is_equal_df(mtcars,
+                           mtcars %>% dplyr::select(3, everything()),
+                           ignore_col_order = FALSE))
+
+  # row order
+  expect_true(is_equal_df(mtcars,
+                          mtcars[c(3, 2, 1, 4:nrow(mtcars)), ],
+                          ignore_row_order = TRUE))
+
+  expect_false(is_equal_df(mtcars,
+                           mtcars[c(3, 2, 1, 4:nrow(mtcars)), ],
+                           ignore_row_order = FALSE))
+
+  # type conversion
+  mtcars_tibble <- mtcars %>% tibble::as_tibble(rownames = "model")
+
+  expect_true(is_equal_df(mtcars_tibble,
+                          mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                          convert = TRUE))
+
+  expect_false(is_equal_df(mtcars_tibble,
+                           mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                           convert = FALSE))
+
+  # non-quiet
+  expect_message(is_equal_df(mtcars_tibble,
+                             mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                             convert = FALSE,
+                             quiet = FALSE),
+                 regexp = "Different types for column `model`: character vs factor")
+
+  # colum name repair
+  expect_message(is_equal_df(mtcars_tibble %>% dplyr::rename(`mod el` = model),
+                             mtcars_tibble %>% dplyr::rename(`mod el` = model),
+                             name_repair = "universal"),
+                 regexp = "`mod el` -> mod\\.el")
+})
+
 # R Markdown / Knitr ----
 
 
