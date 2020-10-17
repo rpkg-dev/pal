@@ -1803,7 +1803,7 @@ TODO:
                           })
     ```
 
-    The root cause of the problem might be similar to the one in `pkgpins::call_to_name()`...
+    The root cause of the problem might be similar to the one in `pkgpins::call_to_hash()`...
 
 -   Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
 
