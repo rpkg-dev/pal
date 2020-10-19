@@ -16,7 +16,7 @@ Depends:
     R (>= 4.0)
 Imports: 
     checkmate (>= 2.0.0),
-    dplyr (>= 0.8.4),
+    dplyr (>= 1.0.2),
     fs (>= 1.4.1),
     glue (>= 1.4.1),
     lifecycle (>= 0.2.0),
