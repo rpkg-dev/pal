@@ -23,11 +23,11 @@ as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
 # dark background colors that are easy on the eyes
 bg_red_dark <- cli::make_ansi_style("#330000",
                                     bg = TRUE,
-                                    colors = 2^24)
+                                    colors = 2L^24L)
 
 bg_green_dark <- cli::make_ansi_style("#003300",
                                       bg = TRUE,
-                                      colors = 2^24)
+                                      colors = 2L^24L)
 
 #' Determine the differences between two data frames/tibbles in tabular diff format
 #'
@@ -108,7 +108,7 @@ daff_diff <- function(x,
     
     y_lbl <- deparse(substitute(y))
     
-    if (length(y_lbl) > 1) {
+    if (length(y_lbl) > 1L) {
       y_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
       
     } else if (y_lbl == ".") y_lbl <- "`data_ref`"
@@ -846,7 +846,9 @@ is_pkg_installed <- function(pkg,
     
     is_pkg_installed(pkg = pkg) %>%
       list(names(.), min_version) %>%
-      purrr::pmap_lgl(~ {if(..1) utils::packageVersion(pkg = ..2) >= as.package_version(..3) else ..1})
+      purrr::pmap_lgl(~ {
+        if (..1) utils::packageVersion(pkg = ..2) >= as.package_version(..3) else ..1
+      })
   }
 }
 
@@ -2117,5 +2119,3 @@ roxy_tag_value <- function(text,
   
   result
 }
-
-# assert_package("RSelenium")
