@@ -29,24 +29,6 @@ bg_green_dark <- cli::make_ansi_style("#003300",
                                       bg = TRUE,
                                       colors = 2^24)
 
-#' Apply `all()` rowwise to a data frame
-#'
-#' This is a convenience function that helps to combine multiple [`across()`][dplyr::across()] statements in dplyr's [`filter()`](dplyr::filter()) function.
-#' See the examples.
-#'
-#' @param x A data frame or a tibble.
-#'
-#' @return A logical vector with the result of `all()` for each row of `x`.
-#' @export
-#'
-#' @examples
-#' # select all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
-#' mtcars %>% dplyr::filter(rowwise_all(dplyr::across(one_of("vs", "am"), ~ .x > 0))
-#'                          | rowwise_all(dplyr::across(one_of("gear", "carb"), ~ .x > 2)))
-rowwise_all <- function(x) {
-  purrr::pmap_lgl(x, all)
-}
-
 #' Determine the differences between two data frames/tibbles in tabular diff format
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like
@@ -199,25 +181,6 @@ daff_diff <- function(x,
   invisible(daff_obj)
 }
 
-#' Determine if row sum is greater than zero
-#'
-#' This is a convenience function intended to be used in combination with dplyr's [`across()`][dplyr::across()] to turn it from its default "all of" into an
-#' "any of" behavior. It's identical to the `rowAny()` helper function suggested in dplyr's
-#' [`"colwise"` vignette](https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code).
-#'
-#' @param x An array of two or more dimensions, containing numeric, complex, integer or logical values, or a numeric data frame. Row sums are always calculated
-#'   over the first two dimensions, i.e. always the first two dimensions are regarded as rows.
-#'
-#' @return A logical vector. The `names` are taken from the original array.
-#' @export
-#'
-#' @examples
-#' # Find all rows where *any* numeric variable is exactly 1
-#' mtcars %>% dplyr::filter(rowsum_gt_zero(dplyr::across(where(is.numeric), ~ .x == 1L)))
-rowsum_gt_zero <- function(x) {
-  rowSums(x) > 0L
-}
-
 #' Determine if two data frames/tibbles are equal
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
@@ -364,6 +327,43 @@ is_compatible_data_frame <- utils::getFromNamespace(x = "is_compatible_data_fram
 
 vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
                                               ns = "dplyr")
+
+#' Temporary helpers for `dplyr::filter()`
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' These are transitional convenience functions that help to combine multiple [`across()`][dplyr::across()] statements in dplyr's [`filter()`](dplyr::filter()).
+#' See the examples.
+#'
+#' @details
+#'
+#' `any_cols()` is functionally identical to the `rowAny()` helper function suggested in dplyr's [`"colwise"`
+#' vignette](https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code) but [performs slightly
+#' better](https://github.com/tidyverse/dplyr/issues/4770#issuecomment-704285294) (and has a more intuitive name when used with `dplyr::filter()`).
+#'
+#' @param x An array of two or more dimensions, containing numeric, complex, integer or **logical** values, or a numeric data frame / tibble.
+#'
+#' @return A logical vector that's equal to the result of [all()] (in case of `all_cols()`) or [any()] (in case of `any_cols()`) for each row of `x`.
+#' @export
+#'
+#' @examples
+#' # select all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
+#' mtcars %>% dplyr::filter(pal::all_cols(dplyr::across(one_of("vs", "am"), ~ .x > 0))
+#'                          | pal::all_cols(dplyr::across(one_of("gear", "carb"), ~ .x > 2)))
+#'
+#' # find all rows where *any* numeric variable is exactly 1
+#' mtcars %>% dplyr::filter(pal::any_cols(dplyr::across(where(is.numeric), ~ .x == 1L)))
+all_cols <- function(x) {
+    purrr::reduce(x, `&`, .init = TRUE)
+}
+
+#' @rdname all_cols
+#' @export
+any_cols <- function(x) {
+    purrr::reduce(x, `|`, .init = FALSE)
+}
 
 #' Open as temporary spreadsheet
 #'
