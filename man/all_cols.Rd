@@ -10,7 +10,7 @@ all_cols(x)
 any_cols(x)
 }
 \arguments{
-\item{x}{An array of two or more dimensions, containing numeric, complex, integer or \strong{logical} values, or a numeric data frame / tibble.}
+\item{x}{A data frame or tibble containing numeric, complex, integer or \strong{logical} values.}
 }
 \value{
 A logical vector that's equal to the result of \code{\link[=all]{all()}} (in case of \code{all_cols()}) or \code{\link[=any]{any()}} (in case of \code{any_cols()}) for each row of \code{x}.

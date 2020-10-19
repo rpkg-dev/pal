@@ -343,7 +343,7 @@ vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
 #' vignette](https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code) but [performs slightly
 #' better](https://github.com/tidyverse/dplyr/issues/4770#issuecomment-704285294) (and has a more intuitive name when used with `dplyr::filter()`).
 #'
-#' @param x An array of two or more dimensions, containing numeric, complex, integer or **logical** values, or a numeric data frame / tibble.
+#' @param x A data frame or tibble containing numeric, complex, integer or **logical** values.
 #'
 #' @return A logical vector that's equal to the result of [all()] (in case of `all_cols()`) or [any()] (in case of `any_cols()`) for each row of `x`.
 #' @export
