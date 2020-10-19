@@ -811,18 +811,21 @@ desc_value <- function(key,
 
 #' Test if packages are installed
 #'
-#' This function returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not.
+#' This function returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not, optionally ensuring a
+#' `min_version`.
 #'
 #' In contrast to [base::require()], it checks if the packages are installed without attaching their namespaces if so.
 #' 
 #' In contrast to [rlang::is_installed()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns a (named) logical vector
 #' of the same length as `pkg`.
 #' 
-#' It is
-#' [considerably faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the
-#' commonly used `pkg %in% rownames(installed.packages())` check.
+#' It is [considerably
+#' faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the commonly used
+#' `pkg %in% rownames(installed.packages())` check.
 #'
 #' @param pkg Package names. A character vector.
+#' @param min_version Minimum required version number of each `pkg`. A vector of [`package_version`][base::package_version()]s or something coercible to. Must
+#'   be of length one or the same length as `pkg`.
 #'
 #' @return A named logical vector of the same length as `pkg`.
 #' @export
@@ -830,10 +833,21 @@ desc_value <- function(key,
 #'
 #' @examples
 #' is_pkg_installed(pkg = "tidyverse")
-is_pkg_installed <- function(pkg) {
+#' is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+#'                  min_version = c("1.0", "2.0", "99.9.9000"))
+is_pkg_installed <- function(pkg,
+                             min_version = NULL) {
   
-  purrr::map_lgl(magrittr::set_names(pkg, pkg),
-                 ~ nzchar(system.file(package = .x)))
+  if (is.null(min_version)) {
+    
+    purrr::map_lgl(magrittr::set_names(pkg, pkg),
+                   ~ nzchar(system.file(package = .x)))
+  } else {
+    
+    is_pkg_installed(pkg = pkg) %>%
+      list(names(.), min_version) %>%
+      purrr::pmap_lgl(~ {if(..1) utils::packageVersion(pkg = ..2) >= as.package_version(..3) else ..1})
+  }
 }
 
 #' Test if a directory is an R package

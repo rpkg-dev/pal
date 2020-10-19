@@ -4,16 +4,20 @@
 \alias{is_pkg_installed}
 \title{Test if packages are installed}
 \usage{
-is_pkg_installed(pkg)
+is_pkg_installed(pkg, min_version = NULL)
 }
 \arguments{
 \item{pkg}{Package names. A character vector.}
+
+\item{min_version}{Minimum required version number of each \code{pkg}. A vector of \code{\link[base:numeric_version]{package_version}}s or something coercible to. Must
+be of length one or the same length as \code{pkg}.}
 }
 \value{
 A named logical vector of the same length as \code{pkg}.
 }
 \description{
-This function returns \code{TRUE} or \code{FALSE} for each \code{pkg}, depending on whether the \code{pkg} is installed on the current system or not.
+This function returns \code{TRUE} or \code{FALSE} for each \code{pkg}, depending on whether the \code{pkg} is installed on the current system or not, optionally ensuring a
+\code{min_version}.
 }
 \details{
 In contrast to \code{\link[base:library]{base::require()}}, it checks if the packages are installed without attaching their namespaces if so.
@@ -21,12 +25,13 @@ In contrast to \code{\link[base:library]{base::require()}}, it checks if the pac
 In contrast to \code{\link[rlang:is_installed]{rlang::is_installed()}}, it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns a (named) logical vector
 of the same length as \code{pkg}.
 
-It is
-\href{https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613}{considerably faster} than the
-commonly used \code{pkg \%in\% rownames(installed.packages())} check.
+It is \href{https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613}{considerably faster} than the commonly used
+\code{pkg \%in\% rownames(installed.packages())} check.
 }
 \examples{
 is_pkg_installed(pkg = "tidyverse")
+is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+                 min_version = c("1.0", "2.0", "99.9.9000"))
 }
 \seealso{
 R package functions
