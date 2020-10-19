@@ -31,9 +31,9 @@ is_equal_df(
 A logical scalar indicating the result of the comparison.
 }
 \description{
-This function compares two \link[base:data.frame]{data frames}/\link[tibble:tibble]{tibbles} (or two objects coercible to data frames like
-\link[base:matrix]{matrices}), optionally ignoring row and column ordering, and returns \code{TRUE} if both are equal, or \code{FALSE} otherwise. If the latter is the
-case and \code{quiet = FALSE}, information about detected differences is printed to the console.
+Compares two \link[base:data.frame]{data frames}/\link[tibble:tibble]{tibbles} (or two objects coercible to tibbles like \link[base:matrix]{matrices}), optionally
+ignoring row and column ordering, and returns \code{TRUE} if both are equal, or \code{FALSE} otherwise. If the latter is the case and \code{quiet = FALSE}, information
+about detected differences is printed to the console.
 }
 \examples{
 scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]

@@ -9,6 +9,8 @@ utils::globalVariables(names = c(".",
                                  "plus",
                                  "start"))
 
+unicode_ellipsis <- "\u2026"
+
 as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
   
   switch(EXPR = rlang::arg_match(eol),
@@ -66,9 +68,9 @@ rowsum_gt_zero <- function(x) {
 
 #' Determine if two data frames/tibbles are equal
 #'
-#' This function compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to data frames like
-#' [matrices][base::matrix()]), optionally ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the
-#' case and `quiet = FALSE`, information about detected differences is printed to the console.
+#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
+#' ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the case and `quiet = FALSE`, information
+#' about detected differences is printed to the console.
 #'
 #' @param x,y Two data frames/tibbles to compare.
 #' @param ignore_col_order Whether or not to ignore the order of columns.
@@ -234,11 +236,10 @@ vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
 open_as_tmp_spreadsheet <- function(x,
                                     format = c("csv", "xlsx"),
                                     quiet = TRUE) {
-  
   assert_pkg("xopen")
   format <- rlang::arg_match(format)
-  tmp_file <- tempfile(pattern = "tmp_spreadsheet",
-                       fileext = paste0(".", format))
+  tmp_file <- fs::file_temp(pattern = "tmp_spreadsheet",
+                            ext = format)
   
   if (format == "csv") {
     
@@ -625,15 +626,12 @@ assert_pkg <- function(pkg,
   if (!is_pkg_installed(checkmate::assert_string(pkg))) {
     
     if (is.null(message)) {
-      
       message <- glue::glue("Package '{pkg}' is required for this operation but not installed.\n",
                             "Please first install it (e.g. via `install.packages('{pkg}')`) and then try again.")
     }
-    
     rlang::abort(message = checkmate::assert_string(message))
     
   } else {
-    
     invisible(pkg)
   }
 }
@@ -1283,9 +1281,9 @@ str_replace_verbose_single_info <- function(string,
                                                                                                         -1L))
                                         
                                         # replace excerpt start/end with ellipsis dots (pruned to whole words if appropriate)
-                                        if (prune_start) excerpt_begin %<>% paste0("\u2026", .)
+                                        if (prune_start) excerpt_begin %<>% paste0(unicode_ellipsis, .)
                                         
-                                        if (prune_end) excerpt_end %<>% paste0("\u2026")
+                                        if (prune_end) excerpt_end %<>% paste0(unicode_ellipsis)
                                         
                                         # escape newlines (in case pattern contains newlines)
                                         excerpt_begin %<>% escape_lf()
@@ -1366,7 +1364,7 @@ str_replace_file <- function(path,
                                               fs::path_rel(path),
                                               fs::path_abs(path))
                   
-                  cli::cli_alert_info(text = "Processing file {.file {path_show}}\u2026")
+                  cli::cli_alert_info(text = "Processing file {.file {path_show}}{unicode_ellipsis}")
                 }
                 
                 # perform replacement
@@ -1420,8 +1418,6 @@ check_cli <- function(cmd,
                       get_cmd_path = FALSE,
                       force_which = FALSE) {
   
-  # check deps and argument validity
-  assert_pkg("fs")
   checkmate::assert_string(cmd)
   checkmate::assert_flag(get_cmd_path)
   checkmate::assert_flag(force_which)
@@ -1627,7 +1623,8 @@ cli_process_expr <- function(expr,
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.function`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action The action to take when the check fails. One of [rlang::abort()], [rlang::warn()], [rlang::inform()] or [rlang::signal()].
+#' @param .action The action to take when the check fails. One of [`rlang::abort`][rlang::abort()], [`rlang::warn`][rlang::warn()],
+#'   [`rlang::inform`][rlang::inform()] and [`rlang::signal`][rlang::signal()].
 #' @export
 #'
 #' @examples

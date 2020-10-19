@@ -24,7 +24,8 @@ check_dots_named(
 
 \item{.empty_ok}{Set to \code{TRUE} if empty \code{...} should be allowed, or to \code{FALSE} otherwise.}
 
-\item{.action}{The action to take when the check fails. One of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:abort]{rlang::warn()}}, \code{\link[rlang:abort]{rlang::inform()}} or \code{\link[rlang:abort]{rlang::signal()}}.}
+\item{.action}{The action to take when the check fails. One of \code{\link[rlang:abort]{rlang::abort}}, \code{\link[rlang:abort]{rlang::warn}},
+\code{\link[rlang:abort]{rlang::inform}} and \code{\link[rlang:abort]{rlang::signal}}.}
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
