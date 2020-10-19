@@ -47,6 +47,158 @@ rowwise_all <- function(x) {
   purrr::pmap_lgl(x, all)
 }
 
+#' Determine the differences between two data frames/tibbles in tabular diff format
+#'
+#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like
+#' [matrices][base::matrix()]) and offers to inspect any differences in [tabular diff format](https://paulfitz.github.io/daff-doc/spec.html) as rendered HTML.
+#'
+#' This function is basically a convenience wrapper combining [is_equal_df()], [daff::diff_data()] and [daff::render_diff()]. Note that it only compares the
+#' _content_ of `x` and `y`, not their attributes.
+#'
+#' @param x The data frame / tibble to check for changes.
+#' @param y The data frame / tibble that `x` should be checked against, i.e. the reference.
+#' @param ignore_order Whether or not to ignore the order of columns and rows.
+#' @param ids A character vector of column names that make up a primary key, if known. If `NULL`, heuristics are used to find a decent key (or a set of decent
+#'   keys).
+#' @param ask Whether to ask interactively if the resulting difference object should be opened (if `x` and `y` differ). If `FALSE`, it will be opened right
+#'   away. Only relevant if run [interactively][base::interactive()].
+#' @param bypass_rstudio_viewer If `TRUE`, `x` and `y` actually differ, and `ask` is set to `TRUE`, the resulting difference object will be
+#'   opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.
+#' @param caption The caption of the rendered difference object. A character scalar. If `NULL`, a default caption is generated based on the object names of `x`
+#'   and `y`.
+#' @param change_msg The message that is displayed on the console in case `x` and `y` differ. If `NULL`, a default message is displayed.
+#' @param ask_msg The message that is displayed when `ask = TRUE`. Ignored if `ask = FALSE`.
+#' @param ... Further arguments passed on to [daff::diff_data()], excluding `data`, `data_ref`, `ids`, `ordered`, and `columns_to_ignore`.
+#' @inheritParams is_equal_df
+#'
+#' @return A difference object which can be rendered later using [daff::render_diff()], invisibly.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' mtcars %>%
+#'   dplyr::mutate(dplyr::across(c(cyl, gear),
+#'                               ~ dplyr::if_else(. > 4, . * 2, .))) %>%
+#'   daff_diff(mtcars)}
+daff_diff <- function(x,
+                      y,
+                      ignore_order = FALSE,
+                      convert = FALSE,
+                      ids = NULL,
+                      ask = TRUE,
+                      bypass_rstudio_viewer = FALSE,
+                      change_msg = NULL,
+                      ask_msg = "Do you wish to display the changes?",
+                      caption = NULL,
+                      ...) {
+  
+  checkmate::assert_character(ids,
+                              any.missing = FALSE,
+                              null.ok = TRUE)
+  checkmate::assert_string(change_msg,
+                           null.ok = TRUE)
+  checkmate::assert_string(ask_msg)
+  checkmate::assert_string(caption,
+                           null.ok = TRUE)
+  checkmate::assert_flag(ignore_order)
+  checkmate::assert_flag(convert)
+  checkmate::assert_flag(ask)
+  checkmate::assert_flag(bypass_rstudio_viewer)
+  assert_pkg("daff")
+  
+  check_dots_named(...,
+                   .function = daff::diff_data,
+                   .forbidden = c("data",
+                                  "data_ref",
+                                  "ids",
+                                  "ordered",
+                                  "columns_to_ignore"))
+  
+  # generate default caption if necessary
+  x_lbl <- deparse(substitute(x))
+  
+  if (length(x_lbl) > 1L) {
+    x_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
+    
+  } else if (x_lbl == ".") x_lbl <- "`data`"
+  
+  if (is.null(caption)) {
+    
+    y_lbl <- deparse(substitute(y))
+    
+    if (length(y_lbl) > 1) {
+      y_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
+      
+    } else if (y_lbl == ".") y_lbl <- "`data_ref`"
+    
+    caption <- paste0(x_lbl, " vs. ", y_lbl)
+  }
+  
+  # generate default change message if necessary
+  if (is.null(change_msg)) {
+    change_msg <- glue::glue("The data in {x_lbl} has changed:")
+  }
+  
+  daff_obj <- daff::diff_data(data_ref = y,
+                              data = x,
+                              ids = ids,
+                              ordered = !ignore_order)
+  
+  diff <- is_equal_data_frame(x = x,
+                              y = y,
+                              ignore_col_order = ignore_order,
+                              ignore_row_order = ignore_order,
+                              convert = convert,
+                              name_repair = "minimal")
+  
+  if (!isTRUE(diff)) {
+    
+    assert_pkg("cli")
+    cli::cli_alert_info(change_msg)
+    cat("\n", diff, "\n", sep = "")
+    open_diff <- TRUE
+    
+    if (ask) {
+      assert_pkg("yesno")
+      open_diff <- yesno::yesno2(ask_msg)
+    }
+    
+    if (open_diff) {
+      
+      if (interactive()) {
+        
+        if (bypass_rstudio_viewer) {
+          
+          assert_pkg("withr")
+          withr::with_options(new = list(viewer = NULL),
+                              code = daff::render_diff(diff = daff_obj,
+                                                       view = TRUE,
+                                                       title = caption))
+        } else {
+          daff::render_diff(diff = daff_obj,
+                            view = TRUE,
+                            title = caption)
+        }
+      } else {
+        
+        assert_pkg("xopen")
+        tmp_file <- fs::file_temp(pattern = "daff_diff",
+                                  ext = "html")
+        
+        daff::render_diff(diff = daff_obj,
+                          file = tmp_file,
+                          view = FALSE,
+                          title = caption)
+        
+        xopen::xopen(target = glue::glue("file://{tmp_file}"),
+                     quiet = TRUE)
+      }
+    }
+  }
+  
+  invisible(daff_obj)
+}
+
 #' Determine if row sum is greater than zero
 #'
 #' This is a convenience function intended to be used in combination with dplyr's [`across()`][dplyr::across()] to turn it from its default "all of" into an
