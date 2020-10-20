@@ -44,3 +44,9 @@ min("zero", "one")
 safe_min("zero", 1L)
 safe_min("zero", "one")}
 }
+\seealso{
+Statistical computing functions
+\code{\link{safe_max}()},
+\code{\link{stat_mode}()}
+}
+\concept{stat}

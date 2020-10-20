@@ -60,7 +60,7 @@ makes all absolute URIs into links, even when not surrounded by pointy braces \v
 extension is that it precludes escaping \code{(} and \code{[}.}
 }
 \value{
-R Markdown output format to pass to \code{\link[rmarkdown:render]{rmarkdown::render()}}.
+R Markdown output format intended to be fed to \code{\link[rmarkdown:render]{rmarkdown::render()}}.
 }
 \description{
 Format for converting from R Markdown to \href{https://gitlab.com/help/user/markdown.md}{GitLab Flavored Markdown}.

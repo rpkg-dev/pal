@@ -63,3 +63,10 @@ mtcars \%>\%
                               ~ dplyr::if_else(. > 4, . * 2, .))) \%>\%
   daff_diff(mtcars)}
 }
+\seealso{
+Data frame / Tibble functions
+\code{\link{all_cols}()},
+\code{\link{is_equal_df}()},
+\code{\link{open_as_tmp_spreadsheet}()}
+}
+\concept{tibble}

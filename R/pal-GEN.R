@@ -54,6 +54,7 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #' @inheritParams is_equal_df
 #'
 #' @return A difference object which can be rendered later using [daff::render_diff()], invisibly.
+#' @family tibble
 #' @export
 #'
 #' @examples
@@ -195,6 +196,7 @@ daff_diff <- function(x,
 #' @param quiet Whether or not to output information about detected differences between `x` and `y` to the console.
 #'
 #' @return A logical scalar indicating the result of the comparison.
+#' @family tibble
 #' @export
 #'
 #' @examples
@@ -346,6 +348,7 @@ vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
 #' @param x A data frame or tibble containing numeric, complex, integer or **logical** values.
 #'
 #' @return A logical vector that's equal to the result of [all()] (in case of `all_cols()`) or [any()] (in case of `any_cols()`) for each row of `x`.
+#' @family tibble
 #' @export
 #'
 #' @examples
@@ -379,6 +382,7 @@ any_cols <- function(x) {
 #' @param quiet Whether or not to echo the command to open the temporary spreadsheet on the console before running it.
 #'
 #' @return `x` invisibly.
+#' @family tibble
 #' @export
 #'
 #' @examples
@@ -608,8 +612,9 @@ pipe_table <- function(x,
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
 #' @inheritParams knitr::knit
-#' @family rmd_knitr
 #'
+#' @return The path to `input` as a character scalar, invisibly.
+#' @family rmd_knitr
 #' @export
 build_readme <- function(input = "README.Rmd",
                          output = "README.md",
@@ -688,7 +693,7 @@ build_readme <- function(input = "README.Rmd",
 #' @inheritParams rmarkdown::output_format
 #' @inheritParams rmarkdown::md_document
 #'
-#' @return R Markdown output format to pass to [rmarkdown::render()].
+#' @return R Markdown output format intended to be fed to [rmarkdown::render()].
 #' @family rmd_knitr
 #' @export
 #'
@@ -828,8 +833,8 @@ desc_value <- function(key,
 #'   be of length one or the same length as `pkg`.
 #'
 #' @return A named logical vector of the same length as `pkg`.
-#' @export
 #' @family rpkgs
+#' @export
 #'
 #' @examples
 #' is_pkg_installed(pkg = "tidyverse")
@@ -860,8 +865,8 @@ is_pkg_installed <- function(pkg,
 #' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
 #'
 #' @return `TRUE` if `path` is the root directory of an R package, `FALSE` otherwise.
-#' @export
 #' @family rpkgs
+#' @export
 #'
 #' @examples
 #' is_pkg_dir()
@@ -881,8 +886,8 @@ is_pkg_dir <- function(path = ".") {
 #' @param as_regex Interpret `pkg` as regular expression(s). If `FALSE`, `pkg` is interpreted literally.
 #'
 #' @return A [tibble][tibble::tbl_df].
-#' @export
 #' @family rpkgs
+#' @export
 #'
 #' @examples
 #' ls_pkg(pkg = c("pal", "tibble", "dplyr"))
@@ -921,6 +926,7 @@ ls_pkg <- function(pkg,
 #' @param rm_na Ignore missing values in `...`. If missing values are present and `rm_na = FALSE`, the result will always be `NA`.
 #'
 #' @return A numeric scalar or empty value, of the same type as `...`.
+#' @family stat
 #' @export
 #'
 #' @examples
@@ -970,6 +976,7 @@ safe_max <- function(...,
 #' @inheritParams safe_max
 #'
 #' @inherit safe_max return
+#' @family stat
 #' @export
 #'
 #' @examples
@@ -1020,6 +1027,7 @@ safe_min <- function(...,
 #' @param rm_na Ignore missing values in `x`. A logical scalar.
 #'
 #' @return If `type = "n"`, the number of modes in `x` (an integer). Otherwise, the mode(s) of `x` or `NA` if none exist(s) (same type as `x`).
+#' @family stat
 #' @export
 #'
 #' @examples

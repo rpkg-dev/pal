@@ -60,3 +60,10 @@ is_equal_df(df1, df2)
 is_equal_df(df1, df2,
             convert = TRUE)
 }
+\seealso{
+Data frame / Tibble functions
+\code{\link{all_cols}()},
+\code{\link{daff_diff}()},
+\code{\link{open_as_tmp_spreadsheet}()}
+}
+\concept{tibble}

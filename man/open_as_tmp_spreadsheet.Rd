@@ -31,3 +31,10 @@ the file in a file browser.
 open_as_tmp_spreadsheet(mtcars,
                         format = "xslx")}
 }
+\seealso{
+Data frame / Tibble functions
+\code{\link{all_cols}()},
+\code{\link{daff_diff}()},
+\code{\link{is_equal_df}()}
+}
+\concept{tibble}

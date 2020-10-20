@@ -50,3 +50,9 @@ stat_mode(c(letters, "a", NA_character_, NA_character_),
           type = "all",
           rm_na = TRUE)
 }
+\seealso{
+Statistical computing functions
+\code{\link{safe_max}()},
+\code{\link{safe_min}()}
+}
+\concept{stat}

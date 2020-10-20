@@ -32,3 +32,10 @@ mtcars \%>\% dplyr::filter(pal::all_cols(dplyr::across(one_of("vs", "am"), ~ .x 
 # find all rows where *any* numeric variable is exactly 1
 mtcars \%>\% dplyr::filter(pal::any_cols(dplyr::across(where(is.numeric), ~ .x == 1L)))
 }
+\seealso{
+Data frame / Tibble functions
+\code{\link{daff_diff}()},
+\code{\link{is_equal_df}()},
+\code{\link{open_as_tmp_spreadsheet}()}
+}
+\concept{tibble}
