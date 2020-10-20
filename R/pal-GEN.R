@@ -1702,6 +1702,34 @@ run_cli <- function(cmd,
   
 }
 
+#' Generate an integer sequence of specific length (safe)
+#'
+#' This is a modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
+#'
+#' @param n The desired length of the integer sequence.
+#'
+#' @return An integer sequence starting from 1.
+#' @export
+#'
+#' @examples
+#' safe_seq_len(5)
+#'
+#' # this function simply returns a zero-length integer for zero-length inputs ...
+#' safe_seq_len(NULL)
+#' safe_seq_len(integer())
+#' 
+#' # ... while `seq_len()` throws an error
+#' \dontrun{
+#' seq_len(NULL)
+#' seq_len(integer())}
+safe_seq_len <- function(n) {
+  
+  if (length(n)) {
+    return(seq_len(n))
+    
+  } else return(integer())
+}
+
 #' Test if an HTTP request is successful
 #'
 #' @description
