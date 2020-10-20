@@ -352,11 +352,11 @@ vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
 #' @export
 #'
 #' @examples
-#' # select all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
+#' # keep all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
 #' mtcars %>% dplyr::filter(pal::all_cols(dplyr::across(one_of("vs", "am"), ~ .x > 0))
 #'                          | pal::all_cols(dplyr::across(one_of("gear", "carb"), ~ .x > 2)))
 #'
-#' # find all rows where *any* numeric variable is exactly 1
+#' # keep all rows where *any* numeric variable is exactly 1
 #' mtcars %>% dplyr::filter(pal::any_cols(dplyr::across(where(is.numeric), ~ .x == 1L)))
 all_cols <- function(x) {
     purrr::reduce(x, `&`, .init = TRUE)
@@ -371,12 +371,12 @@ any_cols <- function(x) {
 #' Open as temporary spreadsheet
 #'
 #' This is a convenience function to write an R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and
-#' and subsequently open that spreadsheet in the system's default application using [xopen::xopen()]. The latter is usually equivalent to double-clicking on
+#' subsequently open that spreadsheet in the system's default application using [xopen::xopen()]. The latter is usually equivalent to double-clicking on
 #' the file in a file browser.
 #'
 #' @param x A dataframe or [tibble][tibble::tibble()], or something coercible to.
 #' @param format The spreadsheet format to use. One of
-#'   - `"csv"` for [comma-separated values](https://en.wikipedia.org/wiki/Comma-separated_values) file written using [readr::write_csv()]. The default.
+#'   - `"csv"` for a [comma-separated values](https://en.wikipedia.org/wiki/Comma-separated_values) file written using [readr::write_csv()]. The default.
 #'   - `"xlsx"` for an [Office Open XML](https://en.wikipedia.org/wiki/Office_Open_XML) file commonly used by Microsoft Excel 2007+, written using
 #'     [writexl::write_xlsx()].
 #' @param quiet Whether or not to echo the command to open the temporary spreadsheet on the console before running it.

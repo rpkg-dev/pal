@@ -25,11 +25,11 @@ See the examples.
 \code{any_cols()} is functionally identical to the \code{rowAny()} helper function suggested in dplyr's \href{https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code}{\code{"colwise"} vignette} but \href{https://github.com/tidyverse/dplyr/issues/4770#issuecomment-704285294}{performs slightly better} (and has a more intuitive name when used with \code{dplyr::filter()}).
 }
 \examples{
-# select all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
+# keep all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
 mtcars \%>\% dplyr::filter(pal::all_cols(dplyr::across(one_of("vs", "am"), ~ .x > 0))
                          | pal::all_cols(dplyr::across(one_of("gear", "carb"), ~ .x > 2)))
 
-# find all rows where *any* numeric variable is exactly 1
+# keep all rows where *any* numeric variable is exactly 1
 mtcars \%>\% dplyr::filter(pal::any_cols(dplyr::across(where(is.numeric), ~ .x == 1L)))
 }
 \seealso{

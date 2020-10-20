@@ -11,7 +11,7 @@ open_as_tmp_spreadsheet(x, format = c("csv", "xlsx"), quiet = TRUE)
 
 \item{format}{The spreadsheet format to use. One of
 \itemize{
-\item \code{"csv"} for \href{https://en.wikipedia.org/wiki/Comma-separated_values}{comma-separated values} file written using \code{\link[readr:write_delim]{readr::write_csv()}}. The default.
+\item \code{"csv"} for a \href{https://en.wikipedia.org/wiki/Comma-separated_values}{comma-separated values} file written using \code{\link[readr:write_delim]{readr::write_csv()}}. The default.
 \item \code{"xlsx"} for an \href{https://en.wikipedia.org/wiki/Office_Open_XML}{Office Open XML} file commonly used by Microsoft Excel 2007+, written using
 \code{\link[writexl:write_xlsx]{writexl::write_xlsx()}}.
 }}
@@ -23,7 +23,7 @@ open_as_tmp_spreadsheet(x, format = c("csv", "xlsx"), quiet = TRUE)
 }
 \description{
 This is a convenience function to write an R object -- usually tabular data like a dataframe or \link[tibble:tibble]{tibble} -- to a temporary spreadsheet and
-and subsequently open that spreadsheet in the system's default application using \code{\link[xopen:xopen]{xopen::xopen()}}. The latter is usually equivalent to double-clicking on
+subsequently open that spreadsheet in the system's default application using \code{\link[xopen:xopen]{xopen::xopen()}}. The latter is usually equivalent to double-clicking on
 the file in a file browser.
 }
 \examples{
