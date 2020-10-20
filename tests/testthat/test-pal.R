@@ -55,11 +55,34 @@ test_that("`is_equal_df()` works as expected", {
                  regexp = "`mod el` -> mod\\.el")
 })
 
+test_that("`reduce_df_list()` works as expected", {
+
+  mtcars_tibble <- tibble::as_tibble(mtcars,
+                                     rownames = "model")
+  df_list <- list(mtcars_tibble[1:4, ],
+                  list(mtcars_tibble[5:8, ],
+                       list(mtcars_tibble[9:12, ])),
+                  list(list(list(mtcars_tibble[13:16, ]))),
+                  mtcars_tibble[17:20, ],
+                  list(list(mtcars_tibble[21:24, ]),
+                       mtcars_tibble[25:28, ]),
+                  mtcars_tibble[29:32, ])
+
+  expect_identical(df_list %>% reduce_df_list(strict = TRUE) %>% dplyr::arrange(model),
+                   mtcars_tibble %>% dplyr::arrange(model))
+
+  expect_error(reduce_df_list(x = c(df_list, "not a tibble"),
+                              strict = TRUE))
+
+  expect_identical(c(df_list, "not a tibble") %>% reduce_df_list(strict = FALSE) %>% dplyr::arrange(model),
+                   mtcars_tibble %>% dplyr::arrange(model))
+})
+
 # R Markdown / Knitr ----
 
 
 # R Packages ----
-test_that("`README.Rmd` can be built successfully.", {
+test_that("`README.Rmd` can be built successfully", {
 
   readr::write_file(x = "---
 output: github_document

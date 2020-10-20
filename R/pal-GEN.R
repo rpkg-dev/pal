@@ -416,6 +416,34 @@ open_as_tmp_spreadsheet <- function(x,
   invisible(x)
 }
 
+#' Reduce a nested list of data frames / tibbles to a single tibble
+#'
+#' Recursively reduces a nested list containing data frames / tibbles at its leafs to a single tibble.
+#'
+#' @param x A list containing data frames / tibbles at its leafs.
+#' @param strict Ensure `x` contains data frames / tibbles only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
+#'
+#' @return `r pkgsnip::return_label("data")`
+#' @export
+reduce_df_list <- function(x,
+                           strict = TRUE) {
+  
+  if (tibble::is_tibble(x) | is.data.frame(x)) {
+    
+    return(x)
+    
+  } else if (purrr::vec_depth(x) < 2L) {
+    
+    if (checkmate::assert_flag(strict)) {
+      rlang::abort("At least one element of the list to be reduced is not a data frame / tibble!")
+      
+    } else return(NULL)
+    
+  } else purrr::map_dfr(.x = x,
+                        .f = reduce_df_list,
+                        strict = strict)
+}
+
 #' Convert to a flat list
 #'
 #' @description
