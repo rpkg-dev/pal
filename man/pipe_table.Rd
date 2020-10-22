@@ -73,3 +73,8 @@ should produce the following table in \href{https://www.tidyverse.org/blog/2020/
 \examples{
 mtcars \%>\% head() \%>\% pipe_table() \%>\% cat_lines()
 }
+\seealso{
+(Pandoc) Markdown functions
+\code{\link{as_md_list}()}
+}
+\concept{md}

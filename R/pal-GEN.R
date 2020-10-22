@@ -552,6 +552,51 @@ rm_list_level <- function(x,
   result
 }
 
+#' Convert a character vector to a Markdown list
+#'
+#' This is a convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
+#' list](https://pandoc.org/MANUAL.html#lists).
+#'
+#' @param x The character vector to be converted to a Markdown list.
+#' @param type The Markdown list type. One of
+#'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to `<ul>` in HTML.
+#'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to `<ol>` in HTML.
+#'   - `"ordered_roman"` for a variation of an ordered/numbered list with uppercase roman numerals instead of Arabic numerals as list markers.
+#' @param tight Whether or not to add additional spacing between list items.
+#' @param indent_lvl The level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
+#'   integer scalar.
+#' @param wrap An optional string to wrap the list items in.
+#'
+#' @return A character scalar.
+#' @family md
+#' @export
+#'
+#' @examples
+#' rownames(mtcars) %>% as_md_list() %>% cat()
+as_md_list <- function(x,
+                       type = c("unordered", "ordered", "ordered_roman"),
+                       tight = TRUE,
+                       indent_lvl = 0L,
+                       wrap = NULL) {
+  
+  type <- rlang::arg_match(type)
+  checkmate::assert_flag(tight)
+  checkmate::assert_count(indent_lvl)
+  checkmate::assert_string(wrap,
+                           null.ok = TRUE)
+  assert_pkg("pander")
+  
+  pander::pandoc.list.return(elements = paste0(wrap, as_chr(x), wrap),
+                             style = switch(EXPR = type,
+                                            unordered = "bullet",
+                                            ordered = "ordered",
+                                            ordered_roman = "roman"),
+                             loose = !tight,
+                             indent.level = indent_lvl,
+                             add.line.breaks = FALSE,
+                             add.end.of.list = FALSE)
+}
+
 #' Convert dataframe/tibble to Markdown pipe table
 #'
 #' This is a convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a
@@ -584,6 +629,7 @@ rm_list_level <- function(x,
 #' @inheritParams knitr::kable
 #'
 #' @return A character vector.
+#' @family md
 #' @export
 #'
 #' @examples
