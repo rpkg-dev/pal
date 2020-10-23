@@ -1748,6 +1748,29 @@ run_cli <- function(cmd,
   
 }
 
+#' Capture printed console output as string
+#'
+#' Returns what [`print(x)`][base::print()] would output on the console as an atomic character vector (aka string).
+#'
+#' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
+#' (e.g. as output by the `print()` methods of tidyverse packages) are not captured (i.e. lost).
+#'
+#' @param x The \R object of which the output of `print(x)` is to be captured.
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' mtcars %>% capture_print %>% str()
+capture_print <- function(x) {
+  
+  utils::capture.output(print(x),
+                        file = NULL,
+                        type = "output",
+                        split = FALSE) %>%
+    paste0(collapse = "\n")
+}
+
 #' Generate an integer sequence of specific length (safe)
 #'
 #' This is a modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
