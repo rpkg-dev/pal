@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9030
+Version: 0.0.9031
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",
@@ -29,6 +29,7 @@ Imports:
     utils
 Suggests: 
     cli (>= 2.0.2),
+    commonmark (>= 1.7),
     crayon (>= 1.3.4),
     daff (>= 0.3.5),
     desc (>= 1.2.0),

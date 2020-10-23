@@ -672,6 +672,38 @@ pipe_table <- function(x,
           args = kable_args)
 }
 
+#' Strip Markdown formatting from character vector
+#'
+#' Removes all Markdown formatting from a character vector.
+#'
+#' This function relies on [commonmark::markdown_text()] which [supports the CommonMark specification plus the Github
+#' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) aren't supported
+#' (yet). Therefore a separate option `strip_footnotes` is offered which relies on a simple regular expression to remove inline footnotes and footnote
+#' references.
+#'
+#' @param x A character vector to strip Markdown formatting from.
+#' @param strip_footnotes Whether to remove Markdown footnotes, too.
+#'
+#' @return A character vector of the same length as `x`.
+#' @export
+#'
+#' @examples
+#' strip_md("A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))")
+strip_md <- function(x,
+                     strip_footnotes = TRUE) {
+  
+  assert_pkg("commonmark")
+  
+  purrr::map_chr(.x = x,
+                 .f = ~ .x %>% purrr::when(is.na(.) ~ .,
+                                           ~ commonmark::markdown_text(text = .,
+                                                                       extensions = TRUE) %>%
+                                             stringr::str_remove(pattern = "\n$") %>%
+                                             purrr::when(strip_footnotes ~ stringr::str_remove_all(string = .,
+                                                                                                   pattern = "(\\[\\^.+?\\]|\\^\\[.+?\\])"),
+                                                         ~ .)))
+}
+
 #' Build `README.Rmd`
 #'
 #' This function is a simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library

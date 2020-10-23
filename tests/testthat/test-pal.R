@@ -78,6 +78,31 @@ test_that("`reduce_df_list()` works as expected", {
                    mtcars_tibble %>% dplyr::arrange(model))
 })
 
+# (Pandoc) Markdown ----
+test_that("`strip_md()` works as expected", {
+
+  # basic
+  expect_identical(strip_md("Some **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))"),
+                   "Some MD formatted string")
+
+  # footnotes
+  expect_identical(strip_md("Some **MD** formatted _string_ with a footnote ref[^bla]",
+                            strip_footnotes = TRUE),
+                   "Some MD formatted string with a footnote ref")
+
+  expect_identical(strip_md("Some **MD** formatted _string_ with a footnote ref[^bla]",
+                            strip_footnotes = FALSE),
+                   "Some MD formatted string with a footnote ref[^bla]")
+
+  expect_identical(strip_md("Some **MD** formatted _string_ with an inline^[footnote] footnote",
+                            strip_footnotes = TRUE),
+                   "Some MD formatted string with an inline footnote")
+
+  expect_identical(strip_md("Some **MD** formatted _string_ with an inline^[footnote] footnote",
+                            strip_footnotes = FALSE),
+                   "Some MD formatted string with an inline^[footnote] footnote")
+})
+
 # R Markdown / Knitr ----
 
 
