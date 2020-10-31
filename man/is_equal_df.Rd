@@ -63,7 +63,7 @@ is_equal_df(df1, df2,
 \seealso{
 Data frame / Tibble functions
 \code{\link{all_cols}()},
-\code{\link{daff_diff}()},
-\code{\link{open_as_tmp_spreadsheet}()}
+\code{\link{open_as_tmp_spreadsheet}()},
+\code{\link{show_diff}()}
 }
 \concept{tibble}

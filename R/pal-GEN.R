@@ -32,17 +32,20 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #' Determine the differences between two data frames/tibbles in tabular diff format
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like
-#' [matrices][base::matrix()]) and offers to inspect any differences in [tabular diff format](https://paulfitz.github.io/daff-doc/spec.html) as rendered HTML.
+#' [matrices][base::matrix()]) and offers to inspect any differences in [tabular diff format](https://paulfitz.github.io/daff-doc/spec.html) as neatly rendered
+#' HTML.
 #'
-#' This function is basically a convenience wrapper combining [is_equal_df()], [daff::diff_data()] and [daff::render_diff()]. Note that it only compares the
-#' _content_ of `x` and `y`, not their attributes.
+#' This function is basically a convenience wrapper combining [is_equal_df()], [daff::diff_data()] and [daff::render_diff()]. If run non-interactively or
+#' `ask = FALSE`, the differences will be shown right away, otherwise the user will be asked on the console.
+#'
+#' Note that it only compares the _content_ of `x` and `y`, not their attributes.
 #'
 #' @param x The data frame / tibble to check for changes.
 #' @param y The data frame / tibble that `x` should be checked against, i.e. the reference.
 #' @param ignore_order Whether or not to ignore the order of columns and rows.
-#' @param ids A character vector of column names that make up a primary key, if known. If `NULL`, heuristics are used to find a decent key (or a set of decent
-#'   keys).
-#' @param ask Whether to ask interactively if the resulting difference object should be opened (if `x` and `y` differ). If `FALSE`, it will be opened right
+#' @param ids A character vector of column names that make up a [primary key](https://en.wikipedia.org/wiki/Primary_key), if known. If `NULL`, heuristics are
+#'   used to find a decent key (or a set of decent keys).
+#' @param ask Whether to ask interactively if the resulting difference object should be opened in case `x` and `y` differ. If `FALSE`, it will be opened right
 #'   away. Only relevant if run [interactively][base::interactive()].
 #' @param bypass_rstudio_viewer If `TRUE`, `x` and `y` actually differ, and `ask` is set to `TRUE`, the resulting difference object will be
 #'   opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.
@@ -62,8 +65,8 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #' mtcars %>%
 #'   dplyr::mutate(dplyr::across(c(cyl, gear),
 #'                               ~ dplyr::if_else(. > 4, . * 2, .))) %>%
-#'   daff_diff(mtcars)}
-daff_diff <- function(x,
+#'   show_diff(mtcars)}
+show_diff <- function(x,
                       y,
                       ignore_order = FALSE,
                       convert = FALSE,
@@ -165,7 +168,7 @@ daff_diff <- function(x,
       } else {
         
         assert_pkg("xopen")
-        tmp_file <- fs::file_temp(pattern = "daff_diff",
+        tmp_file <- fs::file_temp(pattern = "pal_show_diff",
                                   ext = "html")
         
         daff::render_diff(diff = daff_obj,
