@@ -13,7 +13,7 @@ cat_lines(...)
 None (invisible \code{NULL}).
 }
 \description{
-This is a convenience wrapper around \code{\link[=as_chr]{as_chr()}} and \code{\link[base:cat]{cat()}}, mainly intended for interactive use.
+Convenience wrapper around \code{\link[=as_chr]{as_chr()}} and \code{\link[base:cat]{cat()}}, mainly intended for interactive use.
 }
 \examples{
 fs::path_package(package = "pal",

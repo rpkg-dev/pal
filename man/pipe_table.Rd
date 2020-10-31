@@ -42,8 +42,7 @@ the number of digits for individual columns.}
 A character vector.
 }
 \description{
-This is a convenience wrapper around \code{\link[knitr:kable]{knitr::kable(format = "pipe")}} to create a
-\href{https://pandoc.org/MANUAL.html#extension-pipe_tables}{Markdown pipe table}.
+Convenience wrapper around \code{\link[knitr:kable]{knitr::kable(format = "pipe")}} to create a \href{https://pandoc.org/MANUAL.html#extension-pipe_tables}{Markdown pipe table}.
 }
 \details{
 Missing values (\code{NA}) in the table are displayed as \code{NA} by

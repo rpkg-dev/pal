@@ -41,7 +41,7 @@ termination message. Use an empty string to suppress styling.a}
 The result of the evaluated \code{expr}.
 }
 \description{
-This is a convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_start()}}, \code{\link[cli:cli_process_start]{cli::cli_process_done()}} and \code{\link[cli:cli_process_start]{cli::cli_process_failed()}}.
+Convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_start()}}, \code{\link[cli:cli_process_start]{cli::cli_process_done()}} and \code{\link[cli:cli_process_start]{cli::cli_process_failed()}}.
 }
 \examples{
 \donttest{

@@ -431,9 +431,8 @@ any_cols <- function(x) {
 ```{r}
 #' Open as temporary spreadsheet
 #'
-#' This is a convenience function to write an R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and
-#' subsequently open that spreadsheet in the system's default application using [xopen::xopen()]. The latter is usually equivalent to double-clicking on
-#' the file in a file browser.
+#' Writes an R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and subsequently opens that
+#' spreadsheet in the system's default application using [xopen::xopen()]. The latter is usually equivalent to double-clicking on the file in a file browser.
 #'
 #' @param x A dataframe or [tibble][tibble::tibble()], or something coercible to.
 #' @param format The spreadsheet format to use. One of
@@ -637,7 +636,7 @@ TODO:
 ```{r}
 #' Convert a character vector to a Markdown list
 #'
-#' This is a convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
+#' Convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
 #' list](https://pandoc.org/MANUAL.html#lists).
 #'
 #' @param x The character vector to be converted to a Markdown list.
@@ -686,8 +685,8 @@ as_md_list <- function(x,
 ```{r}
 #' Convert dataframe/tibble to Markdown pipe table
 #'
-#' This is a convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a
-#' [Markdown pipe table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
+#' Convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a [Markdown pipe
+#' table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
 #' 
 #' # Create tables dynamically in roxygen2 documentation
 #' 
@@ -1111,8 +1110,8 @@ is_pkg_installed <- function(pkg,
 ```{r}
 #' Test if a directory is an R package
 #'
-#' This is a simple convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that this function will only
-#' return `TRUE` for the root of a package directory, not its subdirectories.
+#' Convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that it will only return `TRUE` for the root of a
+#' package directory, not its subdirectories.
 #'
 #' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
 #'
@@ -1185,7 +1184,7 @@ devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon 
 #' Maximum (safe)
 #'
 #' @description
-#' This is a modified version of [`max()`][base::max()] that differs in the following ways:
+#' Modified version of [`max()`][base::max()] that differs in the following ways:
 #'
 #' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
 #' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
@@ -1239,7 +1238,7 @@ safe_max <- function(...,
 #' Minimum (safe)
 #'
 #' @description
-#' This is a modified version of [`min()`][base::min()] that differs in the following ways:
+#' Modified version of [`min()`][base::min()] that differs in the following ways:
 #'
 #' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
 #' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
@@ -1596,7 +1595,7 @@ prose_ls <- function(x,
 ```{r}
 #' Print `x` as newline-separated character vector using `cat()`.
 #' 
-#' This is a convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
+#' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
 #'
 #' @param ... The \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
@@ -2062,7 +2061,7 @@ capture_print <- function(x) {
 ```{r}
 #' Generate an integer sequence of specific length (safe)
 #'
-#' This is a modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
+#' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
 #'
 #' @param n The desired length of the integer sequence.
 #'
@@ -2104,7 +2103,7 @@ TODO: Figure out if it's really sensible to handle/catch interrupts.
 #' Test if an HTTP request is successful
 #'
 #' @description
-#' This is a convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
+#' Convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
 #'
 #' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD`](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) request could
 #'   be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), or
@@ -2180,7 +2179,7 @@ TODO:
 ```{r}
 #' Evaluate an expression with cli process indication
 #'
-#' This is a convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
+#' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
 #'
 #' @param expr An expression to be evaluated.
 #' @param env Environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.

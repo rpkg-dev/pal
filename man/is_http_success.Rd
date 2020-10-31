@@ -18,7 +18,7 @@ exponential backoff and jitter, see \code{\link[httr:RETRY]{httr::RETRY()}} for 
 A logical scalar.
 }
 \description{
-This is a convenience wrapper around \code{\link[httr:http_error]{!httr::http_error()}} that returns
+Convenience wrapper around \code{\link[httr:http_error]{!httr::http_error()}} that returns
 \itemize{
 \item \code{TRUE} if the specified \code{url} could be resolved \emph{and} a \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}{\code{HEAD}} request could
 be \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{successfully completed}, or

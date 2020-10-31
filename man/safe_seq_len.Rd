@@ -13,7 +13,7 @@ safe_seq_len(n)
 An integer sequence starting from 1.
 }
 \description{
-This is a modified version of \code{\link[base:seq]{seq_len()}} that returns a zero-length integer in case of a zero-length input instead of throwing an error.
+Modified version of \code{\link[base:seq]{seq_len()}} that returns a zero-length integer in case of a zero-length input instead of throwing an error.
 }
 \examples{
 safe_seq_len(5)
