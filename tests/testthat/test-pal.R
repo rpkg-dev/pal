@@ -109,22 +109,18 @@ test_that("`strip_md()` works as expected", {
 # R Packages ----
 test_that("`README.Rmd` can be built successfully", {
 
-  readr::write_file(x = "---
+  withr::local_file(.file = list("README.Rmd" = readr::write_file(file = "README.Rmd",
+                                                                  x = "---
 output: github_document
 ---
 
 # hi there
 
-nothing `r 'here.'`",
-                    file = "README.Rmd")
-
-  pal::build_readme()
+nothing `r 'here.'`"),
+                                 "README.md" = pal::build_readme()))
 
   expect_match(object = readr::read_file("README.md"),
                regexp = "nothing here\\.")
-
-  fs::file_delete(path = c("README.md",
-                           "README.Rmd"))
 })
 
 test_that("`is_pkg_installed()` works as expected", {
@@ -268,28 +264,24 @@ test_that("`str_replace_file()` basically works", {
               "tell me more about your analog(y)" = "go home alread\\1",
               "\\Q[Naval Ravikant](https://twitter.com/naval/status/939316447318122496)" = "Nobody")
 
-  tmp_file <- fs::file_temp(ext = "txt")
-  tmp_file2 <- fs::file_temp(ext = "txt")
-  teardown(unlink(tmp_file))
-  setup(readr::write_lines(x = before,
-                           file = tmp_file),
-        readr::write_lines(x = before,
-                           file = tmp_file2))
+  withr::local_file(.file = list(
+    "test_file_1.txt" = {
+      readr::write_lines(x = before,
+                         file = "test_file_1.txt")
+      str_replace_file(path = "test_file_1.txt",
+                       pattern,
+                       process_line_by_line = TRUE,
+                       verbose = FALSE)},
+    "test_file_2.txt" = {
+      readr::write_lines(x = before,
+                         file = "test_file_2.txt")
+      str_replace_file(path = "test_file_2.txt",
+                       pattern,
+                       process_line_by_line = FALSE,
+                       verbose = FALSE)}))
 
-  str_replace_file(path = c(tmp_file,
-                            tmp_file2),
-                   pattern,
-                   process_line_by_line = TRUE,
-                   verbose = FALSE)
-
-  str_replace_file(path = c(tmp_file,
-                            tmp_file2),
-                   pattern,
-                   process_line_by_line = FALSE,
-                   verbose = FALSE)
-
-  expect_identical(readr::read_lines(tmp_file),
+  expect_identical(readr::read_lines("test_file_1.txt"),
                    after)
-  expect_identical(readr::read_lines(tmp_file2),
+  expect_identical(readr::read_lines("test_file_2.txt"),
                    after)
 })
