@@ -431,7 +431,7 @@ any_cols <- function(x) {
 ```{r}
 #' Open as temporary spreadsheet
 #'
-#' Writes an R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and subsequently opens that
+#' Writes an \R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and subsequently opens that
 #' spreadsheet in the system's default application using [xopen::xopen()]. The latter is usually equivalent to double-clicking on the file in a file browser.
 #'
 #' @param x A dataframe or [tibble][tibble::tibble()], or something coercible to.
@@ -691,7 +691,7 @@ as_md_list <- function(x,
 #' # Create tables dynamically in roxygen2 documentation
 #' 
 #' This function can be useful to create tables inside [roxygen2][roxygen2::roxygen2] documentation programmatically from data using
-#' [dynamic R code](https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1).
+#' [dynamic \R code](https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1).
 #' 
 #' The inline code
 #' 
@@ -804,7 +804,7 @@ strip_md <- function(x,
 #'
 #' This function is a simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library
 #' before building the `README.Rmd`. This has the pleasant side effect that, other than the latter function, it also works for `.Rmd` files which aren't part
-#' of an R package.
+#' of an \R package.
 #' 
 #' Note that for public package repositories it's recommended to use `devtools::build_readme()` since it ensures the `README.Rmd` can be built reproducibly,
 #' which means all the objects and files it references must be accessible from the repository.
@@ -813,14 +813,14 @@ strip_md <- function(x,
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
-#' @inheritParams knitr::knit
+#' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
 #' @return The path to `input` as a character scalar, invisibly.
 #' @family rmd_knitr
 #' @export
 build_readme <- function(input = "README.Rmd",
                          output = "README.md",
-                         envir = parent.frame()) {
+                         env = parent.frame()) {
   
   assert_pkg("knitr")
   assert_pkg("rmarkdown")
@@ -831,7 +831,7 @@ build_readme <- function(input = "README.Rmd",
     
     assign(x = "pkg_metadata",
            value = desc::desc_get(desc::desc_fields()),
-           envir = envir)
+           envir = env)
   }
   
   # knit Rmd to md
@@ -840,13 +840,55 @@ build_readme <- function(input = "README.Rmd",
               output = checkmate::assert_path_for_output(output,
                                                          overwrite = TRUE),
               quiet = TRUE,
-              envir = envir)
+              envir = env)
   
   # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = output,
                     output_file = output,
                     quiet = TRUE,
-                    envir = envir)
+                    envir = env)
+}
+```
+
+## Determine knitr table format
+
+```{r}
+#' Determine current knitr table format
+#'
+#' Determines the current knitr table format based on the \R option `knitr.table.format` which can either be set directly to a valid format string or to a
+#' function returning one of these strings conditionally.
+#'
+#' This is basically a convenience wrapper to be able to access the current `knitr.table.format` in a hassle-free way, i.e. it provides the conditional logic to
+#' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
+#'
+#' @param default The knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
+#'   `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
+#'   
+#'   See [knitr::kable()]'s `format` argument for details.
+#'
+#' @return
+#' @export
+knitr_table_format <- function(default = c("pipe",
+                                           "simple",
+                                           "html",
+                                           "latex",
+                                           "rst")) {
+  
+  allowed_formats <- eval(formals()$default)
+  
+  result <- getOption("knitr.table.format",
+                      default = rlang::arg_match(default))
+  
+  if (is.function(result)) result %<>% result()
+  
+  if (!(result %in% allowed_formats)) {
+    rlang::abort(paste0("Invalid R option `knitr.table.format`. Must evaluate to one of ",
+                        prose_ls(x = wrap_chr(allowed_formats),
+                                 wrap = "`",
+                                 last_separator = " or ")))
+  }
+  
+  result
 }
 ```
 
@@ -1108,14 +1150,14 @@ is_pkg_installed <- function(pkg,
 ## Test if a directory is an R package
 
 ```{r}
-#' Test if a directory is an R package
+#' Test if a directory is an \R package
 #'
 #' Convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that it will only return `TRUE` for the root of a
 #' package directory, not its subdirectories.
 #'
 #' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
 #'
-#' @return `TRUE` if `path` is the root directory of an R package, `FALSE` otherwise.
+#' @return `TRUE` if `path` is the root directory of an \R package, `FALSE` otherwise.
 #' @family rpkgs
 #' @export
 #'
@@ -1548,10 +1590,10 @@ dsv_colnames <- function(x,
 }
 ```
 
-## List items concatenated in prose-style (..., ... and ...)
+## List items concatenated in prose style (..., ... and ...)
 
 ```{r}
-#' List items concatenated in prose-style (..., ... and ...)
+#' List items concatenated in prose style (..., ... and ...)
 #'
 #' This function takes a vector or list and concatenates its elements to a single string separated in prose-style.
 #'
@@ -1587,6 +1629,127 @@ prose_ls <- function(x,
   }
   
   result
+}
+```
+
+## List a function's default parameter values in prose-style
+
+TODO:
+
+-   Write tests for non-character default vals.
+-   Wrap `eval(expr = default_vals, envir = env)` in try-catch if necessary (test!).
+
+```{r}
+#' List a function's default parameter values in prose-style
+#'
+#' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
+#'
+#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
+#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
+#'
+#' ```r
+#' #' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
+#' some_fn <- function(some_param = c("a", "b", "c")) {
+#'   some_param <- rlang::arg_match(some_param)
+#'   ...
+#' }
+#' ```
+#'
+#' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
+#' `` `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% pal::as_md_list()` `` in the example above.
+#'
+#' # Caveats
+#'
+#' - This function does not work for [Primitives][base::.Primitive].
+#' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
+#'   this function.
+#'
+#' @param param The parameter name. A character scalar.
+#' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
+#' @param env The [environment][base::environment] `fn` is defined in. See [formals()] for details.
+#' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
+#' @param wrap The string (usually a single character) in which `param`s default values are to be wrapped.
+#' @param separator The separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param last_separator The separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
+#'
+#' @return A character vector. Of length 1 if `as_scalar = TRUE`.
+#' @export
+#'
+#' @examples
+#' prose_ls_fn_param(param = ".name_repair",
+#'                   fn = tibble::as_tibble) %>%
+#' cat_lines()
+#'
+#' prose_ls_fn_param(param = ".name_repair",
+#'                   fn = tibble::as_tibble,
+#'                   as_scalar = FALSE) %>%
+#' cat_lines()
+prose_ls_fn_param <- function(param,
+                              fn = sys.function(sys.parent()),
+                              env = parent.frame(),
+                              as_scalar = TRUE,
+                              wrap = "`",
+                              separator = ",",
+                              last_separator = " or ") {
+  
+  checkmate::assert_string(param)
+  checkmate::assert_flag(as_scalar)
+  
+  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
+  if (is.character(fn)) {
+    fn %<>% get(mode = "function",
+                envir = env)
+  }
+  
+  if (is.primitive(fn)) rlang::abort("Listing parameters of R Primitives is not supported. Sorry.")
+  
+  default_vals <- formals(fun = fn,
+                          envir = env)
+  
+  if (param %in% names(default_vals)) {
+    default_vals <- default_vals[[param]]
+  } else {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    rlang::abort(glue::glue("The function `{fn_name}()` does not have a parameter named \"{param}\"."))
+  }
+  
+  if (missing(default_vals)) {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    rlang::abort(glue::glue("`{fn_name}()`'s parameter `{param}` does not have a default value."))
+  }
+  
+  # evaluate default param if it results in a character vector
+  if (is.language(default_vals)) {
+    
+    evaluated_default_vals <- rlang::with_handlers(.expr = eval(expr = default_vals,
+                                                                envir = env),
+                                                   error = ~ NULL)
+    
+    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
+  }
+  
+  if (is.character(default_vals)) {
+    default_vals %<>% wrap_chr()
+  } else {
+    default_vals %<>% deparse1(backtick = FALSE,
+                               control = c("keepNA",
+                                           "keepInteger",
+                                           "niceNames",
+                                           "showAttributes",
+                                           "warnIncomplete"))
+  }
+  
+  if (as_scalar) {
+    default_vals %<>% prose_ls(wrap = wrap,
+                               separator = separator,
+                               last_separator = last_separator)
+  } else {
+    default_vals %<>% wrap_chr(wrap = wrap)
+  }
+  
+  default_vals
 }
 ```
 
@@ -1900,6 +2063,29 @@ str_replace_file <- function(path,
               })
   
   invisible(path)
+}
+```
+
+## Wrap character vector in string
+
+```{r}
+#' Wrap character vector in string
+#'
+#' @param x A character vector or something coercible to. Will be fed to [as_chr()] before wrapping.
+#' @param wrap The string `x` is to be wrapped in.
+#'
+#' @return A character vector.
+#' @export
+#'
+#' @examples
+#' mtcars %>%
+#'   magrittr::set_colnames(wrap_chr(x = colnames(.),
+#'                                   wrap = "`"))
+#'   %>% pipe_table
+wrap_chr <- function(x,
+                     wrap = "\"") {
+  
+  paste0(wrap, as_chr(x), wrap)
 }
 ```
 
@@ -2270,8 +2456,11 @@ cli_process_expr <- function(expr,
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.function`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action The action to take when the check fails. One of [`rlang::abort`][rlang::abort()], [`rlang::warn`][rlang::warn()],
-#'   [`rlang::inform`][rlang::inform()] and [`rlang::signal`][rlang::signal()].
+#' @param .action The action to take when the check fails. One of
+#'   - [`rlang::abort`][rlang::abort()]
+#'   - [`rlang::warn`][rlang::warn()]
+#'   - [`rlang::inform`][rlang::inform()]
+#'   - [`rlang::signal`][rlang::signal()]
 #' @export
 #'
 #' @examples
@@ -2546,7 +2735,7 @@ cols_regex <- function(...,
 #'
 #' This function parses `text` for [roxygen2 blocks][roxygen2::roxy_block()] and extracts the value(s) belonging to the `tag_name`s documenting `obj_name`.
 #'
-#' @param text The R source code to extract the object's roxygen2 tag value from. A character vector.
+#' @param text The \R source code to extract the object's roxygen2 tag value from. A character vector.
 #' @param obj_name The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.
 #' @param tag_name The name of the [roxygen2 tag](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value from. A character scalar.
 #' @param param_name The parameter name to extract the value from. Only relevant if `tag_name = "param"`. A character scalar.

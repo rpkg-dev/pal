@@ -4,20 +4,14 @@
 \alias{build_readme}
 \title{Build \code{README.Rmd}}
 \usage{
-build_readme(
-  input = "README.Rmd",
-  output = "README.md",
-  envir = parent.frame()
-)
+build_readme(input = "README.Rmd", output = "README.md", env = parent.frame())
 }
 \arguments{
 \item{input}{The path to the R Markdown README file to be built. A character scalar.}
 
 \item{output}{The path of the built Markdown README. A character scalar.}
 
-\item{envir}{Environment in which code chunks are to be evaluated, for
-example, \code{\link{parent.frame}()}, \code{\link{new.env}()}, or
-\code{\link{globalenv}()}).}
+\item{env}{Environment in which code chunks are to be evaluated, e.g. \code{\link[=parent.frame]{parent.frame()}}, \code{\link[=new.env]{new.env()}}, or \code{\link[=globalenv]{globalenv()}}.}
 }
 \value{
 The path to \code{input} as a character scalar, invisibly.
@@ -25,7 +19,7 @@ The path to \code{input} as a character scalar, invisibly.
 \description{
 This function is a simpler, but considerably faster alternative to \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it doesn't install your package in a temporary library
 before building the \code{README.Rmd}. This has the pleasant side effect that, other than the latter function, it also works for \code{.Rmd} files which aren't part
-of an R package.
+of an \R package.
 }
 \details{
 Note that for public package repositories it's recommended to use \code{devtools::build_readme()} since it ensures the \code{README.Rmd} can be built reproducibly,

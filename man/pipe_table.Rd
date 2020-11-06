@@ -52,7 +52,7 @@ hide \code{NA} values.
 }
 \section{Create tables dynamically in roxygen2 documentation}{
 This function can be useful to create tables inside \link[roxygen2:roxygen2-package]{roxygen2} documentation programmatically from data using
-\href{https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1}{dynamic R code}.
+\href{https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1}{dynamic \R code}.
 
 The inline code
 

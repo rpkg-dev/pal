@@ -7,7 +7,7 @@
 roxy_tag_value(text, obj_name, tag_name = "param", param_name = NULL)
 }
 \arguments{
-\item{text}{The R source code to extract the object's roxygen2 tag value from. A character vector.}
+\item{text}{The \R source code to extract the object's roxygen2 tag value from. A character vector.}
 
 \item{obj_name}{The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.}
 

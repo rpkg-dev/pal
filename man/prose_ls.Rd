@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal-GEN.R
 \name{prose_ls}
 \alias{prose_ls}
-\title{List items concatenated in prose-style (..., ... and ...)}
+\title{List items concatenated in prose style (..., ... and ...)}
 \usage{
 prose_ls(x, wrap = "", separator = ", ", last_separator = " and ")
 }

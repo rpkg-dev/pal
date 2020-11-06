@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal-GEN.R
 \name{is_pkg_dir}
 \alias{is_pkg_dir}
-\title{Test if a directory is an R package}
+\title{Test if a directory is an \R package}
 \usage{
 is_pkg_dir(path = ".")
 }
@@ -10,7 +10,7 @@ is_pkg_dir(path = ".")
 \item{path}{The path of the directory to check. A character scalar. Defaults to the current working directory.}
 }
 \value{
-\code{TRUE} if \code{path} is the root directory of an R package, \code{FALSE} otherwise.
+\code{TRUE} if \code{path} is the root directory of an \R package, \code{FALSE} otherwise.
 }
 \description{
 Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_package}} root criterion. Note that it will only return \code{TRUE} for the root of a
