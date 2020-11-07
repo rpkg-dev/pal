@@ -782,7 +782,7 @@ knitr_table_format <- function(default = c("pipe",
   result <- getOption("knitr.table.format",
                       default = rlang::arg_match(default))
   
-  if (is.function(result)) result %<>% result()
+  if (is.function(result)) result <- result()
   
   if (!(result %in% allowed_formats)) {
     rlang::abort(paste0("Invalid R option `knitr.table.format`. Must evaluate to one of ",
