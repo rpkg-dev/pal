@@ -14,16 +14,17 @@ knitr_table_format(default = c("pipe", "simple", "html", "latex", "rst"))
 \item \code{"html"}
 \item \code{"latex"}
 \item \code{"rst"} )`
+}
 
-See \code{\link[knitr:kable]{knitr::kable()}}'s \code{format} argument for details.
-}}
+See \code{\link[knitr:kable]{knitr::kable()}}'s \code{format} argument for details.}
 }
 \value{
-
+A character scalar.
 }
 \description{
-Determines the current knitr table format based on the \R option \code{knitr.table.format} which can either be set directly to a valid format string or to a
-function returning one of these strings conditionally.
+Determines the current knitr table format based on the \R option
+\href{https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats}{\code{knitr.table.format}} which can either be set directly to a valid format string or
+to a function returning one of these strings conditionally.
 }
 \details{
 This is basically a convenience wrapper to be able to access the current \code{knitr.table.format} in a hassle-free way, i.e. it provides the conditional logic to

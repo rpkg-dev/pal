@@ -757,8 +757,9 @@ build_readme <- function(input = "README.Rmd",
 
 #' Determine current knitr table format
 #'
-#' Determines the current knitr table format based on the \R option `knitr.table.format` which can either be set directly to a valid format string or to a
-#' function returning one of these strings conditionally.
+#' Determines the current knitr table format based on the \R option
+#' [`knitr.table.format`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats) which can either be set directly to a valid format string or
+#' to a function returning one of these strings conditionally.
 #'
 #' This is basically a convenience wrapper to be able to access the current `knitr.table.format` in a hassle-free way, i.e. it provides the conditional logic to
 #' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
@@ -766,9 +767,9 @@ build_readme <- function(input = "README.Rmd",
 #' @param default The knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
 #'   `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
 #'   
-#'   See [knitr::kable()]'s `format` argument for details.
+#' See [knitr::kable()]'s `format` argument for details.
 #'
-#' @return
+#' @return A character scalar.
 #' @export
 knitr_table_format <- function(default = c("pipe",
                                            "simple",
