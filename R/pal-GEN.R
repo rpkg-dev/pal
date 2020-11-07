@@ -1837,8 +1837,8 @@ str_replace_file <- function(path,
 #' @examples
 #' mtcars %>%
 #'   magrittr::set_colnames(wrap_chr(x = colnames(.),
-#'                                   wrap = "`"))
-#'   %>% pipe_table
+#'                                   wrap = "`")) %>%
+#'   pipe_table()
 wrap_chr <- function(x,
                      wrap = "\"") {
   
