@@ -1,4 +1,5 @@
 # Dataframes / Tibbles ----
+## is_equal_df ----
 test_that("`is_equal_df()` works as expected", {
 
   # different df's
@@ -55,6 +56,7 @@ test_that("`is_equal_df()` works as expected", {
                  regexp = "`mod el` -> mod\\.el")
 })
 
+## reduce_df_list ----
 test_that("`reduce_df_list()` works as expected", {
 
   mtcars_tibble <- tibble::as_tibble(mtcars,
@@ -78,7 +80,8 @@ test_that("`reduce_df_list()` works as expected", {
                    mtcars_tibble %>% dplyr::arrange(model))
 })
 
-# (Pandoc) Markdown ----
+# Pandoc Markdown ----
+## strip_md ----
 test_that("`strip_md()` works as expected", {
 
   # basic
@@ -104,6 +107,7 @@ test_that("`strip_md()` works as expected", {
 })
 
 # R Markdown / Knitr ----
+## knitr_table_format ----
 test_that("`knitr_table_format()` works as supposed", {
 
   withr::with_options(new = list(knitr.table.format = "html"),
@@ -124,6 +128,7 @@ test_that("`knitr_table_format()` works as supposed", {
 })
 
 # R Packages ----
+## build_readme ----
 test_that("`README.Rmd` can be built successfully", {
 
   withr::local_file(.file = list("README.Rmd" = readr::write_file(file = "README.Rmd",
@@ -140,6 +145,7 @@ nothing `r 'here.'`"),
                regexp = "nothing here\\.")
 })
 
+## is_pkg_installed ----
 test_that("`is_pkg_installed()` works as expected", {
 
   expect_identical(is_pkg_installed(c("dplyr", "tibble", "not.a.real.package")),
@@ -156,6 +162,25 @@ test_that("`is_pkg_installed()` works as expected", {
 })
 
 # Statistical computing ----
+## round_to ----
+test_that("`round_to()` works as expected", {
+
+  expect_equal(round_to(x = c(0.125, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1, 2.02),
+                        to = 0.05,
+                        round_up = TRUE),
+               c(0.15, 0.20, 0.10, 0.50, 0.55, 0.50, 0.90, 1.00, 2.00))
+
+  expect_equal(round_to(x = c(0.125, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1, 2.02),
+                        to = 0.05,
+                        round_up = FALSE),
+               c(0.10, 0.20, 0.10, 0.50, 0.55, 0.50, 0.90, 1.00, 2.00))
+
+  expect_equal(round_to(x = 0.5,
+                        to = 0.2,
+                        round_up = TRUE),
+               0.6)
+})
+## safe_min ----
 test_that("`safe_min()` returns proper output types", {
 
   expect_identical(safe_min(NULL),
@@ -181,6 +206,7 @@ test_that("`safe_min()` returns proper output types", {
   expect_error(safe_min("one", 1))
 })
 
+## safe_max ----
 test_that("`safe_max()` returns proper output types", {
 
   expect_identical(safe_max(NULL),
@@ -206,6 +232,7 @@ test_that("`safe_max()` returns proper output types", {
   expect_error(safe_max("one", 1))
 })
 
+## stat_mode ----
 test_that("`stat_mode()` properly determines a single mode", {
 
   # integer
@@ -252,6 +279,7 @@ test_that("`stat_mode()` ignores `NA`s if requested", {
 })
 
 # Strings ----
+## prose_ls_fn_param ----
 test_that("`prose_ls_fn_param()` works as expected", {
 
   # test with internal fns
@@ -327,9 +355,7 @@ test_that("`prose_ls_fn_param()` works as expected", {
                regexp = "Primitives .* not supported")
 })
 
-# Miscellaneous ----
-
-# Extending other R packages ----
+## str_replace_file ----
 test_that("`str_replace_file()` basically works", {
 
   before <- c('"Tulips are not durable, ',

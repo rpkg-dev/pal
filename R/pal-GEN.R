@@ -1059,6 +1059,34 @@ ls_pkg <- function(pkg,
                                       pattern = regex))
 }
 
+#' Generate an integer sequence of specific length (safe)
+#'
+#' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
+#'
+#' @param n The desired length of the integer sequence.
+#'
+#' @return An integer sequence starting from 1.
+#' @export
+#'
+#' @examples
+#' safe_seq_len(5)
+#'
+#' # this function simply returns a zero-length integer for zero-length inputs ...
+#' safe_seq_len(NULL)
+#' safe_seq_len(integer())
+#' 
+#' # ... while `seq_len()` throws an error
+#' \dontrun{
+#' seq_len(NULL)
+#' seq_len(integer())}
+safe_seq_len <- function(n) {
+  
+  if (length(n)) {
+    return(seq_len(n))
+    
+  } else return(integer())
+}
+
 #' Maximum (safe)
 #'
 #' @description
@@ -1157,6 +1185,42 @@ safe_min <- function(...,
     purrr::when(length(.) == 0L ~ .[0L],
                 all(is.na(.)) && rm_na ~ .[NA],
                 ~ min(., na.rm = rm_na))
+}
+
+#' Round to any number
+#'
+#' @param x A vector of numbers to round.
+#' @param to The number to round `x` to. A numeric scalar.
+#' @param round_up Whether to round a remainder of `to / 2` up or not.
+#'
+#' @return A numeric vector of the same length as `x`.
+#' @export
+#'
+#' @examples
+#' c(0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(0.05)
+round_to <- function(x,
+                     to = 1/5,
+                     round_up = TRUE) {
+  
+  checkmate::assert_number(to,
+                           lower = 0L,
+                           finite = TRUE)
+  checkmate::assert_flag(round_up)
+  
+  result <- x %/% to
+  remainder <- signif(x %% to,
+                      # round to a max of 15 significant digits to avoid 32-bit floating-point imprecision
+                      digits = 15L)
+  
+  if (round_up) {
+    which_round <- remainder >= (to / 2L)
+  } else {
+    which_round <- remainder > (to / 2L)
+  }
+  
+  result[which_round] <- result[which_round] + 1L
+  
+  result * to
 }
 
 #' Statistical mode
@@ -1973,34 +2037,6 @@ capture_print <- function(x) {
                         type = "output",
                         split = FALSE) %>%
     paste0(collapse = "\n")
-}
-
-#' Generate an integer sequence of specific length (safe)
-#'
-#' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
-#'
-#' @param n The desired length of the integer sequence.
-#'
-#' @return An integer sequence starting from 1.
-#' @export
-#'
-#' @examples
-#' safe_seq_len(5)
-#'
-#' # this function simply returns a zero-length integer for zero-length inputs ...
-#' safe_seq_len(NULL)
-#' safe_seq_len(integer())
-#' 
-#' # ... while `seq_len()` throws an error
-#' \dontrun{
-#' seq_len(NULL)
-#' seq_len(integer())}
-safe_seq_len <- function(n) {
-  
-  if (length(n)) {
-    return(seq_len(n))
-    
-  } else return(integer())
 }
 
 #' Test if an HTTP request is successful
