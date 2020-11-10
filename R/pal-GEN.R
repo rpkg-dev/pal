@@ -154,7 +154,6 @@ show_diff <- function(x,
       if (interactive()) {
         
         if (bypass_rstudio_viewer) {
-          
           assert_pkg("withr")
           withr::with_options(new = list(viewer = NULL),
                               code = daff::render_diff(diff = daff_obj,
@@ -178,6 +177,7 @@ show_diff <- function(x,
         
         xopen::xopen(target = glue::glue("file://{tmp_file}"),
                      quiet = TRUE)
+        cli::cli_alert_info("A new tab displaying the changes has been opened in your default web browser.")
       }
     }
   }
