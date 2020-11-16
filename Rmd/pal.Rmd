@@ -1601,6 +1601,8 @@ escape_lf <- function(x,
 
 ## Fuse regex
 
+TODO: Incorporate `fuzzify_regex()` and `diacritify_regex` from FA; open question: make a separate pkg, say `rgx`?
+
 ```{r}
 #' Fuse regular expressions
 #'
@@ -1623,7 +1625,11 @@ escape_lf <- function(x,
 #'                     pattern = fuse_regex(regex))}
 fuse_regex <- function(...) {
   
-  paste0("(", as_string(..., sep = "|"), ")")
+  result <- as_string(..., sep = "|")
+  
+  if (length(rlang::list2(...)) > 1L) result %<>% paste0("(", ., ")")
+  
+  result
 }
 ```
 

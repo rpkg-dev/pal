@@ -1422,7 +1422,11 @@ escape_lf <- function(x,
 #'                     pattern = fuse_regex(regex))}
 fuse_regex <- function(...) {
   
-  paste0("(", as_string(..., sep = "|"), ")")
+  result <- as_string(..., sep = "|")
+  
+  if (length(rlang::list2(...)) > 1L) result %<>% paste0("(", ., ")")
+  
+  result
 }
 
 #' Get column names of a delimiter-separated string
