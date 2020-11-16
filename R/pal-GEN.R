@@ -1405,7 +1405,7 @@ escape_lf <- function(x,
 #'
 #' Combine a vector or list of regular expressions to a single one (by logical OR).
 #'
-#' @param ... The regular expressions. All elements will be converted to type character before fusing.
+#' @param ... The regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character scalar.
 #' @family string
