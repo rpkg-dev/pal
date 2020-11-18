@@ -2006,12 +2006,13 @@ path_script <- function() {
     
     return(rprojroot::thisfile())
     
+    # RStudio document
   } else {
     
-    path <- normalizePath(rstudioapi::getActiveDocumentContext()[["path"]])
+    path <- rstudioapi::getActiveDocumentContext()[["path"]]
     
     if (path != "") {
-      return(path)
+      return(normalizePath(path))
     }
   }
   
