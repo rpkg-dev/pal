@@ -26,6 +26,8 @@ stringr::str_subset(string = janeaustenr::prideprejudice,
                     pattern = fuse_regex(regex))}
 }
 \seealso{
+The \link{rex} package which provides an intuitive framework to build complex regular expressions.
+
 String functions
 \code{\link{as_chr}()},
 \code{\link{as_string}()},

@@ -1601,7 +1601,13 @@ escape_lf <- function(x,
 
 ## Fuse regex
 
-TODO: Incorporate `fuzzify_regex()` and `diacritify_regex` from FA; open question: make a separate pkg, say `rgx`?
+TODO:
+
+-   [ ] Deprecate `fuse_regex(...)` in favor of \`rex::rex(or(...))\`\`?
+
+-   [ ] Incorporate `fuzzify_regex()` and `diacritify_regex` from FA
+
+    open question: make a separate pkg, say `rgx`?
 
 ```{r}
 #' Fuse regular expressions
@@ -1611,6 +1617,7 @@ TODO: Incorporate `fuzzify_regex()` and `diacritify_regex` from FA; open questio
 #' @param ... The regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character scalar.
+#' @seealso The [rex][rex] package which provides an intuitive framework to build complex regular expressions.
 #' @family string
 #' @export
 #'
