@@ -906,6 +906,9 @@ formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
 
 TODO:
 
+-   Remove `--atx-headers` which has been deprecated and replaced by `--markdown-headings=atx` in [Pandoc
+    2.11.2](https://github.com/jgm/pandoc/releases/tag/2.11.2) (ATX headings are now the default).
+
 -   Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to
     `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?\`
 
