@@ -1408,7 +1408,7 @@ escape_lf <- function(x,
 #' @param ... The regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character scalar.
-#' @seealso The [rex][rex] package which provides an intuitive framework to build complex regular expressions.
+#' @seealso The [rex][rex::rex] package which provides an intuitive framework to build complex regular expressions.
 #' @family string
 #' @export
 #'
