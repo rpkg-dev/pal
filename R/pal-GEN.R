@@ -2049,6 +2049,31 @@ capture_print <- function(x) {
     paste0(collapse = "\n")
 }
 
+#' Order a vector by another vector
+#'
+#' @param x The vector to be ordered.
+#' @param by The reference vector which `x` will be ordered by.
+#'
+#' @return A permutation of `x`.
+#' @export
+#'
+#' @examples
+#' # generate 100 random letters
+#' random_letters <-
+#'   letters %>%
+#'   magrittr::extract(sample.int(n = 26L,
+#'                                size = 100L,
+#'                                replace = TRUE)) %T>%
+#'   print()
+#'
+#' # sort the random letters alphabetically
+#' random_letters %>% order_by(by = letters)
+order_by <- function(x,
+                     by) {
+  
+  x[order(match(x = x, table = by))]
+}
+
 #' Test if an HTTP request is successful
 #'
 #' @description
