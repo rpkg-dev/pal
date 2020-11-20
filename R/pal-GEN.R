@@ -1203,7 +1203,7 @@ safe_min <- function(...,
 #' @examples
 #' c(0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(0.05)
 round_to <- function(x,
-                     to = 1/5,
+                     to = 0.2,
                      round_up = TRUE) {
   
   checkmate::assert_number(to,

@@ -4,7 +4,7 @@
 \alias{round_to}
 \title{Round to any number}
 \usage{
-round_to(x, to = 1/5, round_up = TRUE)
+round_to(x, to = 0.2, round_up = TRUE)
 }
 \arguments{
 \item{x}{A vector of numbers to round.}
