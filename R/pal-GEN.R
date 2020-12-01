@@ -943,8 +943,20 @@ assert_pkg <- function(pkg,
   }
 }
 
-#' Get the value from a DESCRIPTION file field, cleaned up and with fallback
+#' Get the value from a `DESCRIPTION` file field, cleaned up and with fallback
 #'
+#' Returns the value from a specific `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
+#' it are removed.
+#'
+#' By default, the following string is returned if `key = "NoRealKey"` is not found:
+#'
+#' ```
+#' "<No `NoRealKey` field set in DESCRIPTION!>"
+#' ```
+#'
+#' If you rather want to take an action like throwing an error, it's recommended to call [desc::desc_get_field()] directly.
+#'
+#' @param default Default value to return if `key` is not found.
 #' @inheritParams desc::desc_get_field
 #'
 #' @return A character scalar.
@@ -954,12 +966,13 @@ assert_pkg <- function(pkg,
 #' desc_value(key = "Description",
 #'            file = fs::path_package("pal"))
 desc_value <- function(key,
+                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
                        file = ".") {
   
   assert_pkg("desc")
   
   desc::desc_get_field(key = key,
-                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
+                       default = default,
                        file = file) %>%
     stringr::str_squish()
 }
