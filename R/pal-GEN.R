@@ -1193,15 +1193,24 @@ safe_min <- function(...,
 
 #' Round to any number
 #'
+#' Round a numeric vector to any number, rounded up by default (`round_up = TRUE`).
+#'
+#' This function's precision is limited to 15 significant digits in order to account for the [limits of R's floating point
+#' representation](https://stackoverflow.com/a/35349949/7196903).
+#'
+#' A computationally more efficient alternative would be the unexported `scales:::round_any()` which drives [scales::number()] – with the drawback that it lacks
+#' control of rounding up exact remainders of `accuracy / 2`, i.e. it _always_ rounds _off_.
+#'
 #' @param x A vector of numbers to round.
 #' @param to The number to round `x` to. A numeric scalar.
-#' @param round_up Whether to round a remainder of `to / 2` up or not.
+#' @param round_up Whether to round a remainder of exactly `to / 2` _up_ or not. Set to `FALSE` in order to round _off_.
 #'
 #' @return A numeric vector of the same length as `x`.
 #' @export
 #'
 #' @examples
-#' c(0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(0.05)
+#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(to = 0.05)
+#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(to = 0.05, round_up = FALSE)
 round_to <- function(x,
                      to = 0.2,
                      round_up = TRUE) {
@@ -1213,7 +1222,7 @@ round_to <- function(x,
   
   result <- x %/% to
   remainder <- signif(x %% to,
-                      # round to a max of 15 significant digits to avoid 32-bit floating-point imprecision
+                      # round to a max of 15 significant digits to avoid exceeding floating-point representation limits
                       digits = 15L)
   
   if (round_up) {

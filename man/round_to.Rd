@@ -11,14 +11,21 @@ round_to(x, to = 0.2, round_up = TRUE)
 
 \item{to}{The number to round \code{x} to. A numeric scalar.}
 
-\item{round_up}{Whether to round a remainder of \code{to / 2} up or not.}
+\item{round_up}{Whether to round a remainder of exactly \code{to / 2} \emph{up} or not. Set to \code{FALSE} in order to round \emph{off}.}
 }
 \value{
 A numeric vector of the same length as \code{x}.
 }
 \description{
-Round to any number
+Round a numeric vector to any number, rounded up by default (\code{round_up = TRUE}).
+}
+\details{
+This function's precision is limited to 15 significant digits in order to account for the \href{https://stackoverflow.com/a/35349949/7196903}{limits of R's floating point representation}.
+
+A computationally more efficient alternative would be the unexported \code{scales:::round_any()} which drives \code{\link[scales:number]{scales::number()}} – with the drawback that it lacks
+control of rounding up exact remainders of \code{accuracy / 2}, i.e. it \emph{always} rounds \emph{off}.
 }
 \examples{
-c(0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) \%>\% round_to(0.05)
+c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) \%>\% round_to(to = 0.05)
+c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) \%>\% round_to(to = 0.05, round_up = FALSE)
 }
