@@ -1856,6 +1856,48 @@ prose_ls_fn_param <- function(param,
 }
 ```
 
+## Prettify a numeric vector
+
+```{r}
+#' Prettify a numeric vector
+#'
+#' Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
+#' [`format()`][base::format()].
+#'
+#' @param x A numeric vector to prettify.
+#' @param round_to The number to round `x` to. A numeric scalar.
+#' @param big_mark The character used between every 3 digits to separate thousands.
+#' @param decimal_mark The character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
+#' @param justify_right Whether to right-justify the results to a common width. See the `trim` parameter of [base::format()] for details.
+#' @param ... Further arguments passed on to [base::format()].
+#' @inheritParams round_to
+#'
+#' @return A character vector of the same length as `x`.
+#' @export
+#'
+#' @examples
+#' c(0.11, 11111.11) %>% prettify_nr()
+#'
+#' c(0.11, 11111.11) %>%
+#'   prettify_nr(justify_right = TRUE) %>%
+#'   cat_lines()
+prettify_nr <- function(x,
+                        round_to = 0.1,
+                        round_up = TRUE,
+                        big_mark = "'",
+                        decimal_mark = ".",
+                        justify_right = FALSE,
+                        ...) {
+  round_to(x = x,
+           to = round_to,
+           round_up = round_up) %>%
+    format(big.mark = big_mark,
+           decimal.mark = decimal_mark,
+           trim = !justify_right,
+           ... = ...)
+}
+```
+
 ## Print `x` as newline-separated character vector using `cat()`
 
 ```{r}
