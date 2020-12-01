@@ -13,7 +13,7 @@ as_chr(...)
 A character vector.
 }
 \description{
-This function \emph{recursively} applies \code{\link[=as.character]{as.character()}} to its inputs.
+\emph{Recursively} applies \code{\link[=as.character]{as.character()}} to its inputs.
 }
 \examples{
 to_convert <-
@@ -30,8 +30,10 @@ String functions
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
 \code{\link{prose_ls}()},
 \code{\link{str_replace_file}()},
-\code{\link{str_replace_verbose}()}
+\code{\link{str_replace_verbose}()},
+\code{\link{wrap_chr}()}
 }
 \concept{string}

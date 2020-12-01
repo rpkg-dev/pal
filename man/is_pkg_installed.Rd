@@ -16,8 +16,7 @@ be of length one or the same length as \code{pkg}.}
 A named logical vector of the same length as \code{pkg}.
 }
 \description{
-This function returns \code{TRUE} or \code{FALSE} for each \code{pkg}, depending on whether the \code{pkg} is installed on the current system or not, optionally ensuring a
-\code{min_version}.
+Returns \code{TRUE} or \code{FALSE} for each \code{pkg}, depending on whether the \code{pkg} is installed on the current system or not, optionally ensuring a \code{min_version}.
 }
 \details{
 In contrast to \code{\link[base:library]{base::require()}}, it checks if the packages are installed without attaching their namespaces if so.
@@ -36,6 +35,7 @@ is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
 \seealso{
 R package functions
 \code{\link{is_pkg_dir}()},
-\code{\link{ls_pkg}()}
+\code{\link{ls_pkg}()},
+\code{\link{prose_ls_fn_param}()}
 }
 \concept{rpkgs}

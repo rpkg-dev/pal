@@ -35,8 +35,8 @@ check_dots_named(
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-This function ensures that \link[base:dots]{dots (...)} are either empty (if \code{.empty_ok = TRUE}), or all named dot parameter names are a valid subset of a
-function's parameter names. In case of an invalid or \code{.forbidden} argument, an informative message is shown and the defined \code{.action} is taken.
+Ensures that \link[base:dots]{dots (...)} are either empty (if \code{.empty_ok = TRUE}), or all named dot parameter names are a valid subset of a function's
+parameter names. In case of an invalid or \code{.forbidden} argument, an informative message is shown and the defined \code{.action} is taken.
 }
 \details{
 \code{check_dots_named()} is intended to combat the second one of the two major downsides that using \code{...} usually brings. In chapter 6.6 of the book

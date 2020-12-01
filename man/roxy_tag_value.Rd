@@ -19,7 +19,7 @@ roxy_tag_value(text, obj_name, tag_name = "param", param_name = NULL)
 A character scalar if \code{tag_name = "param"} and \code{param_name != NULL}, otherwise a list.
 }
 \description{
-This function parses \code{text} for \link[roxygen2:roxy_block]{roxygen2 blocks} and extracts the value(s) belonging to the \code{tag_name}s documenting \code{obj_name}.
+Parses \code{text} for \link[roxygen2:roxy_block]{roxygen2 blocks} and extracts the value(s) belonging to the \code{tag_name}s documenting \code{obj_name}.
 }
 \examples{
 text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",

@@ -10,7 +10,7 @@ path_script()
 The file path to the executing script.
 }
 \description{
-Determine file path of executing script
+Tries to determine the path to the R/Rmd script that this function is called from.
 }
 \seealso{
 System interaction functions

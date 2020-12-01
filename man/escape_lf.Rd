@@ -15,9 +15,8 @@ escape_lf(x, escape_cr = FALSE)
 A character vector of the same length as \code{x}.
 }
 \description{
-This function escapes the \href{https://en.wikipedia.org/wiki/Newline}{POSIX-standard newline control character \code{LF}} (aka \verb{\\n}) which is the standard on
-Unix/Linux and recent versions of macOS. Set \code{escape_cr = TRUE} in order to also escape the carriage return character \code{CR} (aka \verb{\\r}) commonly used on
-Microsoft Windows.
+Escapes the \href{https://en.wikipedia.org/wiki/Newline}{POSIX-standard newline control character \code{LF}} (aka \verb{\\n}) which is the standard on Unix/Linux and recent
+versions of macOS. Set \code{escape_cr = TRUE} in order to also escape the carriage return character \code{CR} (aka \verb{\\r}) commonly used on Microsoft Windows.
 }
 \examples{
 # read in and print package description as-is
@@ -37,8 +36,10 @@ String functions
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},
 \code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
 \code{\link{prose_ls}()},
 \code{\link{str_replace_file}()},
-\code{\link{str_replace_verbose}()}
+\code{\link{str_replace_verbose}()},
+\code{\link{wrap_chr}()}
 }
 \concept{string}

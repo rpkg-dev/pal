@@ -23,3 +23,17 @@ mtcars \%>\%
                                   wrap = "`")) \%>\%
   pipe_table()
 }
+\seealso{
+String functions
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()},
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
+\code{\link{prose_ls}()},
+\code{\link{str_replace_file}()},
+\code{\link{str_replace_verbose}()}
+}
+\concept{string}

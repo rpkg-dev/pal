@@ -51,8 +51,10 @@ stat_mode(c(letters, "a", NA_character_, NA_character_),
           rm_na = TRUE)
 }
 \seealso{
-Statistical computing functions
+Statistical computing / numeric functions
+\code{\link{round_to}()},
 \code{\link{safe_max}()},
-\code{\link{safe_min}()}
+\code{\link{safe_min}()},
+\code{\link{safe_seq_len}()}
 }
 \concept{stat}

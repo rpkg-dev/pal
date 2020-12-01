@@ -64,3 +64,10 @@ prose_ls_fn_param(param = ".name_repair",
                   as_scalar = FALSE) \%>\%
 cat_lines()
 }
+\seealso{
+R package functions
+\code{\link{is_pkg_dir}()},
+\code{\link{is_pkg_installed}()},
+\code{\link{ls_pkg}()}
+}
+\concept{rpkgs}

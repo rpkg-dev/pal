@@ -10,7 +10,7 @@ safe_seq_len(n)
 \item{n}{The desired length of the integer sequence.}
 }
 \value{
-An integer sequence starting from 1.
+An integer sequence starting from \code{1L}.
 }
 \description{
 Modified version of \code{\link[base:seq]{seq_len()}} that returns a zero-length integer in case of a zero-length input instead of throwing an error.
@@ -27,3 +27,11 @@ safe_seq_len(integer())
 seq_len(NULL)
 seq_len(integer())}
 }
+\seealso{
+Statistical computing / numeric functions
+\code{\link{round_to}()},
+\code{\link{safe_max}()},
+\code{\link{safe_min}()},
+\code{\link{stat_mode}()}
+}
+\concept{stat}

@@ -19,7 +19,7 @@ prose_ls(x, wrap = "", separator = ", ", last_separator = " and ")
 A character scalar.
 }
 \description{
-This function takes a vector or list and concatenates its elements to a single string separated in prose-style.
+Takes a vector or list and concatenates its elements to a single string separated in prose-style.
 }
 \examples{
 prose_ls(1:5)
@@ -32,7 +32,9 @@ String functions
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
 \code{\link{str_replace_file}()},
-\code{\link{str_replace_verbose}()}
+\code{\link{str_replace_verbose}()},
+\code{\link{wrap_chr}()}
 }
 \concept{string}

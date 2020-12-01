@@ -17,12 +17,11 @@ build_readme(input = "README.Rmd", output = "README.md", env = parent.frame())
 The path to \code{input} as a character scalar, invisibly.
 }
 \description{
-This function is a simpler, but considerably faster alternative to \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it doesn't install your package in a temporary library
-before building the \code{README.Rmd}. This has the pleasant side effect that, other than the latter function, it also works for \code{.Rmd} files which aren't part
-of an \R package.
+A simpler, but considerably faster alternative to \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it doesn't install your package in a temporary library before building the
+\code{README.Rmd}. This has the pleasant side effect that, other than the latter function, it also works for \code{.Rmd} files which aren't part of an \R package.
 }
 \details{
-Note that for public package repositories it's recommended to use \code{devtools::build_readme()} since it ensures the \code{README.Rmd} can be built reproducibly,
+Note that for public package repositories it's recommended to use \code{devtools::build_readme()} since it ensures the \code{README.Rmd} can be built \emph{reproducibly},
 which means all the objects and files it references must be accessible from the repository.
 
 This function is also registered as an \href{https://rstudio.github.io/rstudioaddins/}{RStudio add-in} allowing RStudio users to assign a custom shortcut to it.

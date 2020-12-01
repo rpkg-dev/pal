@@ -21,8 +21,8 @@ availability of \code{cmd} on Unix-like systems. On Windows, \code{Sys.which()} 
 A logical scalar if \code{get_cmd_path = FALSE}, otherwise the filesystem \link[fs:path]{path} to the \code{cmd} executable.
 }
 \description{
-This function checks if a CLI tool is found on the system's \href{https://en.wikipedia.org/wiki/PATH_(variable)}{\code{PATH}} and optionally returns the executable's
-filesystem path.
+Checks if a CLI tool is found on the system's \href{https://en.wikipedia.org/wiki/PATH_(variable)}{\code{PATH}} and optionally returns the executable's filesystem
+path.
 }
 \examples{
 check_cli("Rscript")

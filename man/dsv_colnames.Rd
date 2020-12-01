@@ -17,7 +17,7 @@ dsv_colnames(x, delim = ",", quote = "\\"")
 A character vector of column names.
 }
 \description{
-This function returns the column names of a string in a \href{https://en.wikipedia.org/wiki/Delimiter-separated_values}{delimiter-separated-value} format like
+Returns the column names of a string in a \href{https://en.wikipedia.org/wiki/Delimiter-separated_values}{delimiter-separated-value} format like
 \href{https://en.wikipedia.org/wiki/Comma-separated_values}{CSV} or \href{https://en.wikipedia.org/wiki/Tab-separated_values}{TSV}.
 }
 \examples{
@@ -33,8 +33,10 @@ String functions
 \code{\link{cat_lines}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
 \code{\link{prose_ls}()},
 \code{\link{str_replace_file}()},
-\code{\link{str_replace_verbose}()}
+\code{\link{str_replace_verbose}()},
+\code{\link{wrap_chr}()}
 }
 \concept{string}

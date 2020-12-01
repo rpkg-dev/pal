@@ -29,3 +29,11 @@ control of rounding up exact remainders of \code{accuracy / 2}, i.e. it \emph{al
 c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) \%>\% round_to(to = 0.05)
 c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) \%>\% round_to(to = 0.05, round_up = FALSE)
 }
+\seealso{
+Statistical computing / numeric functions
+\code{\link{safe_max}()},
+\code{\link{safe_min}()},
+\code{\link{safe_seq_len}()},
+\code{\link{stat_mode}()}
+}
+\concept{stat}

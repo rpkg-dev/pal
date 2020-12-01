@@ -45,8 +45,10 @@ safe_max("zero", 1L)
 safe_max("zero", "one")}
 }
 \seealso{
-Statistical computing functions
+Statistical computing / numeric functions
+\code{\link{round_to}()},
 \code{\link{safe_min}()},
+\code{\link{safe_seq_len}()},
 \code{\link{stat_mode}()}
 }
 \concept{stat}
