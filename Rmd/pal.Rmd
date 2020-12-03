@@ -226,7 +226,9 @@ TODO:
 -   Internally we rely on a modified version of `dplyr:::is_equal_data_frame()`, exposing the `name_repair` argument. It can be retired if [this
     PR](https://github.com/tidyverse/dplyr/pull/5565) gets merged upstream.
 
--   Check out [`waldo::compare()`](https://github.com/r-lib/waldo) and see if `is_equal_data_frame()` could be replaced by it.
+-   Switch to the more powerful [`waldo::compare()`](https://github.com/r-lib/waldo) which i.a. RStudio's Romain François [recommends to use
+    it](https://github.com/tidyverse/dplyr/pull/5565#issuecomment-737750802) **as soon as there's a way to [ignore row/column
+    ordering](https://github.com/tidyverse/dplyr/pull/5565#issuecomment-737883493)**
 
 ```{r}
 #' Determine if two data frames/tibbles are equal
