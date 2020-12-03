@@ -9,10 +9,6 @@ test_that("`is_equal_df()` works as expected", {
   expect_false(is_equal_df(mtcars,
                            cars))
 
-  #
-  expect_false(is_equal_df(mtcars,
-                           cars))
-
   # column order
   expect_true(is_equal_df(mtcars,
                           mtcars %>% dplyr::select(3, everything()),
