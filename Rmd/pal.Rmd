@@ -2210,12 +2210,11 @@ str_replace_file <- function(path,
                 }
                 
                 # perform replacement
+                input <- readr::read_file(file = path,
+                                          locale = readr::locale(encoding = encoding))
+                
                 if (process_line_by_line) {
-                  input <- readr::read_lines(path,
-                                             locale = readr::locale(encoding = encoding))
-                } else {
-                  input <- readr::read_file(path,
-                                            locale = readr::locale(encoding = encoding))
+                  input %<>% stringr::str_split(pattern = eol) %>% dplyr::first()
                 }
                 
                 output <- str_replace_verbose(string = input,
