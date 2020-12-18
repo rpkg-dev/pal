@@ -20,36 +20,49 @@ test_that("`is_equal_df()` works as expected", {
 
   # row order
   expect_true(is_equal_df(mtcars,
-                          mtcars[c(3, 2, 1, 4:nrow(mtcars)), ],
+                          mtcars[c(3:1, 4:nrow(mtcars)), ],
                           ignore_row_order = TRUE))
 
   expect_false(is_equal_df(mtcars,
-                           mtcars[c(3, 2, 1, 4:nrow(mtcars)), ],
+                           mtcars[c(3:1, 4:nrow(mtcars)), ],
                            ignore_row_order = FALSE))
+
+  # column types
+  expect_true(is_equal_df(mtcars %>% tibble::as_tibble(),
+                          mtcars %>% tibble::as_tibble() %>% dplyr::mutate(gear = as.integer(gear)),
+                          ignore_col_types = TRUE))
+
+  expect_false(is_equal_df(mtcars %>% tibble::as_tibble(),
+                           mtcars %>% tibble::as_tibble() %>% dplyr::mutate(gear = as.integer(gear)),
+                           ignore_col_types = FALSE))
 
   # type conversion
   mtcars_tibble <- mtcars %>% tibble::as_tibble(rownames = "model")
 
   expect_true(is_equal_df(mtcars_tibble,
                           mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
-                          convert = TRUE))
+                          ignore_col_types = TRUE))
 
   expect_false(is_equal_df(mtcars_tibble,
                            mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
-                           convert = FALSE))
+                           ignore_col_types = FALSE))
 
   # non-quiet
-  expect_message(is_equal_df(mtcars_tibble,
-                             mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
-                             convert = FALSE,
-                             quiet = FALSE),
-                 regexp = "Different types for column `model`: character vs factor")
+  expect_output(is_equal_df(mtcars_tibble,
+                            mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                            ignore_col_types = FALSE,
+                            quiet = FALSE),
+                regexp = "a character vector.*an S3 object of class <factor>")
 
-  # colum name repair
-  expect_message(is_equal_df(mtcars_tibble %>% dplyr::rename(`mod el` = model),
-                             mtcars_tibble %>% dplyr::rename(`mod el` = model),
-                             name_repair = "universal"),
-                 regexp = "`mod el` -> mod\\.el")
+  # waldo object instead of a boolean
+  expect_identical(is_equal_df(mtcars_tibble,
+                               mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                               return_waldo_compare = TRUE),
+                   waldo::compare(mtcars_tibble,
+                                  mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                                  x_arg = "x",
+                                  y_arg = "y",
+                                  max_diffs = 10L))
 })
 
 ## reduce_df_list ----

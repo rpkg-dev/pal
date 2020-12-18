@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9038
+Version: 0.0.9039
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",
@@ -45,7 +45,7 @@ Suggests:
     rprojroot (>= 1.3.2),
     rstudioapi (>= 0.11),
     testthat (>= 3.0.0),
-    vctrs (>= 0.3.4),
+    waldo (>= 0.2.3),
     withr (>= 2.3.0),
     writexl (>= 1.3.1),
     xfun,

@@ -8,12 +8,12 @@ show_diff(
   x,
   y,
   ignore_order = FALSE,
-  convert = FALSE,
+  ignore_col_types = FALSE,
   ids = NULL,
   ask = TRUE,
   bypass_rstudio_viewer = FALSE,
-  change_msg = NULL,
-  ask_msg = "Do you wish to display the changes?",
+  diff_text = NULL,
+  ask_text = "Do you wish to display the changes?",
   caption = NULL,
   ...
 )
@@ -25,7 +25,8 @@ show_diff(
 
 \item{ignore_order}{Whether or not to ignore the order of columns and rows.}
 
-\item{convert}{Whether or not to convert similar column types. Currently, this will convert factor to character and integer to double.}
+\item{ignore_col_types}{Whether or not to distinguish similar column types. Currently, if set to \code{TRUE}, this will convert factor to character and integer to
+double before comparison.}
 
 \item{ids}{A character vector of column names that make up a \href{https://en.wikipedia.org/wiki/Primary_key}{primary key}, if known. If \code{NULL}, heuristics are
 used to find a decent key (or a set of decent keys).}
@@ -36,9 +37,9 @@ away. Only relevant if run \link[base:interactive]{interactively}.}
 \item{bypass_rstudio_viewer}{If \code{TRUE}, \code{x} and \code{y} actually differ, and \code{ask} is set to \code{TRUE}, the resulting difference object will be
 opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.}
 
-\item{change_msg}{The message that is displayed on the console in case \code{x} and \code{y} differ. If \code{NULL}, a default message is displayed.}
+\item{diff_text}{The text to display on the console in case \code{x} and \code{y} differ. If \code{NULL}, a default text is displayed.}
 
-\item{ask_msg}{The message that is displayed when \code{ask = TRUE}. Ignored if \code{ask = FALSE}.}
+\item{ask_text}{The text that is displayed when \code{ask = TRUE}. Ignored if \code{ask = FALSE}.}
 
 \item{caption}{The caption of the rendered difference object. A character scalar. If \code{NULL}, a default caption is generated based on the object names of \code{x}
 and \code{y}.}

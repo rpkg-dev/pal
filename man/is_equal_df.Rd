@@ -7,58 +7,85 @@
 is_equal_df(
   x,
   y,
-  ignore_col_order = TRUE,
-  ignore_row_order = TRUE,
-  convert = FALSE,
-  name_repair = "minimal",
-  quiet = TRUE
+  ignore_col_order = FALSE,
+  ignore_row_order = FALSE,
+  ignore_col_types = FALSE,
+  tolerance = NULL,
+  quiet = TRUE,
+  max_diffs = 10L,
+  diff_text = "`x` differs from `y`:",
+  return_waldo_compare = FALSE
 )
 }
 \arguments{
-\item{x, y}{Two data frames/tibbles to compare.}
+\item{x, y}{Two data frames/tibbles to compare. \code{y} is treated as the reference object, so messages describe how \code{x} is different to \code{y}.}
 
 \item{ignore_col_order}{Whether or not to ignore the order of columns.}
 
 \item{ignore_row_order}{Whether or not to ignore the order of rows.}
 
-\item{convert}{Whether or not to convert similar column types. Currently, this will convert factor to character and integer to double.}
+\item{ignore_col_types}{Whether or not to distinguish similar column types. Currently, if set to \code{TRUE}, this will convert factor to character and integer to
+double before comparison.}
 
-\item{name_repair}{One of \code{"unique"}, \code{"universal"}, or \code{"check_unique"}. See \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}} for the meaning of these options.}
+\item{tolerance}{If non-\code{NULL}, used as threshold for ignoring small
+floating point difference when comparing numeric vectors. Setting to
+any non-\code{NULL} value will cause integer and double vectors to be compared
+based on their values, rather than their types.
 
-\item{quiet}{Whether or not to output information about detected differences between \code{x} and \code{y} to the console.}
+It uses the same algorithm as \code{\link[=all.equal]{all.equal()}}, i.e., first we generate
+\code{x_diff} and \code{y_diff} by subsetting \code{x} and \code{y} to look only locations
+with differences. Then we check that
+\code{mean(abs(x_diff - y_diff)) / mean(abs(y_diff))} (or just
+\code{mean(abs(x_diff - y_diff))} if \code{y_diff} is small) is less than
+\code{tolerance}.}
+
+\item{quiet}{Whether or not to output detected differences between \code{x} and \code{y} to the console.}
+
+\item{max_diffs}{The maximum number of differences shown. Only relevant if \code{quiet = FALSE} or \code{return_waldo_compare = TRUE}. Set \code{max_diffs = Inf} to see all
+differences.}
+
+\item{diff_text}{An additional text to display on the console (before the detailed differences) in case \code{x} and \code{y} differ. Set to \code{NULL} in order to
+suppress. Only relevant if \code{quiet = FALSE}.}
+
+\item{return_waldo_compare}{Whether to return a character vector of class \code{\link[waldo:compare]{waldo_compare}} describing the differences between \code{x} and \code{y}
+instead of \code{TRUE} or \code{FALSE}.}
 }
 \value{
-A logical scalar indicating the result of the comparison.
+If \code{return_waldo_compare = FALSE}, a logical scalar indicating the result of the comparison. Otherwise a character vector of class
+\code{\link[waldo:compare]{waldo_compare}} describing the differences between \code{x} and \code{y}.
 }
 \description{
 Compares two \link[base:data.frame]{data frames}/\link[tibble:tibble]{tibbles} (or two objects coercible to tibbles like \link[base:matrix]{matrices}), optionally
 ignoring row and column ordering, and returns \code{TRUE} if both are equal, or \code{FALSE} otherwise. If the latter is the case and \code{quiet = FALSE}, information
 about detected differences is printed to the console.
 }
+\details{
+Under the hood, this function relies on \code{\link[waldo:compare]{waldo::compare()}}.
+}
 \examples{
 scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
 
-# by default, ordering of rows and columns is ignored ...
+# by default, ordering of rows and columns matters ...
 is_equal_df(x = mtcars,
             y = scramble(mtcars))
 
-# ... but those can be overriden if desired
+# ... but those can be ignored if desired
 is_equal_df(x = mtcars,
             y = scramble(mtcars),
-            ignore_col_order = FALSE)
+            ignore_col_order = TRUE)
 is_equal_df(x = mtcars,
             y = scramble(mtcars),
-            ignore_row_order = FALSE)
+            ignore_row_order = TRUE)
 
-# by default, `is_equal_df()` is sensitive to variable type differences ...
+# by default, `is_equal_df()` is sensitive to column type differences ...
 df1 <- data.frame(x = "a",
                   stringsAsFactors = FALSE)
 df2 <- data.frame(x = factor("a"))
 is_equal_df(df1, df2)
 
-# ... but you can request it to convert similar types
+# ... but you can request it to not make a difference between similar types
 is_equal_df(df1, df2,
-            convert = TRUE)
+            ignore_col_types = TRUE)
 }
 \seealso{
 Data frame / Tibble functions

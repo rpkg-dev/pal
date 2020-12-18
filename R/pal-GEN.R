@@ -3,11 +3,13 @@
 
 utils::globalVariables(names = c(".",
                                  "end",
+                                 "everything",
                                  "i_pattern",
                                  "minus",
                                  "Package",
                                  "plus",
-                                 "start"))
+                                 "start",
+                                 "where"))
 
 unicode_ellipsis <- "\u2026"
 
@@ -51,8 +53,8 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #'   opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.
 #' @param caption The caption of the rendered difference object. A character scalar. If `NULL`, a default caption is generated based on the object names of `x`
 #'   and `y`.
-#' @param change_msg The message that is displayed on the console in case `x` and `y` differ. If `NULL`, a default message is displayed.
-#' @param ask_msg The message that is displayed when `ask = TRUE`. Ignored if `ask = FALSE`.
+#' @param diff_text The text to display on the console in case `x` and `y` differ. If `NULL`, a default text is displayed.
+#' @param ask_text The text that is displayed when `ask = TRUE`. Ignored if `ask = FALSE`.
 #' @param ... Further arguments passed on to [daff::diff_data()], excluding `data`, `data_ref`, `ids`, `ordered`, and `columns_to_ignore`.
 #' @inheritParams is_equal_df
 #'
@@ -69,25 +71,24 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 show_diff <- function(x,
                       y,
                       ignore_order = FALSE,
-                      convert = FALSE,
+                      ignore_col_types = FALSE,
                       ids = NULL,
                       ask = TRUE,
                       bypass_rstudio_viewer = FALSE,
-                      change_msg = NULL,
-                      ask_msg = "Do you wish to display the changes?",
+                      diff_text = NULL,
+                      ask_text = "Do you wish to display the changes?",
                       caption = NULL,
                       ...) {
   
   checkmate::assert_character(ids,
                               any.missing = FALSE,
                               null.ok = TRUE)
-  checkmate::assert_string(change_msg,
+  checkmate::assert_string(diff_text,
                            null.ok = TRUE)
-  checkmate::assert_string(ask_msg)
+  checkmate::assert_string(ask_text)
   checkmate::assert_string(caption,
                            null.ok = TRUE)
   checkmate::assert_flag(ignore_order)
-  checkmate::assert_flag(convert)
   checkmate::assert_flag(ask)
   checkmate::assert_flag(bypass_rstudio_viewer)
   assert_pkg("daff")
@@ -120,9 +121,9 @@ show_diff <- function(x,
     caption <- paste0(x_lbl, " vs. ", y_lbl)
   }
   
-  # generate default change message if necessary
-  if (is.null(change_msg)) {
-    change_msg <- glue::glue("The data in {x_lbl} has changed:")
+  # generate default change info text if necessary
+  if (is.null(diff_text)) {
+    diff_text <- glue::glue("The data in {x_lbl} has changed:")
   }
   
   daff_obj <- daff::diff_data(data_ref = y,
@@ -130,23 +131,24 @@ show_diff <- function(x,
                               ids = ids,
                               ordered = !ignore_order)
   
-  diff <- is_equal_data_frame(x = x,
-                              y = y,
-                              ignore_col_order = ignore_order,
-                              ignore_row_order = ignore_order,
-                              convert = convert,
-                              name_repair = "minimal")
+  diff <- is_equal_df(x = x,
+                      y = y,
+                      ignore_col_order = ignore_order,
+                      ignore_row_order = ignore_order,
+                      ignore_col_types = ignore_col_types,
+                      quiet = TRUE,
+                      return_waldo_compare = TRUE)
   
-  if (!isTRUE(diff)) {
+  if (length(diff)) {
     
     assert_pkg("cli")
-    cli::cli_alert_info(change_msg)
-    cat("\n", diff, "\n", sep = "")
+    cli::cli_alert_info(diff_text)
+    print(diff)
     open_diff <- TRUE
     
     if (ask) {
       assert_pkg("yesno")
-      open_diff <- yesno::yesno2(ask_msg)
+      open_diff <- yesno::yesno2(ask_text)
     }
     
     if (open_diff) {
@@ -191,147 +193,128 @@ show_diff <- function(x,
 #' ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the case and `quiet = FALSE`, information
 #' about detected differences is printed to the console.
 #'
-#' @param x,y Two data frames/tibbles to compare.
+#' Under the hood, this function relies on [waldo::compare()].
+#'
+#' @param x,y Two data frames/tibbles to compare. `y` is treated as the reference object, so messages describe how `x` is different to `y`.
 #' @param ignore_col_order Whether or not to ignore the order of columns.
 #' @param ignore_row_order Whether or not to ignore the order of rows.
-#' @param convert Whether or not to convert similar column types. Currently, this will convert factor to character and integer to double.
-#' @param name_repair One of `"unique"`, `"universal"`, or `"check_unique"`. See [vctrs::vec_as_names()] for the meaning of these options.
-#' @param quiet Whether or not to output information about detected differences between `x` and `y` to the console.
+#' @param ignore_col_types Whether or not to distinguish similar column types. Currently, if set to `TRUE`, this will convert factor to character and integer to
+#'   double before comparison.
+#' @param quiet Whether or not to output detected differences between `x` and `y` to the console.
+#' @param max_diffs The maximum number of differences shown. Only relevant if `quiet = FALSE` or `return_waldo_compare = TRUE`. Set `max_diffs = Inf` to see all
+#'   differences.
+#' @param diff_text An additional text to display on the console (before the detailed differences) in case `x` and `y` differ. Set to `NULL` in order to
+#'   suppress. Only relevant if `quiet = FALSE`.
+#' @param return_waldo_compare Whether to return a character vector of class [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`
+#'   instead of `TRUE` or `FALSE`.
+#' @inheritParams waldo::compare
 #'
-#' @return A logical scalar indicating the result of the comparison.
+#' @return If `return_waldo_compare = FALSE`, a logical scalar indicating the result of the comparison. Otherwise a character vector of class
+#'   [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`.
 #' @family tibble
 #' @export
 #'
 #' @examples
 #' scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
 #'
-#' # by default, ordering of rows and columns is ignored ...
+#' # by default, ordering of rows and columns matters ...
 #' is_equal_df(x = mtcars,
 #'             y = scramble(mtcars))
 #'
-#' # ... but those can be overriden if desired
+#' # ... but those can be ignored if desired
 #' is_equal_df(x = mtcars,
 #'             y = scramble(mtcars),
-#'             ignore_col_order = FALSE)
+#'             ignore_col_order = TRUE)
 #' is_equal_df(x = mtcars,
 #'             y = scramble(mtcars),
-#'             ignore_row_order = FALSE)
+#'             ignore_row_order = TRUE)
 #'
-#' # by default, `is_equal_df()` is sensitive to variable type differences ...
+#' # by default, `is_equal_df()` is sensitive to column type differences ...
 #' df1 <- data.frame(x = "a",
 #'                   stringsAsFactors = FALSE)
 #' df2 <- data.frame(x = factor("a"))
 #' is_equal_df(df1, df2)
 #'
-#' # ... but you can request it to convert similar types
+#' # ... but you can request it to not make a difference between similar types
 #' is_equal_df(df1, df2,
-#'             convert = TRUE)
+#'             ignore_col_types = TRUE)
 is_equal_df <- function(x,
                         y,
-                        ignore_col_order = TRUE,
-                        ignore_row_order = TRUE,
-                        convert = FALSE,
-                        name_repair = "minimal",
-                        quiet = TRUE) {
+                        ignore_col_order = FALSE,
+                        ignore_row_order = FALSE,
+                        ignore_col_types = FALSE,
+                        tolerance = NULL,
+                        quiet = TRUE,
+                        max_diffs = 10L,
+                        diff_text = "`x` differs from `y`:",
+                        return_waldo_compare = FALSE) {
   
-  result <- is_equal_data_frame(x = x,
-                                y = y,
-                                ignore_col_order = checkmate::assert_flag(ignore_col_order),
-                                ignore_row_order = checkmate::assert_flag(ignore_row_order),
-                                convert = checkmate::assert_flag(convert),
-                                name_repair = name_repair)
+  assert_pkg("waldo")
+  checkmate::assert_flag(return_waldo_compare)
   
-  if (!isTRUE(result)) {
+  # convert `x` and `y` to tibble if any modification is required
+  if (checkmate::assert_flag(ignore_col_order) | checkmate::assert_flag(ignore_row_order) | checkmate::assert_flag(ignore_col_types)) {
     
-    if (!checkmate::assert_flag(quiet)) message(result)
-    return(FALSE)
+    x %<>% tibble::as_tibble()
+    y %<>% tibble::as_tibble()
+  }
+  
+  # sort columns if necessary
+  if (ignore_col_order) {
     
-  } else {
-    return(result)
+    x %<>% dplyr::select(sort(colnames(.)))
+    y %<>% dplyr::select(sort(colnames(.)))
   }
+  
+  # sort rows if necessary
+  if (ignore_row_order) {
+    
+    x %<>% dplyr::arrange(dplyr::across(.cols = everything()))
+    y %<>% dplyr::arrange(dplyr::across(.cols = everything()))
+  }
+  
+  # harmonize column types if necessary
+  if (ignore_col_types) {
+    
+    x %<>% dplyr::mutate(dplyr::across(.cols = where(is.factor),
+                                       .fns = as.character),
+                         dplyr::across(.cols = where(is.integer),
+                                       .fns = as.double))
+    y %<>% dplyr::mutate(dplyr::across(.cols = where(is.factor),
+                                       .fns = as.character),
+                         dplyr::across(.cols = where(is.integer),
+                                       .fns = as.double))
+  }
+  
+  result <- waldo::compare(x = x,
+                           y = y,
+                           tolerance = tolerance,
+                           x_arg = "x",
+                           y_arg = "y",
+                           max_diffs = max_diffs)
+  
+  if (length(result)) {
+    
+    if (!checkmate::assert_flag(quiet)) {
+      
+      if (!is.null(checkmate::assert_string(diff_text,
+                                            null.ok = TRUE))) {
+        
+        cli::cli_alert_info(text = diff_text)
+        cat("\n")
+      }
+      
+      print(result)
+    }
+    
+    if (!return_waldo_compare) result <- FALSE
+    
+  } else if (!return_waldo_compare) {
+    result <- TRUE
+  }
+  
+  result
 }
-
-# modified helper borrowed from dplyr: https://github.com/tidyverse/dplyr/blob/master/R/all-equal.r
-is_equal_data_frame <- function(x,
-                                y,
-                                ignore_col_order,
-                                ignore_row_order,
-                                convert,
-                                name_repair) {
-  
-  assert_pkg("vctrs")
-  
-  compat <- is_compatible_data_frame(x,
-                                     y,
-                                     ignore_col_order = ignore_col_order,
-                                     convert = convert)
-  
-  if (!isTRUE(compat)) {
-    return(compat)
-  }
-  
-  nrows_x <- nrow(x)
-  nrows_y <- nrow(y)
-  
-  if (nrows_x != nrows_y) {
-    return("Different number of rows")
-  }
-  
-  if (ncol(x) == 0L) {
-    return(TRUE)
-  }
-  
-  x <- tibble::as_tibble(x, .name_repair = name_repair)
-  y <- tibble::as_tibble(y, .name_repair = name_repair)
-  
-  x_split <- vec_split_id_order(x)
-  y_split <- vec_split_id_order(y[, names(x), drop = FALSE])
-  
-  # keys must be identical
-  msg <- ""
-  wrong <- !vctrs::vec_in(x_split$key, y_split$key)
-  
-  if (any(wrong)) {
-    rows <- sort(purrr::map_int(x_split$loc[which(wrong)], function(.x) .x[1L]))
-    msg <- paste0(msg, "- Rows in x but not in y: ", glue::glue_collapse(rows, sep = ", "), "\n")
-  }
-  
-  wrong <- !vctrs::vec_in(y_split$key, x_split$key)
-  
-  if (any(wrong)) {
-    rows <- sort(purrr::map_int(y_split$loc[which(wrong)], function(.x) .x[1L]))
-    msg <- paste0(msg, "- Rows in y but not in x: ", glue::glue_collapse(rows, sep = ", "), "\n")
-  }
-  
-  if (msg != "") {
-    return(msg)
-  }
-  
-  wrong <- lengths(x_split$loc) != lengths(y_split$loc)
-  
-  # keys are identical, check that rows occur the same number of times
-  if (any(wrong)) {
-    rows <- sort(purrr::map_int(x_split$loc[which(wrong)], function(.x) .x[1L]))
-    return(paste0("- Rows with difference occurences in x and y: ",
-                  glue::glue_collapse(rows, sep = ", "),
-                  "\n"
-    ))
-  }
-  
-  # then if we care about row order, the id need to be identical
-  if (!ignore_row_order && !all(vctrs::vec_equal(x_split$loc, y_split$loc))) {
-    return("Same row values, but different order")
-  }
-  
-  TRUE
-}
-
-# import necessary helpers from dplyr
-is_compatible_data_frame <- utils::getFromNamespace(x = "is_compatible_data_frame",
-                                                    ns = "dplyr")
-
-vec_split_id_order <- utils::getFromNamespace(x = "vec_split_id_order",
-                                              ns = "dplyr")
 
 #' Temporary helpers for `dplyr::filter()`
 #'
