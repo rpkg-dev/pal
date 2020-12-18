@@ -1680,6 +1680,8 @@ prettify_nr <- function(x,
 #' Print `x` as newline-separated character vector using `cat()`.
 #' 
 #' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
+#' 
+#' A faster alternative that doesn't _recursively_ convert its input to type character is [cli::cat_line()].
 #'
 #' @param ... The \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
@@ -1693,6 +1695,14 @@ prettify_nr <- function(x,
 #'                  "DESCRIPTION") %>%
 #'   readr::read_lines() %>%
 #'   cat_lines()
+#' 
+#' # recursive conversion to type character or not
+#' to_convert <-
+#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
+#'   print()
+#' 
+#' to_convert %>% cat_lines()
+#' to_convert %>% cli::cat_line()
 cat_lines <- function(...) {
   
   cat(as_chr(...),

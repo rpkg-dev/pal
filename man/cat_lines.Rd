@@ -15,11 +15,22 @@ None (invisible \code{NULL}).
 \description{
 Convenience wrapper around \code{\link[=as_chr]{as_chr()}} and \code{\link[base:cat]{cat()}}, mainly intended for interactive use.
 }
+\details{
+A faster alternative that doesn't \emph{recursively} convert its input to type character is \code{\link[cli:cat_line]{cli::cat_line()}}.
+}
 \examples{
 fs::path_package(package = "pal",
                  "DESCRIPTION") \%>\%
   readr::read_lines() \%>\%
   cat_lines()
+
+# recursive conversion to type character or not
+to_convert <-
+  list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) \%T>\%
+  print()
+
+to_convert \%>\% cat_lines()
+to_convert \%>\% cli::cat_line()
 }
 \seealso{
 \code{\link[xfun:raw_string]{xfun::raw_string()}}, \code{\link[xfun:file_string]{xfun::file_string()}}
