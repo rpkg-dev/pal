@@ -203,8 +203,6 @@ show_diff <- function(x,
 #' @param quiet Whether or not to output detected differences between `x` and `y` to the console.
 #' @param max_diffs The maximum number of differences shown. Only relevant if `quiet = FALSE` or `return_waldo_compare = TRUE`. Set `max_diffs = Inf` to see all
 #'   differences.
-#' @param diff_text An additional text to display on the console (before the detailed differences) in case `x` and `y` differ. Set to `NULL` in order to
-#'   suppress. Only relevant if `quiet = FALSE`.
 #' @param return_waldo_compare Whether to return a character vector of class [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`
 #'   instead of `TRUE` or `FALSE`.
 #' @inheritParams waldo::compare
@@ -246,7 +244,6 @@ is_equal_df <- function(x,
                         tolerance = NULL,
                         quiet = TRUE,
                         max_diffs = 10L,
-                        diff_text = "`x` differs from `y`:",
                         return_waldo_compare = FALSE) {
   
   assert_pkg("waldo")
@@ -297,13 +294,8 @@ is_equal_df <- function(x,
     
     if (!checkmate::assert_flag(quiet)) {
       
-      if (!is.null(checkmate::assert_string(diff_text,
-                                            null.ok = TRUE))) {
-        
-        cli::cli_alert_info(text = diff_text)
-        cat("\n")
-      }
-      
+      cli::cli_alert_info(text = "`x` differs from `y`:")
+      cat("\n")
       print(result)
     }
     

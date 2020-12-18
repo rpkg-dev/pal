@@ -13,7 +13,6 @@ is_equal_df(
   tolerance = NULL,
   quiet = TRUE,
   max_diffs = 10L,
-  diff_text = "`x` differs from `y`:",
   return_waldo_compare = FALSE
 )
 }
@@ -43,9 +42,6 @@ with differences. Then we check that
 
 \item{max_diffs}{The maximum number of differences shown. Only relevant if \code{quiet = FALSE} or \code{return_waldo_compare = TRUE}. Set \code{max_diffs = Inf} to see all
 differences.}
-
-\item{diff_text}{An additional text to display on the console (before the detailed differences) in case \code{x} and \code{y} differ. Set to \code{NULL} in order to
-suppress. Only relevant if \code{quiet = FALSE}.}
 
 \item{return_waldo_compare}{Whether to return a character vector of class \code{\link[waldo:compare]{waldo_compare}} describing the differences between \code{x} and \code{y}
 instead of \code{TRUE} or \code{FALSE}.}
