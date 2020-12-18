@@ -12,8 +12,10 @@ show_diff(
   ids = NULL,
   ask = TRUE,
   bypass_rstudio_viewer = FALSE,
+  verbose = TRUE,
+  max_diffs = 10L,
   diff_text = NULL,
-  ask_text = "Do you wish to display the changes?",
+  ask_text = "Do you wish to display the changes in tabular diff format?",
   caption = NULL,
   ...
 )
@@ -37,6 +39,10 @@ away. Only relevant if run \link[base:interactive]{interactively}.}
 \item{bypass_rstudio_viewer}{If \code{TRUE}, \code{x} and \code{y} actually differ, and \code{ask} is set to \code{TRUE}, the resulting difference object will be
 opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.}
 
+\item{verbose}{Whether or not to also output the differences detected by \code{\link[=is_equal_df]{is_equal_df()}} to the console.}
+
+\item{max_diffs}{The maximum number of differences shown on the console. Only relevant if \code{verbose = TRUE}.}
+
 \item{diff_text}{The text to display on the console in case \code{x} and \code{y} differ. If \code{NULL}, a default text is displayed.}
 
 \item{ask_text}{The text that is displayed when \code{ask = TRUE}. Ignored if \code{ask = FALSE}.}
@@ -58,7 +64,12 @@ HTML.
 This function is basically a convenience wrapper combining \code{\link[=is_equal_df]{is_equal_df()}}, \code{\link[daff:diff_data]{daff::diff_data()}} and \code{\link[daff:render_diff]{daff::render_diff()}}. If run non-interactively or
 \code{ask = FALSE}, the differences will be shown right away, otherwise the user will be asked on the console.
 
-Note that it only compares the \emph{content} of \code{x} and \code{y}, not their attributes.
+Note that it in tabular diff format only changes in the \emph{column content} of \code{x} and \code{y} are visible, meaning that the following properties and changes
+therein won't be displayed:
+\itemize{
+\item column types (e.g. integer vs. double)
+\item row names and other attributes
+}
 }
 \examples{
 \dontrun{

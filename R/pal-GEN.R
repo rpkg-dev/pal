@@ -40,7 +40,11 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #' This function is basically a convenience wrapper combining [is_equal_df()], [daff::diff_data()] and [daff::render_diff()]. If run non-interactively or
 #' `ask = FALSE`, the differences will be shown right away, otherwise the user will be asked on the console.
 #'
-#' Note that it only compares the _content_ of `x` and `y`, not their attributes.
+#' Note that it in tabular diff format only changes in the _column content_ of `x` and `y` are visible, meaning that the following properties and changes
+#' therein won't be displayed:
+#'
+#' - column types (e.g. integer vs. double)
+#' - row names and other attributes
 #'
 #' @param x The data frame / tibble to check for changes.
 #' @param y The data frame / tibble that `x` should be checked against, i.e. the reference.
@@ -51,6 +55,8 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #'   away. Only relevant if run [interactively][base::interactive()].
 #' @param bypass_rstudio_viewer If `TRUE`, `x` and `y` actually differ, and `ask` is set to `TRUE`, the resulting difference object will be
 #'   opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.
+#' @param verbose Whether or not to also output the differences detected by [is_equal_df()] to the console.
+#' @param max_diffs The maximum number of differences shown on the console. Only relevant if `verbose = TRUE`.
 #' @param caption The caption of the rendered difference object. A character scalar. If `NULL`, a default caption is generated based on the object names of `x`
 #'   and `y`.
 #' @param diff_text The text to display on the console in case `x` and `y` differ. If `NULL`, a default text is displayed.
@@ -75,8 +81,10 @@ show_diff <- function(x,
                       ids = NULL,
                       ask = TRUE,
                       bypass_rstudio_viewer = FALSE,
+                      verbose = TRUE,
+                      max_diffs = 10L,
                       diff_text = NULL,
-                      ask_text = "Do you wish to display the changes?",
+                      ask_text = "Do you wish to display the changes in tabular diff format?",
                       caption = NULL,
                       ...) {
   
@@ -123,11 +131,11 @@ show_diff <- function(x,
   
   # generate default change info text if necessary
   if (is.null(diff_text)) {
-    diff_text <- glue::glue("The data in {x_lbl} has changed:")
+    diff_text <- glue::glue("The data in {x_lbl} has changed")
   }
   
-  daff_obj <- daff::diff_data(data_ref = y,
-                              data = x,
+  daff_obj <- daff::diff_data(data = x,
+                              data_ref = y,
                               ids = ids,
                               ordered = !ignore_order)
   
@@ -142,12 +150,21 @@ show_diff <- function(x,
   if (length(diff)) {
     
     assert_pkg("cli")
-    cli::cli_alert_info(diff_text)
-    print(diff)
+    
+    if (verbose) {
+      cli::cli_alert_info(text = paste0(diff_text, ":"))
+      cat("\n")
+      print(diff)
+      
+    } else {
+      cli::cli_alert_info(text = paste0(diff_text, "."))
+    }
+    
     open_diff <- TRUE
     
     if (ask) {
       assert_pkg("yesno")
+      cat("\n")
       open_diff <- yesno::yesno2(ask_text)
     }
     
