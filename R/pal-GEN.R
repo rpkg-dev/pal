@@ -2093,25 +2093,29 @@ run_cli <- function(cmd,
 
 #' Capture printed console output as string
 #'
-#' Returns what [`print(x)`][base::print()] would output on the console as an atomic character vector (aka string).
+#' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as an atomic character vector
+#' (i.e. a string), otherwise a character vector of output lines.
 #'
 #' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
 #' (e.g. as output by the `print()` methods of tidyverse packages) are not captured (i.e. lost).
 #'
-#' @param x The \R object of which the output of `print(x)` is to be captured.
+#' @param x The \R object of which the output of `print()` is to be captured.
+#' @param collapse An optional string for concatenating the results. If `NULL`, a character vector of print lines is returned.
 #'
-#' @return A character scalar.
+#' @return A character vector if `collapse = NULL`, otherwise a character scalar.
 #' @export
 #'
 #' @examples
-#' mtcars %>% pal::capture_print() %T>% str() %>% cat()
-capture_print <- function(x) {
+#' mtcars %>% pal::capture_print()
+#' mtcars %>% pal::capture_print(collapse = "\n") %>% cat()
+capture_print <- function(x,
+                          collapse = NULL) {
   
   utils::capture.output(print(x),
                         file = NULL,
                         type = "output",
                         split = FALSE) %>%
-    paste0(collapse = "\n")
+    paste0(collapse = collapse)
 }
 
 #' Order a vector by another vector

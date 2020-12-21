@@ -4,21 +4,25 @@
 \alias{capture_print}
 \title{Capture printed console output as string}
 \usage{
-capture_print(x)
+capture_print(x, collapse = NULL)
 }
 \arguments{
-\item{x}{The \R object of which the output of \code{print(x)} is to be captured.}
+\item{x}{The \R object of which the output of \code{print()} is to be captured.}
+
+\item{collapse}{An optional string for concatenating the results. If \code{NULL}, a character vector of print lines is returned.}
 }
 \value{
-A character scalar.
+A character vector if \code{collapse = NULL}, otherwise a character scalar.
 }
 \description{
-Returns what \code{\link[base:print]{print(x)}} would output on the console as an atomic character vector (aka string).
+Returns what \code{\link[base:print]{print(x)}} would output on the console – if \code{collapse} is set to anything other than \code{NULL}, as an atomic character vector
+(i.e. a string), otherwise a character vector of output lines.
 }
 \details{
 This is a simple convenience wrapper around \code{\link[utils:capture.output]{utils::capture.output()}}. Note that \href{https://en.wikipedia.org/wiki/ANSI_escape_code}{ANSI escape sequences}
 (e.g. as output by the \code{print()} methods of tidyverse packages) are not captured (i.e. lost).
 }
 \examples{
-mtcars \%>\% pal::capture_print() \%T>\% str() \%>\% cat()
+mtcars \%>\% pal::capture_print()
+mtcars \%>\% pal::capture_print(collapse = "\n") \%>\% cat()
 }
