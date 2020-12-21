@@ -20,5 +20,5 @@ This is a simple convenience wrapper around \code{\link[utils:capture.output]{ut
 (e.g. as output by the \code{print()} methods of tidyverse packages) are not captured (i.e. lost).
 }
 \examples{
-mtcars \%>\% capture_print \%>\% str()
+mtcars \%>\% pal::capture_print() \%T>\% str() \%>\% cat()
 }

@@ -2396,7 +2396,7 @@ run_cli <- function(cmd,
 #' @export
 #'
 #' @examples
-#' mtcars %>% capture_print %>% str()
+#' mtcars %>% pal::capture_print() %T>% str() %>% cat()
 capture_print <- function(x) {
   
   utils::capture.output(print(x),
