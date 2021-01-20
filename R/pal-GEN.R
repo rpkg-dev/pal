@@ -1881,7 +1881,7 @@ str_replace_verbose_single_info <- function(string,
 #' not unambiguously in all edge cases). Simply deriving a default depending on the host OS (i.a. `"LF"` on Unix systems like Linux and macOS and `"CRLF"` on
 #' Windows) seems like a really bad idea with regard to cross-system collaboration (files shared via Git etc.), thus it was refrained from.
 #'
-#' Files are _always_ written in **UTF-8** character encoding regardless of the specified input `encoding`.
+#' The text files are assumed to be in [UTF-8 character encoding](https://en.wikipedia.org/wiki/UTF-8), other encodings are not supported.
 #'
 #' @param path Paths to the text files. A character vector.
 #' @param process_line_by_line Whether each line in a file should be treated as a separate string or the whole file as one single string. While the latter is 
@@ -1891,7 +1891,6 @@ str_replace_verbose_single_info <- function(string,
 #'   - `"CRLF"` for the carriage return + line feed (CR+LF) character sequence (`"\r\n"`). The standard on Microsoft Windows, DOS and some other systems.
 #'   - `"CR"` for the carriage return (CR) character (`"\r"`). The standard on classic Mac OS and some other antiquated systems.
 #'   - `"LFCR"` for the line feed + carriage return (LF+CR) character sequence (`"\n\r"`). The standard on RISC OS and some other exotic systems.
-#' @param encoding The character encoding of the _input_ files. Note that regardless of this setting, files are _always written in UTF-8 encoding_.
 #' @param show_rel_path Whether to display file `path`s as relative from the current working directory. If `FALSE`, absolute paths are displayed. Only relevant
 #'   if `verbose = TRUE`.
 #' @param run_dry Show replacements on the console only, without actually modifying any files. Implies `verbose = TRUE`.
@@ -1904,13 +1903,12 @@ str_replace_file <- function(path,
                              pattern,
                              process_line_by_line = FALSE,
                              eol = c("LF", "CRLF", "CR", "LFCR"),
-                             encoding = "UTF-8",
                              verbose = TRUE,
                              n_context_chrs = 20L,
                              show_rel_path = TRUE,
                              run_dry = FALSE) {
   
-  assert_pkg("readr")
+  assert_pkg("brio")
   checkmate::assert_file(path,
                          access = "r")
   checkmate::assert_flag(process_line_by_line)
@@ -1939,8 +1937,7 @@ str_replace_file <- function(path,
                 }
                 
                 # perform replacement
-                input <- readr::read_file(file = path,
-                                          locale = readr::locale(encoding = encoding))
+                input <- brio::read_file(path = path)
                 
                 if (process_line_by_line) {
                   input %<>% stringr::str_split(pattern = eol) %>% dplyr::first()
@@ -1953,9 +1950,9 @@ str_replace_file <- function(path,
                 
                 if (!run_dry && !identical(input, output)) {
                   
-                  readr::write_file(x = paste0(output,
-                                               collapse = eol),
-                                    file = path)
+                  brio::write_file(text = paste0(output,
+                                                 collapse = eol),
+                                   path = path)
                 }
               })
   

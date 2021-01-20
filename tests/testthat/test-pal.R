@@ -397,14 +397,14 @@ test_that("`str_replace_file()` basically works", {
       readr::write_lines(x = before,
                          file = "test_file_1.txt")
       str_replace_file(path = "test_file_1.txt",
-                       pattern,
+                       pattern = pattern,
                        process_line_by_line = TRUE,
                        verbose = FALSE)},
     "test_file_2.txt" = {
       readr::write_lines(x = before,
                          file = "test_file_2.txt")
       str_replace_file(path = "test_file_2.txt",
-                       pattern,
+                       pattern = pattern,
                        process_line_by_line = FALSE,
                        verbose = FALSE)}))
 

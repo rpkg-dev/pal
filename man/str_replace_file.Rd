@@ -9,7 +9,6 @@ str_replace_file(
   pattern,
   process_line_by_line = FALSE,
   eol = c("LF", "CRLF", "CR", "LFCR"),
-  encoding = "UTF-8",
   verbose = TRUE,
   n_context_chrs = 20L,
   show_rel_path = TRUE,
@@ -35,8 +34,6 @@ more performant, you probably want the former if you're using \code{"^"} or \cod
 \item \code{"LFCR"} for the line feed + carriage return (LF+CR) character sequence (\code{"\\n\\r"}). The standard on RISC OS and some other exotic systems.
 }}
 
-\item{encoding}{The character encoding of the \emph{input} files. Note that regardless of this setting, files are \emph{always written in UTF-8 encoding}.}
-
 \item{verbose}{Whether to display replacements on the console.}
 
 \item{n_context_chrs}{The (maximum) number of characters displayed around the actual \code{string} and its replacement. The number refers to a single side of
@@ -61,7 +58,7 @@ Note that \code{process_line_by_line} requires the \href{https://en.wikipedia.or
 not unambiguously in all edge cases). Simply deriving a default depending on the host OS (i.a. \code{"LF"} on Unix systems like Linux and macOS and \code{"CRLF"} on
 Windows) seems like a really bad idea with regard to cross-system collaboration (files shared via Git etc.), thus it was refrained from.
 
-Files are \emph{always} written in \strong{UTF-8} character encoding regardless of the specified input \code{encoding}.
+The text files are assumed to be in \href{https://en.wikipedia.org/wiki/UTF-8}{UTF-8 character encoding}, other encodings are not supported.
 }
 \seealso{
 String functions
