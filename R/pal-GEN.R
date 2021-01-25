@@ -115,7 +115,7 @@ show_diff <- function(x,
   if (length(x_lbl) > 1L) {
     x_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
     
-  } else if (x_lbl == ".") x_lbl <- "`data`"
+  } else if (x_lbl == ".") x_lbl <- "x"
   
   if (is.null(caption)) {
     
@@ -124,14 +124,14 @@ show_diff <- function(x,
     if (length(y_lbl) > 1L) {
       y_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
       
-    } else if (y_lbl == ".") y_lbl <- "`data_ref`"
+    } else if (y_lbl == ".") y_lbl <- "y"
     
-    caption <- paste0(x_lbl, " vs. ", y_lbl)
+    caption <- glue::glue("`{x_lbl}` vs. `{y_lbl}`")
   }
   
   # generate default change info text if necessary
   if (is.null(diff_text)) {
-    diff_text <- glue::glue("The data in {x_lbl} has changed")
+    diff_text <- glue::glue("The data in `{x_lbl}` has changed")
   }
   
   daff_obj <- daff::diff_data(data = x,
