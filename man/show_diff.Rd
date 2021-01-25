@@ -64,7 +64,7 @@ HTML.
 This function is basically a convenience wrapper combining \code{\link[=is_equal_df]{is_equal_df()}}, \code{\link[daff:diff_data]{daff::diff_data()}} and \code{\link[daff:render_diff]{daff::render_diff()}}. If run non-interactively or
 \code{ask = FALSE}, the differences will be shown right away, otherwise the user will be asked on the console.
 
-Note that it in tabular diff format only changes in the \emph{column content} of \code{x} and \code{y} are visible, meaning that the following properties and changes
+Note that in tabular diff format only changes in the \emph{column content} of \code{x} and \code{y} are visible, meaning that the following properties and changes
 therein won't be displayed:
 \itemize{
 \item column types (e.g. integer vs. double)
