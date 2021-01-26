@@ -288,6 +288,16 @@ test_that("`stat_mode()` ignores `NA`s if requested", {
 })
 
 # Strings ----
+## fuse_regex ----
+test_that("`fuse_regex()` works as expected", {
+
+  expect_identical(fuse_regex(1:3),
+                   "(1|2|3)")
+
+  expect_identical(fuse_regex(1, 2, 3),
+                   "(1|2|3)")
+})
+
 ## prose_ls_fn_param ----
 test_that("`prose_ls_fn_param()` works as expected", {
 

@@ -1779,7 +1779,9 @@ fuse_regex <- function(...) {
   
   result <- as_string(..., sep = "|")
   
-  if (length(rlang::list2(...)) > 1L) result %<>% paste0("(", ., ")")
+  if (length(rlang::list2(...)) > 1L || length(rlang::list2(...)[[1]]) > 1L) {
+    result %<>% paste0("(", ., ")")
+  }
   
   result
 }
