@@ -57,10 +57,11 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #'   opened in the system's default web browser instead of RStudio's built-in viewer. Only relevant if run within RStudio.
 #' @param verbose Whether or not to also output the differences detected by [is_equal_df()] to the console.
 #' @param max_diffs The maximum number of differences shown on the console. Only relevant if `verbose = TRUE`.
-#' @param caption The caption of the rendered difference object. A character scalar. If `NULL`, a default caption is generated based on the object names of `x`
-#'   and `y`.
-#' @param diff_text The text to display on the console in case `x` and `y` differ. If `NULL`, a default text is displayed.
-#' @param ask_text The text that is displayed when `ask = TRUE`. Ignored if `ask = FALSE`.
+#' @param caption The caption of the rendered difference object. It is passed to [glue::glue()] allowing its string interpolation syntax to be used. A character
+#'   scalar.
+#' @param diff_text The text to display on the console in case `x` and `y` differ. It is passed to [glue::glue()] allowing its string interpolation syntax to be
+#'   used. A character scalar.
+#' @param ask_text The text that is displayed when `ask = TRUE`. Ignored if `ask = FALSE`. A character scalar.
 #' @param ... Further arguments passed on to [daff::diff_data()], excluding `data`, `data_ref`, `ids`, `ordered`, and `columns_to_ignore`.
 #' @inheritParams is_equal_df
 #'
@@ -83,19 +84,17 @@ show_diff <- function(x,
                       bypass_rstudio_viewer = FALSE,
                       verbose = TRUE,
                       max_diffs = 10L,
-                      diff_text = NULL,
+                      diff_text = "{x_lbl} is different from {y_lbl}",
                       ask_text = "Do you wish to display the changes in tabular diff format?",
-                      caption = NULL,
+                      caption = "{x_lbl} vs. {y_lbl}",
                       ...) {
   
   checkmate::assert_character(ids,
                               any.missing = FALSE,
                               null.ok = TRUE)
-  checkmate::assert_string(diff_text,
-                           null.ok = TRUE)
+  checkmate::assert_string(diff_text)
   checkmate::assert_string(ask_text)
-  checkmate::assert_string(caption,
-                           null.ok = TRUE)
+  checkmate::assert_string(caption)
   checkmate::assert_flag(ignore_order)
   checkmate::assert_flag(ask)
   checkmate::assert_flag(bypass_rstudio_viewer)
@@ -109,30 +108,33 @@ show_diff <- function(x,
                                   "ordered",
                                   "columns_to_ignore"))
   
-  # generate default caption if necessary
+  # generate `x`/`y` labels
   x_lbl <- deparse(substitute(x))
+  y_lbl <- deparse(substitute(y))
   
-  if (length(x_lbl) > 1L) {
-    x_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
-    
-  } else if (x_lbl == ".") x_lbl <- "x"
+  if (length(x_lbl) > 1L || x_lbl == "." || make.names(x_lbl) != x_lbl) {
+    x_lbl <- "`x`"
+  } else x_lbl <- glue::glue("`x` (`{x_lbl}`)")
   
-  if (is.null(caption)) {
-    
-    y_lbl <- deparse(substitute(y))
-    
-    if (length(y_lbl) > 1L) {
-      y_lbl %<>% dplyr::first() %>% glue::glue(" ({unicode_ellipsis})")
-      
-    } else if (y_lbl == ".") y_lbl <- "y"
-    
-    caption <- glue::glue("`{x_lbl}` vs. `{y_lbl}`")
-  }
+  if (length(y_lbl) > 1L || y_lbl == "." || make.names(y_lbl) != y_lbl) {
+    y_lbl <- "`y`"
+  } else y_lbl <- glue::glue("`y` (`{y_lbl}`)")
   
-  # generate default change info text if necessary
-  if (is.null(diff_text)) {
-    diff_text <- glue::glue("The data in `{x_lbl}` has changed")
-  }
+  # generate HTML caption
+  caption %<>% glue::glue()
+  caption %<>%
+    stringr::str_count(pattern = "`") %>%
+    seq(from = 1L,
+        by = 1L) %>%
+    purrr::reduce(.init = caption,
+                  .f = function(string, i) {
+                    
+                    stringr::str_replace(string = string,
+                                         pattern = "`",
+                                         replacement = dplyr::if_else(i %% 2L == 0L,
+                                                                      "</code>",
+                                                                      "<code>"))
+                  })
   
   daff_obj <- daff::diff_data(data = x,
                               data_ref = y,

@@ -14,9 +14,9 @@ show_diff(
   bypass_rstudio_viewer = FALSE,
   verbose = TRUE,
   max_diffs = 10L,
-  diff_text = NULL,
+  diff_text = "{x_lbl} is different from {y_lbl}",
   ask_text = "Do you wish to display the changes in tabular diff format?",
-  caption = NULL,
+  caption = "{x_lbl} vs. {y_lbl}",
   ...
 )
 }
@@ -43,12 +43,13 @@ opened in the system's default web browser instead of RStudio's built-in viewer.
 
 \item{max_diffs}{The maximum number of differences shown on the console. Only relevant if \code{verbose = TRUE}.}
 
-\item{diff_text}{The text to display on the console in case \code{x} and \code{y} differ. If \code{NULL}, a default text is displayed.}
+\item{diff_text}{The text to display on the console in case \code{x} and \code{y} differ. It is passed to \code{\link[glue:glue]{glue::glue()}} allowing its string interpolation syntax to be
+used. A character scalar.}
 
-\item{ask_text}{The text that is displayed when \code{ask = TRUE}. Ignored if \code{ask = FALSE}.}
+\item{ask_text}{The text that is displayed when \code{ask = TRUE}. Ignored if \code{ask = FALSE}. A character scalar.}
 
-\item{caption}{The caption of the rendered difference object. A character scalar. If \code{NULL}, a default caption is generated based on the object names of \code{x}
-and \code{y}.}
+\item{caption}{The caption of the rendered difference object. It is passed to \code{\link[glue:glue]{glue::glue()}} allowing its string interpolation syntax to be used. A character
+scalar.}
 
 \item{...}{Further arguments passed on to \code{\link[daff:diff_data]{daff::diff_data()}}, excluding \code{data}, \code{data_ref}, \code{ids}, \code{ordered}, and \code{columns_to_ignore}.}
 }
