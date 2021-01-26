@@ -155,19 +155,22 @@ show_diff <- function(x,
   
   # generate HTML caption
   caption %<>% glue::glue()
-  caption %<>%
-    stringr::str_count(pattern = "`") %>%
-    seq(from = 1L,
-        by = 1L) %>%
-    purrr::reduce(.init = caption,
-                  .f = function(string, i) {
-                    
-                    stringr::str_replace(string = string,
-                                         pattern = "`",
-                                         replacement = dplyr::if_else(i %% 2L == 0L,
-                                                                      "</code>",
-                                                                      "<code>"))
-                  })
+  n_backtick <- caption %>% stringr::str_count(pattern = "`")
+  
+  if (n_backtick) {
+    
+    caption %<>%
+      purrr::reduce(.x = 1:n_backtick,
+                    .init = .,
+                    .f = function(string, i) {
+                      
+                      stringr::str_replace(string = string,
+                                           pattern = "`",
+                                           replacement = dplyr::if_else(i %% 2L == 0L,
+                                                                        "</code>",
+                                                                        "<code>"))
+                    })
+  }
   
   daff_obj <- daff::diff_data(data = x,
                               data_ref = y,
