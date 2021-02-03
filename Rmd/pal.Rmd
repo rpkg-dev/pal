@@ -200,7 +200,7 @@ show_diff <- function(x,
     
     open_diff <- TRUE
     
-    if (ask) {
+    if (ask && interactive()) {
       assert_pkg("yesno")
       cat("\n")
       open_diff <- yesno::yesno2(ask_text)
