@@ -1829,6 +1829,8 @@ dsv_colnames <- function(x,
 
 ## List items concatenated in prose style (..., ... and ...)
 
+TODO: Thoroughly compare this fn to `knitr::combine_words()` and maybe deprecate it in favor of the latter?
+
 ```{r}
 #' List items concatenated in prose style (..., ... and ...)
 #'
