@@ -1418,11 +1418,9 @@ stat_mode <- function(x,
   
   type %>% purrr::when(
     # return the number of modes if requested
-    . == "n" ~
-      n_modes,
+    . == "n" ~ n_modes,
     # or return mode(s) if requested and existing
-    (. == "one" & n_modes == 1L) | (. == "all" & n_modes > 0L) ~
-      u_x[which(modes)],
+    (. == "one" && n_modes == 1L) || (. == "all" && n_modes > 0L) ~ u_x[which(modes)],
     # else return `NA` (of the same type as `x`)
     ~ x[NA][1L]
   )
@@ -1556,7 +1554,7 @@ fuse_regex <- function(...) {
   
   result <- as_string(..., sep = "|")
   
-  if (length(rlang::list2(...)) > 1L || length(rlang::list2(...)[[1]]) > 1L) {
+  if (length(rlang::list2(...)) > 1L || length(rlang::list2(...)[[1L]]) > 1L) {
     result %<>% paste0("(", ., ")")
   }
   
