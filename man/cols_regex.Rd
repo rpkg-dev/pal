@@ -8,7 +8,7 @@ cols_regex(..., .default = readr::col_character(), .col_names)
 }
 \arguments{
 \item{...}{Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by \verb{col_*()}, or their
-abbreviated character names (as described in the \code{col_types} argument of \code{\link[readr:read_delim]{readr::read_delim()}}).}
+abbreviated character names (as described in the \code{col_types} parameter of \code{\link[readr:read_delim]{readr::read_delim()}}). \link[rlang:dyn-dots]{Dynamic dots} are supported.)`}
 
 \item{.default}{Any named columns not matched by any of the regular expressions in \code{...} will be read with this column type.}
 
@@ -18,25 +18,27 @@ abbreviated character names (as described in the \code{col_types} argument of \c
 A \link[readr:cols]{column specification}.
 }
 \description{
-This function allows to define a regular expression per desired \link[readr:cols]{column specification object} matching the respective column names.
+Allows to define a regular expression per desired \link[readr:cols]{column specification object} matching the respective column names.
 }
 \examples{
 # for some hypothetical CSV data column names like these ...
-cnames <- c("VAR1_Text",
-            "VAR2_Text",
-            "VAR3_Text_Other",
-            "VAR1_Code_R1",
-            "VAR2_Code_R2",
-            "HAS_R1_Lag",
-            "HAS_R2_Lag",
-            "GARBAGEX67",
-            "GARBAGEY09")
+col_names <- c("VAR1_Text",
+               "VAR2_Text",
+               "VAR3_Text_Other",
+               "VAR1_Code_R1",
+               "VAR2_Code_R2",
+               "HAS_R1_Lag",
+               "HAS_R2_Lag",
+               "GARBAGEX67",
+               "GARBAGEY09")
 
 # ... a column spec could be created concisely as follows:
-pal::cols_regex(.col_names   = cnames,
-                "_Text(_|$)" = "c",
-                "_Code(_|$)" = "i",
-                "^GARBAGE"  = readr::col_skip(),
+col_regex <- list("_Text(_|$)" = "c",
+                  "_Code(_|$)" = "i",
+                  "^GARBAGE"  = readr::col_skip())
+
+pal::cols_regex(.col_names = col_names,
+                !!!col_regex,
                 .default     = "l")
 
 # we can parse some real data:
@@ -46,23 +48,17 @@ raw_data <-
   httr::content(as = "text",
                 encoding = "UTF-8")
 
-readr::read_csv(
-  file = raw_data,
-  col_types = pal::cols_regex(
-    "^(Gemeindenamen|Partei)$" = "c",
-    "(?i)anteil" = "d",
-    .default = "i",
-    .col_names = pal::dsv_colnames(raw_data)
-  )
-)
+readr::read_csv(file = raw_data,
+                col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
+                                            "(?i)anteil" = "d",
+                                            .default = "i",
+                                            .col_names = pal::dsv_colnames(raw_data)))
 
 # an alternative way to process the same data using `readr::type_convert()`:
 readr::read_csv(file = raw_data,
                 col_types = list(.default = "c")) \%>\%
-  readr::type_convert(col_types = pal::cols_regex(
-    "^(Gemeindenamen|Partei)$" = "c",
-    "(?i)anteil" = "d",
-    .default = "i",
-    .col_names = colnames(.)
-  ))
+  readr::type_convert(col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
+                                                  "(?i)anteil" = "d",
+                                                  .default = "i",
+                                                  .col_names = colnames(.)))
 }

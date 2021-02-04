@@ -2446,10 +2446,10 @@ check_dot_named <- function(dot,
 
 #' Create column specification using regular expression matching
 #'
-#' This function allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
+#' Allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
 #'
 #' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by `col_*()`, or their
-#'   abbreviated character names (as described in the `col_types` argument of [readr::read_delim()]).
+#'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]).   `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
 #' @param .col_names The column names which should be matched by `...`.
 #'
@@ -2458,21 +2458,23 @@ check_dot_named <- function(dot,
 #'
 #' @examples
 #' # for some hypothetical CSV data column names like these ...
-#' cnames <- c("VAR1_Text",
-#'             "VAR2_Text",
-#'             "VAR3_Text_Other",
-#'             "VAR1_Code_R1",
-#'             "VAR2_Code_R2",
-#'             "HAS_R1_Lag",
-#'             "HAS_R2_Lag",
-#'             "GARBAGEX67",
-#'             "GARBAGEY09")
+#' col_names <- c("VAR1_Text",
+#'                "VAR2_Text",
+#'                "VAR3_Text_Other",
+#'                "VAR1_Code_R1",
+#'                "VAR2_Code_R2",
+#'                "HAS_R1_Lag",
+#'                "HAS_R2_Lag",
+#'                "GARBAGEX67",
+#'                "GARBAGEY09")
 #' 
 #' # ... a column spec could be created concisely as follows:
-#' pal::cols_regex(.col_names   = cnames,
-#'                 "_Text(_|$)" = "c",
-#'                 "_Code(_|$)" = "i",
-#'                 "^GARBAGE"  = readr::col_skip(),
+#' col_regex <- list("_Text(_|$)" = "c",
+#'                   "_Code(_|$)" = "i",
+#'                   "^GARBAGE"  = readr::col_skip())
+#' 
+#' pal::cols_regex(.col_names = col_names,
+#'                 !!!col_regex,
 #'                 .default     = "l")
 #'
 #' # we can parse some real data:
@@ -2482,37 +2484,30 @@ check_dot_named <- function(dot,
 #'   httr::content(as = "text",
 #'                 encoding = "UTF-8")
 #'
-#' readr::read_csv(
-#'   file = raw_data,
-#'   col_types = pal::cols_regex(
-#'     "^(Gemeindenamen|Partei)$" = "c",
-#'     "(?i)anteil" = "d",
-#'     .default = "i",
-#'     .col_names = pal::dsv_colnames(raw_data)
-#'   )
-#' )
+#' readr::read_csv(file = raw_data,
+#'                 col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
+#'                                             "(?i)anteil" = "d",
+#'                                             .default = "i",
+#'                                             .col_names = pal::dsv_colnames(raw_data)))
 #'
 #' # an alternative way to process the same data using `readr::type_convert()`:
 #' readr::read_csv(file = raw_data,
 #'                 col_types = list(.default = "c")) %>%
-#'   readr::type_convert(col_types = pal::cols_regex(
-#'     "^(Gemeindenamen|Partei)$" = "c",
-#'     "(?i)anteil" = "d",
-#'     .default = "i",
-#'     .col_names = colnames(.)
-#'   ))
+#'   readr::type_convert(col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
+#'                                                   "(?i)anteil" = "d",
+#'                                                   .default = "i",
+#'                                                   .col_names = colnames(.)))
 cols_regex <- function(...,
                        .default = readr::col_character(),
                        .col_names) {
   
   assert_pkg("readr")
+  spec <- list()
+  patterns <- rlang::list2(...)
   
-  if (length(names(list(...))) < ...length()) {
+  if (length(setdiff(names(patterns), "")) < length(patterns)) {
     rlang::abort("All column specifications in `...` must be named by a regular expression.")
   }
-  
-  patterns <- list(...)
-  spec <- list()
   
   for (i in seq_along(patterns)) {
     matched_vars <- grep(x = .col_names,
