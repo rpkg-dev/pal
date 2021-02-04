@@ -51,7 +51,7 @@ If \code{return_waldo_compare = FALSE}, a logical scalar indicating the result o
 \code{\link[waldo:compare]{waldo_compare}} describing the differences between \code{x} and \code{y}.
 }
 \description{
-Compares two \link[base:data.frame]{data frames}/\link[tibble:tibble]{tibbles} (or two objects coercible to tibbles like \link[base:matrix]{matrices}), optionally
+Compares two \link[base:data.frame]{data frames}/\link[tibble:tbl_df-class]{tibbles} (or two objects coercible to tibbles like \link[base:matrix]{matrices}), optionally
 ignoring row and column ordering, and returns \code{TRUE} if both are equal, or \code{FALSE} otherwise. If the latter is the case and \code{quiet = FALSE}, information
 about detected differences is printed to the console.
 }
@@ -84,7 +84,7 @@ is_equal_df(df1, df2,
             ignore_col_types = TRUE)
 }
 \seealso{
-Data frame / Tibble functions
+Other data frame / tibble functions:
 \code{\link{all_cols}()},
 \code{\link{open_as_tmp_spreadsheet}()},
 \code{\link{show_diff}()}

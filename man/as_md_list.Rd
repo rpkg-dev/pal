@@ -39,7 +39,7 @@ Convenience wrapper around \code{\link[pander:pandoc.list.return]{pander::pandoc
 rownames(mtcars) \%>\% as_md_list() \%>\% cat()
 }
 \seealso{
-(Pandoc) Markdown functions
+Other (Pandoc) Markdown functions:
 \code{\link{pipe_table}()}
 }
 \concept{md}

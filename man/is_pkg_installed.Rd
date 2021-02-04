@@ -33,7 +33,7 @@ is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
                  min_version = c("1.0", "2.0", "99.9.9000"))
 }
 \seealso{
-R package functions
+Other R package functions:
 \code{\link{is_pkg_dir}()},
 \code{\link{ls_pkg}()},
 \code{\link{prose_ls_fn_param}()}

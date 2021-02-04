@@ -25,7 +25,7 @@ Takes a vector or list and concatenates its elements to a single string separate
 prose_ls(1:5)
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},

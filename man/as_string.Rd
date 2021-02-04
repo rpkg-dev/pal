@@ -34,7 +34,7 @@ paste0(input,
 as_string(input)
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},

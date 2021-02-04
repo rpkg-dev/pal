@@ -28,7 +28,7 @@ seq_len(NULL)
 seq_len(integer())}
 }
 \seealso{
-Statistical computing / numeric functions
+Other statistical computing / numeric functions:
 \code{\link{round_to}()},
 \code{\link{safe_max}()},
 \code{\link{safe_min}()},

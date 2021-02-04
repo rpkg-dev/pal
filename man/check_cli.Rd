@@ -31,7 +31,7 @@ cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
 check_cli(cmd, get_cmd_path = TRUE)
 }
 \seealso{
-System interaction functions
+Other system interaction functions:
 \code{\link{path_script}()}
 }
 \concept{sys}

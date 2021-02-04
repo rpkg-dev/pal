@@ -23,7 +23,7 @@ List a subset of all installed packages
 ls_pkg(pkg = c("pal", "tibble", "dplyr"))
 }
 \seealso{
-R package functions
+Other R package functions:
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{prose_ls_fn_param}()}

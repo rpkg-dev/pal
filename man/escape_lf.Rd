@@ -30,7 +30,7 @@ text <-
 escape_lf(text) \%>\% cat_lines()
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},

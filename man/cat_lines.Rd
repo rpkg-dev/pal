@@ -15,9 +15,6 @@ None (invisible \code{NULL}).
 \description{
 Convenience wrapper around \code{\link[=as_chr]{as_chr()}} and \code{\link[base:cat]{cat()}}, mainly intended for interactive use.
 }
-\details{
-A faster alternative that doesn't \emph{recursively} convert its input to type character is \code{\link[cli:cat_line]{cli::cat_line()}}.
-}
 \examples{
 fs::path_package(package = "pal",
                  "DESCRIPTION") \%>\%
@@ -33,9 +30,11 @@ to_convert \%>\% cat_lines()
 to_convert \%>\% cli::cat_line()
 }
 \seealso{
-\code{\link[xfun:raw_string]{xfun::raw_string()}}, \code{\link[xfun:file_string]{xfun::file_string()}}
+\code{\link[cli:cat_line]{cli::cat_line()}} for a faster alternative that doesn't \emph{recursively} convert its input to type character.
 
-String functions
+\code{\link[xfun:raw_string]{xfun::raw_string()}} (and \code{\link[xfun:file_string]{xfun::file_string()}}) for an alternative approach to the same use case (but without any conversion to type character at all).
+
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{dsv_colnames}()},

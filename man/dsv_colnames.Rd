@@ -27,7 +27,7 @@ httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata
   pal::dsv_colnames()}
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},

@@ -17,7 +17,7 @@ as_flat_list(x, keep_attrs = TRUE, attrs_to_drop = "xfun_strict_list")
 A \link[base:list]{list}.
 }
 \description{
-Similar to \code{\link[=unlist]{unlist()}}, i.e. it \emph{recursively} flattens a list. But unlike \code{unlist()}, it
+\emph{Recursively} flattens a list. Unlike the similar \code{unlist()}, it
 \itemize{
 \item always returns a list, i.e. wraps \code{x} in a list if necessary, and will never remove the last list level. Thus it is
 \href{https://en.wikipedia.org/wiki/Type_safety}{type-safe}.

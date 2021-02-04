@@ -13,7 +13,7 @@ fuse_regex(...)
 A character scalar.
 }
 \description{
-Combine a vector or list of regular expressions to a single one (by logical OR).
+Combines a vector or list of regular expressions to a single one (by logical OR).
 }
 \examples{
 \donttest{
@@ -28,7 +28,7 @@ stringr::str_subset(string = janeaustenr::prideprejudice,
 \seealso{
 The \link[rex:rex]{rex} package which provides an intuitive framework to build complex regular expressions.
 
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},

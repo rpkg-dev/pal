@@ -21,13 +21,13 @@ A simpler, but considerably faster alternative to \code{\link[devtools:build_rmd
 \code{README.Rmd}. This has the pleasant side effect that, other than the latter function, it also works for \code{.Rmd} files which aren't part of an \R package.
 }
 \details{
-Note that for public package repositories it's recommended to use \code{devtools::build_readme()} since it ensures the \code{README.Rmd} can be built \emph{reproducibly},
+Note that for public package repositories, it's recommended to use \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it ensures the \code{README.Rmd} can be built \emph{reproducibly},
 which means all the objects and files it references must be accessible from the repository.
 
 This function is also registered as an \href{https://rstudio.github.io/rstudioaddins/}{RStudio add-in} allowing RStudio users to assign a custom shortcut to it.
 }
 \seealso{
-R-Markdown and Knitr functions
+Other R Markdown and knitr functions:
 \code{\link{gitlab_document}()}
 }
 \concept{rmd_knitr}

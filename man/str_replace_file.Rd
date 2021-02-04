@@ -48,9 +48,9 @@ if \code{verbose = TRUE}.}
 \code{path} invisibly.
 }
 \description{
-Apply pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied one-by-one
-in the given order. All performed replacements are displayed on the console by default (\code{verbose = TRUE}), optionally without actually changing any file
-content (\code{run_dry = TRUE}).
+Applies pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied
+one-by-one in the given order. All performed replacements are displayed on the console by default (\code{verbose = TRUE}), optionally without actually changing
+any file content (\code{run_dry = TRUE}).
 }
 \details{
 Note that \code{process_line_by_line} requires the \href{https://en.wikipedia.org/wiki/Newline}{line ending standard (EOL)} of the input files to be correctly set in
@@ -61,7 +61,7 @@ Windows) seems like a really bad idea with regard to cross-system collaboration 
 The text files are assumed to be in \href{https://en.wikipedia.org/wiki/UTF-8}{UTF-8 character encoding}, other encodings are not supported.
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},

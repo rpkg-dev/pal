@@ -54,10 +54,10 @@ scalar.}
 \item{...}{Further arguments passed on to \code{\link[daff:diff_data]{daff::diff_data()}}, excluding \code{data}, \code{data_ref}, \code{ids}, \code{ordered}, and \code{columns_to_ignore}.}
 }
 \value{
-A difference object which can be rendered later using \code{\link[daff:render_diff]{daff::render_diff()}}, invisibly.
+A \link[daff:daff]{difference object}, invisibly. It could be rendered later using \code{\link[daff:render_diff]{daff::render_diff()}}, for example.
 }
 \description{
-Compares two \link[base:data.frame]{data frames}/\link[tibble:tibble]{tibbles} (or two objects coercible to tibbles like
+Compares two \link[base:data.frame]{data frames}/\link[tibble:tbl_df-class]{tibbles} (or two objects coercible to tibbles like
 \link[base:matrix]{matrices}) and offers to inspect any differences in \href{https://paulfitz.github.io/daff-doc/spec.html}{tabular diff format} as neatly rendered
 HTML.
 }
@@ -65,7 +65,7 @@ HTML.
 This function is basically a convenience wrapper combining \code{\link[=is_equal_df]{is_equal_df()}}, \code{\link[daff:diff_data]{daff::diff_data()}} and \code{\link[daff:render_diff]{daff::render_diff()}}. If run non-interactively or
 \code{ask = FALSE}, the differences will be shown right away, otherwise the user will be asked on the console.
 
-Note that in tabular diff format only changes in the \emph{column content} of \code{x} and \code{y} are visible, meaning that the following properties and changes
+Note that in tabular diff format, only changes in the \emph{column content} of \code{x} and \code{y} are visible, meaning that the following properties and changes
 therein won't be displayed:
 \itemize{
 \item column types (e.g. integer vs. double)
@@ -80,7 +80,7 @@ mtcars \%>\%
   show_diff(mtcars)}
 }
 \seealso{
-Data frame / Tibble functions
+Other data frame / tibble functions:
 \code{\link{all_cols}()},
 \code{\link{is_equal_df}()},
 \code{\link{open_as_tmp_spreadsheet}()}

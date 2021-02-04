@@ -13,7 +13,7 @@ The file path to the executing script.
 Tries to determine the path to the R/Rmd script that this function is called from.
 }
 \seealso{
-System interaction functions
+Other system interaction functions:
 \code{\link{check_cli}()}
 }
 \concept{sys}

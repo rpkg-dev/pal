@@ -21,7 +21,7 @@ is_pkg_dir()
 is_pkg_dir(fs::path_package("pal"))
 }
 \seealso{
-R package functions
+Other R package functions:
 \code{\link{is_pkg_installed}()},
 \code{\link{ls_pkg}()},
 \code{\link{prose_ls_fn_param}()}

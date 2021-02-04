@@ -33,14 +33,14 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 
 #' Determine the differences between two data frames/tibbles in tabular diff format
 #'
-#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like
+#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like
 #' [matrices][base::matrix()]) and offers to inspect any differences in [tabular diff format](https://paulfitz.github.io/daff-doc/spec.html) as neatly rendered
 #' HTML.
 #'
 #' This function is basically a convenience wrapper combining [is_equal_df()], [daff::diff_data()] and [daff::render_diff()]. If run non-interactively or
 #' `ask = FALSE`, the differences will be shown right away, otherwise the user will be asked on the console.
 #'
-#' Note that in tabular diff format only changes in the _column content_ of `x` and `y` are visible, meaning that the following properties and changes
+#' Note that in tabular diff format, only changes in the _column content_ of `x` and `y` are visible, meaning that the following properties and changes
 #' therein won't be displayed:
 #'
 #' - column types (e.g. integer vs. double)
@@ -65,7 +65,7 @@ bg_green_dark <- cli::make_ansi_style("#003300",
 #' @param ... Further arguments passed on to [daff::diff_data()], excluding `data`, `data_ref`, `ids`, `ordered`, and `columns_to_ignore`.
 #' @inheritParams is_equal_df
 #'
-#' @return A difference object which can be rendered later using [daff::render_diff()], invisibly.
+#' @return A [difference object][daff::daff], invisibly. It could be rendered later using [daff::render_diff()], for example.
 #' @family tibble
 #' @export
 #'
@@ -211,7 +211,7 @@ show_diff <- function(x,
 
 #' Determine if two data frames/tibbles are equal
 #'
-#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tibble()] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
+#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
 #' ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the case and `quiet = FALSE`, information
 #' about detected differences is printed to the console.
 #'
@@ -446,7 +446,7 @@ reduce_df_list <- function(x,
 #' Convert to a flat list
 #'
 #' @description
-#' Similar to [unlist()], i.e. it _recursively_ flattens a list. But unlike `unlist()`, it
+#' _Recursively_ flattens a list. Unlike the similar `unlist()`, it
 #'
 #' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is
 #'   [type-safe](https://en.wikipedia.org/wiki/Type_safety).
@@ -712,7 +712,7 @@ strip_md <- function(x,
 #' A simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library before building the
 #' `README.Rmd`. This has the pleasant side effect that, other than the latter function, it also works for `.Rmd` files which aren't part of an \R package.
 #' 
-#' Note that for public package repositories it's recommended to use `devtools::build_readme()` since it ensures the `README.Rmd` can be built _reproducibly_,
+#' Note that for public package repositories, it's recommended to use [devtools::build_readme()] since it ensures the `README.Rmd` can be built _reproducibly_,
 #' which means all the objects and files it references must be accessible from the repository.
 #' 
 #' `r pkgsnip::md_snip("rstudio_addin_hint")`
@@ -1361,10 +1361,8 @@ round_to <- function(x,
 
 #' Statistical mode
 #'
-#' Compute the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most frequent value, i.e. the
+#' Computes the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most frequent value, i.e. the
 #' value that is most likely to be sampled.
-#'
-#' See the package [modeest](https://cran.r-project.org/package=modeest) for more powerful mode estimation functions.
 #'
 #' @param x An \R object.
 #' @param type What the function should calculate.
@@ -1375,6 +1373,7 @@ round_to <- function(x,
 #'
 #' @return If `type = "n"`, the number of modes in `x` (an integer). Otherwise, the mode(s) of `x` or `NA` if none exist(s) (same type as `x`).
 #' @family stat
+#' @seealso The package [modeest](https://cran.r-project.org/package=modeest) for more powerful mode estimation functions.
 #' @export
 #'
 #' @examples
@@ -1532,7 +1531,7 @@ escape_lf <- function(x,
 
 #' Fuse regular expressions
 #'
-#' Combine a vector or list of regular expressions to a single one (by logical OR).
+#' Combines a vector or list of regular expressions to a single one (by logical OR).
 #'
 #' @param ... The regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
@@ -1677,14 +1676,15 @@ prettify_nr <- function(x,
 #' Print `x` as newline-separated character vector using `cat()`.
 #' 
 #' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
-#' 
-#' A faster alternative that doesn't _recursively_ convert its input to type character is [cli::cat_line()].
 #'
 #' @param ... The \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @inherit base::cat return
 #' @family string
-#' @seealso [xfun::raw_string()], [xfun::file_string()]
+#' @seealso
+#' [cli::cat_line()] for a faster alternative that doesn't _recursively_ convert its input to type character.
+#'
+#' [xfun::raw_string()] (and [xfun::file_string()]) for an alternative approach to the same use case (but without any conversion to type character at all). 
 #' @export
 #'
 #' @examples
@@ -1708,7 +1708,7 @@ cat_lines <- function(...) {
 
 #' Replace matched patterns in a string _verbosely_
 #'
-#' Apply a series of regular-expression-replacement pairs to a string. All performed replacements are displayed on the console by default.
+#' Applies a series of regular-expression-replacement pairs to a string. All performed replacements are displayed on the console by default.
 #'
 #' This function provides a subset of [stringr::str_replace_all()]'s functionality. If you don't need the visual console output, it's recommended to directly
 #' resort to that function.
@@ -1877,9 +1877,9 @@ str_replace_verbose_single_info <- function(string,
 
 #' Replace matched patterns in text files
 #'
-#' Apply pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied one-by-one
-#' in the given order. All performed replacements are displayed on the console by default (`verbose = TRUE`), optionally without actually changing any file
-#' content (`run_dry = TRUE`).
+#' Applies pattern-based string replacement to multiple files at once. Just provide a series of regular-expression-replacement pairs which are applied
+#' one-by-one in the given order. All performed replacements are displayed on the console by default (`verbose = TRUE`), optionally without actually changing 
+#' any file content (`run_dry = TRUE`).
 #'
 #' Note that `process_line_by_line` requires the [line ending standard (EOL)](https://en.wikipedia.org/wiki/Newline) of the input files to be correctly set in
 #' `eol`. It _always_ defaults to `"LF"` (Unix standard) since this is something which cannot be reliably detected without complex heuristics (and even then

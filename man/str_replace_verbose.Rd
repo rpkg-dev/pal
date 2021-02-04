@@ -24,7 +24,7 @@ order given, meaning that first listed pairs are applied before later listed one
 A character vector.
 }
 \description{
-Apply a series of regular-expression-replacement pairs to a string. All performed replacements are displayed on the console by default.
+Applies a series of regular-expression-replacement pairs to a string. All performed replacements are displayed on the console by default.
 }
 \details{
 This function provides a subset of \code{\link[stringr:str_replace]{stringr::str_replace_all()}}'s functionality. If you don't need the visual console output, it's recommended to directly
@@ -66,7 +66,7 @@ str_replace_verbose(string = input,
   cat_lines()
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},

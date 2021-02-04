@@ -24,7 +24,7 @@ as.character(to_convert)
 as_chr(!!!to_convert)
 }
 \seealso{
-String functions
+Other string functions:
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},

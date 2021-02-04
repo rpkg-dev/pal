@@ -1,10 +1,10 @@
 list(
-  rd_family_title = list(md = "(Pandoc) Markdown functions",
-                         rmd_knitr = "R-Markdown and Knitr functions",
-                         rpkgs = "R package functions",
-                         spoken = "Spoken language functions",
-                         stat = "Statistical computing / numeric functions",
-                         string = "String functions",
-                         sys = "System interaction functions",
-                         tibble = "Data frame / Tibble functions")
+  rd_family_title = list(md = "Other (Pandoc) Markdown functions:",
+                         rmd_knitr = "Other R Markdown and knitr functions:",
+                         rpkgs = "Other R package functions:",
+                         spoken = "Other spoken language functions:",
+                         stat = "Other statistical computing / numeric functions:",
+                         string = "Other string functions:",
+                         sys = "Other system interaction functions:",
+                         tibble = "Other data frame / tibble functions:")
 )

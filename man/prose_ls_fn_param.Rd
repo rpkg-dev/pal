@@ -65,7 +65,7 @@ prose_ls_fn_param(param = ".name_repair",
 cat_lines()
 }
 \seealso{
-R package functions
+Other R package functions:
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{ls_pkg}()}

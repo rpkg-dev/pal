@@ -102,7 +102,7 @@ rmarkdown::render(input = tmp_file,
                   output_format = pal::gitlab_document())}
 }
 \seealso{
-R-Markdown and Knitr functions
+Other R Markdown and knitr functions:
 \code{\link{build_readme}()}
 }
 \concept{rmd_knitr}
