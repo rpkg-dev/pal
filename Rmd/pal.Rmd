@@ -2928,7 +2928,7 @@ roxy_tag_value <- function(text,
   assert_pkg("roxygen2")
   roxy_blocks <- roxygen2::parse_text(text = text)
   
-  i_obj <- 
+  i_obj <-
     roxy_blocks %>%
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,
