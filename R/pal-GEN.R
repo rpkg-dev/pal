@@ -330,44 +330,6 @@ is_equal_df <- function(x,
   result
 }
 
-#' Temporary helpers for `dplyr::filter()`
-#'
-#' @description
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' These are transitional convenience functions that help to combine multiple [`across()`][dplyr::across()] statements in dplyr's [`filter()`](dplyr::filter()).
-#' See the examples.
-#'
-#' @details
-#'
-#' `any_cols()` is functionally identical to the `rowAny()` helper function suggested in dplyr's [`"colwise"`
-#' vignette](https://dplyr.tidyverse.org/articles/colwise.html#how-do-you-convert-existing-code) but [performs slightly
-#' better](https://github.com/tidyverse/dplyr/issues/4770#issuecomment-704285294) (and has a more intuitive name when used with `dplyr::filter()`).
-#'
-#' @param x A data frame or tibble containing numeric, complex, integer or **logical** values.
-#'
-#' @return A logical vector that's equal to the result of [all()] (in case of `all_cols()`) or [any()] (in case of `any_cols()`) for each row of `x`.
-#' @family tibble
-#' @export
-#'
-#' @examples
-#' # keep all rows where either `vs` and `am` is greater zero *or* `gear` and `carb` is greater two
-#' mtcars %>% dplyr::filter(pal::all_cols(dplyr::across(one_of("vs", "am"), ~ .x > 0))
-#'                          | pal::all_cols(dplyr::across(one_of("gear", "carb"), ~ .x > 2)))
-#'
-#' # keep all rows where *any* numeric variable is exactly 1
-#' mtcars %>% dplyr::filter(pal::any_cols(dplyr::across(where(is.numeric), ~ .x == 1L)))
-all_cols <- function(x) {
-    purrr::reduce(x, `&`, .init = TRUE)
-}
-
-#' @rdname all_cols
-#' @export
-any_cols <- function(x) {
-    purrr::reduce(x, `|`, .init = FALSE)
-}
-
 #' Open as temporary spreadsheet
 #'
 #' Writes an \R object -- usually tabular data like a dataframe or [tibble][tibble::tibble()] -- to a temporary spreadsheet and subsequently opens that
@@ -2548,7 +2510,7 @@ roxy_tag_value <- function(text,
   assert_pkg("roxygen2")
   roxy_blocks <- roxygen2::parse_text(text = text)
   
-  i_obj <- 
+  i_obj <-
     roxy_blocks %>%
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,

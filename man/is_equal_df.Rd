@@ -85,7 +85,6 @@ is_equal_df(df1, df2,
 }
 \seealso{
 Other data frame / tibble functions:
-\code{\link{all_cols}()},
 \code{\link{open_as_tmp_spreadsheet}()},
 \code{\link{show_diff}()}
 }

@@ -32,7 +32,6 @@ open_as_tmp_spreadsheet(mtcars,
 }
 \seealso{
 Other data frame / tibble functions:
-\code{\link{all_cols}()},
 \code{\link{is_equal_df}()},
 \code{\link{show_diff}()}
 }
