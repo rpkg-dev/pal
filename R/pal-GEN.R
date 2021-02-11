@@ -942,8 +942,8 @@ desc_value <- function(key,
 #'
 #' In contrast to [base::require()], it checks if the packages are installed without attaching their namespaces if so.
 #' 
-#' In contrast to [rlang::is_installed()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns a (named) logical vector
-#' of the same length as `pkg`.
+#' In contrast to [rlang::is_installed()] or [xfun::pkg_available()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns
+#' a (named) logical vector of the same length as `pkg`.
 #' 
 #' It is [considerably
 #' faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the commonly used
