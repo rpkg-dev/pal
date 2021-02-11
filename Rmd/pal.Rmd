@@ -1291,9 +1291,10 @@ ls_pkg <- function(pkg,
     purrr::when(checkmate::assert_flag(as_regex) ~ .,
                 ~ paste0("\\Q", ., "\\E")) %>%
     fuse_regex() %>%
-    purrr::when(checkmate::assert_flag(ignore_case) ~ paste0("^(?i)", .),
-                ~ paste0("^", .)) %>%
-    paste0("$")
+    purrr::when(checkmate::assert_flag(ignore_case) ~ paste0("(?i)", .),
+                ~ .) %>%
+    purrr::when(as_regex ~ .,
+                ~ paste0("^", ., "$"))
   
   utils::installed.packages() %>%
     tibble::as_tibble() %>%
