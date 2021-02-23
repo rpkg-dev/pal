@@ -681,6 +681,8 @@ strip_md <- function(x,
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
+#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `index.md` alongside `output`. If `NULL`, it will only be built if
+#'   the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir].
 #' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
 #' @return The path to `input` as a character scalar, invisibly.
@@ -688,6 +690,7 @@ strip_md <- function(x,
 #' @export
 build_readme <- function(input = "README.Rmd",
                          output = "README.md",
+                         build_index_md = NULL,
                          env = parent.frame()) {
   
   assert_pkg("knitr")
@@ -702,13 +705,31 @@ build_readme <- function(input = "README.Rmd",
            envir = env)
   }
   
-  # knit Rmd to md
+  # knit to `output`
   knitr::knit(input = checkmate::assert_file(input,
                                              access = "r"),
               output = checkmate::assert_path_for_output(output,
                                                          overwrite = TRUE),
               quiet = TRUE,
               envir = env)
+  
+  # knit `index.md` if indicated
+  if (checkmate::test_flag(build_index_md,
+                           null.ok = TRUE)) {
+    
+    output_dir <- fs::path_dir(output)
+    
+    if (is_pkgdown_dir(output_dir)) {
+      rmarkdown::render(input = output,
+                        output = checkmate::assert_path_for_output(fs::path(output_dir, "index.md"),
+                                                                   overwrite = TRUE),
+                        output_format = rmarkdown::md_document(variant = "markdown",
+                                                               md_extensions = c("-autolink_bare_uris",
+                                                                                 "-tex_math_single_backslash")),
+                        quiet = TRUE,
+                        envir = env)
+    }
+  }
   
   # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = output,
@@ -998,6 +1019,28 @@ is_pkg_dir <- function(path = ".") {
   
   rprojroot::is_r_package$testfun[[1L]](path = checkmate::assert_directory(path,
                                                                            access = "r"))
+}
+
+#' Test if pkgdown is set up for an R package directory
+#'
+#' Convenience wrapper around the [rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the root of a
+#' package directory, not its subdirectories.
+#'
+#' @param path The path of the R package directory to check. A character scalar. Defaults to the current working directory.
+#'
+#' @return `TRUE` if `path` is the root directory of an \R package, `FALSE` otherwise.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' is_pkgdown_dir()
+#' is_pkgdown_dir(fs::path_package("pal"))
+is_pkgdown_dir <- function(path = ".") {
+  
+  assert_pkg("rprojroot")
+  
+  rprojroot::is_pkgdown_project$testfun[[1L]](path = checkmate::assert_directory(path,
+                                                                                 access = "r"))
 }
 
 #' List a function's default parameter values in prose-style

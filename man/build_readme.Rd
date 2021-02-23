@@ -4,12 +4,20 @@
 \alias{build_readme}
 \title{Build \code{README.Rmd}}
 \usage{
-build_readme(input = "README.Rmd", output = "README.md", env = parent.frame())
+build_readme(
+  input = "README.Rmd",
+  output = "README.md",
+  build_index_md = NULL,
+  env = parent.frame()
+)
 }
 \arguments{
 \item{input}{The path to the R Markdown README file to be built. A character scalar.}
 
 \item{output}{The path of the built Markdown README. A character scalar.}
+
+\item{build_index_md}{Whether to build a separate \link[pkgdown:pkgdown-package]{pkgdown}-optimized \code{index.md} alongside \code{output}. If \code{NULL}, it will only be built if
+the parent directory of \code{output} \link[=is_pkgdown_dir]{contains a pkgdown configuration file}.}
 
 \item{env}{Environment in which code chunks are to be evaluated, e.g. \code{\link[=parent.frame]{parent.frame()}}, \code{\link[=new.env]{new.env()}}, or \code{\link[=globalenv]{globalenv()}}.}
 }

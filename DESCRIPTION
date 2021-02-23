@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9047
+Version: 0.0.9048
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",
@@ -53,6 +53,7 @@ Suggests:
     xopen (>= 1.0.0),
     yesno (>= 0.1.2)
 Remotes:
+    github::r-lib/rprojroot#79
     gitlab::salim_b/r/pkgs/pkgsnip
 Config/testthat/edition: 3
 Encoding: UTF-8

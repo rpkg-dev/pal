@@ -26,6 +26,7 @@ ls_pkg(pkg = c("pal", "tibble", "dplyr"))
 Other R package functions:
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
+\code{\link{is_pkgdown_dir}()},
 \code{\link{prose_ls_fn_param}()}
 }
 \concept{rpkgs}

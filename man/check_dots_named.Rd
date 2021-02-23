@@ -33,7 +33,7 @@ check_dots_named(
 }}
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Ensures that \link[base:dots]{dots (...)} are either empty (if \code{.empty_ok = TRUE}), or all named dot parameter names are a valid subset of a function's
 parameter names. In case of an invalid or \code{.forbidden} argument, an informative message is shown and the defined \code{.action} is taken.

@@ -35,6 +35,7 @@ is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
 \seealso{
 Other R package functions:
 \code{\link{is_pkg_dir}()},
+\code{\link{is_pkgdown_dir}()},
 \code{\link{ls_pkg}()},
 \code{\link{prose_ls_fn_param}()}
 }
