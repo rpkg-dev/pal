@@ -24,3 +24,14 @@ assert_pkg(pkg = "glue",
            message = paste0("You should really consider to install the awesome `glue` package! ",
                             "It's the glue that keeps strings and variables together 🤲."))
 }
+\seealso{
+Other R package functions:
+\code{\link{desc_list}()},
+\code{\link{desc_value}()},
+\code{\link{is_pkg_dir}()},
+\code{\link{is_pkg_installed}()},
+\code{\link{is_pkgdown_dir}()},
+\code{\link{ls_pkg}()},
+\code{\link{prose_ls_fn_param}()}
+}
+\concept{rpkgs}

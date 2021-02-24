@@ -1071,6 +1071,7 @@ TODO:
 #' @param message The error message to display in case the package is not installed. If `NULL`, defaults to a sensible standard message.
 #'
 #' @return The package name invisibly.
+#' @family rpkgs
 #' @export
 #'
 #' @examples
@@ -1167,6 +1168,7 @@ TODO:
 #' @inheritParams desc::desc_get_field
 #'
 #' @return A character scalar.
+#' @family rpkgs
 #' @export
 #'
 #' @examples
@@ -1260,6 +1262,10 @@ is_pkg_dir <- function(path = ".") {
 ```
 
 ## Test if pkgdown is set up for an R package directory
+
+TODO:
+
+-   [ ] Remove custom `Remotes:` dep as soon as [this](https://github.com/r-lib/rprojroot/pull/79) is merged and released.
 
 ```{r}
 #' Test if pkgdown is set up for an R package directory

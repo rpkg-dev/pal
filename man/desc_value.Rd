@@ -36,3 +36,14 @@ If you rather want to take an action like throwing an error, it's recommended to
 desc_value(key = "Description",
            file = fs::path_package("pal"))
 }
+\seealso{
+Other R package functions:
+\code{\link{assert_pkg}()},
+\code{\link{desc_list}()},
+\code{\link{is_pkg_dir}()},
+\code{\link{is_pkg_installed}()},
+\code{\link{is_pkgdown_dir}()},
+\code{\link{ls_pkg}()},
+\code{\link{prose_ls_fn_param}()}
+}
+\concept{rpkgs}
