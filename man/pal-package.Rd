@@ -12,6 +12,7 @@ A collection of convenience/utility functions which
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://r.salim.space/pal}
   \item \url{https://gitlab.com/salim_b/r/pkgs/pal}
   \item Report bugs at \url{https://gitlab.com/salim_b/r/pkgs/pal/issues}
 }

@@ -1,0 +1,11 @@
+development:
+  mode: auto
+repo:
+  url:
+    home: https://gitlab.com/salim_b/r/pkgs/pal/
+    user: https://gitlab.com/salim-b
+    issue: https://gitlab.com/salim_b/r/pkgs/pal/issues/
+template:
+  params:
+    bootswatch: yeti
+url: https://r.salim.space/pal/

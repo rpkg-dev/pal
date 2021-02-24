@@ -32,5 +32,3 @@ of unnecessary duplication.
 ## See also
 
 -   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
