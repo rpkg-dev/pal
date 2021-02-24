@@ -923,6 +923,43 @@ assert_pkg <- function(pkg,
   }
 }
 
+#' Get all `DESCRIPTION` file fields as cleaned up list
+#'
+#' @description
+#' Returns all fields from a specific `DESCRIPTION` file as a named list with values cleaned up:
+#' - Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
+#' - Multi-value fields are returned as vectors.
+#' - The fields `Depends`, `Imports` and `Suggests` are returned as a single data frame named `dependencies`.
+#'
+#' @inheritParams desc_value
+#'
+#' @return A list.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' desc_list(file = fs::path_package("pal"))
+desc_list <- function(file = ".") {
+  
+  fields <- desc::desc_fields(file = file)
+  
+  result <-
+    fields %>%
+    setdiff(c("Authors@R",
+              "Depends",
+              "Imports",
+              "Suggests",
+              "URL")) %>%
+    rlang::set_names() %>%
+    purrr::map(desc_value)
+  
+  if ("Authors@R" %in% fields) result[["Authors@R"]] <- desc::desc_get_authors(file = file)
+  if (any(c("Depends", "Imports", "Suggests") %in% fields)) result[["dependencies"]] <- desc::desc_get_deps()
+  if ("URL" %in% fields) result[["URL"]] <- desc::desc_get_urls()
+  
+  result
+}
+
 #' Get the value from a `DESCRIPTION` file field, cleaned up and with fallback
 #'
 #' Returns the value from a specific `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
