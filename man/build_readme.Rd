@@ -16,8 +16,8 @@ build_readme(
 
 \item{output}{The path of the built Markdown README. A character scalar.}
 
-\item{build_index_md}{Whether to build a separate \link[pkgdown:pkgdown-package]{pkgdown}-optimized \code{index.md} alongside \code{output}. If \code{NULL}, it will only be built if
-the parent directory of \code{output} \link[=is_pkgdown_dir]{contains a pkgdown configuration file}.}
+\item{build_index_md}{Whether to build a separate \link[pkgdown:pkgdown-package]{pkgdown}-optimized \code{pkgdown/index.md} alongside \code{output}. If \code{NULL}, it will only be
+built if the parent directory of \code{output} \link[=is_pkgdown_dir]{contains a pkgdown configuration file}.}
 
 \item{env}{Environment in which code chunks are to be evaluated, e.g. \code{\link[=parent.frame]{parent.frame()}}, \code{\link[=new.env]{new.env()}}, or \code{\link[=globalenv]{globalenv()}}.}
 }

@@ -681,8 +681,8 @@ strip_md <- function(x,
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
-#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `index.md` alongside `output`. If `NULL`, it will only be built if
-#'   the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir].
+#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output`. If `NULL`, it will only be
+#'   built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir].
 #' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
 #' @return The path to `input` as a character scalar, invisibly.
@@ -701,7 +701,7 @@ build_readme <- function(input = "README.Rmd",
     assert_pkg("desc")
     
     assign(x = "pkg_metadata",
-           value = desc::desc_get(desc::desc_fields()),
+           value = desc_list(),
            envir = env)
   }
   
@@ -713,16 +713,35 @@ build_readme <- function(input = "README.Rmd",
               quiet = TRUE,
               envir = env)
   
-  # knit `index.md` if indicated
+  # render `index.md` if indicated
   if (checkmate::test_flag(build_index_md,
                            null.ok = TRUE)) {
     
     output_dir <- fs::path_dir(output)
     
     if (is_pkgdown_dir(output_dir)) {
-      rmarkdown::render(input = output,
-                        output = checkmate::assert_path_for_output(fs::path(output_dir, "index.md"),
-                                                                   overwrite = TRUE),
+      
+      output_dir %<>%
+        fs::path("pkgdown") %>%
+        fs::dir_create() %>%
+        checkmate::assert_directory(access = "w",
+                                    .var.name = "output_dir")
+      
+      # remove trailing horizontal line in MD file since pkgdown always adds one below content
+      # TODO: submit PR to pkgdown doing this?
+      assert_pkg("brio")
+      cleaned_output <- fs::file_temp(pattern = "index",
+                                      ext = "md")
+      
+      brio::read_file(output) %>%
+        stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
+                             replacement = "\\2") %>%
+        brio::write_file(path = cleaned_output)
+      
+      # render `pkgdown/index.md`
+      rmarkdown::render(input = cleaned_output,
+                        output_file = "index.md",
+                        output_dir = output_dir,
                         output_format = rmarkdown::md_document(variant = "markdown",
                                                                md_extensions = c("-autolink_bare_uris",
                                                                                  "-tex_math_single_backslash")),
@@ -731,7 +750,7 @@ build_readme <- function(input = "README.Rmd",
     }
   }
   
-  # render the md to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
+  # render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = output,
                     output_file = output,
                     quiet = TRUE,
