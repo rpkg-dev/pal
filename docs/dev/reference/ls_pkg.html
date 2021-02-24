@@ -111,7 +111,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>List a subset of all installed packages</h1>
-    
+    <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
     <div class="hidden name"><code>ls_pkg.Rd</code></div>
     </div>
 
@@ -144,6 +144,9 @@
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other R package functions:
+<code><a href='assert_pkg.html'>assert_pkg</a>()</code>,
+<code><a href='desc_list.html'>desc_list</a>()</code>,
+<code><a href='desc_value.html'>desc_value</a>()</code>,
 <code><a href='is_pkg_dir.html'>is_pkg_dir</a>()</code>,
 <code><a href='is_pkg_installed.html'>is_pkg_installed</a>()</code>,
 <code><a href='is_pkgdown_dir.html'>is_pkgdown_dir</a>()</code>,
@@ -152,15 +155,15 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>ls_pkg</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pal"</span>, <span class='st'>"tibble"</span>, <span class='st'>"dplyr"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 16</span><span>
-#&gt;   Package LibPath Version Priority Depends Imports LinkingTo Suggests Enhances
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> pal     /tmp/R… 0.0.90… </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>check… </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>brio (… </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> pal     /home/… 0.0.90… </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>check… </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>brio (… </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> dplyr   /usr/l… 1.0.4   </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>ellip… </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>bench,… </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> tibble  /usr/l… 3.0.6   </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>cli, … </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>bench,… </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #949494;'># … with 7 more variables: License </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, License_is_FOSS </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   License_restricts_use </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, OS_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, MD5sum </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   NeedsCompilation </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, Built </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
+#&gt;   Package LibPath  Version  Priority Depends Imports LinkingTo Suggests Enhances
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> pal     /tmp/Rt… 0.0.9048 </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>check… </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>brio (… </span><span style='color: #BB0000;'>NA</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> pal     /home/s… 0.0.9048 </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>check… </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>brio (… </span><span style='color: #BB0000;'>NA</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> dplyr   /usr/li… 1.0.4    </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>ellip… </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>bench,… </span><span style='color: #BB0000;'>NA</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> tibble  /usr/li… 3.0.6    </span><span style='color: #BB0000;'>NA</span><span>       R (&gt;= … </span><span style='color: #949494;'>"</span><span>cli, … </span><span style='color: #BB0000;'>NA</span><span>        </span><span style='color: #949494;'>"</span><span>bench,… </span><span style='color: #BB0000;'>NA</span><span>      
+#&gt; </span><span style='color: #949494;'># … with 7 more variables: License &lt;chr&gt;, License_is_FOSS &lt;chr&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   License_restricts_use &lt;chr&gt;, OS_type &lt;chr&gt;, MD5sum &lt;chr&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   NeedsCompilation &lt;chr&gt;, Built &lt;chr&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -172,11 +175,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Salim Brüggemann.</p></p>
+  <p>Developed by Salim Brüggemann.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

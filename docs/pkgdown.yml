@@ -1,9 +1,9 @@
 pandoc: 2.11.4
 pkgdown: 1.6.1.9000
-pkgdown_sha: fddda5a6b42d341762b6b994e114781b49c77122
+pkgdown_sha: ~
 articles: {}
-last_built: 2021-02-24T12:44Z
+last_built: 2021-02-24T22:16Z
 urls:
-  reference: https://r.salim.space/pal/reference
-  article: https://r.salim.space/pal/articles
+  reference: https://r.salim.space/pal//reference
+  article: https://r.salim.space/pal//articles
 

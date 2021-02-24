@@ -111,7 +111,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert to GitLab Flavored Markdown</h1>
-    
+    <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
     <div class="hidden name"><code>gitlab_document.Rd</code></div>
     </div>
 
@@ -129,6 +129,7 @@
   fig_height <span class='op'>=</span> <span class='fl'>5L</span>,
   dev <span class='op'>=</span> <span class='st'>"png"</span>,
   preserve_yaml <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  add_footnotes_hr <span class='op'>=</span> <span class='cn'>TRUE</span>,
   autolink_bare_uris <span class='op'>=</span> <span class='cn'>FALSE</span>,
   tex_math_single_backslash <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
@@ -138,14 +139,14 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>smart_punctuation</th>
-      <td><p>Enable <a href='https://pandoc.org/MANUAL.html#extension-smart'>Pandoc's <code>smart</code> extension</a> which converts
-straight quotes to curly quotes, <code>---</code> to an em-dash (—), <code>--</code> to an en-dash (–), and <code>...</code> to ellipses (…). Nonbreaking spaces are inserted after certain
-abbreviations, such as <code>Mr.</code>.</p></td>
+      <td><p>Whether to enable <a href='https://pandoc.org/MANUAL.html#extension-smart'>Pandoc's <code>smart</code> extension</a> which converts straight quotes to
+curly quotes, <code>---</code> to an em-dash (—), <code>--</code> to an en-dash (–), and <code>...</code> to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
+<code>Mr.</code>.</p></td>
     </tr>
     <tr>
       <th>parse_emoji_markup</th>
-      <td><p>Enable <a href='https://pandoc.org/MANUAL.html#extension-emoji'>Pandoc's <code>emoji</code> extension</a> which parses emoji
-markup (e.g. <code>:smile:</code>) as Unicode emoticons.</p></td>
+      <td><p>Whether to enable <a href='https://pandoc.org/MANUAL.html#extension-emoji'>Pandoc's <code>emoji</code> extension</a> which parses emoji markup (e.g.
+<code>:smile:</code>) as Unicode emoticons.</p></td>
     </tr>
     <tr>
       <th>df_print</th>
@@ -189,6 +190,12 @@ placed <em>before</em> the README's body, meaning also <em>before</em> the first
       <td><p>Preserve YAML front matter in final document.</p></td>
     </tr>
     <tr>
+      <th>add_footnotes_hr</th>
+      <td><p>Whether to add a trailing horizontal rule (<code>---</code>) to the final Markdown file if it doesn't already end in one and contains footnotes
+(currently only checks for Pandoc's <a href='https://pandoc.org/MANUAL.html#footnotes'>reference-style footnotes</a> and not inline footnotes). This improves
+readability when the file is rendered on <code>GitLab.com</code>.</p></td>
+    </tr>
+    <tr>
       <th>autolink_bare_uris</th>
       <td><p>Enable the <a href='https://pandoc.org/MANUAL.html#extension-autolink_bare_uris'><code>autolink_bare_uris</code> Pandoc Markdown extension</a> which
 makes all absolute URIs into links, even when not surrounded by pointy braces <code>&lt;...&gt;</code>.</p></td>
@@ -204,12 +211,12 @@ extension is that it precludes escaping <code>(</code> and <code><a href='https:
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>R Markdown output format intended to be fed to <code><a href='https://pkgs.rstudio.com/rmarkdown//reference/render.html'>rmarkdown::render()</a></code>.</p>
+    <p>R Markdown output format intended to be fed to <code><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>rmarkdown::render()</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is the GitLab equivalent to the <code><a href='https://pkgs.rstudio.com/rmarkdown//reference/github_document.html'>github_document</a></code> R Markdown
+    <p>This is the GitLab equivalent to the <code><a href='https://pkgs.rstudio.com/rmarkdown/reference/github_document.html'>github_document</a></code> R Markdown
 <a href='https://bookdown.org/yihui/rmarkdown/output-formats.html'>output format</a>. It basically ensures Pandoc is called with a custom set of options optimized for
-maximum compatibility with <a href='https://gitlab.com/help/user/markdown.md'>GitLab Flavored Markdown</a>.</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Caveats regarding GitLab-Flavored-Markdown-specific features</h3>
+maximum compatibility with <a href='https://gitlab.com/help/user/markdown.md'>GitLab Flavored Markdown</a>.</p><h3 class='hasAnchor' id='caveats-regarding-gitlab-flavored-markdown-specific-features'><a class='anchor' href='#caveats-regarding-gitlab-flavored-markdown-specific-features'></a>Caveats regarding GitLab-Flavored-Markdown-specific features</h3>
 
 
 <p>GitLab Flavored Markdown extends the <a href='https://spec.commonmark.org/current/'>CommonMark</a> Markdown specification with a bunch of
@@ -240,10 +247,10 @@ Pandoc during conversion.</p></li>
 <span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span>url <span class='op'>=</span> <span class='st'>"https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd"</span>,
               destfile <span class='op'>=</span> <span class='va'>tmp_file</span><span class='op'>)</span>
 
-<span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown//reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,
+<span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,
                   output_format <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gitlab_document</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span>
-</div><div class='output co'>#&gt; /usr/bin/pandoc +RTS -K512m -RTS file841d76d29d16e.utf8.md --to markdown-smart-simple_tables-multiline_tables-grid_tables-fenced_code_attributes-inline_code_attributes-raw_attribute-pandoc_title_block-yaml_metadata_block --from markdown --output file841d76d29d16e.md --columns=9999 --standalone </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Output created: file841d76d29d16e.md</span></div></pre>
+</div><div class='output co'>#&gt; /usr/bin/pandoc +RTS -K512m -RTS filea4bbf774f54c2.utf8.md --to markdown-smart-simple_tables-multiline_tables-grid_tables-fenced_code_attributes-inline_code_attributes-raw_attribute-pandoc_title_block-yaml_metadata_block --from markdown --output filea4bbf774f54c2.md --columns=9999 --standalone </div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Output created: filea4bbf774f54c2.md</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -255,11 +262,11 @@ Pandoc during conversion.</p></li>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Salim Brüggemann.</p></p>
+  <p>Developed by Salim Brüggemann.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
