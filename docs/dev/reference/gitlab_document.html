@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9048</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9049</span>
       </span>
     </div>
 
@@ -211,10 +211,10 @@ extension is that it precludes escaping <code>(</code> and <code><a href='https:
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>R Markdown output format intended to be fed to <code><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>rmarkdown::render()</a></code>.</p>
+    <p>R Markdown output format intended to be fed to <code><a href='https://rmarkdown.rstudio.com/docs//reference/render.html'>rmarkdown::render()</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is the GitLab equivalent to the <code><a href='https://pkgs.rstudio.com/rmarkdown/reference/github_document.html'>github_document</a></code> R Markdown
+    <p>This is the GitLab equivalent to the <code><a href='https://rmarkdown.rstudio.com/docs//reference/github_document.html'>github_document</a></code> R Markdown
 <a href='https://bookdown.org/yihui/rmarkdown/output-formats.html'>output format</a>. It basically ensures Pandoc is called with a custom set of options optimized for
 maximum compatibility with <a href='https://gitlab.com/help/user/markdown.md'>GitLab Flavored Markdown</a>.</p><h3 class='hasAnchor' id='caveats-regarding-gitlab-flavored-markdown-specific-features'><a class='anchor' href='#caveats-regarding-gitlab-flavored-markdown-specific-features'></a>Caveats regarding GitLab-Flavored-Markdown-specific features</h3>
 
@@ -247,10 +247,10 @@ Pandoc during conversion.</p></li>
 <span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span>url <span class='op'>=</span> <span class='st'>"https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd"</span>,
               destfile <span class='op'>=</span> <span class='va'>tmp_file</span><span class='op'>)</span>
 
-<span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,
+<span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://rmarkdown.rstudio.com/docs//reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,
                   output_format <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gitlab_document</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span>
-</div><div class='output co'>#&gt; /usr/bin/pandoc +RTS -K512m -RTS filea421f7ee61a9b.utf8.md --to markdown-smart-simple_tables-multiline_tables-grid_tables-fenced_code_attributes-inline_code_attributes-raw_attribute-pandoc_title_block-yaml_metadata_block --from markdown --output filea421f7ee61a9b.md --columns=9999 --standalone </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Output created: filea421f7ee61a9b.md</span></div></pre>
+</div><div class='output co'>#&gt; /usr/bin/pandoc +RTS -K512m -RTS fileb2d6151630cd9.utf8.md --to markdown-smart-simple_tables-multiline_tables-grid_tables-fenced_code_attributes-inline_code_attributes-raw_attribute-pandoc_title_block-yaml_metadata_block --from markdown --output fileb2d6151630cd9.md --columns=9999 --standalone </div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Output created: fileb2d6151630cd9.md</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

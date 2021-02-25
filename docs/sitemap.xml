@@ -1,144 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://r.salim.space/pal//index.html</loc>
+    <loc>https://r.salim.space/pal/index.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/as_chr.html</loc>
+    <loc>https://r.salim.space/pal/reference/as_chr.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/as_flat_list.html</loc>
+    <loc>https://r.salim.space/pal/reference/as_flat_list.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/as_md_list.html</loc>
+    <loc>https://r.salim.space/pal/reference/as_md_list.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/as_string.html</loc>
+    <loc>https://r.salim.space/pal/reference/as_string.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/assert_pkg.html</loc>
+    <loc>https://r.salim.space/pal/reference/assert_pkg.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/build_readme.html</loc>
+    <loc>https://r.salim.space/pal/reference/build_readme.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/capture_print.html</loc>
+    <loc>https://r.salim.space/pal/reference/capture_print.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/cat_lines.html</loc>
+    <loc>https://r.salim.space/pal/reference/cat_lines.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/check_cli.html</loc>
+    <loc>https://r.salim.space/pal/reference/check_cli.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/check_dots_named.html</loc>
+    <loc>https://r.salim.space/pal/reference/check_dots_named.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/cli_process_expr.html</loc>
+    <loc>https://r.salim.space/pal/reference/cli_process_expr.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/cols_regex.html</loc>
+    <loc>https://r.salim.space/pal/reference/cols_regex.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/desc_list.html</loc>
+    <loc>https://r.salim.space/pal/reference/desc_list.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/desc_value.html</loc>
+    <loc>https://r.salim.space/pal/reference/desc_value.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/dsv_colnames.html</loc>
+    <loc>https://r.salim.space/pal/reference/dsv_colnames.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/escape_lf.html</loc>
+    <loc>https://r.salim.space/pal/reference/escape_lf.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/fuse_regex.html</loc>
+    <loc>https://r.salim.space/pal/reference/fuse_regex.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/gitlab_document.html</loc>
+    <loc>https://r.salim.space/pal/reference/gitlab_document.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/is_equal_df.html</loc>
+    <loc>https://r.salim.space/pal/reference/is_equal_df.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/is_http_success.html</loc>
+    <loc>https://r.salim.space/pal/reference/is_http_success.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/is_pkg_dir.html</loc>
+    <loc>https://r.salim.space/pal/reference/is_pkg_dir.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/is_pkg_installed.html</loc>
+    <loc>https://r.salim.space/pal/reference/is_pkg_installed.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/is_pkgdown_dir.html</loc>
+    <loc>https://r.salim.space/pal/reference/is_pkgdown_dir.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/knitr_table_format.html</loc>
+    <loc>https://r.salim.space/pal/reference/knitr_table_format.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/ls_pkg.html</loc>
+    <loc>https://r.salim.space/pal/reference/ls_pkg.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/open_as_tmp_spreadsheet.html</loc>
+    <loc>https://r.salim.space/pal/reference/open_as_tmp_spreadsheet.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/order_by.html</loc>
+    <loc>https://r.salim.space/pal/reference/order_by.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/pal-package.html</loc>
+    <loc>https://r.salim.space/pal/reference/pal-package.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/path_script.html</loc>
+    <loc>https://r.salim.space/pal/reference/path_script.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/pipe_table.html</loc>
+    <loc>https://r.salim.space/pal/reference/pipe_table.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/prettify_nr.html</loc>
+    <loc>https://r.salim.space/pal/reference/prettify_nr.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/prose_ls.html</loc>
+    <loc>https://r.salim.space/pal/reference/prose_ls.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/prose_ls_fn_param.html</loc>
+    <loc>https://r.salim.space/pal/reference/prose_ls_fn_param.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/reduce_df_list.html</loc>
+    <loc>https://r.salim.space/pal/reference/reduce_df_list.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/reexports.html</loc>
+    <loc>https://r.salim.space/pal/reference/reexports.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/round_to.html</loc>
+    <loc>https://r.salim.space/pal/reference/round_to.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/roxy_tag_value.html</loc>
+    <loc>https://r.salim.space/pal/reference/roxy_tag_value.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/safe_max.html</loc>
+    <loc>https://r.salim.space/pal/reference/safe_max.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/safe_min.html</loc>
+    <loc>https://r.salim.space/pal/reference/safe_min.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/safe_seq_len.html</loc>
+    <loc>https://r.salim.space/pal/reference/safe_seq_len.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/show_diff.html</loc>
+    <loc>https://r.salim.space/pal/reference/show_diff.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/stat_mode.html</loc>
+    <loc>https://r.salim.space/pal/reference/stat_mode.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/str_replace_file.html</loc>
+    <loc>https://r.salim.space/pal/reference/str_replace_file.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/str_replace_verbose.html</loc>
+    <loc>https://r.salim.space/pal/reference/str_replace_verbose.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/strip_md.html</loc>
+    <loc>https://r.salim.space/pal/reference/strip_md.html</loc>
   </url>
   <url>
-    <loc>https://r.salim.space/pal//reference/wrap_chr.html</loc>
+    <loc>https://r.salim.space/pal/reference/wrap_chr.html</loc>
   </url>
 </urlset>
