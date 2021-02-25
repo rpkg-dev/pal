@@ -28,7 +28,7 @@ Applies a series of regular-expression-replacement pairs to a string. All perfor
 }
 \details{
 This function provides a subset of \code{\link[stringr:str_replace]{stringr::str_replace_all()}}'s functionality. If you don't need the visual console output, it's recommended to directly
-resort to that function.
+resort to the latter.
 }
 \examples{
 "Make love, not war" \%>\% str_replace_verbose(pattern = c("love" = "hummus",

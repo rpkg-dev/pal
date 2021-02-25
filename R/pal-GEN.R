@@ -1822,7 +1822,7 @@ cat_lines <- function(...) {
 #' Applies a series of regular-expression-replacement pairs to a string. All performed replacements are displayed on the console by default.
 #'
 #' This function provides a subset of [stringr::str_replace_all()]'s functionality. If you don't need the visual console output, it's recommended to directly
-#' resort to that function.
+#' resort to the latter.
 #'
 #' @param pattern A named character vector with patterns as names and replacements as values (`c(pattern1 = replacement1)`). Patterns are interpreted as
 #'   regular expressions as described in [stringi::stringi-search-regex()]. Replacements are interpreted as-is, except that references of the form `\1`, `\2`,
@@ -2207,7 +2207,7 @@ run_cli <- function(cmd,
 #' Capture printed console output as string
 #'
 #' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as an atomic character vector
-#' (i.e. a string), otherwise a character vector of output lines.
+#' (i.e. a string), otherwise as a character vector of output lines.
 #'
 #' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
 #' (e.g. as output by the `print()` methods of tidyverse packages) are not captured (i.e. lost).
