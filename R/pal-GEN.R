@@ -1135,9 +1135,12 @@ is_pkg_dir <- function(path = ".") {
 is_pkgdown_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
+  checkmate::assert_directory(path,
+                              access = "r")
   
-  rprojroot::is_pkgdown_project$testfun[[1L]](path = checkmate::assert_directory(path,
-                                                                                 access = "r"))
+  rprojroot::is_pkgdown_project$testfun %>%
+    purrr::map_lgl(~ .x(path = path)) %>%
+    any()
 }
 
 #' List a function's default parameter values in prose-style
