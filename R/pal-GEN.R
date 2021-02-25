@@ -2545,6 +2545,109 @@ check_dot_named <- function(dot,
   }
 }
 
+#' Deploy pkgdown site to local Git folder
+#'
+#' @description
+#' Copies the static [pkgdown][pkgdown::pkgdown] website files to another local Git folder, then stages, commits and pushes the changes. Use
+#' [pkgdown::build_site()] before running this function in order to create the website files.
+#'
+#' Use this function with **caution** since it **completely wipes the `to_path` directory** by default!
+#'
+#' @param pkg_path Path to the \R package of which the pkgdown website files are to be deployed.
+#' @param to_path Path to the Git (sub)folder to which the pkgdown website files are to be deployed.
+#' @param use_dev_build Whether to deploy the development build of the pkgdown website files.
+#' @param clean_to_path Whether to completely wipe `to_path` before deploying the new pkgdown website files. Setting this `TRUE` ensures there are no obsolete
+#'   files left over from previous deployments.
+#' @param commit_msg The Git commit message used for the deployment.
+#'
+#' @return A vector of paths to the deployed files/folders, invisibly.
+#' @export
+deploy_pkgdown_site <- function(pkg_path = ".",
+                                to_path,
+                                use_dev_build = NULL,
+                                clean_to_path = TRUE,
+                                commit_msg = "auto-deploy pkgdown") {
+  assert_pkg("pkgdown")
+  checkmate::assert_path_for_output(to_path,
+                                    overwrite = TRUE)
+  checkmate::assert_flag(use_dev_build,
+                         null.ok = TRUE)
+  checkmate::assert_flag(clean_to_path)
+  
+  if (!(is_pkgdown_dir(pkg_path))) {
+    rlang::abort(paste0("No pkgdown configuration found under path: ", pkg_path))
+  }
+  
+  override <-
+    use_dev_build %>%
+    purrr::when(isTRUE(.) ~ list(development = list(mode = "devel")),
+                isFALSE(.) ~ list(development = list(mode = "release")),
+                ~ list())
+  
+  config <- pkgdown::as_pkgdown(pkg = pkg_path,
+                                override = override)
+  
+  # clean destination path if requested
+  if (clean_to_path) {
+    
+    fs::dir_walk(path = to_path,
+                 fun = fs::dir_delete,
+                 type = "directory")
+    
+    fs::dir_walk(path = to_path,
+                 fun = fs::file_delete,
+                 all = TRUE,
+                 type = "file")
+  }
+  
+  # copy files/dirs
+  dirs <- fs::dir_ls(path = config$dst_path,
+                     type = "directory",
+                     regexp = paste0("^\\Q", fs::path(config$dst_path, config$development$destination), "\\E"),
+                     invert = TRUE)
+  
+  dirs %>% purrr::walk2(.y =
+                          config$dst_path %>%
+                          fs::path_rel(start = pkg_path) %>%
+                          fs::path_rel(path = dirs) %>%
+                          fs::path(to_path, .),
+                        .f = fs::dir_copy,
+                        overwrite = TRUE)
+  
+  files <- fs::dir_ls(path = config$dst_path,
+                      type = "file",
+                      all = TRUE)
+  
+  files %>% purrr::walk(fs::file_copy,
+                        new_path = to_path,
+                        overwrite = TRUE)
+  
+  paths <- c(dirs, files)
+  
+  # commit and push files
+  repo <- to_path %>% gert::git_find()
+  
+  staged <-
+    paths %>%
+    fs::path_rel(start = config$dst_path) %>%
+    fs::path(to_path %>% fs::path_rel(start = repo), .) %>%
+    gert::git_add(repo = repo)
+  
+  if (nrow(staged)) {
+    
+    gert::git_commit(message = checkmate::assert_string(commit_msg),
+                     repo = repo)
+    
+    gert::git_push(repo = repo)
+    
+  } else {
+    message("No files changed.")
+  }
+  
+  invisible(fs::path_abs(path = staged$file,
+                         start = repo))
+}
+
 #' Create column specification using regular expression matching
 #'
 #' Allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
