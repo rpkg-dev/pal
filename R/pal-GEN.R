@@ -2554,7 +2554,7 @@ check_dot_named <- function(dot,
 #' Copies the static [pkgdown][pkgdown::pkgdown] website files to another local Git folder, then stages, commits and pushes the changes. Use
 #' [pkgdown::build_site()] before running this function in order to create the website files.
 #'
-#' Use this function with **caution** since it **completely wipes the `to_path` directory** by default!
+#' Use this function with **caution** since by default it **completely wipes the `to_path` directory**!
 #'
 #' @param pkg_path Path to the \R package of which the pkgdown website files are to be deployed.
 #' @param to_path Path to the Git (sub)folder to which the pkgdown website files are to be deployed.
@@ -2569,7 +2569,9 @@ deploy_pkgdown_site <- function(pkg_path = ".",
                                 to_path,
                                 use_dev_build = NULL,
                                 clean_to_path = TRUE,
-                                commit_msg = "auto-deploy pkgdown") {
+                                commit_msg = paste0("auto-deploy pkgdown site for ",
+                                                    desc_value(file = pkg_path,
+                                                               key = "Package"))) {
   assert_pkg("pkgdown")
   checkmate::assert_path_for_output(to_path,
                                     overwrite = TRUE)

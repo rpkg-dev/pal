@@ -9,7 +9,8 @@ deploy_pkgdown_site(
   to_path,
   use_dev_build = NULL,
   clean_to_path = TRUE,
-  commit_msg = "auto-deploy pkgdown"
+  commit_msg = paste0("auto-deploy pkgdown site for ", desc_value(file = pkg_path, key
+    = "Package"))
 )
 }
 \arguments{
@@ -31,5 +32,5 @@ A vector of paths to the deployed files/folders, invisibly.
 Copies the static \link[pkgdown:pkgdown-package]{pkgdown} website files to another local Git folder, then stages, commits and pushes the changes. Use
 \code{\link[pkgdown:build_site]{pkgdown::build_site()}} before running this function in order to create the website files.
 
-Use this function with \strong{caution} since it \strong{completely wipes the \code{to_path} directory} by default!
+Use this function with \strong{caution} since by default it \strong{completely wipes the \code{to_path} directory}!
 }
