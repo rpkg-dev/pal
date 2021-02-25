@@ -1115,9 +1115,12 @@ is_pkg_installed <- function(pkg,
 is_pkg_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
+  checkmate::assert_directory(path,
+                              access = "r")
   
-  rprojroot::is_r_package$testfun[[1L]](path = checkmate::assert_directory(path,
-                                                                           access = "r"))
+  rprojroot::is_r_package$testfun %>%
+    purrr::map_lgl(~ .x(path = path)) %>%
+    any()
 }
 
 #' Test if pkgdown is set up for an R package directory
