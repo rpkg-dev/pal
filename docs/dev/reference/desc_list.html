@@ -157,101 +157,10 @@ is part of) is used.</p></td>
 <code><a href='prose_ls_fn_param.html'>prose_ls_fn_param</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>desc_list</span><span class='op'>(</span>file <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span><span class='st'>"pal"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $Package
-#&gt; [1] "pal"
-#&gt; 
-#&gt; $Title
-#&gt; [1] "Friendly Convenience/Utility Functions"
-#&gt; 
-#&gt; $Version
-#&gt; [1] "0.0.9049"
-#&gt; 
-#&gt; $Description
-#&gt; [1] "A collection of convenience/utility functions which aren't (yet) found in any other tidyverse-style R package."
-#&gt; 
-#&gt; $License
-#&gt; [1] "AGPL (&gt;= 3)"
-#&gt; 
-#&gt; $BugReports
-#&gt; [1] "https://gitlab.com/salim_b/r/pkgs/pal/issues"
-#&gt; 
-#&gt; $Remotes
-#&gt; [1] "github::r-lib/rprojroot#79, gitlab::salim_b/r/pkgs/pkgsnip"
-#&gt; 
-#&gt; $`Config/testthat/edition`
-#&gt; [1] "3"
-#&gt; 
-#&gt; $Encoding
-#&gt; [1] "UTF-8"
-#&gt; 
-#&gt; $LazyData
-#&gt; [1] "true"
-#&gt; 
-#&gt; $Roxygen
-#&gt; [1] "list(markdown = TRUE)"
-#&gt; 
-#&gt; $RoxygenNote
-#&gt; [1] "7.1.1"
-#&gt; 
-#&gt; $Author
-#&gt; [1] "&lt;No `Author` field set in DESCRIPTION!&gt;"
-#&gt; 
-#&gt; $Maintainer
-#&gt; [1] "&lt;No `Maintainer` field set in DESCRIPTION!&gt;"
-#&gt; 
-#&gt; $Built
-#&gt; [1] "&lt;No `Built` field set in DESCRIPTION!&gt;"
-#&gt; 
-#&gt; $`Authors@R`
-#&gt; [1] "Salim Brüggemann &lt;salim-b@pm.me&gt; [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)"
-#&gt; 
-#&gt; $dependencies
-#&gt;        type     package  version
-#&gt; 1   Depends           R   &gt;= 4.0
-#&gt; 2   Imports   checkmate &gt;= 2.0.0
-#&gt; 3   Imports       dplyr &gt;= 1.0.2
-#&gt; 4   Imports          fs &gt;= 1.4.1
-#&gt; 5   Imports        glue &gt;= 1.4.1
-#&gt; 6   Imports   lifecycle &gt;= 0.2.0
-#&gt; 7   Imports    magrittr   &gt;= 1.5
-#&gt; 8   Imports     methods        *
-#&gt; 9   Imports       purrr &gt;= 0.3.4
-#&gt; 10  Imports       rlang &gt;= 0.4.4
-#&gt; 11  Imports     stringr &gt;= 1.4.0
-#&gt; 12  Imports      tibble &gt;= 2.1.3
-#&gt; 13  Imports       utils        *
-#&gt; 14 Suggests        brio &gt;= 1.1.0
-#&gt; 15 Suggests         cli &gt;= 2.0.2
-#&gt; 16 Suggests  commonmark   &gt;= 1.7
-#&gt; 17 Suggests      crayon &gt;= 1.3.4
-#&gt; 18 Suggests        daff &gt;= 0.3.5
-#&gt; 19 Suggests        desc &gt;= 1.2.0
-#&gt; 20 Suggests        gert        *
-#&gt; 21 Suggests        httr &gt;= 1.4.1
-#&gt; 22 Suggests janeaustenr        *
-#&gt; 23 Suggests       knitr  &gt;= 1.28
-#&gt; 24 Suggests      pander &gt;= 0.6.3
-#&gt; 25 Suggests     pkgdown        *
-#&gt; 26 Suggests     pkgsnip        *
-#&gt; 27 Suggests       readr &gt;= 1.4.0
-#&gt; 28 Suggests         rex        *
-#&gt; 29 Suggests   rmarkdown   &gt;= 2.1
-#&gt; 30 Suggests    roxygen2 &gt;= 7.1.1
-#&gt; 31 Suggests   rprojroot &gt;= 1.3.2
-#&gt; 32 Suggests  rstudioapi  &gt;= 0.11
-#&gt; 33 Suggests    testthat &gt;= 3.0.0
-#&gt; 34 Suggests       waldo &gt;= 0.2.3
-#&gt; 35 Suggests       withr &gt;= 2.3.0
-#&gt; 36 Suggests     writexl &gt;= 1.3.1
-#&gt; 37 Suggests        xfun        *
-#&gt; 38 Suggests       xopen &gt;= 1.0.0
-#&gt; 39 Suggests       yesno &gt;= 0.1.2
-#&gt; 
-#&gt; $URL
-#&gt; [1] "https://r.salim.space/pal"            
-#&gt; [2] "https://gitlab.com/salim_b/r/pkgs/pal"
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>desc_list</span><span class='op'>(</span>file <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

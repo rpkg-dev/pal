@@ -23,7 +23,9 @@ Returns all fields from a specific \code{DESCRIPTION} file as a named list with 
 }
 }
 \examples{
-desc_list(file = fs::path_package("pal"))
+\dontrun{
+desc_list(file = fs::path_package(package = "pal"))
+}
 }
 \seealso{
 Other R package functions:
