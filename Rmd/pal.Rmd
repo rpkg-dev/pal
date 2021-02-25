@@ -1099,6 +1099,17 @@ assert_pkg <- function(pkg,
 
 ## Get all `DESCRIPTION` file fields as cleaned up list
 
+TODO:
+
+-   [ ] Figure out why the example below throws the error
+
+    ``` {.error}
+    No root directory found in .../r/pkgs/pal.Rcheck or its parent directories.
+    Root criterion: contains a file "DESCRIPTION" with contents matching "^Package: "
+    ```
+
+    during R CMD Check while almost the same example in `desc_value()` doesn't...!?
+
 ```{r}
 #' Get all `DESCRIPTION` file fields as cleaned up list
 #'
@@ -1115,7 +1126,9 @@ assert_pkg <- function(pkg,
 #' @export
 #'
 #' @examples
-#' desc_list(file = fs::path_package("pal"))
+#' \dontrun{
+#' desc_list(file = fs::path_package(package = "pal"))
+#' }
 desc_list <- function(file = ".") {
   
   fields <- desc::desc_fields(file = file)

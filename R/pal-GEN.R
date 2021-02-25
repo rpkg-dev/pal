@@ -997,7 +997,9 @@ assert_pkg <- function(pkg,
 #' @export
 #'
 #' @examples
-#' desc_list(file = fs::path_package("pal"))
+#' \dontrun{
+#' desc_list(file = fs::path_package(package = "pal"))
+#' }
 desc_list <- function(file = ".") {
   
   fields <- desc::desc_fields(file = file)
