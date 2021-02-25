@@ -138,6 +138,7 @@ test_that("`knitr_table_format()` works as supposed", {
 
 # R Packages ----
 ## build_readme ----
+## TODO: figure out why a `tests/testthat/README.html` file is created and kept when running the tests using `devtools::test()`
 test_that("`README.Rmd` can be built successfully", {
 
   withr::local_file(.file = list("README.Rmd" = readr::write_file(file = "README.Rmd",
