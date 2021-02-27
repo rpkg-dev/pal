@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List items concatenated in prose style (..., ... and ...) — prose_ls • pal</title>
+<title>Deploy pkgdown site to local Git folder — deploy_pkgdown_site • pal</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="List items concatenated in prose style (..., ... and ...) — prose_ls" />
-<meta property="og:description" content="Takes a vector or list and concatenates its elements to a single string separated in prose-style." />
+<meta property="og:title" content="Deploy pkgdown site to local Git folder — deploy_pkgdown_site" />
+<meta property="og:description" content="Copies the static pkgdown website files to another local Git folder, then stages, commits and pushes the changes. Use
+pkgdown::build_site() before running this function in order to create the website files.
+Use this function with caution since by default it completely wipes the to_path directory!" />
 
 
 
@@ -110,58 +112,67 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List items concatenated in prose style (..., ... and ...)</h1>
+    <h1>Deploy pkgdown site to local Git folder</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
-    <div class="hidden name"><code>prose_ls.Rd</code></div>
+    <div class="hidden name"><code>deploy_pkgdown_site.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes a vector or list and concatenates its elements to a single string separated in prose-style.</p>
+    <p>Copies the static <a href='https://pkgdown.r-lib.org/reference/pkgdown-package.html'>pkgdown</a> website files to another local Git folder, then stages, commits and pushes the changes. Use
+<code><a href='https://pkgdown.r-lib.org/reference/build_site.html'>pkgdown::build_site()</a></code> before running this function in order to create the website files.</p>
+<p>Use this function with <strong>caution</strong> since by default it <strong>completely wipes the <code>to_path</code> directory</strong>!</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prose_ls</span><span class='op'>(</span><span class='va'>x</span>, wrap <span class='op'>=</span> <span class='st'>""</span>, separator <span class='op'>=</span> <span class='st'>", "</span>, last_separator <span class='op'>=</span> <span class='st'>" and "</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>deploy_pkgdown_site</span><span class='op'>(</span>
+  pkg_path <span class='op'>=</span> <span class='st'>"."</span>,
+  to_path <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use_dev_build <span class='op'>=</span> <span class='cn'>NULL</span>,
+  clean_to_path <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  commit_msg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"auto-deploy pkgdown site for "</span>, <span class='fu'><a href='desc_value.html'>desc_value</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>pkg_path</span>, key
+    <span class='op'>=</span> <span class='st'>"Package"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A vector or a list.</p></td>
+      <th>pkg_path</th>
+      <td><p>Path to the <span style="R">R</span> package of which the pkgdown website files are to be deployed.</p></td>
     </tr>
     <tr>
-      <th>wrap</th>
-      <td><p>The string (usually a single character) in which <code>x</code> is to be wrapped.</p></td>
+      <th>to_path</th>
+      <td><p>Path to the Git (sub)folder to which the pkgdown website files are to be deployed. If <code>NULL</code>, the path is looked up in the <span style="R">R</span> option
+<code>pal.local_pkgdown_deploy_paths</code>, which must be a named character vector of the form <code><a href='https://rdrr.io/r/base/c.html'>c(pkg_name = "/path/to/local_git_repo")</a></code>.</p></td>
     </tr>
     <tr>
-      <th>separator</th>
-      <td><p>The separator to delimit the elements of <code>x</code>.</p></td>
+      <th>use_dev_build</th>
+      <td><p>Whether to deploy the development build of the pkgdown website files.</p></td>
     </tr>
     <tr>
-      <th>last_separator</th>
-      <td><p>The separator to delimit the second-last and last element of <code>x</code>.</p></td>
+      <th>clean_to_path</th>
+      <td><p>Whether to completely wipe <code>to_path</code> before deploying the new pkgdown website files. Setting this <code>TRUE</code> ensures there are no obsolete
+files left over from previous deployments.</p></td>
+    </tr>
+    <tr>
+      <th>commit_msg</th>
+      <td><p>The Git commit message used for the deployment.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character scalar.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>A vector of paths to the deployed files/folders, invisibly.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p>Other string functions:
-<code><a href='as_chr.html'>as_chr</a>()</code>,
-<code><a href='as_string.html'>as_string</a>()</code>,
-<code><a href='cat_lines.html'>cat_lines</a>()</code>,
-<code><a href='dsv_colnames.html'>dsv_colnames</a>()</code>,
-<code><a href='escape_lf.html'>escape_lf</a>()</code>,
-<code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
-<code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
-<code><a href='str_replace_file.html'>str_replace_file</a>()</code>,
-<code><a href='str_replace_verbose.html'>str_replace_verbose</a>()</code>,
-<code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
+    <p>Instead of directly providing a valid <code>to_path</code> argument, you can also set <code>to_path = NULL</code> and provide the path in the <span style="R">R</span> option
+<code>pal.local_pkgdown_deploy_paths</code>. The value of this option must be a named character vector whereas the names correspond to the package names and the values
+to the filesystem paths. As an example:<div class="r"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>pal.local_pkgdown_deploy_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>some_pkg    <span class='op'>=</span> <span class='st'>"/path/to/common_pkgdown_repo/some_pkg"</span>,
+                                           another_pkg <span class='op'>=</span> <span class='st'>"/path/to/common_pkgdown_repo/another_pkg"</span>,
+                                           foo_pkg     <span class='op'>=</span> <span class='st'>"/path/to/dedicated_foo_pkgdown_repo"</span><span class='op'>)</span><span class='op'>)</span>
+</pre><p></div></p>
+<p>A suitable place to define the above option is the <a href='https://support.rstudio.com/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf'><code>.Rprofile</code> file</a>
+in the user's home directory.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>prose_ls</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1, 2, 3, 4 and 5"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

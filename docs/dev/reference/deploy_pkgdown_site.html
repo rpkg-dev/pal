@@ -125,7 +125,7 @@ Use this function with caution since by default it completely wipes the to_path 
 
     <pre class="usage"><span class='fu'>deploy_pkgdown_site</span><span class='op'>(</span>
   pkg_path <span class='op'>=</span> <span class='st'>"."</span>,
-  <span class='va'>to_path</span>,
+  to_path <span class='op'>=</span> <span class='cn'>NULL</span>,
   use_dev_build <span class='op'>=</span> <span class='cn'>NULL</span>,
   clean_to_path <span class='op'>=</span> <span class='cn'>TRUE</span>,
   commit_msg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"auto-deploy pkgdown site for "</span>, <span class='fu'><a href='desc_value.html'>desc_value</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>pkg_path</span>, key
@@ -141,7 +141,8 @@ Use this function with caution since by default it completely wipes the to_path 
     </tr>
     <tr>
       <th>to_path</th>
-      <td><p>Path to the Git (sub)folder to which the pkgdown website files are to be deployed.</p></td>
+      <td><p>Path to the Git (sub)folder to which the pkgdown website files are to be deployed. If <code>NULL</code>, the path is looked up in the <span style="R">R</span> option
+<code>pal.local_pkgdown_deploy_paths</code>, which must be a named character vector of the form <code><a href='https://rdrr.io/r/base/c.html'>c(pkg_name = "/path/to/local_git_repo")</a></code>.</p></td>
     </tr>
     <tr>
       <th>use_dev_build</th>
@@ -161,6 +162,16 @@ files left over from previous deployments.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A vector of paths to the deployed files/folders, invisibly.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Instead of directly providing a valid <code>to_path</code> argument, you can also set <code>to_path = NULL</code> and provide the path in the <span style="R">R</span> option
+<code>pal.local_pkgdown_deploy_paths</code>. The value of this option must be a named character vector whereas the names correspond to the package names and the values
+to the filesystem paths. As an example:<div class="r"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>pal.local_pkgdown_deploy_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>some_pkg    <span class='op'>=</span> <span class='st'>"/path/to/common_pkgdown_repo/some_pkg"</span>,
+                                           another_pkg <span class='op'>=</span> <span class='st'>"/path/to/common_pkgdown_repo/another_pkg"</span>,
+                                           foo_pkg     <span class='op'>=</span> <span class='st'>"/path/to/dedicated_foo_pkgdown_repo"</span><span class='op'>)</span><span class='op'>)</span>
+</pre><p></div></p>
+<p>A suitable place to define the above option is the <a href='https://support.rstudio.com/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf'><code>.Rprofile</code> file</a>
+in the user's home directory.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
