@@ -819,9 +819,13 @@ build_readme <- function(input = "README.Rmd",
       rmarkdown::render(input = cleaned_output,
                         output_file = "index.md",
                         output_dir = output_dir,
-                        output_format = rmarkdown::md_document(variant = "markdown",
-                                                               md_extensions = c("-autolink_bare_uris",
-                                                                                 "-tex_math_single_backslash")),
+                        output_format =
+                          rmarkdown::md_document(variant = "markdown",
+                                                 # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
+                                                 md_extensions = c("-autolink_bare_uris",
+                                                                   "-tex_math_single_backslash")) %>%
+                          # disable Pandoc's raw attributes in output to have more control over inline HTML
+                          purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
                         quiet = TRUE,
                         envir = env)
     }
