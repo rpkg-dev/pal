@@ -6,7 +6,7 @@
 \usage{
 deploy_pkgdown_site(
   pkg_path = ".",
-  to_path,
+  to_path = NULL,
   use_dev_build = NULL,
   clean_to_path = TRUE,
   commit_msg = paste0("auto-deploy pkgdown site for ", desc_value(file = pkg_path, key
@@ -16,7 +16,8 @@ deploy_pkgdown_site(
 \arguments{
 \item{pkg_path}{Path to the \R package of which the pkgdown website files are to be deployed.}
 
-\item{to_path}{Path to the Git (sub)folder to which the pkgdown website files are to be deployed.}
+\item{to_path}{Path to the Git (sub)folder to which the pkgdown website files are to be deployed. If \code{NULL}, the path is looked up in the \R option
+\code{pal.local_pkgdown_deploy_paths}, which must be a named character vector of the form \code{c(pkg_name = "/path/to/local_git_repo")}.}
 
 \item{use_dev_build}{Whether to deploy the development build of the pkgdown website files.}
 
@@ -33,4 +34,15 @@ Copies the static \link[pkgdown:pkgdown-package]{pkgdown} website files to anoth
 \code{\link[pkgdown:build_site]{pkgdown::build_site()}} before running this function in order to create the website files.
 
 Use this function with \strong{caution} since by default it \strong{completely wipes the \code{to_path} directory}!
+}
+\details{
+Instead of directly providing a valid \code{to_path} argument, you can also set \code{to_path = NULL} and provide the path in the \R option
+\code{pal.local_pkgdown_deploy_paths}. The value of this option must be a named character vector whereas the names correspond to the package names and the values
+to the filesystem paths. As an example:\if{html}{\out{<div class="r">}}\preformatted{options(pal.local_pkgdown_deploy_paths = c(some_pkg    = "/path/to/common_pkgdown_repo/some_pkg",
+                                           another_pkg = "/path/to/common_pkgdown_repo/another_pkg",
+                                           foo_pkg     = "/path/to/dedicated_foo_pkgdown_repo"))
+}\if{html}{\out{</div>}}
+
+A suitable place to define the above option is the \href{https://support.rstudio.com/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf}{\code{.Rprofile} file}
+in the user's home directory.
 }
