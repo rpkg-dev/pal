@@ -6,13 +6,15 @@
 \alias{pal-package}
 \title{pal: Friendly Convenience/Utility Functions}
 \description{
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
 A collection of convenience/utility functions which
     aren't (yet) found in any other tidyverse-style R package.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://r.salim.space/pal}
+  \item \url{https://rpkg.dev/pal}
   \item \url{https://gitlab.com/salim_b/r/pkgs/pal}
   \item Report bugs at \url{https://gitlab.com/salim_b/r/pkgs/pal/issues}
 }
