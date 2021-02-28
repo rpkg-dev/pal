@@ -729,15 +729,21 @@ build_readme <- function(input = "README.Rmd",
         checkmate::assert_directory(access = "w",
                                     .var.name = "output_dir")
       
-      # remove trailing horizontal line in MD file since pkgdown always adds one below content
+      # clean MD file
       # TODO: submit PR to pkgdown doing this?
       assert_pkg("brio")
       cleaned_output <- fs::file_temp(pattern = "index",
                                       ext = "md")
       
       brio::read_file(output) %>%
+        # remove trailing horizontal line in MD file since pkgdown always adds one below content
         stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
                              replacement = "\\2") %>%
+        # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)
+        stringr::str_replace_all(pattern = "(<img [^>]+)(align=['\"].*?['\"]\\s*)",
+                                 replacement = "\\1") %>%
+        stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
+                                 replacement = "\\1") %>%
         brio::write_file(path = cleaned_output)
       
       # render `pkgdown/index.md`
