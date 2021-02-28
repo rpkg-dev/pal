@@ -8,6 +8,13 @@
 
 <title>Print x as newline-separated character vector using cat(). — cat_lines • pal</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -38,9 +45,12 @@
 
 
 
+  <link href="../extra.css" rel="stylesheet">
+  
 
 <meta property="og:title" content="Print x as newline-separated character vector using cat(). — cat_lines" />
 <meta property="og:description" content="Convenience wrapper around as_chr() and cat(), mainly intended for interactive use." />
+<meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 
 
 
@@ -80,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9050</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9051</span>
       </span>
     </div>
 
@@ -156,7 +166,7 @@
   <span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Package: pal
 #&gt; Title: Friendly Convenience/Utility Functions
-#&gt; Version: 0.0.9050
+#&gt; Version: 0.0.9051
 #&gt; Authors@R: 
 #&gt;     person(given = "Salim",
 #&gt;            family = "Brüggemann",
@@ -188,7 +198,7 @@
 #&gt; RoxygenNote: 7.1.1
 #&gt; Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)
 #&gt; Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;
-#&gt; Built: R 4.0.4; ; 2021-02-28 15:03:35 UTC; unix</div><div class='input'>
+#&gt; Built: R 4.0.4; ; 2021-02-28 19:47:53 UTC; unix</div><div class='input'>
 <span class='co'># recursive conversion to type character or not</span>
 <span class='va'>to_convert</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>
