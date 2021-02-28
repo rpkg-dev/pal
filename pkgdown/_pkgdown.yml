@@ -3,4 +3,4 @@ development:
 template:
   params:
     bootswatch: yeti
-url: https://r.salim.space/pal
+url: https://rpkg.dev/pal
