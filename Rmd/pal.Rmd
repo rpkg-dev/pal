@@ -5,6 +5,45 @@ editor_options:
 
 # INTERNAL
 
+## Logo
+
+The package logo is based on the vector graphic [*help*](https://thenounproject.com/term/help/28807/) created by [Luis Prado](https://thenounproject.com/Luis)
+which he licensed under [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/us/legalcode). The original logo is stored under `data-raw/logo/help.svg` and a
+colored raster image version is stored under `data-raw/logo/help_yellow.png`.
+
+This was fed to [hexSticker](https://github.com/GuangchuangYu/hexSticker) to create `data-raw/logo/hexsticker.png` and `data-raw/logo/hexsticker_alt.png` as
+follows (the spotlight has some "random jitter", so hexSticker creates a slightly different image on each run):
+
+```{r, purl = FALSE}
+hexSticker::sticker(subplot = "data-raw/logo/help_yellow.png",
+                    s_x = 1.0,
+                    s_y = 1.31,
+                    s_width = 0.47,
+                    # the default asp 1.0 distorts the subplot, so we have to fiddle -.-
+                    asp = 0.85,
+                    package = "pal",
+                    p_x = 1.0,
+                    p_y	= 0.65,
+                    p_color = "#ffcc00",
+                    p_size = 40.0,
+                    h_fill = "#000000",
+                    h_color = "#ffcc00",
+                    spotlight = TRUE,
+                    l_x = 1.1,
+                    l_y = 2.0,
+                    l_width = 8.0,
+                    l_height = 8.0,
+                    l_alpha = 0.5,
+                    url = "rpkg.dev/pal",
+                    u_color = "#ffcc00",
+                    u_size = 4.0,
+                    filename = "data-raw/logo/hexsticker.png")
+```
+
+Finally, `data-raw/logo/hexsticker.png` was post-processed by the [G'MIC](https://gmic.eu/) filter *Felt Pen* in GIMP to create
+`data-raw/logo/hexsticker_gmic_felt_pen.png` which, however, was discarded. Instead, the final package logo `data-raw/logo/hexsticker_smooth.png` is just
+smoothed using the G'MIC filter *Smooth [Diffusion]* in GIMP.
+
 ## Avoid `R CMD check` notes about undefined global objects used in magrittr pipes
 
 Cf. <https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262>
@@ -58,43 +97,6 @@ bg_green_dark <- cli::make_ansi_style("#003300",
                                       bg = TRUE,
                                       colors = 2L^24L)
 ```
-
-## Logo
-
-The package logo is based on the vector graphic [*help*](https://thenounproject.com/term/help/28807/) created by [Luis Prado](https://thenounproject.com/Luis)
-which he licensed under [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/us/legalcode). The original logo is stored under `data-raw/logo/help.svg` and a
-colored raster image version is stored under `data-raw/logo/help_yellow.png`.
-
-This was fed to [hexSticker](https://github.com/GuangchuangYu/hexSticker) to create `data-raw/logo/hexsticker.png` and `data-raw/logo/hexsticker_alt.png` as
-follows (the spotlight has some "random jitter", so hexSticker creates a slightly different image on each run):
-
-```{r, purl = FALSE}
-hexSticker::sticker(subplot = "data-raw/logo/help_yellow.png",
-                    s_x = 1.0,
-                    s_y = 1.31,
-                    s_width = 0.47,
-                    asp = 0.85,
-                    package = "pal",
-                    p_x = 1.0,
-                    p_y	= 0.65,
-                    p_color = "#ffcc00",
-                    p_size = 40.0,
-                    h_fill = "#000000",
-                    h_color = "#ffcc00",
-                    spotlight = TRUE,
-                    l_x = 1.1,
-                    l_y = 2.0,
-                    l_width = 8.0,
-                    l_height = 8.0,
-                    l_alpha = 0.5,
-                    url = "rpkg.dev/pal",
-                    u_color = "#ffcc00",
-                    u_size = 4.0,
-                    filename = "data-raw/logo/hexsticker.png")
-```
-
-Finally, `data-raw/logo/hexsticker.png` was post-processed by the [G'MIC](https://gmic.eu/) filter *Felt Pen* in GIMP to create the final package logo
-`data-raw/logo/hexsticker_gmic_felt_pen.png`.
 
 # Data frames / Tibbles
 
@@ -3287,3 +3289,4 @@ roxy_tag_value <- function(text,
   result
 }
 ```
+

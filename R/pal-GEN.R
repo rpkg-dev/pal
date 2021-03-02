@@ -31,8 +31,6 @@ bg_green_dark <- cli::make_ansi_style("#003300",
                                       bg = TRUE,
                                       colors = 2L^24L)
 
-
-
 #' Determine the differences between two data frames/tibbles in tabular diff format
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like
