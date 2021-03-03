@@ -1,4 +1,4 @@
-# pal: Friendly Convenience/Utility Functions <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" class="pkg-logo" align="right" height="180"/></a>
+# pal: Friendly Convenience/Utility Functions <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
 
 A collection of convenience/utility functions which aren’t (yet) found in any other tidyverse-style R package.[^1].
 
