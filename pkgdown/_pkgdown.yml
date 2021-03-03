@@ -3,4 +3,5 @@ development:
 template:
   params:
     bootswatch: yeti
+    selfhost_assets: true
 url: https://rpkg.dev/pal
