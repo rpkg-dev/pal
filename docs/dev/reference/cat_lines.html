@@ -37,9 +37,6 @@
 <script src="../jQuery.headroom.min.js"></script>
 
 
-<!-- mathjax -->
-<script src="../MathJax.js"></script>
-<script src="../TeX-AMS-MML_HTMLorMML.js"></script>
 
 
 <!-- bootstrap-toc -->
@@ -55,6 +52,7 @@
   
 
 <meta property="og:title" content="Print x as newline-separated character vector using cat(). — cat_lines" />
+<meta name="description" content="Convenience wrapper around as_chr() and cat(), mainly intended for interactive use.">
 <meta property="og:description" content="Convenience wrapper around as_chr() and cat(), mainly intended for interactive use." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 
@@ -200,7 +198,7 @@
 #&gt; RoxygenNote: 7.1.1
 #&gt; Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)
 #&gt; Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;
-#&gt; Built: R 4.0.4; ; 2021-03-04 11:46:52 UTC; unix</div><div class='input'>
+#&gt; Built: R 4.0.4; ; 2021-03-04 23:38:07 UTC; unix</div><div class='input'>
 <span class='co'># recursive conversion to type character or not</span>
 <span class='va'>to_convert</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>

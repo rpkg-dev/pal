@@ -37,9 +37,6 @@
 <script src="../jQuery.headroom.min.js"></script>
 
 
-<!-- mathjax -->
-<script src="../MathJax.js"></script>
-<script src="../TeX-AMS-MML_HTMLorMML.js"></script>
 
 
 <!-- bootstrap-toc -->
@@ -55,6 +52,12 @@
   
 
 <meta property="og:title" content="Get all DESCRIPTION file fields as cleaned up list — desc_list" />
+<meta name="description" content="Returns all fields from a specific DESCRIPTION file as a named list with values cleaned up:
+Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
+Multi-value fields are returned as vectors.
+The fields Depends, Imports and Suggests are returned as a single data frame named dependencies.
+
+">
 <meta property="og:description" content="Returns all fields from a specific DESCRIPTION file as a named list with values cleaned up:
 Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
 Multi-value fields are returned as vectors.

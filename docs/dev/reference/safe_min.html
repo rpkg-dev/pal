@@ -37,9 +37,6 @@
 <script src="../jQuery.headroom.min.js"></script>
 
 
-<!-- mathjax -->
-<script src="../MathJax.js"></script>
-<script src="../TeX-AMS-MML_HTMLorMML.js"></script>
 
 
 <!-- bootstrap-toc -->
@@ -55,6 +52,13 @@
   
 
 <meta property="og:title" content="Minimum (safe) — safe_min" />
+<meta name="description" content="Modified version of min() that differs in the following ways:
+NAs in the input (...) are ignored by default (rm_na = TRUE).
+If the input is of length zero, the output will also be of length zero (of the same type as the input).
+It is ensured that all inputs are either numeric, of length zero or NA. There is no case where the return value will be Inf.
+Dynamic dots are supported.
+
+">
 <meta property="og:description" content="Modified version of min() that differs in the following ways:
 NAs in the input (...) are ignored by default (rm_na = TRUE).
 If the input is of length zero, the output will also be of length zero (of the same type as the input).

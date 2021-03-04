@@ -3,5 +3,6 @@ development:
 template:
   params:
     bootswatch: yeti
+    mathjax: false
     selfhost_assets: true
 url: https://rpkg.dev/pal
