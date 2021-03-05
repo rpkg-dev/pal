@@ -36,7 +36,14 @@
 <script src="../headroom.min.js"></script>
 <script src="../jQuery.headroom.min.js"></script>
 
+<!-- docsearch -->
+<link rel="stylesheet" href="../docsearch.min.css" />
+<script src="../jquery.mark.min.js"></script>
 
+
+<!-- docsearch -->
+<script src="docsearch.js"></script>
+<link href="docsearch.css" rel="stylesheet">
 
 
 <!-- bootstrap-toc -->
@@ -46,7 +53,6 @@
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
-
 
   <link href="../extra.css" rel="stylesheet">
   
@@ -112,6 +118,12 @@ HTML." />
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -262,6 +274,23 @@ therein won't be displayed:</p><ul>
    </div>
 
   
+<script src="docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'a9b69dd0f0ef2e8ca0bb654d19a20424',
+    indexName: 'pal',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   
