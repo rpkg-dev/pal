@@ -3,6 +3,9 @@ development:
 template:
   params:
     bootswatch: yeti
+    docsearch:
+      api_key: a9b69dd0f0ef2e8ca0bb654d19a20424
+      index_name: pal
     mathjax: false
     selfhost_assets: true
 url: https://rpkg.dev/pal
