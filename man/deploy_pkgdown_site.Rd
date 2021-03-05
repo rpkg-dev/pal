@@ -19,7 +19,9 @@ deploy_pkgdown_site(
 \item{to_path}{Path to the Git (sub)folder to which the pkgdown website files are to be deployed. If \code{NULL}, the path is looked up in the \R option
 \code{pal.local_pkgdown_deploy_paths}, which must be a named character vector of the form \code{c(pkg_name = "/path/to/local_git_repo")}.}
 
-\item{use_dev_build}{Whether to deploy the development build of the pkgdown website files.}
+\item{use_dev_build}{Whether to deploy the development build of the pkgdown website files. If \code{NULL},
+\href{https://pkgdown.r-lib.org/reference/build_site.html#development-mode}{\code{development.mode}} set in the pkgdown YAML configuration file from \code{pkg_path} will
+be respected.}
 
 \item{clean_to_path}{Whether to completely wipe \code{to_path} before deploying the new pkgdown website files. Setting this \code{TRUE} ensures there are no obsolete
 files left over from previous deployments.}

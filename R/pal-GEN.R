@@ -2589,7 +2589,9 @@ check_dot_named <- function(dot,
 #' @param pkg_path Path to the \R package of which the pkgdown website files are to be deployed.
 #' @param to_path Path to the Git (sub)folder to which the pkgdown website files are to be deployed. If `NULL`, the path is looked up in the \R option
 #'   `pal.local_pkgdown_deploy_paths`, which must be a named character vector of the form `c(pkg_name = "/path/to/local_git_repo")`.
-#' @param use_dev_build Whether to deploy the development build of the pkgdown website files.
+#' @param use_dev_build Whether to deploy the development build of the pkgdown website files. If `NULL`,
+#'   [`development.mode`](https://pkgdown.r-lib.org/reference/build_site.html#development-mode) set in the pkgdown YAML configuration file from `pkg_path` will
+#'   be respected.
 #' @param clean_to_path Whether to completely wipe `to_path` before deploying the new pkgdown website files. Setting this `TRUE` ensures there are no obsolete
 #'   files left over from previous deployments.
 #' @param commit_msg The Git commit message used for the deployment.
