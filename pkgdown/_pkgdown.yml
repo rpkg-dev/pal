@@ -1,6 +1,10 @@
 development:
   mode: auto
 template:
+  opengraph:
+    twitter:
+      card: summary
+      creator: "@2BSalim"
   params:
     bootswatch: yeti
     docsearch:
