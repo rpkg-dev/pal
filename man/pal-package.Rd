@@ -8,8 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-A collection of convenience/utility functions which
-    aren't (yet) found in any other tidyverse-style R package.
+A collection of convenience/utility functions which aren't (yet) found in any other tidyverse-style R package.
 }
 \seealso{
 Useful links:
