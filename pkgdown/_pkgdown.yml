@@ -6,6 +6,9 @@ template:
       card: summary
       creator: "@2BSalim"
   params:
+    analytics:
+      goatcounter:
+        endpoint: "https://rpkg-dev.goatcounter.com"
     bootswatch: yeti
     docsearch:
       api_key: a9b69dd0f0ef2e8ca0bb654d19a20424
