@@ -1204,7 +1204,8 @@ desc_list <- function(file = ".") {
 
 TODO:
 
--   [ ] Make PR proposing to extend `desc::desc_get_field()`'s `trim_ws` param to normalize whitespaces within the queried value.
+-   [x] Make PR proposing to extend `desc::desc_get_field()`'s `trim_ws` param to normalize whitespaces within the queried value. *See
+    [\#101](https://github.com/r-lib/desc/pull/101)!*
 
 -   [ ] Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
 
