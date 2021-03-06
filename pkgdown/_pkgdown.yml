@@ -8,7 +8,7 @@ template:
   params:
     analytics:
       goatcounter:
-        endpoint: "https://rpkg-dev.goatcounter.com"
+        endpoint: "https://rpkg-dev.goatcounter.com/count"
     bootswatch: yeti
     docsearch:
       api_key: a9b69dd0f0ef2e8ca0bb654d19a20424
