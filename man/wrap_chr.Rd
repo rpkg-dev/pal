@@ -32,8 +32,6 @@ Other string functions:
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},
 \code{\link{prettify_nr}()},
-\code{\link{prose_ls}()},
-\code{\link{str_replace_file}()},
-\code{\link{str_replace_verbose}()}
+\code{\link{prose_ls}()}
 }
 \concept{string}

@@ -83,9 +83,4 @@ is_equal_df(df1, df2)
 is_equal_df(df1, df2,
             ignore_col_types = TRUE)
 }
-\seealso{
-Other data frame / tibble functions:
-\code{\link{open_as_tmp_spreadsheet}()},
-\code{\link{show_diff}()}
-}
 \concept{tibble}

@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9051</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9052</span>
       </span>
     </div>
 
@@ -170,8 +170,6 @@
 <code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
 <code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
 <code><a href='prose_ls.html'>prose_ls</a>()</code>,
-<code><a href='str_replace_file.html'>str_replace_file</a>()</code>,
-<code><a href='str_replace_verbose.html'>str_replace_verbose</a>()</code>,
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -181,15 +179,15 @@
   <span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Package: pal
 #&gt; Title: Friendly Convenience/Utility Functions
-#&gt; Version: 0.0.9051
+#&gt; Version: 0.0.9052
 #&gt; Authors@R: 
 #&gt;     person(given = "Salim",
 #&gt;            family = "Brüggemann",
 #&gt;            role = c("aut", "cre"),
 #&gt;            email = "salim-b@pm.me",
 #&gt;            comment = c(ORCID = "0000-0002-5329-5987"))
-#&gt; Description: A collection of convenience/utility functions which
-#&gt;     aren't (yet) found in any other tidyverse-style R package.
+#&gt; Description: A collection of convenience/utility functions which aren't
+#&gt;     (yet) found in any other tidyverse-style R package.
 #&gt; License: AGPL (&gt;= 3)
 #&gt; URL: https://rpkg.dev/pal, https://gitlab.com/salim_b/r/pkgs/pal
 #&gt; BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues
@@ -198,22 +196,21 @@
 #&gt;         (&gt;= 1.4.1), lifecycle (&gt;= 0.2.0), magrittr (&gt;= 1.5), methods,
 #&gt;         purrr (&gt;= 0.3.4), rlang (&gt;= 0.4.4), stringr (&gt;= 1.4.0), tibble
 #&gt;         (&gt;= 2.1.3), utils
-#&gt; Suggests: brio (&gt;= 1.1.0), cli (&gt;= 2.0.2), commonmark (&gt;= 1.7), crayon
-#&gt;         (&gt;= 1.3.4), daff (&gt;= 0.3.5), desc (&gt;= 1.2.0), gert, httr (&gt;=
-#&gt;         1.4.1), janeaustenr, knitr (&gt;= 1.28), pander (&gt;= 0.6.3),
-#&gt;         pkgdown, pkgsnip, readr (&gt;= 1.4.0), rex, rmarkdown (&gt;= 2.1),
-#&gt;         roxygen2 (&gt;= 7.1.1), rprojroot (&gt;= 1.3.2), rstudioapi (&gt;=
-#&gt;         0.11), testthat (&gt;= 3.0.0), waldo (&gt;= 0.2.3), withr (&gt;= 2.3.0),
-#&gt;         writexl (&gt;= 1.3.1), xfun, xopen (&gt;= 1.0.0), yesno (&gt;= 0.1.2)
+#&gt; Suggests: brio (&gt;= 1.1.0), cli (&gt;= 2.0.2), commonmark (&gt;= 1.7), desc
+#&gt;         (&gt;= 1.2.0), httr (&gt;= 1.4.1), janeaustenr, knitr (&gt;= 1.28),
+#&gt;         pander (&gt;= 0.6.3), pkgdown (&gt;= 1.6.1.9000), pkgsnip, readr (&gt;=
+#&gt;         1.4.0), rmarkdown (&gt;= 2.1), roxygen2 (&gt;= 7.1.1), rprojroot (&gt;=
+#&gt;         1.3.2), rstudioapi (&gt;= 0.11), testthat (&gt;= 3.0.0), waldo (&gt;=
+#&gt;         0.2.3), withr (&gt;= 2.4.1), xfun
 #&gt; Remotes: github::r-lib/rprojroot#79, gitlab::salim_b/r/pkgs/pkgsnip
 #&gt; Config/testthat/edition: 3
 #&gt; Encoding: UTF-8
 #&gt; LazyData: true
 #&gt; Roxygen: list(markdown = TRUE)
-#&gt; RoxygenNote: 7.1.1
+#&gt; RoxygenNote: 7.1.1.9001
 #&gt; Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)
 #&gt; Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;
-#&gt; Built: R 4.0.4; ; 2021-03-08 11:23:51 UTC; unix</div><div class='input'>
+#&gt; Built: R 4.0.4; ; 2021-03-09 18:36:07 UTC; unix</div><div class='input'>
 <span class='co'># recursive conversion to type character or not</span>
 <span class='va'>to_convert</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>

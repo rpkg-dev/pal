@@ -40,9 +40,6 @@
     <loc>https://rpkg.dev/pal/reference/cols_regex.html</loc>
   </url>
   <url>
-    <loc>https://rpkg.dev/pal/reference/deploy_pkgdown_site.html</loc>
-  </url>
-  <url>
     <loc>https://rpkg.dev/pal/reference/desc_list.html</loc>
   </url>
   <url>
@@ -80,9 +77,6 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/ls_pkg.html</loc>
-  </url>
-  <url>
-    <loc>https://rpkg.dev/pal/reference/open_as_tmp_spreadsheet.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/order_by.html</loc>
@@ -127,16 +121,7 @@
     <loc>https://rpkg.dev/pal/reference/safe_seq_len.html</loc>
   </url>
   <url>
-    <loc>https://rpkg.dev/pal/reference/show_diff.html</loc>
-  </url>
-  <url>
     <loc>https://rpkg.dev/pal/reference/stat_mode.html</loc>
-  </url>
-  <url>
-    <loc>https://rpkg.dev/pal/reference/str_replace_file.html</loc>
-  </url>
-  <url>
-    <loc>https://rpkg.dev/pal/reference/str_replace_verbose.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/strip_md.html</loc>
