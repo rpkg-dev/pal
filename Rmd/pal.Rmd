@@ -545,66 +545,70 @@ build_readme <- function(input = "README.Rmd",
            envir = env)
   }
   
-  # knit to `output`
-  knitr::knit(input = checkmate::assert_file(input,
-                                             access = "r"),
-              output = checkmate::assert_path_for_output(output,
-                                                         overwrite = TRUE),
-              quiet = TRUE,
-              envir = env)
-  
-  # render `index.md` if indicated
-  if (checkmate::test_flag(build_index_md,
-                           null.ok = TRUE)) {
+  cli_process_expr(msg = "Building {.file {input}}",
+                   expr = {
     
-    output_dir <- fs::path_dir(output)
+    # knit to `output`
+    knitr::knit(input = checkmate::assert_file(input,
+                                               access = "r"),
+                output = checkmate::assert_path_for_output(output,
+                                                           overwrite = TRUE),
+                quiet = TRUE,
+                envir = env)
     
-    if (is_pkgdown_dir(output_dir)) {
+    # render `index.md` if indicated
+    if (checkmate::test_flag(build_index_md,
+                             null.ok = TRUE)) {
       
-      output_dir %<>%
-        fs::path("pkgdown") %>%
-        fs::dir_create() %>%
-        checkmate::assert_directory(access = "w",
-                                    .var.name = "output_dir")
+      output_dir <- fs::path_dir(output)
       
-      # clean MD file
-      # TODO: submit PR to pkgdown doing this?
-      assert_pkg("brio")
-      cleaned_output <- fs::file_temp(pattern = "index",
-                                      ext = "md")
-      
-      brio::read_file(output) %>%
-        # remove trailing horizontal line in MD file since pkgdown always adds one below content
-        stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
-                             replacement = "\\2") %>%
-        # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)
-        stringr::str_replace_all(pattern = "(<img [^>]+)(align=['\"].*?['\"]\\s*)",
-                                 replacement = "\\1") %>%
-        stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
-                                 replacement = "\\1") %>%
-        brio::write_file(path = cleaned_output)
-      
-      # render `pkgdown/index.md`
-      rmarkdown::render(input = cleaned_output,
-                        output_file = "index.md",
-                        output_dir = output_dir,
-                        output_format =
-                          rmarkdown::md_document(variant = "markdown",
-                                                 # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
-                                                 md_extensions = c("-autolink_bare_uris",
-                                                                   "-tex_math_single_backslash")) %>%
-                          # disable Pandoc's raw attributes in output to have more control over inline HTML
-                          purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
-                        quiet = TRUE,
-                        envir = env)
+      if (is_pkgdown_dir(output_dir)) {
+        
+        output_dir %<>%
+          fs::path("pkgdown") %>%
+          fs::dir_create() %>%
+          checkmate::assert_directory(access = "w",
+                                      .var.name = "output_dir")
+        
+        # clean MD file
+        # TODO: submit PR to pkgdown doing this?
+        assert_pkg("brio")
+        cleaned_output <- fs::file_temp(pattern = "index",
+                                        ext = "md")
+        
+        brio::read_file(output) %>%
+          # remove trailing horizontal line in MD file since pkgdown always adds one below content
+          stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
+                               replacement = "\\2") %>%
+          # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)
+          stringr::str_replace_all(pattern = "(<img [^>]+)(align=['\"].*?['\"]\\s*)",
+                                   replacement = "\\1") %>%
+          stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
+                                   replacement = "\\1") %>%
+          brio::write_file(path = cleaned_output)
+        
+        # render `pkgdown/index.md`
+        rmarkdown::render(input = cleaned_output,
+                          output_file = "index.md",
+                          output_dir = output_dir,
+                          output_format =
+                            rmarkdown::md_document(variant = "markdown",
+                                                   # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
+                                                   md_extensions = c("-autolink_bare_uris",
+                                                                     "-tex_math_single_backslash")) %>%
+                            # disable Pandoc's raw attributes in output to have more control over inline HTML
+                            purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
+                          quiet = TRUE,
+                          envir = env)
+      }
     }
-  }
-  
-  # render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
-  rmarkdown::render(input = output,
-                    output_file = output,
-                    quiet = TRUE,
-                    envir = env)
+    
+    # render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
+    rmarkdown::render(input = output,
+                      output_file = output,
+                      quiet = TRUE,
+                      envir = env)
+  })
 }
 ```
 
