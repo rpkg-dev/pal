@@ -1,6 +1,6 @@
 # pal: Friendly Convenience/Utility Functions <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
 
-A collection of convenience/utility functions which aren’t (yet) found in any other tidyverse-style R package.[^1].
+A collection of convenience/utility functions complementing base R and the tidyverse.[^1].
 
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
 
