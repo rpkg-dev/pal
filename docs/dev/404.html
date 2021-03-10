@@ -167,21 +167,7 @@ Content not found. Please use links in the navbar.
 
   
 <script src="https://rpkg.dev/pal/docsearch.min.js"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: 'a9b69dd0f0ef2e8ca0bb654d19a20424',
-    indexName: 'pal',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
+<script src="docsearch_config.js"></script>
 
 
   
