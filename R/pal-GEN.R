@@ -889,11 +889,11 @@ is_pkg_dir <- function(path = ".") {
 #' Test if pkgdown is set up for an R package directory
 #'
 #' Convenience wrapper around the [rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the root of a
-#' package directory, not its subdirectories.
+#' package directory and the `pkgdown` subdirectory, not other subdirectories.
 #'
 #' @param path The path of the R package directory to check. A character scalar. Defaults to the current working directory.
 #'
-#' @return `TRUE` if `path` is the root directory of an \R package, `FALSE` otherwise.
+#' @return `TRUE` if pkgdown is set up for `path`, `FALSE` otherwise.
 #' @family rpkgs
 #' @export
 #'

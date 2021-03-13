@@ -10,11 +10,11 @@ is_pkgdown_dir(path = ".")
 \item{path}{The path of the R package directory to check. A character scalar. Defaults to the current working directory.}
 }
 \value{
-\code{TRUE} if \code{path} is the root directory of an \R package, \code{FALSE} otherwise.
+\code{TRUE} if pkgdown is set up for \code{path}, \code{FALSE} otherwise.
 }
 \description{
 Convenience wrapper around the \link[rprojroot:criteria]{rprojroot::is_pkgdown_project} root criterion. Note that it will only return \code{TRUE} for the root of a
-package directory, not its subdirectories.
+package directory and the \code{pkgdown} subdirectory, not other subdirectories.
 }
 \examples{
 is_pkgdown_dir()
