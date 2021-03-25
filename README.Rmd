@@ -4,7 +4,7 @@ output: pal::gitlab_document
 
 # `r paste0(pal::desc_value("Package"), ": ", pal::desc_value("Title"))` <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
 
-`r pal::desc_value("Description")`[^1].
+`r pal::desc_value("Description")`[^1]
 
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
 
