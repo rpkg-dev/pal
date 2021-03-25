@@ -821,6 +821,31 @@ desc_value <- function(key,
     stringr::str_squish()
 }
 
+#' Get the Git repository URL from a `DESCRIPTION` file
+#'
+#' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
+#'
+#' Currently, this function detects [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
+#' [Codeberg](https://codeberg.org/), [Pagure](https://pagure.io/), [Bitbucket](https://bitbucket.org/) and [SourceHut](https://sr.ht/) repository URLs.
+#'
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @export
+desc_url_git <- function(file = ".") {
+  
+  assert_pkg("desc")
+  
+  desc::desc_get_field(key = "BugReports",
+                       default = character(),
+                       file = file) %>%
+    stringr::str_replace(pattern = "/issues/?$",
+                         replacement = "/") %>%
+    c(desc::desc_get_urls(), .) %>%
+    stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") %>%
+    dplyr::first()
+}
+
 #' Test if packages are installed
 #'
 #' Returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not, optionally ensuring a `min_version`.

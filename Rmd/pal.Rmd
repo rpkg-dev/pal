@@ -979,6 +979,39 @@ desc_value <- function(key,
 }
 ```
 
+## Get the Git repository URL from a `DESCRIPTION` file
+
+TODO:
+
+-   [ ] Propose this function in upstream.
+
+```{r}
+#' Get the Git repository URL from a `DESCRIPTION` file
+#'
+#' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
+#'
+#' Currently, this function detects [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
+#' [Codeberg](https://codeberg.org/), [Pagure](https://pagure.io/), [Bitbucket](https://bitbucket.org/) and [SourceHut](https://sr.ht/) repository URLs.
+#'
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @export
+desc_url_git <- function(file = ".") {
+  
+  assert_pkg("desc")
+  
+  desc::desc_get_field(key = "BugReports",
+                       default = character(),
+                       file = file) %>%
+    stringr::str_replace(pattern = "/issues/?$",
+                         replacement = "/") %>%
+    c(desc::desc_get_urls(), .) %>%
+    stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") %>%
+    dplyr::first()
+}
+```
+
 ## Test if packages are installed
 
 Part of this function [was originally proposed by Artem Klevtsov on Stack Overflow](https://stackoverflow.com/a/38082613/7196903).
