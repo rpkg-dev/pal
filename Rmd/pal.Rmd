@@ -558,8 +558,8 @@ build_readme <- function(input = "README.Rmd",
                   envir = env)
       
       # render `index.md` if indicated
-      if (isTRUE(checkmate::assert_flag_flag(build_index_md,
-                                             null.ok = TRUE))) {
+      if (isTRUE(checkmate::assert_flag(build_index_md,
+                                        null.ok = TRUE))) {
         
         output_dir <- fs::path_dir(output)
         
