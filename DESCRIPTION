@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9054
+Version: 0.0.9055
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",
@@ -37,6 +37,7 @@ Suggests:
     knitr (>= 1.28),
     pander (>= 0.6.3),
     pkgdown (>= 1.6.1.9000),
+    pkgsearch (>= 3.0.3),
     pkgsnip,
     readr (>= 1.4.0),
     rmarkdown (>= 2.1),

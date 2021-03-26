@@ -3,6 +3,7 @@
 
 utils::globalVariables(names = c(".",
                                  "everything",
+                                 "package",
                                  "Package",
                                  "where"))
 
@@ -911,6 +912,33 @@ is_pkg_dir <- function(path = ".") {
   rprojroot::is_r_package$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
     any()
+}
+
+#' Test if a package is available on CRAN
+#'
+#' @inheritParams assert_pkg
+#'
+#' @return A logical scalar.
+#' @export
+#'
+#' @examples
+#' is_pkg_cran("foobar")
+#' is_pkg_cran("dplyr")
+#' is_pkg_cran("dplyr", min_version = 9999.9)
+is_pkg_cran <- function(pkg,
+                        min_version = NULL) {
+  
+  assert_pkg("pkgsearch")
+  
+  checkmate::assert_string(pkg) %>%
+    pkgsearch::pkg_search(size = 1L) %>%
+    purrr::when(is.null(min_version) ~ .,
+                ~ dplyr::filter(.data = .,
+                                version >= as.package_version(min_version))) %$%
+    package %>%
+    intersect(pkg) %>%
+    length() %>%
+    magrittr::is_greater_than(0L)
 }
 
 #' Test if pkgdown is set up for an R package directory
