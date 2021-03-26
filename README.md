@@ -4,6 +4,10 @@ A collection of convenience/utility functions complementing base R and the tidyv
 
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
 
+## Documentation
+
+The documentation of this package is found [here](https://rpkg.dev/pal).
+
 ## Installation
 
 To install the latest development version of pal, run the following in R:
