@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9052</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Assert a package is installed</p>
     </div>
 
-    <pre class="usage"><span class='fu'>assert_pkg</span><span class='op'>(</span><span class='va'>pkg</span>, message <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>assert_pkg</span><span class='op'>(</span><span class='va'>pkg</span>, min_version <span class='op'>=</span> <span class='cn'>NULL</span>, message <span class='op'>=</span> <span class='cn'>NULL</span>, install_hint <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,14 +154,24 @@
       <td><p>Package name. A character scalar.</p></td>
     </tr>
     <tr>
+      <th>min_version</th>
+      <td><p>Minimum required version number of <code>pkg</code>. Must be either <code>NULL</code> to ignore version numbers, or a single
+<code><a href='https://rdrr.io/r/base/numeric_version.html'>package_version</a></code> or something coercible to.</p></td>
+    </tr>
+    <tr>
       <th>message</th>
-      <td><p>The error message to display in case the package is not installed. If <code>NULL</code>, defaults to a sensible standard message.</p></td>
+      <td><p>The error message to display in case the package is not installed. If <code>NULL</code>, a sensible standard message is generated.</p></td>
+    </tr>
+    <tr>
+      <th>install_hint</th>
+      <td><p>Additional package installation instructions appended to <code>message</code>. Either <code>NULL</code> in order to autogenerate the hint, or a
+character scalar. Set <code>install_hint = ""</code> in order to disable the hint.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The package name invisibly.</p>
+    <p><code>pkg</code> invisibly.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other R package functions:
@@ -179,6 +189,12 @@
 <span class='fu'>assert_pkg</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"glue"</span>,
            message <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"You should really consider to install the awesome `glue` package! "</span>,
                             <span class='st'>"It's the glue that keeps strings and variables together 🤲."</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>assert_pkg</span><span class='op'>(</span><span class='st'>"pal"</span>, min_version <span class='op'>=</span> <span class='fl'>9999.9</span><span class='op'>)</span>
+
+<span class='fu'>assert_pkg</span><span class='op'>(</span><span class='st'>"yay"</span>,
+           install_hint <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"To install the latest development version, run "</span>,
+                                 <span class='st'>"`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

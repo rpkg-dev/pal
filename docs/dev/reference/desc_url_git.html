@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the value from a DESCRIPTION file field, cleaned up and with fallback — desc_value • pal</title>
+<title>Get the Git repository URL from a DESCRIPTION file — desc_url_git • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Get the value from a DESCRIPTION file field, cleaned up and with fallback — desc_value" />
-<meta name="description" content="Returns the value from a specific DESCRIPTION file field (aka key). Whitespaces at the start and end of the value as well as repeated whitespaces within it are removed.">
-<meta property="og:description" content="Returns the value from a specific DESCRIPTION file field (aka key). Whitespaces at the start and end of the value as well as repeated whitespaces within it are removed." />
+<meta property="og:title" content="Get the Git repository URL from a DESCRIPTION file — desc_url_git" />
+<meta name="description" content="Returns the first Git repository URL found in the URL (preferred) or BugReports fields of a DESCRIPTION file.">
+<meta property="og:description" content="Returns the first Git repository URL found in the URL (preferred) or BugReports fields of a DESCRIPTION file." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,33 +135,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the value from a <code>DESCRIPTION</code> file field, cleaned up and with fallback</h1>
+    <h1>Get the Git repository URL from a <code>DESCRIPTION</code> file</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
-    <div class="hidden name"><code>desc_value.Rd</code></div>
+    <div class="hidden name"><code>desc_url_git.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Returns the value from a specific <code>DESCRIPTION</code> file field (aka <em>key</em>). Whitespaces at the start and end of the value as well as repeated whitespaces within
-it are removed.</p>
+    <p>Returns the first Git repository URL found in the <code>URL</code> (preferred) or <code>BugReports</code> fields of a <code>DESCRIPTION</code> file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>desc_value</span><span class='op'>(</span>
-  <span class='va'>key</span>,
-  default <span class='op'>=</span> <span class='fu'>glue</span><span class='fu'>::</span><span class='fu'><a href='https://glue.tidyverse.org/reference/glue.html'>glue</a></span><span class='op'>(</span><span class='st'>"&lt;No `{key}` field set in DESCRIPTION!&gt;"</span><span class='op'>)</span>,
-  file <span class='op'>=</span> <span class='st'>"."</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>desc_url_git</span><span class='op'>(</span>file <span class='op'>=</span> <span class='st'>"."</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>key</th>
-      <td><p>The field to query.</p></td>
-    </tr>
-    <tr>
-      <th>default</th>
-      <td><p>Default value to return if <code>key</code> is not found.</p></td>
-    </tr>
     <tr>
       <th>file</th>
       <td><p>DESCRIPTION file to use. By default the DESCRIPTION
@@ -175,25 +162,9 @@ is part of) is used.</p></td>
     <p>A character scalar.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>By default, the following string is returned if <code>key = "NoRealKey"</code> is not found:</p><pre><span class='st'>"&lt;No `NoRealKey` field set in DESCRIPTION!&gt;"</span>
-</pre>
+    <p>Currently, this function recognizes <a href='https://gitlab.com/'>GitLab</a>, <a href='https://github.com/'>GitHub</a>, <a href='https://gitea.com/'>Gitea</a>,
+<a href='https://codeberg.org/'>Codeberg</a>, <a href='https://pagure.io/'>Pagure</a>, <a href='https://bitbucket.org/'>Bitbucket</a> and <a href='https://sr.ht/'>SourceHut</a> repository URLs.</p>
 
-<p>If you rather want to take an action like throwing an error, it's recommended to call <code><a href='https://rdrr.io/pkg/desc/man/desc_get_field.html'>desc::desc_get_field()</a></code> directly.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other R package functions:
-<code><a href='assert_pkg.html'>assert_pkg</a>()</code>,
-<code><a href='desc_list.html'>desc_list</a>()</code>,
-<code><a href='is_pkg_dir.html'>is_pkg_dir</a>()</code>,
-<code><a href='is_pkg_installed.html'>is_pkg_installed</a>()</code>,
-<code><a href='is_pkgdown_dir.html'>is_pkgdown_dir</a>()</code>,
-<code><a href='ls_pkg.html'>ls_pkg</a>()</code>,
-<code><a href='prose_ls_fn_param.html'>prose_ls_fn_param</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>desc_value</span><span class='op'>(</span>key <span class='op'>=</span> <span class='st'>"Description"</span>,
-           file <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span><span class='st'>"pal"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "A collection of convenience/utility functions complementing base R and the tidyverse."</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

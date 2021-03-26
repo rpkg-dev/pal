@@ -43,6 +43,9 @@
     <loc>https://rpkg.dev/pal/reference/desc_list.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/desc_url_git.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/desc_value.html</loc>
   </url>
   <url>
@@ -62,6 +65,9 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/is_http_success.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/is_pkg_cran.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/is_pkg_dir.html</loc>
