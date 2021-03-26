@@ -319,7 +319,7 @@ as_md_list <- function(x,
 #' This function can be useful to create tables inside [roxygen2][roxygen2::roxygen2] documentation programmatically from data using
 #' [dynamic \R code](https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1).
 #' 
-#' The inline code
+#' For example, the inline code
 #' 
 #' `` `r mtcars %>% head() %>% pipe_table()` ``
 #'
@@ -878,7 +878,7 @@ desc_value <- function(key,
 #'
 #' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
 #'
-#' Currently, this function detects [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
+#' Currently, this function recognizes [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
 #' [Codeberg](https://codeberg.org/), [Pagure](https://pagure.io/), [Bitbucket](https://bitbucket.org/) and [SourceHut](https://sr.ht/) repository URLs.
 #'
 #' @inheritParams desc::desc_get_field
