@@ -9,8 +9,8 @@ is_pkg_installed(pkg, min_version = NULL)
 \arguments{
 \item{pkg}{Package names. A character vector.}
 
-\item{min_version}{Minimum required version number of each \code{pkg}. A vector of \code{\link[base:numeric_version]{package_version}}s or something coercible to. Must
-be of length one or the same length as \code{pkg}.}
+\item{min_version}{Minimum required version number of each \code{pkg}. Must be either \code{NULL} to ignore version numbers, or a vector of
+\code{\link[base:numeric_version]{package_version}}s or something coercible to.}
 }
 \value{
 A named logical vector of the same length as \code{pkg}.
@@ -28,9 +28,18 @@ It is \href{https://stackoverflow.com/questions/9341635/check-for-installed-pack
 \code{pkg \%in\% rownames(installed.packages())} check.
 }
 \examples{
-is_pkg_installed(pkg = "tidyverse")
+is_pkg_installed("tidyverse")
+
+# it is vectorized ...
 is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
                  min_version = c("1.0", "2.0", "99.9.9000"))
+
+# ... and scalar arguments will be recycled
+is_pkg_installed(pkg = "dplyr",
+                 min_version = c("0.5", "1.0", "99.9.9000"))
+
+is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+                 min_version = "1.0")
 }
 \seealso{
 Other R package functions:

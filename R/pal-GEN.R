@@ -861,17 +861,26 @@ desc_url_git <- function(file = ".") {
 #' `pkg %in% rownames(installed.packages())` check.
 #'
 #' @param pkg Package names. A character vector.
-#' @param min_version Minimum required version number of each `pkg`. A vector of [`package_version`][base::package_version()]s or something coercible to. Must
-#'   be of length one or the same length as `pkg`.
+#' @param min_version Minimum required version number of each `pkg`. Must be either `NULL` to ignore version numbers, or a vector of
+#'   [`package_version`][base::package_version()]s or something coercible to.
 #'
 #' @return A named logical vector of the same length as `pkg`.
 #' @family rpkgs
 #' @export
 #'
 #' @examples
-#' is_pkg_installed(pkg = "tidyverse")
+#' is_pkg_installed("tidyverse")
+#'
+#' # it is vectorized ...
 #' is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
 #'                  min_version = c("1.0", "2.0", "99.9.9000"))
+#'
+#' # ... and scalar arguments will be recycled
+#' is_pkg_installed(pkg = "dplyr",
+#'                  min_version = c("0.5", "1.0", "99.9.9000"))
+#'
+#' is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+#'                  min_version = "1.0")
 is_pkg_installed <- function(pkg,
                              min_version = NULL) {
   
@@ -881,10 +890,17 @@ is_pkg_installed <- function(pkg,
                    ~ nzchar(system.file(package = .x)))
   } else {
     
-    is_pkg_installed(pkg = pkg) %>%
+    min_version <- rlang::with_handlers(as.package_version(min_version),
+                                        error = ~ list(NULL, .x$message))
+    
+    if (is.null(min_version[[1L]])) {
+      rlang::abort(paste0("`min_version` must be a vector of package versions or something coercible to: ", min_version[[2L]]))
+    }
+    
+    is_pkg_installed(pkg = checkmate::assert_character(pkg, any.missing = FALSE)) %>%
       list(names(.), min_version) %>%
       purrr::pmap_lgl(~ {
-        if (..1) utils::packageVersion(pkg = ..2) >= as.package_version(..3) else ..1
+        if (..1) utils::packageVersion(pkg = ..2) >= ..3 else ..1
       })
   }
 }
