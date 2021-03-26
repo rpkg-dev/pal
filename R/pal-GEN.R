@@ -721,9 +721,13 @@ gitlab_document <- function(smart_punctuation = TRUE,
 #' Assert a package is installed
 #'
 #' @param pkg Package name. A character scalar.
-#' @param message The error message to display in case the package is not installed. If `NULL`, defaults to a sensible standard message.
+#' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
+#'   [`package_version`][base::package_version()] or something coercible to.
+#' @param message The error message to display in case the package is not installed. If `NULL`, a sensible standard message is generated.
+#' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
+#'   character scalar. Set `install_hint = ""` in order to disable the hint.
 #'
-#' @return The package name invisibly.
+#' @return `pkg` invisibly.
 #' @family rpkgs
 #' @export
 #'
@@ -733,16 +737,64 @@ gitlab_document <- function(smart_punctuation = TRUE,
 #' assert_pkg(pkg = "glue",
 #'            message = paste0("You should really consider to install the awesome `glue` package! ",
 #'                             "It's the glue that keeps strings and variables together 🤲."))
+#' \dontrun{
+#' assert_pkg("pal", min_version = 9999.9)
+#' 
+#' assert_pkg("yay",
+#'            install_hint = paste0("To install the latest development version, run ",
+#'                                  "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
 assert_pkg <- function(pkg,
-                       message = NULL) {
+                       min_version = NULL,
+                       message = NULL,
+                       install_hint = NULL) {
   
-  if (!is_pkg_installed(checkmate::assert_string(pkg))) {
+  # check if required version is available
+  if (!is_pkg_installed(pkg = checkmate::assert_string(pkg),
+                        min_version = checkmate::assert_vector(min_version,
+                                                               len = 1L,
+                                                               any.missing = FALSE,
+                                                               null.ok = TRUE))) {
     
-    if (is.null(message)) {
-      message <- glue::glue("Package '{pkg}' is required for this operation but not installed.\n",
-                            "Please first install it (e.g. via `install.packages('{pkg}')`) and then try again.")
+    # check if pkg is installed at all
+    lacks_min_version <- !is.null(min_version) && is_pkg_installed(pkg = pkg)
+    
+    # generate message if necessary
+    if (is.null(checkmate::assert_string(message, null.ok = TRUE))) {
+      message <- glue::glue("Package '{pkg}'",
+                            dplyr::if_else(lacks_min_version,
+                                           paste0(" (>= {as.package_version(min_version)}) is required for this operation but installed version is ",
+                                                  max(as.package_version(ls_pkg(pkg = pkg)$Version)), "."),
+                                           " is required for this operation but not installed."))
     }
-    rlang::abort(message = checkmate::assert_string(message))
+    
+    # generate installation hint if necessary
+    if (is.null(checkmate::assert_string(install_hint, null.ok = TRUE))) {
+      
+      assert_pkg("pkgsearch")
+      
+      cran <- pkgsearch::pkg_search(pkg, size = 1L)
+      is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
+      is_cran_min_version <- ifelse(is.null(min_version),
+                                    is_cran_pkg,
+                                    cran %>%
+                                      dplyr::filter(version >= as.package_version(min_version)) %$%
+                                      package %>%
+                                      intersect(pkg) %>%
+                                      length() %>%
+                                      magrittr::is_greater_than(0L))
+      
+      if (is_cran_min_version) {
+        install_hint <- glue::glue("To install the latest version, run `install.packages(\"{pkg}\")`.")
+        
+      } else {
+        install_hint <- glue::glue("Please first ", dplyr::if_else(lacks_min_version, "update '{pkg}'", "install it"),
+                                   " and then try again. Note that ",
+                                   dplyr::if_else(is_cran_pkg, "the required version of '{pkg}' is not available on CRAN (yet).",
+                                                  "'{pkg}' is not available on CRAN."))
+      }
+    }
+    
+    rlang::abort(paste(message, install_hint))
     
   } else {
     invisible(pkg)

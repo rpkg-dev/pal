@@ -4,15 +4,21 @@
 \alias{assert_pkg}
 \title{Assert a package is installed}
 \usage{
-assert_pkg(pkg, message = NULL)
+assert_pkg(pkg, min_version = NULL, message = NULL, install_hint = NULL)
 }
 \arguments{
 \item{pkg}{Package name. A character scalar.}
 
-\item{message}{The error message to display in case the package is not installed. If \code{NULL}, defaults to a sensible standard message.}
+\item{min_version}{Minimum required version number of \code{pkg}. Must be either \code{NULL} to ignore version numbers, or a single
+\code{\link[base:numeric_version]{package_version}} or something coercible to.}
+
+\item{message}{The error message to display in case the package is not installed. If \code{NULL}, a sensible standard message is generated.}
+
+\item{install_hint}{Additional package installation instructions appended to \code{message}. Either \code{NULL} in order to autogenerate the hint, or a
+character scalar. Set \code{install_hint = ""} in order to disable the hint.}
 }
 \value{
-The package name invisibly.
+\code{pkg} invisibly.
 }
 \description{
 Assert a package is installed
@@ -23,6 +29,12 @@ assert_pkg("pal")
 assert_pkg(pkg = "glue",
            message = paste0("You should really consider to install the awesome `glue` package! ",
                             "It's the glue that keeps strings and variables together 🤲."))
+\dontrun{
+assert_pkg("pal", min_version = 9999.9)
+
+assert_pkg("yay",
+           install_hint = paste0("To install the latest development version, run ",
+                                 "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
 }
 \seealso{
 Other R package functions:
