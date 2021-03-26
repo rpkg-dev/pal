@@ -550,7 +550,8 @@ build_readme <- function(input = "README.Rmd",
     msg = "Building {.file {input}}",
     expr = {
       
-      # knit to `output`
+      # generate `output`
+      ## knit
       knitr::knit(input = checkmate::assert_file(input,
                                                  access = "r"),
                   output = checkmate::assert_path_for_output(output,
@@ -558,27 +559,31 @@ build_readme <- function(input = "README.Rmd",
                   quiet = TRUE,
                   envir = env)
       
-      # render `index.md` if indicated
-      if (isTRUE(checkmate::assert_flag(build_index_md,
-                                        null.ok = TRUE))) {
+      ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
+      rmarkdown::render(input = output,
+                        output_file = output,
+                        quiet = TRUE,
+                        envir = env)
+      
+      # generate `index.md` if indicated
+      if (!isFALSE(checkmate::assert_flag(build_index_md, null.ok = TRUE))) {
         
         output_dir <- fs::path_dir(output)
         
         if (is_pkgdown_dir(output_dir)) {
           
-          output_dir %<>%
-            fs::path("pkgdown") %>%
+          index_md_path <-
+            fs::path(output_dir, "pkgdown") %>%
             fs::dir_create() %>%
-            checkmate::assert_directory(access = "w",
-                                        .var.name = "output_dir")
+            fs::path("index.md") %>%
+            checkmate::assert_path_for_output(overwrite = TRUE) %>%
+            fs::path_abs()
           
           # clean MD file
           # TODO: submit PR to pkgdown doing this?
           assert_pkg("brio")
-          cleaned_output <- fs::file_temp(pattern = "index",
-                                          ext = "md")
           
-          brio::read_file(output) %>%
+          brio::read_file(input) %>%
             # remove trailing horizontal line in MD file since pkgdown always adds one below content
             stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
                                  replacement = "\\2") %>%
@@ -587,29 +592,32 @@ build_readme <- function(input = "README.Rmd",
                                      replacement = "\\1") %>%
             stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
                                      replacement = "\\1") %>%
-            brio::write_file(path = cleaned_output)
+            # remove Rmd chunk with label 'pkgdown'
+            stringr::str_replace_all(pattern = "\\n```\\{ *(engine *= *)?([rR]|['\"][rR]['\"]) *, *(label *= *)?['\"]?pkgdown['\" ,][^\\}]*?\\}(\\n|.)*?\\n```",
+                                     replacement = "") %>%
+            brio::write_file(path = index_md_path)
+          
+          # knit
+          knitr::knit(input = index_md_path,
+                      output = index_md_path,
+                      quiet = TRUE,
+                      envir = env)
           
           # render `pkgdown/index.md`
-          rmarkdown::render(input = cleaned_output,
-                            output_file = "index.md",
-                            output_dir = output_dir,
+          rmarkdown::render(input = index_md_path,
+                            output_file = index_md_path,
                             output_format =
                               rmarkdown::md_document(variant = "markdown",
                                                      # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
                                                      md_extensions = c("-autolink_bare_uris",
-                                                                       "-tex_math_single_backslash")) %>%
+                                                                       "-tex_math_single_backslash"),
+                                                     pandoc_args = "--columns=9999") %>%
                               # disable Pandoc's raw attributes in output to have more control over inline HTML
                               purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
                             quiet = TRUE,
                             envir = env)
         }
       }
-      
-      # render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
-      rmarkdown::render(input = output,
-                        output_file = output,
-                        quiet = TRUE,
-                        envir = env)
     }
   )
 }
