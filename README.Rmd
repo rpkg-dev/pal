@@ -12,7 +12,7 @@ This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(comp
 it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the avoidance
 of unnecessary duplication.
 
-```{r, pkgdown, eval = pal::is_pkgdown_dir(), results = "asis", echo = FALSE}
+```{r, pkgdown, eval = !isTRUE(getOption("pal.build_readme.is_pkgdown")), results = "asis", echo = FALSE}
 pkgsnip::md_snip(name = "pkgdown_notice") %>%
   paste0("## Documentation\n\n", .) %>%
   pal::cat_lines()
