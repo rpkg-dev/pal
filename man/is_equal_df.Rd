@@ -83,4 +83,8 @@ is_equal_df(df1, df2)
 is_equal_df(df1, df2,
             ignore_col_types = TRUE)
 }
+\seealso{
+Other data frame / tibble functions:
+\code{\link{reduce_df_list}()}
+}
 \concept{tibble}

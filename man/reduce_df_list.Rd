@@ -17,3 +17,8 @@ A \link[tibble:tbl_df-class]{tibble}.
 \description{
 Recursively reduces a nested list containing data frames / tibbles at its leafs to a single tibble.
 }
+\seealso{
+Other data frame / tibble functions:
+\code{\link{is_equal_df}()}
+}
+\concept{tibble}

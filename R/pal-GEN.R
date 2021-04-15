@@ -136,6 +136,7 @@ is_equal_df <- function(x,
 #' @param strict Ensure `x` contains data frames / tibbles only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
 #'
 #' @return `r pkgsnip::return_label("data")`
+#' @family tibble
 #' @export
 reduce_df_list <- function(x,
                            strict = TRUE) {
