@@ -38,6 +38,7 @@ Other string functions:
 \code{\link{fuse_regex}()},
 \code{\link{prettify_nr}()},
 \code{\link{prose_ls}()},
+\code{\link{sentenceify}()},
 \code{\link{wrap_chr}()}
 }
 \concept{string}

@@ -1493,6 +1493,46 @@ as_string <- function(...,
                               ~ .)
 }
 
+#' Convert to sentence case with trailing punctuation mark
+#'
+#' Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
+#'
+#' Note that this function doesn't alter any characters of `x` other than the first and the last.
+#'
+#' @param x The input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
+#' @param punctuation_mark The punctuation mark to be appended to `x`. A character scalar.
+#'
+#' @return A character vector.
+#' @family string
+#' @seealso
+#' [stringr::str_to_sentence()] to convert a character vector to all lowercase except for the first character. Note that this also includes lowercasing [proper
+#' nouns](https://en.wikipedia.org/wiki/Proper_and_common_nouns), [abbreviations](https://en.wikipedia.org/wiki/Abbreviation) etc.
+#' 
+#' [snakecase::to_sentence_case()] that builds upon [stringr::str_to_sentence()] but offers additional options to finetune the conversion. Note that
+#' `abbreviations` have to be manually specified in order to be preserved in upper case.
+#' @export
+#'
+#' @examples
+#' pal::sentenceify("no verb, no sentence")
+#'
+#' # punctuation mark won't be duplicated if already existing
+#' pal::sentenceify(c("I've made my point",
+#'                    "good point."))
+sentenceify <- function(x,
+                        punctuation_mark = ".") {
+  
+  x %>%
+    stringr::str_replace(pattern = "^.",
+                         replacement = toupper) %>%
+    purrr::map_chr(~ {
+      if (stringr::str_sub(string = .x, start = -1L) == checkmate::assert_string(punctuation_mark)) {
+        .x
+      } else {
+        paste0(.x, punctuation_mark)
+      }
+    })
+}
+
 #' Escape line feeds / newlines
 #'
 #' Escapes the [POSIX-standard newline control character `LF`](https://en.wikipedia.org/wiki/Newline) (aka `\n`) which is the standard on Unix/Linux and recent
@@ -1919,13 +1959,15 @@ order_by <- function(x,
 is_http_success <- function(url,
                             retries = 0L,
                             quiet = TRUE) {
-  
   assert_pkg("httr")
+  checkmate::assert_string(url)
+  checkmate::assert_count(retries)
+  checkmate::assert_flag(quiet)
   
   rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
                                                      url = url,
-                                                     times = checkmate::assert_count(retries) + 1L,
-                                                     quiet = checkmate::assert_flag(quiet))),
+                                                     times = retries + 1L,
+                                                     quiet = quiet)),
                        error = ~ FALSE,
                        interrupt = ~ rlang::abort("Terminated by the user"))
 }
