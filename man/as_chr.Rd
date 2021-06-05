@@ -27,6 +27,7 @@ pal::as_chr(!!!to_convert)
 }
 \seealso{
 Other string functions:
+\code{\link{as_comment_string}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},

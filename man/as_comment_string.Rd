@@ -4,7 +4,12 @@
 \alias{as_comment_string}
 \title{Assemble an (R) comment string of the desired line width}
 \usage{
-as_comment_string(..., line_width = 160L, comment_prefix = "# ")
+as_comment_string(
+  ...,
+  line_width = 160L,
+  comment_prefix = "# ",
+  sep_paragraphs = TRUE
+)
 }
 \arguments{
 \item{...}{Comment lines. A character vector or something coercible to.}
@@ -12,15 +17,37 @@ as_comment_string(..., line_width = 160L, comment_prefix = "# ")
 \item{line_width}{Maximum character width at which to wrap lines. An integer scalar.}
 
 \item{comment_prefix}{Character sequence that indicates the start of a comment. A character scalar.}
+
+\item{sep_paragraphs}{Whether or not to separate paragraphs with an empty comment line.}
 }
 \value{
 A character scalar.
 }
 \description{
-Takes a vector of text lines, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.
+Takes a vector of paragraphs, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.
 }
 \examples{
 pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} Santa Clause"),
                        "No presents without code.") |>
 cat()
+
+# disable empty comment lines between paragraphs:
+pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} Santa Clause"),
+                       "Hohoho.",
+                       sep_paragraphs = FALSE) |>
+cat()
 }
+\seealso{
+Other string functions:
+\code{\link{as_chr}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()},
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
+\code{\link{prose_ls}()},
+\code{\link{sentenceify}()},
+\code{\link{wrap_chr}()}
+}
+\concept{string}

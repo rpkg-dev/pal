@@ -1665,22 +1665,31 @@ stat_mode <- function(x,
 ```{r}
 #' Assemble an (R) comment string of the desired line width
 #'
-#' Takes a vector of text lines, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.
+#' Takes a vector of paragraphs, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.
 #'
 #' @param ... Comment lines. A character vector or something coercible to.
 #' @param line_width Maximum character width at which to wrap lines. An integer scalar.
 #' @param comment_prefix Character sequence that indicates the start of a comment. A character scalar.
+#' @param sep_paragraphs Whether or not to separate paragraphs with an empty comment line.
 #'
 #' @return A character scalar.
+#' @family string
 #' @export
 #'
 #' @examples
 #' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
 #'                        "No presents without code.") |>
 #' cat()
+#'
+#' # disable empty comment lines between paragraphs:
+#' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
+#'                        "Hohoho.",
+#'                        sep_paragraphs = FALSE) |>
+#' cat()
 as_comment_string <- function(...,
                               line_width = 160L,
-                              comment_prefix = "# ") {
+                              comment_prefix = "# ",
+                              sep_paragraphs = TRUE) {
   as_chr(...) %>%
     stringr::str_wrap(width = line_width) %>%
     stringr::str_split(pattern = "\n") %>%
@@ -1688,7 +1697,7 @@ as_comment_string <- function(...,
                  paste0(collapse = "\n")) %>%
     purrr::map2_chr(.f =
                       function(.x, .y, n_lines) {
-                        if (.y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else .x
+                        if (sep_paragraphs && .y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else paste0(.x, "\n")
                       },
                     .y = seq_along(.),
                     n_lines = length(.)) %>%
