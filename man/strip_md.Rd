@@ -31,3 +31,10 @@ pal::strip_md(
 pal::strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
 pal::strip_md("[A reference link][refid]\n\n_No ref here..._")
 }
+\seealso{
+Other (Pandoc) Markdown functions:
+\code{\link{as_md_list}()},
+\code{\link{pipe_table}()},
+\code{\link{strip_md_footnotes}()}
+}
+\concept{md}

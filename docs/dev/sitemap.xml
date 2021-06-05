@@ -139,6 +139,9 @@
     <loc>https://rpkg.dev/pal/reference/strip_md.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/strip_md_footnotes.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/wrap_chr.html</loc>
   </url>
 </urlset>

@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9058
+Version: 0.0.9059
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",

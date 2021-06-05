@@ -411,6 +411,7 @@ pipe_table <- function(x,
 #' @param strip_footnotes Whether to remove Markdown footnotes, too.
 #'
 #' @return A character vector of the same length as `x`.
+#' @family md
 #' @export
 #'
 #' @examples
@@ -431,9 +432,24 @@ strip_md <- function(x,
                                            ~ commonmark::markdown_text(text = .,
                                                                        extensions = TRUE) %>%
                                              stringr::str_remove(pattern = "\n$") %>%
-                                             purrr::when(strip_footnotes ~ stringr::str_remove_all(string = .,
-                                                                                                   pattern = "(\\[\\^.+?\\]|\\^\\[.+?\\])"),
+                                             purrr::when(strip_footnotes ~ strip_md_footnotes(.),
                                                          ~ .)))
+}
+
+#' Strip Markdown footnotes from character vector
+#'
+#' Removes all Markdown footnotes from a character vector.
+#'
+#' @param x A character vector to strip Markdown footnotes from. Note that elements in `x` are processed as separate Markdown domains, i.e. _not_ as individual
+#' lines belonging to the same Markdown document.
+#'
+#' @return A character vector of the same length as `x`.
+#' @family md
+#' @export
+strip_md_footnotes <- function(x) {
+  
+  stringr::str_remove_all(string = x,
+                          pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
 }
 
 #' Build `README.Rmd`

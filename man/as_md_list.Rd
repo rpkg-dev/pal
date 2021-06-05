@@ -40,6 +40,8 @@ rownames(mtcars) |> pal::as_md_list() |> cat()
 }
 \seealso{
 Other (Pandoc) Markdown functions:
-\code{\link{pipe_table}()}
+\code{\link{pipe_table}()},
+\code{\link{strip_md_footnotes}()},
+\code{\link{strip_md}()}
 }
 \concept{md}

@@ -75,6 +75,8 @@ mtcars |> head() |> pal::pipe_table() |> pal::cat_lines()
 }
 \seealso{
 Other (Pandoc) Markdown functions:
-\code{\link{as_md_list}()}
+\code{\link{as_md_list}()},
+\code{\link{strip_md_footnotes}()},
+\code{\link{strip_md}()}
 }
 \concept{md}

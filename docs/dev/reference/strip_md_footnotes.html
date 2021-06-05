@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List items concatenated in prose style (..., ... and ...) — prose_ls • pal</title>
+<title>Strip Markdown footnotes from character vector — strip_md_footnotes • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="List items concatenated in prose style (..., ... and ...) — prose_ls" />
-<meta name="description" content="Takes a vector or list and concatenates its elements to a single string separated in prose-style.">
-<meta property="og:description" content="Takes a vector or list and concatenates its elements to a single string separated in prose-style." />
+<meta property="og:title" content="Strip Markdown footnotes from character vector — strip_md_footnotes" />
+<meta name="description" content="Removes all Markdown footnotes from a character vector.">
+<meta property="og:description" content="Removes all Markdown footnotes from a character vector." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,58 +135,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List items concatenated in prose style (..., ... and ...)</h1>
+    <h1>Strip Markdown footnotes from character vector</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
-    <div class="hidden name"><code>prose_ls.Rd</code></div>
+    <div class="hidden name"><code>strip_md_footnotes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes a vector or list and concatenates its elements to a single string separated in prose-style.</p>
+    <p>Removes all Markdown footnotes from a character vector.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prose_ls</span><span class='op'>(</span><span class='va'>x</span>, wrap <span class='op'>=</span> <span class='st'>""</span>, separator <span class='op'>=</span> <span class='st'>", "</span>, last_separator <span class='op'>=</span> <span class='st'>" and "</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>strip_md_footnotes</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A vector or a list.</p></td>
-    </tr>
-    <tr>
-      <th>wrap</th>
-      <td><p>The string (usually a single character) in which <code>x</code> is to be wrapped.</p></td>
-    </tr>
-    <tr>
-      <th>separator</th>
-      <td><p>The separator to delimit the elements of <code>x</code>.</p></td>
-    </tr>
-    <tr>
-      <th>last_separator</th>
-      <td><p>The separator to delimit the second-last and last element of <code>x</code>.</p></td>
+      <td><p>A character vector to strip Markdown footnotes from. Note that elements in <code>x</code> are processed as separate Markdown domains, i.e. <em>not</em> as individual
+lines belonging to the same Markdown document.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character scalar.</p>
+    <p>A character vector of the same length as <code>x</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other string functions:
-<code><a href='as_chr.html'>as_chr</a>()</code>,
-<code><a href='as_comment_string.html'>as_comment_string</a>()</code>,
-<code><a href='as_string.html'>as_string</a>()</code>,
-<code><a href='cat_lines.html'>cat_lines</a>()</code>,
-<code><a href='dsv_colnames.html'>dsv_colnames</a>()</code>,
-<code><a href='escape_lf.html'>escape_lf</a>()</code>,
-<code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
-<code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
-<code><a href='sentenceify.html'>sentenceify</a>()</code>,
-<code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
+    <div class='dont-index'><p>Other (Pandoc) Markdown functions:
+<code><a href='as_md_list.html'>as_md_list</a>()</code>,
+<code><a href='pipe_table.html'>pipe_table</a>()</code>,
+<code><a href='strip_md.html'>strip_md</a>()</code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prose_ls</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1, 2, 3, 4 and 5"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
