@@ -23,7 +23,7 @@ regex <- c("My dear Jane",
            "(?i)\\\\bevil")
 
 stringr::str_subset(string = janeaustenr::prideprejudice,
-                    pattern = fuse_regex(regex))}
+                    pattern = pal::fuse_regex(regex))}
 }
 \seealso{
 The \link[rex:rex]{rex} package which provides an intuitive framework to build complex regular expressions.

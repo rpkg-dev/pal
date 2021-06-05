@@ -26,7 +26,7 @@ Modified version of \code{\link[base:Extremes]{max()}} that differs in the follo
 \examples{
 # other than `base::max()`, this function removes `NA`s by default
 max(1, NA, 2)
-safe_max(1, NA, 2)
+pal::safe_max(1, NA, 2)
 
 # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
 # zero-length inputs
@@ -34,15 +34,15 @@ safe_max(1, NA, 2)
 max(NULL)
 max(character())
 max(integer())
-safe_max(NULL)
-safe_max(character())
-safe_max(integer())
+pal::safe_max(NULL)
+pal::safe_max(character())
+pal::safe_max(integer())
 
 # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
 max("zero", 1L)
 max("zero", "one")
-safe_max("zero", 1L)
-safe_max("zero", "one")}
+pal::safe_max("zero", 1L)
+pal::safe_max("zero", "one")}
 }
 \seealso{
 Other statistical computing / numeric functions:

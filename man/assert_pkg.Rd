@@ -24,17 +24,18 @@ character scalar. Set \code{install_hint = ""} in order to disable the hint.}
 Assert a package is installed
 }
 \examples{
-assert_pkg("pal")
+pal::assert_pkg("pal")
 
-assert_pkg(pkg = "glue",
-           message = paste0("You should really consider to install the awesome `glue` package! ",
-                            "It's the glue that keeps strings and variables together 🤲."))
+pal::assert_pkg(pkg = "glue",
+                message = paste0("You should really consider to install the awesome `glue` ",
+                                 "package! It's the glue that keeps strings and variables ",
+                                 "together 🤲."))
 \dontrun{
-assert_pkg("pal", min_version = 9999.9)
+pal::assert_pkg("pal", min_version = 9999.9)
 
-assert_pkg("yay",
-           install_hint = paste0("To install the latest development version, run ",
-                                 "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
+pal::assert_pkg("yay",
+                install_hint = paste0("To install the latest development version, run ",
+                                      "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
 }
 \seealso{
 Other R package functions:

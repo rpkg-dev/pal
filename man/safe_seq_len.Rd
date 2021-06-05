@@ -16,11 +16,11 @@ An integer sequence starting from \code{1L}.
 Modified version of \code{\link[base:seq]{seq_len()}} that returns a zero-length integer in case of a zero-length input instead of throwing an error.
 }
 \examples{
-safe_seq_len(5)
+pal::safe_seq_len(5)
 
 # this function simply returns a zero-length integer for zero-length inputs ...
-safe_seq_len(NULL)
-safe_seq_len(integer())
+pal::safe_seq_len(NULL)
+pal::safe_seq_len(integer())
 
 # ... while `seq_len()` throws an error
 \dontrun{

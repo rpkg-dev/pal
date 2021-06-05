@@ -19,7 +19,7 @@ A logical scalar.
 Test if a package is available on CRAN
 }
 \examples{
-is_pkg_cran("foobar")
-is_pkg_cran("dplyr")
-is_pkg_cran("dplyr", min_version = 9999.9)
+pal::is_pkg_cran("foobar")
+pal::is_pkg_cran("dplyr")
+pal::is_pkg_cran("dplyr", min_version = 9999.9)
 }

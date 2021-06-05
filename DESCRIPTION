@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9057
+Version: 0.0.9058
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",
@@ -13,7 +13,7 @@ License: AGPL (>= 3)
 URL: https://rpkg.dev/pal, https://gitlab.com/salim_b/r/pkgs/pal
 BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues
 Depends: 
-    R (>= 4.0)
+    R (>= 4.1)
 Imports: 
     checkmate (>= 2.0.0),
     dplyr (>= 1.0.2),

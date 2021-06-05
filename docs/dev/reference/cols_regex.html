@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -169,7 +169,9 @@ abbreviated character names (as described in the <code>col_types</code> paramete
     <p>A <a href='https://readr.tidyverse.org/reference/cols.html'>column specification</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># for some hypothetical CSV data column names like these ...</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
+
+<span class='co'># for some hypothetical CSV data column names like these ...</span>
 <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"VAR1_Text"</span>,
                <span class='st'>"VAR2_Text"</span>,
                <span class='st'>"VAR3_Text_Other"</span>,
@@ -190,11 +192,11 @@ abbreviated character names (as described in the <code>col_types</code> paramete
                 .default     <span class='op'>=</span> <span class='st'>"l"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; cols(
 #&gt;   .default = col_logical(),
-#&gt;   VAR1_Text = <span style='color: #BB0000;'>col_character()</span><span>,
-#&gt;   VAR2_Text = </span><span style='color: #BB0000;'>col_character()</span><span>,
-#&gt;   VAR3_Text_Other = </span><span style='color: #BB0000;'>col_character()</span><span>,
-#&gt;   VAR1_Code_R1 = </span><span style='color: #00BB00;'>col_integer()</span><span>,
-#&gt;   VAR2_Code_R2 = </span><span style='color: #00BB00;'>col_integer()</span><span>,
+#&gt;   VAR1_Text = <span style='color: #BB0000;'>col_character()</span>,
+#&gt;   VAR2_Text = <span style='color: #BB0000;'>col_character()</span>,
+#&gt;   VAR3_Text_Other = <span style='color: #BB0000;'>col_character()</span>,
+#&gt;   VAR1_Code_R1 = <span style='color: #00BB00;'>col_integer()</span>,
+#&gt;   VAR2_Code_R2 = <span style='color: #00BB00;'>col_integer()</span>,
 #&gt;   GARBAGEX67 = col_skip(),
 #&gt;   GARBAGEY09 = col_skip()
 #&gt; )</div><div class='input'>
@@ -210,20 +212,20 @@ abbreviated character names (as described in the <code>col_types</code> paramete
                                             <span class='st'>"(?i)anteil"</span> <span class='op'>=</span> <span class='st'>"d"</span>,
                                             .default <span class='op'>=</span> <span class='st'>"i"</span>,
                                             .col_names <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='dsv_colnames.html'>dsv_colnames</a></span><span class='op'>(</span><span class='va'>raw_data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3,043 x 8</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,043 x 8</span>
 #&gt;    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerante…
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Adlikon              21 SVP        </span><span style='text-decoration: underline;'>5</span><span>241    150        56.5              -</span><span style='color: #BB0000;'>0.36</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Adlikon              21 SP          566     16         6.1              -</span><span style='color: #BB0000;'>2.22</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Adlikon              21 FDP         869     25         9.36              1.97
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Adlikon              21 glp         595     17         6.41              2.49
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Adlikon              21 CVP         123      4         1.33              0.46
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Adlikon              21 GRÜNE       628     18         6.77              2.93
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Adlikon              21 BDP         363     10         3.91             -</span><span style='color: #BB0000;'>2.72</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Adlikon              21 EVP         623     18         6.71              1.99
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Adlikon              21 Piraten       0      0         0                -</span><span style='color: #BB0000;'>0.43</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Adlikon              21 IP            1      0         0.01             </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: Wähleranteil 2015 &lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> Adlikon              21 SVP        <span style='text-decoration: underline;'>5</span>241    150        56.5              -<span style='color: #BB0000;'>0.36</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> Adlikon              21 SP          566     16         6.1              -<span style='color: #BB0000;'>2.22</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span> Adlikon              21 FDP         869     25         9.36              1.97
+#&gt; <span style='color: #BCBCBC;'> 4</span> Adlikon              21 glp         595     17         6.41              2.49
+#&gt; <span style='color: #BCBCBC;'> 5</span> Adlikon              21 CVP         123      4         1.33              0.46
+#&gt; <span style='color: #BCBCBC;'> 6</span> Adlikon              21 GRÜNE       628     18         6.77              2.93
+#&gt; <span style='color: #BCBCBC;'> 7</span> Adlikon              21 BDP         363     10         3.91             -<span style='color: #BB0000;'>2.72</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> Adlikon              21 EVP         623     18         6.71              1.99
+#&gt; <span style='color: #BCBCBC;'> 9</span> Adlikon              21 Piraten       0      0         0                -<span style='color: #BB0000;'>0.43</span>
+#&gt; <span style='color: #BCBCBC;'>10</span> Adlikon              21 IP            1      0         0.01             <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: Wähleranteil 2015 &lt;dbl&gt;</span></div><div class='input'>
 <span class='co'># an alternative way to process the same data using `readr::type_convert()`:</span>
 <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>raw_data</span>,
                 col_types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>.default <span class='op'>=</span> <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -231,20 +233,20 @@ abbreviated character names (as described in the <code>col_types</code> paramete
                                                   <span class='st'>"(?i)anteil"</span> <span class='op'>=</span> <span class='st'>"d"</span>,
                                                   .default <span class='op'>=</span> <span class='st'>"i"</span>,
                                                   .col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3,043 x 8</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,043 x 8</span>
 #&gt;    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerante…
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Adlikon              21 SVP        </span><span style='text-decoration: underline;'>5</span><span>241    150        56.5              -</span><span style='color: #BB0000;'>0.36</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Adlikon              21 SP          566     16         6.1              -</span><span style='color: #BB0000;'>2.22</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Adlikon              21 FDP         869     25         9.36              1.97
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Adlikon              21 glp         595     17         6.41              2.49
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Adlikon              21 CVP         123      4         1.33              0.46
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Adlikon              21 GRÜNE       628     18         6.77              2.93
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Adlikon              21 BDP         363     10         3.91             -</span><span style='color: #BB0000;'>2.72</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Adlikon              21 EVP         623     18         6.71              1.99
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Adlikon              21 Piraten       0      0         0                -</span><span style='color: #BB0000;'>0.43</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Adlikon              21 IP            1      0         0.01             </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: Wähleranteil 2015 &lt;dbl&gt;</span><span></div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> Adlikon              21 SVP        <span style='text-decoration: underline;'>5</span>241    150        56.5              -<span style='color: #BB0000;'>0.36</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> Adlikon              21 SP          566     16         6.1              -<span style='color: #BB0000;'>2.22</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span> Adlikon              21 FDP         869     25         9.36              1.97
+#&gt; <span style='color: #BCBCBC;'> 4</span> Adlikon              21 glp         595     17         6.41              2.49
+#&gt; <span style='color: #BCBCBC;'> 5</span> Adlikon              21 CVP         123      4         1.33              0.46
+#&gt; <span style='color: #BCBCBC;'> 6</span> Adlikon              21 GRÜNE       628     18         6.77              2.93
+#&gt; <span style='color: #BCBCBC;'> 7</span> Adlikon              21 BDP         363     10         3.91             -<span style='color: #BB0000;'>2.72</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> Adlikon              21 EVP         623     18         6.71              1.99
+#&gt; <span style='color: #BCBCBC;'> 9</span> Adlikon              21 Piraten       0      0         0                -<span style='color: #BB0000;'>0.43</span>
+#&gt; <span style='color: #BCBCBC;'>10</span> Adlikon              21 IP            1      0         0.01             <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: Wähleranteil 2015 &lt;dbl&gt;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -36,26 +36,26 @@ utils::globalVariables(names = c(".",
 #' scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
 #'
 #' # by default, ordering of rows and columns matters ...
-#' is_equal_df(x = mtcars,
-#'             y = scramble(mtcars))
+#' pal::is_equal_df(x = mtcars,
+#'                  y = scramble(mtcars))
 #'
 #' # ... but those can be ignored if desired
-#' is_equal_df(x = mtcars,
-#'             y = scramble(mtcars),
-#'             ignore_col_order = TRUE)
-#' is_equal_df(x = mtcars,
-#'             y = scramble(mtcars),
-#'             ignore_row_order = TRUE)
+#' pal::is_equal_df(x = mtcars,
+#'                  y = scramble(mtcars),
+#'                  ignore_col_order = TRUE)
+#' pal::is_equal_df(x = mtcars,
+#'                  y = scramble(mtcars),
+#'                  ignore_row_order = TRUE)
 #'
 #' # by default, `is_equal_df()` is sensitive to column type differences ...
 #' df1 <- data.frame(x = "a",
 #'                   stringsAsFactors = FALSE)
 #' df2 <- data.frame(x = factor("a"))
-#' is_equal_df(df1, df2)
+#' pal::is_equal_df(df1, df2)
 #'
 #' # ... but you can request it to not make a difference between similar types
-#' is_equal_df(df1, df2,
-#'             ignore_col_types = TRUE)
+#' pal::is_equal_df(df1, df2,
+#'                  ignore_col_types = TRUE)
 is_equal_df <- function(x,
                         y,
                         ignore_col_order = FALSE,
@@ -177,21 +177,23 @@ reduce_df_list <- function(x,
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' nested_list <- list(1:3, list("foo", list("bar"))) %T>% str()
 #' 
 #' # unlike `unlist()` which also removes the last list tier in many cases ...
 #' unlist("foobar")
 #' unlist(nested_list) %>% str()
 #' # ... this function always returns an (unnested) list
-#' as_flat_list("foobar") %>% str()
-#' as_flat_list(nested_list) %>% str()
+#' pal::as_flat_list("foobar") %>% str()
+#' pal::as_flat_list(nested_list) %>% str()
 #' 
 #' nested_list <- list(list(factor("a"), factor("b")), factor("c")) %T>% str()
 #' 
 #' # unlike `unlist()` which combines factors ...
 #' unlist(nested_list) %>% str()
 #' # ... this function does not modify the list elements
-#' as_flat_list(nested_list) %>% str()
+#' pal::as_flat_list(nested_list) %>% str()
 #' 
 #' nested_list <-
 #'   list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))),
@@ -201,12 +203,12 @@ reduce_df_list <- function(x,
 #'
 #' # by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
 #' # not flattened ...
-#' as_flat_list(nested_list) %>% str()
-#' as_flat_list(nested_list_2) %>% str()
+#' pal::as_flat_list(nested_list) %>% str()
+#' pal::as_flat_list(nested_list_2) %>% str()
 #' # ... but you can drop them and thereby flatten custom objects if needed ...
-#' as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
+#' pal::as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
 #' # ... or retain `xfun_strict_list`s, too
-#' as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
+#' pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
 as_flat_list <- function(x,
                          keep_attrs = TRUE,
                          attrs_to_drop = "xfun_strict_list") {
@@ -285,7 +287,7 @@ rm_list_level <- function(x,
 #' @export
 #'
 #' @examples
-#' rownames(mtcars) %>% as_md_list() %>% cat()
+#' rownames(mtcars) |> pal::as_md_list() |> cat()
 as_md_list <- function(x,
                        type = c("unordered", "ordered", "ordered_roman"),
                        tight = TRUE,
@@ -346,7 +348,7 @@ as_md_list <- function(x,
 #' @export
 #'
 #' @examples
-#' mtcars %>% head() %>% pipe_table() %>% cat_lines()
+#' mtcars |> head() |> pal::pipe_table() |> pal::cat_lines()
 pipe_table <- function(x,
                        incl_rownames = NULL,
                        strong_colnames = TRUE,
@@ -401,11 +403,13 @@ pipe_table <- function(x,
 #' @export
 #'
 #' @examples
-#' strip_md("A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))")
+#' pal::strip_md(
+#'   "A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))"
+#' )
 #'
 #' # link references are only removed *iff* the reference is included in `x`:
-#' strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
-#' strip_md("[A reference link][refid]\n\n_No ref here..._")
+#' pal::strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
+#' pal::strip_md("[A reference link][refid]\n\n_No ref here..._")
 strip_md <- function(x,
                      strip_footnotes = TRUE) {
   
@@ -734,17 +738,18 @@ gitlab_document <- function(smart_punctuation = TRUE,
 #' @export
 #'
 #' @examples
-#' assert_pkg("pal")
+#' pal::assert_pkg("pal")
 #'
-#' assert_pkg(pkg = "glue",
-#'            message = paste0("You should really consider to install the awesome `glue` package! ",
-#'                             "It's the glue that keeps strings and variables together 🤲."))
+#' pal::assert_pkg(pkg = "glue",
+#'                 message = paste0("You should really consider to install the awesome `glue` ",
+#'                                  "package! It's the glue that keeps strings and variables ",
+#'                                  "together 🤲."))
 #' \dontrun{
-#' assert_pkg("pal", min_version = 9999.9)
+#' pal::assert_pkg("pal", min_version = 9999.9)
 #' 
-#' assert_pkg("yay",
-#'            install_hint = paste0("To install the latest development version, run ",
-#'                                  "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
+#' pal::assert_pkg("yay",
+#'                 install_hint = paste0("To install the latest development version, run ",
+#'                                       "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
 assert_pkg <- function(pkg,
                        min_version = NULL,
                        message = NULL,
@@ -819,7 +824,7 @@ assert_pkg <- function(pkg,
 #'
 #' @examples
 #' \dontrun{
-#' desc_list(file = fs::path_package(package = "pal"))
+#' pal::desc_list(file = fs::path_package(package = "pal"))
 #' }
 desc_list <- function(file = ".") {
   
@@ -863,8 +868,8 @@ desc_list <- function(file = ".") {
 #' @export
 #'
 #' @examples
-#' desc_value(key = "Description",
-#'            file = fs::path_package("pal"))
+#' pal::desc_value(key = "Description",
+#'                 file = fs::path_package("pal"))
 desc_value <- function(key,
                        default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
                        file = ".") {
@@ -923,18 +928,18 @@ desc_url_git <- function(file = ".") {
 #' @export
 #'
 #' @examples
-#' is_pkg_installed("tidyverse")
+#' pal::is_pkg_installed("tidyverse")
 #'
 #' # it is vectorized ...
-#' is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
-#'                  min_version = c("1.0", "2.0", "99.9.9000"))
+#' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+#'                       min_version = c("1.0", "2.0", "99.9.9000"))
 #'
 #' # ... and scalar arguments will be recycled
-#' is_pkg_installed(pkg = "dplyr",
-#'                  min_version = c("0.5", "1.0", "99.9.9000"))
+#' pal::is_pkg_installed(pkg = "dplyr",
+#'                       min_version = c("0.5", "1.0", "99.9.9000"))
 #'
-#' is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
-#'                  min_version = "1.0")
+#' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+#'                       min_version = "1.0")
 is_pkg_installed <- function(pkg,
                              min_version = NULL) {
   
@@ -971,8 +976,8 @@ is_pkg_installed <- function(pkg,
 #' @export
 #'
 #' @examples
-#' is_pkg_dir()
-#' is_pkg_dir(fs::path_package("pal"))
+#' pal::is_pkg_dir()
+#' pal::is_pkg_dir(fs::path_package("pal"))
 is_pkg_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
@@ -992,9 +997,9 @@ is_pkg_dir <- function(path = ".") {
 #' @export
 #'
 #' @examples
-#' is_pkg_cran("foobar")
-#' is_pkg_cran("dplyr")
-#' is_pkg_cran("dplyr", min_version = 9999.9)
+#' pal::is_pkg_cran("foobar")
+#' pal::is_pkg_cran("dplyr")
+#' pal::is_pkg_cran("dplyr", min_version = 9999.9)
 is_pkg_cran <- function(pkg,
                         min_version = NULL) {
   
@@ -1023,8 +1028,8 @@ is_pkg_cran <- function(pkg,
 #' @export
 #'
 #' @examples
-#' is_pkgdown_dir()
-#' is_pkgdown_dir(fs::path_package("pal"))
+#' pal::is_pkgdown_dir()
+#' pal::is_pkgdown_dir(fs::path_package("pal"))
 is_pkgdown_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
@@ -1073,14 +1078,14 @@ is_pkgdown_dir <- function(path = ".") {
 #' @export
 #'
 #' @examples
-#' prose_ls_fn_param(param = ".name_repair",
-#'                   fn = tibble::as_tibble) %>%
-#' cat_lines()
+#' pal::prose_ls_fn_param(param = ".name_repair",
+#'                        fn = tibble::as_tibble) |>
+#' pal::cat_lines()
 #'
-#' prose_ls_fn_param(param = ".name_repair",
-#'                   fn = tibble::as_tibble,
-#'                   as_scalar = FALSE) %>%
-#' cat_lines()
+#' pal::prose_ls_fn_param(param = ".name_repair",
+#'                        fn = tibble::as_tibble,
+#'                        as_scalar = FALSE) |>
+#' pal::cat_lines()
 prose_ls_fn_param <- function(param,
                               fn = sys.function(sys.parent()),
                               env = parent.frame(),
@@ -1160,7 +1165,7 @@ prose_ls_fn_param <- function(param,
 #' @export
 #'
 #' @examples
-#' ls_pkg(pkg = c("pal", "tibble", "dplyr"))
+#' pal::ls_pkg(pkg = c("pal", "tibble", "dplyr"))
 ls_pkg <- function(pkg,
                    ignore_case = TRUE,
                    as_regex = FALSE) {
@@ -1194,11 +1199,11 @@ ls_pkg <- function(pkg,
 #' @export
 #'
 #' @examples
-#' safe_seq_len(5)
+#' pal::safe_seq_len(5)
 #'
 #' # this function simply returns a zero-length integer for zero-length inputs ...
-#' safe_seq_len(NULL)
-#' safe_seq_len(integer())
+#' pal::safe_seq_len(NULL)
+#' pal::safe_seq_len(integer())
 #' 
 #' # ... while `seq_len()` throws an error
 #' \dontrun{
@@ -1232,7 +1237,7 @@ safe_seq_len <- function(n) {
 #' @examples
 #' # other than `base::max()`, this function removes `NA`s by default
 #' max(1, NA, 2)
-#' safe_max(1, NA, 2)
+#' pal::safe_max(1, NA, 2)
 #'
 #' # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
 #' # zero-length inputs
@@ -1240,15 +1245,15 @@ safe_seq_len <- function(n) {
 #' max(NULL)
 #' max(character())
 #' max(integer())
-#' safe_max(NULL)
-#' safe_max(character())
-#' safe_max(integer())
+#' pal::safe_max(NULL)
+#' pal::safe_max(character())
+#' pal::safe_max(integer())
 #' 
 #' # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
 #' max("zero", 1L)
 #' max("zero", "one")
-#' safe_max("zero", 1L)
-#' safe_max("zero", "one")}
+#' pal::safe_max("zero", 1L)
+#' pal::safe_max("zero", "one")}
 safe_max <- function(...,
                      rm_na = TRUE) {
   
@@ -1282,7 +1287,7 @@ safe_max <- function(...,
 #' @examples
 #' # other than `base::min()`, this function removes `NA`s by default
 #' min(1, NA, 2)
-#' safe_min(1, NA, 2)
+#' pal::safe_min(1, NA, 2)
 #'
 #' # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
 #' # zero-length inputs
@@ -1290,15 +1295,15 @@ safe_max <- function(...,
 #' min(NULL)
 #' min(character())
 #' min(integer())
-#' safe_min(NULL)
-#' safe_min(character())
-#' safe_min(integer())
+#' pal::safe_min(NULL)
+#' pal::safe_min(character())
+#' pal::safe_min(integer())
 #' 
 #' # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
 #' min("zero", 1L)
 #' min("zero", "one")
-#' safe_min("zero", 1L)
-#' safe_min("zero", "one")}
+#' pal::safe_min("zero", 1L)
+#' pal::safe_min("zero", "one")}
 safe_min <- function(...,
                      rm_na = TRUE) {
   
@@ -1331,8 +1336,8 @@ safe_min <- function(...,
 #' @export
 #'
 #' @examples
-#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(to = 0.05)
-#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) %>% round_to(to = 0.05, round_up = FALSE)
+#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> round_to(to = 0.05)
+#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> round_to(to = 0.05, round_up = FALSE)
 round_to <- function(x,
                      to = 0.2,
                      round_up = TRUE) {
@@ -1376,26 +1381,26 @@ round_to <- function(x,
 #' @export
 #'
 #' @examples
-#' stat_mode(c(rep(3L, times = 3), 1:9))
-#' stat_mode(c(1.5, 4, 9.9))
+#' pal::stat_mode(c(rep(3L, times = 3), 1:9))
+#' pal::stat_mode(c(1.5, 4, 9.9))
 #' 
 #' # if no mode exists, `NA` (of the same type as x) is returned
-#' stat_mode(letters)
-#' stat_mode(c(letters, "a"))
+#' pal::stat_mode(letters)
+#' pal::stat_mode(c(letters, "a"))
 #' 
 #' # if multiple modes exist, `NA` is returned by default
-#' stat_mode(c(letters, "a", "b"))
+#' pal::stat_mode(c(letters, "a", "b"))
 #' # set `type = "all"` to return all modes instead
-#' stat_mode(c(letters, "a", "b"),
-#'           type = "all")
+#' pal::stat_mode(c(letters, "a", "b"),
+#'                type = "all")
 #' 
 #' # `NA` is treated as any other value by default
-#' stat_mode(c(letters, "a", NA_character_, NA_character_),
-#'           type = "all")
+#' pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
+#'                type = "all")
 #' # set `rm_na = TRUE` to ignore `NA` values
-#' stat_mode(c(letters, "a", NA_character_, NA_character_),
-#'           type = "all",
-#'           rm_na = TRUE)
+#' pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
+#'                type = "all",
+#'                rm_na = TRUE)
 stat_mode <- function(x,
                       type = c("one", "all", "n"),
                       rm_na = FALSE) {
@@ -1435,12 +1440,14 @@ stat_mode <- function(x,
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' to_convert <-
 #'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
 #'   print()
 #'
 #' as.character(to_convert)
-#' as_chr(!!!to_convert)
+#' pal::as_chr(!!!to_convert)
 as_chr <- function(...) {
   
   rlang::list2(...) %>%
@@ -1472,6 +1479,8 @@ as_chr <- function(...) {
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' input <-
 #'   sample.int(n = 5,
 #'              size = 3) %>%
@@ -1485,7 +1494,7 @@ as_chr <- function(...) {
 #'        collapse = "")
 #'
 #' # ... this one works harder
-#' as_string(input)
+#' pal::as_string(input)
 as_string <- function(...,
                       sep = "") {
   
@@ -1497,7 +1506,7 @@ as_string <- function(...,
 #'
 #' Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
 #'
-#' Note that this function doesn't alter any characters of `x` other than the first and the last.
+#' Note that this function doesn't alter any characters in `x` other than the first and the last.
 #'
 #' @param x The input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
 #' @param punctuation_mark The punctuation mark to be appended to `x`. A character scalar.
@@ -1546,15 +1555,17 @@ sentenceify <- function(x,
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' # read in and print package description as-is
 #' text <-
 #'   fs::path_package(package = "pal",
 #'                    "DESCRIPTION") %>%
 #'   readr::read_file() %T>%
-#'   cat_lines()
+#'   pal::cat_lines()
 #'
 #' # escape newlines and print again
-#' escape_lf(text) %>% cat_lines()
+#' pal::escape_lf(text) %>% pal::cat_lines()
 escape_lf <- function(x,
                       escape_cr = FALSE) {
   
@@ -1587,7 +1598,7 @@ escape_lf <- function(x,
 #'            "(?i)\\bevil")
 #'
 #' stringr::str_subset(string = janeaustenr::prideprejudice,
-#'                     pattern = fuse_regex(regex))}
+#'                     pattern = pal::fuse_regex(regex))}
 fuse_regex <- function(...) {
   
   result <- as_string(..., sep = "|")
@@ -1614,8 +1625,8 @@ fuse_regex <- function(...) {
 #'
 #' @examples
 #' \donttest{
-#' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") %>%
-#'   httr::content(as = "text") %>%
+#' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") |>
+#'   httr::content(as = "text") |>
 #'   pal::dsv_colnames()}
 dsv_colnames <- function(x,
                          delim = ",",
@@ -1649,7 +1660,7 @@ dsv_colnames <- function(x,
 #' @export
 #'
 #' @examples
-#' prose_ls(1:5)
+#' pal::prose_ls(1:5)
 prose_ls <- function(x,
                      wrap = "",
                      separator = ", ",
@@ -1691,11 +1702,11 @@ prose_ls <- function(x,
 #' @export
 #'
 #' @examples
-#' c(0.11, 11111.11) %>% prettify_nr()
+#' c(0.11, 11111.11) |> pal::prettify_nr()
 #'
-#' c(0.11, 11111.11) %>%
-#'   prettify_nr(justify_right = TRUE) %>%
-#'   cat_lines()
+#' c(0.11, 11111.11) |>
+#'   pal::prettify_nr(justify_right = TRUE) |>
+#'   pal::cat_lines()
 prettify_nr <- function(x,
                         round_to = 0.1,
                         round_up = TRUE,
@@ -1727,17 +1738,19 @@ prettify_nr <- function(x,
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' fs::path_package(package = "pal",
 #'                  "DESCRIPTION") %>%
 #'   readr::read_lines() %>%
-#'   cat_lines()
+#'   pal::cat_lines()
 #' 
 #' # recursive conversion to type character or not
 #' to_convert <-
 #'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
 #'   print()
 #' 
-#' to_convert %>% cat_lines()
+#' to_convert %>% pal::cat_lines()
 #' to_convert %>% cli::cat_line()
 cat_lines <- function(...) {
   
@@ -1755,6 +1768,8 @@ cat_lines <- function(...) {
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' mtcars %>%
 #'   magrittr::set_colnames(wrap_chr(x = colnames(.),
 #'                                   wrap = "`")) %>%
@@ -1889,8 +1904,8 @@ run_cli <- function(cmd,
 #' @export
 #'
 #' @examples
-#' mtcars %>% pal::capture_print()
-#' mtcars %>% pal::capture_print(collapse = "\n") %>% cat()
+#' mtcars |> pal::capture_print()
+#' mtcars |> pal::capture_print(collapse = "\n") |> cat()
 capture_print <- function(x,
                           collapse = NULL) {
   
@@ -1910,6 +1925,8 @@ capture_print <- function(x,
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' # generate 100 random letters
 #' random_letters <-
 #'   letters %>%
@@ -1919,7 +1936,7 @@ capture_print <- function(x,
 #'   print()
 #'
 #' # sort the random letters alphabetically
-#' random_letters %>% order_by(by = letters)
+#' random_letters %>% pal::order_by(by = letters)
 order_by <- function(x,
                      by) {
   
@@ -1950,12 +1967,12 @@ order_by <- function(x,
 #' @export
 #'
 #' @examples
-#' is_http_success("goo.gl")
-#' is_http_success("https://google.com/")
-#' is_http_success("https://google.not/")
-#' is_http_success("https://google.not/",
-#'                 retries = 2,
-#'                 quiet = FALSE)
+#' pal::is_http_success("goo.gl")
+#' pal::is_http_success("https://google.com/")
+#' pal::is_http_success("https://google.not/")
+#' pal::is_http_success("https://google.not/",
+#'                      retries = 2,
+#'                      quiet = FALSE)
 is_http_success <- function(url,
                             retries = 0L,
                             quiet = TRUE) {
@@ -1985,18 +2002,18 @@ is_http_success <- function(url,
 #'
 #' @examples
 #' \donttest{
-#' cli_process_expr(Sys.sleep(3L), "Zzzz")}
+#' pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
 #'
 #' \dontrun{
 #' # "russian roulette"
 #' msg <- "Spinning the cylinder \U0001F91E … "
-#' cli_process_expr(msg = msg,
-#'                  msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-#'                  msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                  {
-#'                    if (interactive()) Sys.sleep(1)
-#'                    if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-#'                  })}
+#' pal::cli_process_expr(msg = msg,
+#'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+#'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                       {
+#'                         if (interactive()) Sys.sleep(1)
+#'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+#'                       })}
 cli_process_expr <- function(expr,
                              msg,
                              msg_done = paste(msg, "... done"),
@@ -2238,6 +2255,8 @@ check_dot_named <- function(dot,
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' # for some hypothetical CSV data column names like these ...
 #' col_names <- c("VAR1_Text",
 #'                "VAR2_Text",
@@ -2320,9 +2339,9 @@ cols_regex <- function(...,
 #' text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
 #'                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
 #'
-#' roxy_tag_value(text = text,
-#'                obj_name = "as_function",
-#'                param_name = "x")
+#' pal::roxy_tag_value(text = text,
+#'                     obj_name = "as_function",
+#'                     param_name = "x")
 roxy_tag_value <- function(text,
                            obj_name,
                            tag_name = "param",

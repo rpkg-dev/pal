@@ -33,8 +33,8 @@ By default, the following string is returned if \code{key = "NoRealKey"} is not 
 If you rather want to take an action like throwing an error, it's recommended to call \code{\link[desc:desc_get_field]{desc::desc_get_field()}} directly.
 }
 \examples{
-desc_value(key = "Description",
-           file = fs::path_package("pal"))
+pal::desc_value(key = "Description",
+                file = fs::path_package("pal"))
 }
 \seealso{
 Other R package functions:

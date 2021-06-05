@@ -36,7 +36,7 @@ A character scalar.
 Convenience wrapper around \code{\link[pander:pandoc.list.return]{pander::pandoc.list.return()}} to convert a character vector (or something coercible to) to a \href{https://pandoc.org/MANUAL.html#lists}{Markdown list}.
 }
 \examples{
-rownames(mtcars) \%>\% as_md_list() \%>\% cat()
+rownames(mtcars) |> pal::as_md_list() |> cat()
 }
 \seealso{
 Other (Pandoc) Markdown functions:

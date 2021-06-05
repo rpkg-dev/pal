@@ -55,14 +55,14 @@ this function.
 }
 
 \examples{
-prose_ls_fn_param(param = ".name_repair",
-                  fn = tibble::as_tibble) \%>\%
-cat_lines()
+pal::prose_ls_fn_param(param = ".name_repair",
+                       fn = tibble::as_tibble) |>
+pal::cat_lines()
 
-prose_ls_fn_param(param = ".name_repair",
-                  fn = tibble::as_tibble,
-                  as_scalar = FALSE) \%>\%
-cat_lines()
+pal::prose_ls_fn_param(param = ".name_repair",
+                       fn = tibble::as_tibble,
+                       as_scalar = FALSE) |>
+pal::cat_lines()
 }
 \seealso{
 Other R package functions:

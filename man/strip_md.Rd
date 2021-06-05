@@ -23,9 +23,11 @@ This function relies on \code{\link[commonmark:commonmark]{commonmark::markdown_
 references.
 }
 \examples{
-strip_md("A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))")
+pal::strip_md(
+  "A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))"
+)
 
 # link references are only removed *iff* the reference is included in `x`:
-strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
-strip_md("[A reference link][refid]\n\n_No ref here..._")
+pal::strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
+pal::strip_md("[A reference link][refid]\n\n_No ref here..._")
 }

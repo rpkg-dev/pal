@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -201,14 +201,15 @@
 <code><a href='escape_lf.html'>escape_lf</a>()</code>,
 <code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
 <code><a href='prose_ls.html'>prose_ls</a>()</code>,
+<code><a href='sentenceify.html'>sentenceify</a>()</code>,
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.11</span>, <span class='fl'>11111.11</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>prettify_nr</span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.11</span>, <span class='fl'>11111.11</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prettify_nr</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "0.1"      "11'111.1"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.11</span>, <span class='fl'>11111.11</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>prettify_nr</span><span class='op'>(</span>justify_right <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.11</span>, <span class='fl'>11111.11</span><span class='op'>)</span> |&gt;
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prettify_nr</span><span class='op'>(</span>justify_right <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> |&gt;
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      0.1
 #&gt; 11'111.1</div></pre>
   </div>

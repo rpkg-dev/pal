@@ -30,12 +30,12 @@ This function is similar to \code{\link[RCurl:url.exists]{RCurl::url.exists()}},
 based on \href{https://jeroen.cran.dev/curl/}{curl}.
 }
 \examples{
-is_http_success("goo.gl")
-is_http_success("https://google.com/")
-is_http_success("https://google.not/")
-is_http_success("https://google.not/",
-                retries = 2,
-                quiet = FALSE)
+pal::is_http_success("goo.gl")
+pal::is_http_success("https://google.com/")
+pal::is_http_success("https://google.not/")
+pal::is_http_success("https://google.not/",
+                     retries = 2,
+                     quiet = FALSE)
 }
 \seealso{
 \code{\link[RCurl:url.exists]{RCurl::url.exists()}}

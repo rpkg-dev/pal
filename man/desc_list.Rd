@@ -24,7 +24,7 @@ Returns all fields from a specific \code{DESCRIPTION} file as a named list with 
 }
 \examples{
 \dontrun{
-desc_list(file = fs::path_package(package = "pal"))
+pal::desc_list(file = fs::path_package(package = "pal"))
 }
 }
 \seealso{

@@ -18,6 +18,8 @@ A character vector.
 Wrap character vector in string
 }
 \examples{
+library(magrittr)
+
 mtcars \%>\%
   magrittr::set_colnames(wrap_chr(x = colnames(.),
                                   wrap = "`")) \%>\%

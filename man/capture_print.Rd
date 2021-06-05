@@ -23,6 +23,6 @@ This is a simple convenience wrapper around \code{\link[utils:capture.output]{ut
 (e.g. as output by the \code{print()} methods of tidyverse packages) are not captured (i.e. lost).
 }
 \examples{
-mtcars \%>\% pal::capture_print()
-mtcars \%>\% pal::capture_print(collapse = "\n") \%>\% cat()
+mtcars |> pal::capture_print()
+mtcars |> pal::capture_print(collapse = "\n") |> cat()
 }

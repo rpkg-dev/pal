@@ -18,6 +18,8 @@ A permutation of \code{x}.
 Order a vector by another vector
 }
 \examples{
+library(magrittr)
+
 # generate 100 random letters
 random_letters <-
   letters \%>\%
@@ -27,5 +29,5 @@ random_letters <-
   print()
 
 # sort the random letters alphabetically
-random_letters \%>\% order_by(by = letters)
+random_letters \%>\% pal::order_by(by = letters)
 }

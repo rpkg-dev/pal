@@ -17,8 +17,8 @@ Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_p
 package directory, not its subdirectories.
 }
 \examples{
-is_pkg_dir()
-is_pkg_dir(fs::path_package("pal"))
+pal::is_pkg_dir()
+pal::is_pkg_dir(fs::path_package("pal"))
 }
 \seealso{
 Other R package functions:

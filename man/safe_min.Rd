@@ -26,7 +26,7 @@ Modified version of \code{\link[base:Extremes]{min()}} that differs in the follo
 \examples{
 # other than `base::min()`, this function removes `NA`s by default
 min(1, NA, 2)
-safe_min(1, NA, 2)
+pal::safe_min(1, NA, 2)
 
 # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
 # zero-length inputs
@@ -34,15 +34,15 @@ safe_min(1, NA, 2)
 min(NULL)
 min(character())
 min(integer())
-safe_min(NULL)
-safe_min(character())
-safe_min(integer())
+pal::safe_min(NULL)
+pal::safe_min(character())
+pal::safe_min(integer())
 
 # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
 min("zero", 1L)
 min("zero", "one")
-safe_min("zero", 1L)
-safe_min("zero", "one")}
+pal::safe_min("zero", 1L)
+pal::safe_min("zero", "one")}
 }
 \seealso{
 Other statistical computing / numeric functions:

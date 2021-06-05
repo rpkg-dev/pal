@@ -37,11 +37,11 @@ Prettifies a numeric vector by rounding, separating thousands and optionally oth
 \code{\link[base:format]{format()}}.
 }
 \examples{
-c(0.11, 11111.11) \%>\% prettify_nr()
+c(0.11, 11111.11) |> pal::prettify_nr()
 
-c(0.11, 11111.11) \%>\%
-  prettify_nr(justify_right = TRUE) \%>\%
-  cat_lines()
+c(0.11, 11111.11) |>
+  pal::prettify_nr(justify_right = TRUE) |>
+  pal::cat_lines()
 }
 \seealso{
 Other string functions:

@@ -18,6 +18,8 @@ A character scalar.
 Similar to \code{\link[=paste0]{paste0(..., collapse = "")}}, but \emph{recursively} converts its inputs to type character.
 }
 \examples{
+library(magrittr)
+
 input <-
   sample.int(n = 5,
              size = 3) \%>\%
@@ -31,7 +33,7 @@ paste0(input,
        collapse = "")
 
 # ... this one works harder
-as_string(input)
+pal::as_string(input)
 }
 \seealso{
 Other string functions:

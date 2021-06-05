@@ -26,26 +26,26 @@ Computes the \href{https://en.wikipedia.org/wiki/Mode_(statistics)}{statistical 
 value that is most likely to be sampled.
 }
 \examples{
-stat_mode(c(rep(3L, times = 3), 1:9))
-stat_mode(c(1.5, 4, 9.9))
+pal::stat_mode(c(rep(3L, times = 3), 1:9))
+pal::stat_mode(c(1.5, 4, 9.9))
 
 # if no mode exists, `NA` (of the same type as x) is returned
-stat_mode(letters)
-stat_mode(c(letters, "a"))
+pal::stat_mode(letters)
+pal::stat_mode(c(letters, "a"))
 
 # if multiple modes exist, `NA` is returned by default
-stat_mode(c(letters, "a", "b"))
+pal::stat_mode(c(letters, "a", "b"))
 # set `type = "all"` to return all modes instead
-stat_mode(c(letters, "a", "b"),
-          type = "all")
+pal::stat_mode(c(letters, "a", "b"),
+               type = "all")
 
 # `NA` is treated as any other value by default
-stat_mode(c(letters, "a", NA_character_, NA_character_),
-          type = "all")
+pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
+               type = "all")
 # set `rm_na = TRUE` to ignore `NA` values
-stat_mode(c(letters, "a", NA_character_, NA_character_),
-          type = "all",
-          rm_na = TRUE)
+pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
+               type = "all",
+               rm_na = TRUE)
 }
 \seealso{
 The package \href{https://cran.r-project.org/package=modeest}{modeest} for more powerful mode estimation functions.

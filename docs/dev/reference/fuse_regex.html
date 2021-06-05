@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -169,6 +169,7 @@
 <code><a href='escape_lf.html'>escape_lf</a>()</code>,
 <code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
 <code><a href='prose_ls.html'>prose_ls</a>()</code>,
+<code><a href='sentenceify.html'>sentenceify</a>()</code>,
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -179,7 +180,7 @@
            <span class='st'>"(?i)\\bevil"</span><span class='op'>)</span>
 
 <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span>string <span class='op'>=</span> <span class='fu'>janeaustenr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/janeaustenr/man/prideprejudice.html'>prideprejudice</a></span>,
-                    pattern <span class='op'>=</span> <span class='fu'>fuse_regex</span><span class='op'>(</span><span class='va'>regex</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span>
+                    pattern <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>fuse_regex</span><span class='op'>(</span><span class='va'>regex</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span>
 </div><div class='output co'>#&gt;  [1] "Jane, make haste and tell us; make haste, my love.\""                     
 #&gt;  [2] "evil--a natural defect, which not even the best education can overcome.\""
 #&gt;  [3] "can have any evil tendency; and I am so far from objecting to dancing"    

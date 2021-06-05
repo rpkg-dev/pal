@@ -25,7 +25,7 @@ Parses \code{text} for \link[roxygen2:roxy_block]{roxygen2 blocks} and extracts 
 text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
 
-roxy_tag_value(text = text,
-               obj_name = "as_function",
-               param_name = "x")
+pal::roxy_tag_value(text = text,
+                    obj_name = "as_function",
+                    param_name = "x")
 }

@@ -45,16 +45,16 @@ Convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_s
 }
 \examples{
 \donttest{
-cli_process_expr(Sys.sleep(3L), "Zzzz")}
+pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
 
 \dontrun{
 # "russian roulette"
 msg <- "Spinning the cylinder \U0001F91E … "
-cli_process_expr(msg = msg,
-                 msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-                 msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-                 {
-                   if (interactive()) Sys.sleep(1)
-                   if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-                 })}
+pal::cli_process_expr(msg = msg,
+                      msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+                      msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+                      {
+                        if (interactive()) Sys.sleep(1)
+                        if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+                      })}
 }

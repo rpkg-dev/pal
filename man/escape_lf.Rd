@@ -19,15 +19,17 @@ Escapes the \href{https://en.wikipedia.org/wiki/Newline}{POSIX-standard newline 
 versions of macOS. Set \code{escape_cr = TRUE} in order to also escape the carriage return character \code{CR} (aka \verb{\\r}) commonly used on Microsoft Windows.
 }
 \examples{
+library(magrittr)
+
 # read in and print package description as-is
 text <-
   fs::path_package(package = "pal",
                    "DESCRIPTION") \%>\%
   readr::read_file() \%T>\%
-  cat_lines()
+  pal::cat_lines()
 
 # escape newlines and print again
-escape_lf(text) \%>\% cat_lines()
+pal::escape_lf(text) \%>\% pal::cat_lines()
 }
 \seealso{
 Other string functions:

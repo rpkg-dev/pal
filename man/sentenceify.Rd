@@ -18,7 +18,7 @@ A character vector.
 Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
 }
 \details{
-Note that this function doesn't alter any characters of \code{x} other than the first and the last.
+Note that this function doesn't alter any characters in \code{x} other than the first and the last.
 }
 \examples{
 pal::sentenceify("no verb, no sentence")

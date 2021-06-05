@@ -16,17 +16,19 @@ None (invisible \code{NULL}).
 Convenience wrapper around \code{\link[=as_chr]{as_chr()}} and \code{\link[base:cat]{cat()}}, mainly intended for interactive use.
 }
 \examples{
+library(magrittr)
+
 fs::path_package(package = "pal",
                  "DESCRIPTION") \%>\%
   readr::read_lines() \%>\%
-  cat_lines()
+  pal::cat_lines()
 
 # recursive conversion to type character or not
 to_convert <-
   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) \%T>\%
   print()
 
-to_convert \%>\% cat_lines()
+to_convert \%>\% pal::cat_lines()
 to_convert \%>\% cli::cat_line()
 }
 \seealso{

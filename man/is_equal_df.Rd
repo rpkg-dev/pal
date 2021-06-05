@@ -62,26 +62,26 @@ Under the hood, this function relies on \code{\link[waldo:compare]{waldo::compar
 scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
 
 # by default, ordering of rows and columns matters ...
-is_equal_df(x = mtcars,
-            y = scramble(mtcars))
+pal::is_equal_df(x = mtcars,
+                 y = scramble(mtcars))
 
 # ... but those can be ignored if desired
-is_equal_df(x = mtcars,
-            y = scramble(mtcars),
-            ignore_col_order = TRUE)
-is_equal_df(x = mtcars,
-            y = scramble(mtcars),
-            ignore_row_order = TRUE)
+pal::is_equal_df(x = mtcars,
+                 y = scramble(mtcars),
+                 ignore_col_order = TRUE)
+pal::is_equal_df(x = mtcars,
+                 y = scramble(mtcars),
+                 ignore_row_order = TRUE)
 
 # by default, `is_equal_df()` is sensitive to column type differences ...
 df1 <- data.frame(x = "a",
                   stringsAsFactors = FALSE)
 df2 <- data.frame(x = factor("a"))
-is_equal_df(df1, df2)
+pal::is_equal_df(df1, df2)
 
 # ... but you can request it to not make a difference between similar types
-is_equal_df(df1, df2,
-            ignore_col_types = TRUE)
+pal::is_equal_df(df1, df2,
+                 ignore_col_types = TRUE)
 }
 \seealso{
 Other data frame / tibble functions:

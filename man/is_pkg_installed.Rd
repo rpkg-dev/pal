@@ -28,18 +28,18 @@ It is \href{https://stackoverflow.com/questions/9341635/check-for-installed-pack
 \code{pkg \%in\% rownames(installed.packages())} check.
 }
 \examples{
-is_pkg_installed("tidyverse")
+pal::is_pkg_installed("tidyverse")
 
 # it is vectorized ...
-is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
-                 min_version = c("1.0", "2.0", "99.9.9000"))
+pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+                      min_version = c("1.0", "2.0", "99.9.9000"))
 
 # ... and scalar arguments will be recycled
-is_pkg_installed(pkg = "dplyr",
-                 min_version = c("0.5", "1.0", "99.9.9000"))
+pal::is_pkg_installed(pkg = "dplyr",
+                      min_version = c("0.5", "1.0", "99.9.9000"))
 
-is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
-                 min_version = "1.0")
+pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+                      min_version = "1.0")
 }
 \seealso{
 Other R package functions:

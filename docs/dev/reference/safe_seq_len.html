@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -167,11 +167,11 @@
 <code><a href='stat_mode.html'>stat_mode</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>safe_seq_len</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_seq_len</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 1 2 3 4 5</div><div class='input'>
 <span class='co'># this function simply returns a zero-length integer for zero-length inputs ...</span>
-<span class='fu'>safe_seq_len</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; integer(0)</div><div class='input'><span class='fu'>safe_seq_len</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_seq_len</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; integer(0)</div><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_seq_len</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; integer(0)</div><div class='input'>
 <span class='co'># ... while `seq_len()` throws an error</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

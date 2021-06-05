@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -172,10 +172,13 @@
 <code><a href='escape_lf.html'>escape_lf</a>()</code>,
 <code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
 <code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
-<code><a href='prose_ls.html'>prose_ls</a>()</code></p></div>
+<code><a href='prose_ls.html'>prose_ls</a>()</code>,
+<code><a href='sentenceify.html'>sentenceify</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
+
+<span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
   <span class='fu'>magrittr</span><span class='fu'>::</span><span class='fu'><a href='https://magrittr.tidyverse.org/reference/aliases.html'>set_colnames</a></span><span class='op'>(</span><span class='fu'>wrap_chr</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span>,
                                   wrap <span class='op'>=</span> <span class='st'>"`"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='pipe_table.html'>pipe_table</a></span><span class='op'>(</span><span class='op'>)</span>

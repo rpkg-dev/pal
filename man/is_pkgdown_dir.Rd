@@ -17,8 +17,8 @@ Convenience wrapper around the \link[rprojroot:criteria]{rprojroot::is_pkgdown_p
 package directory and the \code{pkgdown} subdirectory, not other subdirectories.
 }
 \examples{
-is_pkgdown_dir()
-is_pkgdown_dir(fs::path_package("pal"))
+pal::is_pkgdown_dir()
+pal::is_pkgdown_dir(fs::path_package("pal"))
 }
 \seealso{
 Other R package functions:

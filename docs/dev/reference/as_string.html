@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -172,10 +172,13 @@
 <code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
 <code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
 <code><a href='prose_ls.html'>prose_ls</a>()</code>,
+<code><a href='sentenceify.html'>sentenceify</a>()</code>,
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>input</span> <span class='op'>&lt;-</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
+
+<span class='va'>input</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample.int</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>5</span>,
              size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>", "</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -188,7 +191,7 @@
        collapse <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "c(\"This is a glut of \", \"meaningless numbers: \")list(c(\"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \", \"5, \"), c(\"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \", \"3, \"), c(\"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \", \"4, \"))"</div><div class='input'>
 <span class='co'># ... this one works harder</span>
-<span class='fu'>as_string</span><span class='op'>(</span><span class='va'>input</span><span class='op'>)</span>
+<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_string</span><span class='op'>(</span><span class='va'>input</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "This is a glut of meaningless numbers: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, "</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

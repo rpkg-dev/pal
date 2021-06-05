@@ -21,6 +21,8 @@ A \link[readr:cols]{column specification}.
 Allows to define a regular expression per desired \link[readr:cols]{column specification object} matching the respective column names.
 }
 \examples{
+library(magrittr)
+
 # for some hypothetical CSV data column names like these ...
 col_names <- c("VAR1_Text",
                "VAR2_Text",

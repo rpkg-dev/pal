@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9055</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9058</span>
       </span>
     </div>
 
@@ -173,18 +173,21 @@ versions of macOS. Set <code>escape_cr = TRUE</code> in order to also escape the
 <code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
 <code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
 <code><a href='prose_ls.html'>prose_ls</a>()</code>,
+<code><a href='sentenceify.html'>sentenceify</a>()</code>,
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># read in and print package description as-is</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
+
+<span class='co'># read in and print package description as-is</span>
 <span class='va'>text</span> <span class='op'>&lt;-</span>
   <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"pal"</span>,
                    <span class='st'>"DESCRIPTION"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>
-  <span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Package: pal
 #&gt; Title: Friendly Convenience/Utility Functions
-#&gt; Version: 0.0.9055
+#&gt; Version: 0.0.9058
 #&gt; Authors@R: 
 #&gt;     person(given = "Salim",
 #&gt;            family = "Brüggemann",
@@ -196,7 +199,7 @@ versions of macOS. Set <code>escape_cr = TRUE</code> in order to also escape the
 #&gt; License: AGPL (&gt;= 3)
 #&gt; URL: https://rpkg.dev/pal, https://gitlab.com/salim_b/r/pkgs/pal
 #&gt; BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues
-#&gt; Depends: R (&gt;= 4.0)
+#&gt; Depends: R (&gt;= 4.1)
 #&gt; Imports: checkmate (&gt;= 2.0.0), dplyr (&gt;= 1.0.2), fs (&gt;= 1.4.1), glue
 #&gt;         (&gt;= 1.4.1), lifecycle (&gt;= 0.2.0), magrittr (&gt;= 1.5), methods,
 #&gt;         purrr (&gt;= 0.3.4), rlang (&gt;= 0.4.4), stringr (&gt;= 1.4.0), tibble
@@ -215,11 +218,11 @@ versions of macOS. Set <code>escape_cr = TRUE</code> in order to also escape the
 #&gt; RoxygenNote: 7.1.1.9001
 #&gt; Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)
 #&gt; Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;
-#&gt; Built: R 4.0.5; ; 2021-04-15 16:06:05 UTC; unix
+#&gt; Built: R 4.1.0; ; 2021-06-05 02:08:50 UTC; unix
 #&gt; </div><div class='input'>
 <span class='co'># escape newlines and print again</span>
-<span class='fu'>escape_lf</span><span class='op'>(</span><span class='va'>text</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Package: pal\nTitle: Friendly Convenience/Utility Functions\nVersion: 0.0.9055\nAuthors@R: \n    person(given = "Salim",\n           family = "Brüggemann",\n           role = c("aut", "cre"),\n           email = "salim-b@pm.me",\n           comment = c(ORCID = "0000-0002-5329-5987"))\nDescription: A collection of convenience/utility functions complementing\n    base R and the tidyverse.\nLicense: AGPL (&gt;= 3)\nURL: https://rpkg.dev/pal, https://gitlab.com/salim_b/r/pkgs/pal\nBugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues\nDepends: R (&gt;= 4.0)\nImports: checkmate (&gt;= 2.0.0), dplyr (&gt;= 1.0.2), fs (&gt;= 1.4.1), glue\n        (&gt;= 1.4.1), lifecycle (&gt;= 0.2.0), magrittr (&gt;= 1.5), methods,\n        purrr (&gt;= 0.3.4), rlang (&gt;= 0.4.4), stringr (&gt;= 1.4.0), tibble\n        (&gt;= 2.1.3), utils\nSuggests: brio (&gt;= 1.1.0), cli (&gt;= 2.0.2), commonmark (&gt;= 1.7), desc\n        (&gt;= 1.2.0), httr (&gt;= 1.4.1), janeaustenr, knitr (&gt;= 1.28),\n        pander (&gt;= 0.6.3), pkgdown (&gt;= 1.6.1.9000), pkgsearch (&gt;=\n        3.0.3), pkgsnip, readr (&gt;= 1.4.0), rmarkdown (&gt;= 2.1), roxygen2\n        (&gt;= 7.1.1), rprojroot (&gt;= 1.3.2), rstudioapi (&gt;= 0.11),\n        testthat (&gt;= 3.0.0), waldo (&gt;= 0.2.3), withr (&gt;= 2.4.1), xfun\nRemotes: github::r-lib/rprojroot#79, gitlab::salim_b/r/pkgs/pkgsnip\nConfig/testthat/edition: 3\nEncoding: UTF-8\nLazyData: true\nRoxygen: list(markdown = TRUE)\nRoxygenNote: 7.1.1.9001\nAuthor: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)\nMaintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;\nBuilt: R 4.0.5; ; 2021-04-15 16:06:05 UTC; unix\n</div></pre>
+<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>escape_lf</span><span class='op'>(</span><span class='va'>text</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Package: pal\nTitle: Friendly Convenience/Utility Functions\nVersion: 0.0.9058\nAuthors@R: \n    person(given = "Salim",\n           family = "Brüggemann",\n           role = c("aut", "cre"),\n           email = "salim-b@pm.me",\n           comment = c(ORCID = "0000-0002-5329-5987"))\nDescription: A collection of convenience/utility functions complementing\n    base R and the tidyverse.\nLicense: AGPL (&gt;= 3)\nURL: https://rpkg.dev/pal, https://gitlab.com/salim_b/r/pkgs/pal\nBugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues\nDepends: R (&gt;= 4.1)\nImports: checkmate (&gt;= 2.0.0), dplyr (&gt;= 1.0.2), fs (&gt;= 1.4.1), glue\n        (&gt;= 1.4.1), lifecycle (&gt;= 0.2.0), magrittr (&gt;= 1.5), methods,\n        purrr (&gt;= 0.3.4), rlang (&gt;= 0.4.4), stringr (&gt;= 1.4.0), tibble\n        (&gt;= 2.1.3), utils\nSuggests: brio (&gt;= 1.1.0), cli (&gt;= 2.0.2), commonmark (&gt;= 1.7), desc\n        (&gt;= 1.2.0), httr (&gt;= 1.4.1), janeaustenr, knitr (&gt;= 1.28),\n        pander (&gt;= 0.6.3), pkgdown (&gt;= 1.6.1.9000), pkgsearch (&gt;=\n        3.0.3), pkgsnip, readr (&gt;= 1.4.0), rmarkdown (&gt;= 2.1), roxygen2\n        (&gt;= 7.1.1), rprojroot (&gt;= 1.3.2), rstudioapi (&gt;= 0.11),\n        testthat (&gt;= 3.0.0), waldo (&gt;= 0.2.3), withr (&gt;= 2.4.1), xfun\nRemotes: github::r-lib/rprojroot#79, gitlab::salim_b/r/pkgs/pkgsnip\nConfig/testthat/edition: 3\nEncoding: UTF-8\nLazyData: true\nRoxygen: list(markdown = TRUE)\nRoxygenNote: 7.1.1.9001\nAuthor: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)\nMaintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;\nBuilt: R 4.1.0; ; 2021-06-05 02:08:50 UTC; unix\n</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

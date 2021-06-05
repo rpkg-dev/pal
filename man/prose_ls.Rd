@@ -22,7 +22,7 @@ A character scalar.
 Takes a vector or list and concatenates its elements to a single string separated in prose-style.
 }
 \examples{
-prose_ls(1:5)
+pal::prose_ls(1:5)
 }
 \seealso{
 Other string functions:

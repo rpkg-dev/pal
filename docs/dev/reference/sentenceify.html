@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get an object's roxygen2 tag value — roxy_tag_value • pal</title>
+<title>Convert to sentence case with trailing punctuation mark — sentenceify • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Get an object's roxygen2 tag value — roxy_tag_value" />
-<meta name="description" content="Parses text for roxygen2 blocks and extracts the value(s) belonging to the tag_names documenting obj_name.">
-<meta property="og:description" content="Parses text for roxygen2 blocks and extracts the value(s) belonging to the tag_names documenting obj_name." />
+<meta property="og:title" content="Convert to sentence case with trailing punctuation mark — sentenceify" />
+<meta name="description" content="Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.">
+<meta property="og:description" content="Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,50 +135,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get an object's roxygen2 tag value</h1>
+    <h1>Convert to sentence case with trailing punctuation mark</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
-    <div class="hidden name"><code>roxy_tag_value.Rd</code></div>
+    <div class="hidden name"><code>sentenceify.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Parses <code>text</code> for <a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxygen2 blocks</a> and extracts the value(s) belonging to the <code>tag_name</code>s documenting <code>obj_name</code>.</p>
+    <p>Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>roxy_tag_value</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>obj_name</span>, tag_name <span class='op'>=</span> <span class='st'>"param"</span>, param_name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>sentenceify</span><span class='op'>(</span><span class='va'>x</span>, punctuation_mark <span class='op'>=</span> <span class='st'>"."</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>text</th>
-      <td><p>The <span style="R">R</span> source code to extract the object's roxygen2 tag value from. A character vector.</p></td>
+      <th>x</th>
+      <td><p>The input to be converted to <a href='https://en.wikipedia.org/wiki/Letter_case#Case_styles'>sentence case</a>, typically a character vector.</p></td>
     </tr>
     <tr>
-      <th>obj_name</th>
-      <td><p>The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.</p></td>
-    </tr>
-    <tr>
-      <th>tag_name</th>
-      <td><p>The name of the <a href='https://roxygen2.r-lib.org/articles/rd.html'>roxygen2 tag</a> (without the <code><a href='https://rdrr.io/r/base/slotOp.html'>@</a></code>) to extract the value from. A character scalar.</p></td>
-    </tr>
-    <tr>
-      <th>param_name</th>
-      <td><p>The parameter name to extract the value from. Only relevant if <code>tag_name = "param"</code>. A character scalar.</p></td>
+      <th>punctuation_mark</th>
+      <td><p>The punctuation mark to be appended to <code>x</code>. A character scalar.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character scalar if <code>tag_name = "param"</code> and <code>param_name != NULL</code>, otherwise a list.</p>
+    <p>A character vector.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Note that this function doesn't alter any characters in <code>x</code> other than the first and the last.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://stringr.tidyverse.org/reference/case.html'>stringr::str_to_sentence()</a></code> to convert a character vector to all lowercase except for the first character. Note that this also includes lowercasing <a href='https://en.wikipedia.org/wiki/Proper_and_common_nouns'>proper nouns</a>, <a href='https://en.wikipedia.org/wiki/Abbreviation'>abbreviations</a> etc.</p>
+<p><code><a href='https://rdrr.io/pkg/snakecase/man/caseconverter.html'>snakecase::to_sentence_case()</a></code> that builds upon <code><a href='https://stringr.tidyverse.org/reference/case.html'>stringr::str_to_sentence()</a></code> but offers additional options to finetune the conversion. Note that
+<code>abbreviations</code> have to be manually specified in order to be preserved in upper case.</p>
+<p>Other string functions:
+<code><a href='as_chr.html'>as_chr</a>()</code>,
+<code><a href='as_string.html'>as_string</a>()</code>,
+<code><a href='cat_lines.html'>cat_lines</a>()</code>,
+<code><a href='dsv_colnames.html'>dsv_colnames</a>()</code>,
+<code><a href='escape_lf.html'>escape_lf</a>()</code>,
+<code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
+<code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
+<code><a href='prose_ls.html'>prose_ls</a>()</code>,
+<code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>text</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/r-lib/rlang/"</span>,
-                                 <span class='st'>"db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_tag_value</span><span class='op'>(</span>text <span class='op'>=</span> <span class='va'>text</span>,
-                    obj_name <span class='op'>=</span> <span class='st'>"as_function"</span>,
-                    param_name <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "A function or formula.\n\n  If a **function**, it is used as is.\n\n  If a **formula**, e.g. `~ .x + 2`, it is converted to a function\n  with up to two arguments: `.x` (single argument) or `.x` and `.y`\n  (two arguments). The `.` placeholder can be used instead of `.x`.\n  This allows you to create very compact anonymous functions (lambdas) with up\n  to two inputs. Functions created from formulas have a special\n  class. Use `is_lambda()` to test for it.\n\n  Lambdas currently do not support [nse-force],\n  due to the way the arguments are handled internally."</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>sentenceify</span><span class='op'>(</span><span class='st'>"no verb, no sentence"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "No verb, no sentence."</div><div class='input'>
+<span class='co'># punctuation mark won't be duplicated if already existing</span>
+<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>sentenceify</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"I've made my point"</span>,
+                   <span class='st'>"good point."</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "I've made my point." "Good point."        </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

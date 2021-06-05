@@ -16,12 +16,14 @@ A character vector.
 \emph{Recursively} applies \code{\link[=as.character]{as.character()}} to its inputs.
 }
 \examples{
+library(magrittr)
+
 to_convert <-
   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) \%T>\%
   print()
 
 as.character(to_convert)
-as_chr(!!!to_convert)
+pal::as_chr(!!!to_convert)
 }
 \seealso{
 Other string functions:

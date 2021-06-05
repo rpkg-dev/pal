@@ -22,8 +22,8 @@ Returns the column names of a string in a \href{https://en.wikipedia.org/wiki/De
 }
 \examples{
 \donttest{
-httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") \%>\%
-  httr::content(as = "text") \%>\%
+httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") |>
+  httr::content(as = "text") |>
   pal::dsv_colnames()}
 }
 \seealso{
