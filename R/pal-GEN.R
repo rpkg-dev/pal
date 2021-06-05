@@ -7,8 +7,8 @@
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
 # Software Foundation, either version 3 of the License, or any later version.
 # 
-# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-# PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 # 
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
@@ -1456,25 +1456,30 @@ stat_mode <- function(x,
 #' @examples
 #' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
 #'                        "No presents without code.") |>
-#' cat()
+#'   cat()
+#'
+#' # wrap lines at 20 chars
+#' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
+#'                        "No presents without code.", line_width = 20L) |>
+#'   cat()
 #'
 #' # disable empty comment lines between paragraphs:
 #' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
 #'                        "Hohoho.",
 #'                        sep_paragraphs = FALSE) |>
-#' cat()
+#'   cat()
 as_comment_string <- function(...,
                               line_width = 160L,
                               comment_prefix = "# ",
                               sep_paragraphs = TRUE) {
   as_chr(...) %>%
-    stringr::str_wrap(width = line_width) %>%
+    stringr::str_wrap(width = checkmate::assert_count(line_width) - nchar(checkmate::assert_string(comment_prefix))) %>%
     stringr::str_split(pattern = "\n") %>%
     purrr::map(~ paste0(comment_prefix, .x) %>%
                  paste0(collapse = "\n")) %>%
     purrr::map2_chr(.f =
                       function(.x, .y, n_lines) {
-                        if (sep_paragraphs && .y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else paste0(.x, "\n")
+                        if (checkmate::assert_flag(sep_paragraphs) && .y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else paste0(.x, "\n")
                       },
                     .y = seq_along(.),
                     n_lines = length(.)) %>%

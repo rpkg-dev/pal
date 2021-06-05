@@ -29,13 +29,18 @@ Takes a vector of paragraphs, wraps them at the specified line width, prefixes t
 \examples{
 pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} Santa Clause"),
                        "No presents without code.") |>
-cat()
+  cat()
+
+# wrap lines at 20 chars
+pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} Santa Clause"),
+                       "No presents without code.", line_width = 20L) |>
+  cat()
 
 # disable empty comment lines between paragraphs:
 pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} Santa Clause"),
                        "Hohoho.",
                        sep_paragraphs = FALSE) |>
-cat()
+  cat()
 }
 \seealso{
 Other string functions:
