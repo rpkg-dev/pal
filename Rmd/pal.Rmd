@@ -549,9 +549,9 @@ strip_md_footnotes <- function(x) {
 #'
 #' @param input The path to the R Markdown README file to be built. A character scalar.
 #' @param output The path of the built Markdown README. A character scalar.
-#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output`. If `NULL`, it will only be
-#'   built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will be built with the \R option
-#'   `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
+#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output` (i.e. in the same parent
+#'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
+#'   be built with the \R option `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
 #'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
 #' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
@@ -565,8 +565,10 @@ build_readme <- function(input = "README.Rmd",
   
   assert_pkg("knitr")
   assert_pkg("rmarkdown")
+  checkmate::assert_file(input,
+                         access = "r")
   
-  if (is_pkg_dir()) {
+  if (is_pkg_dir(fs::path_dir(input))) {
     
     assert_pkg("desc")
     
@@ -581,8 +583,7 @@ build_readme <- function(input = "README.Rmd",
       
       # generate `output`
       ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
-      rmarkdown::render(input = checkmate::assert_file(input,
-                                                       access = "r"),
+      rmarkdown::render(input = input,
                         output_file = checkmate::assert_path_for_output(output,
                                                                         overwrite = TRUE),
                         quiet = TRUE,
