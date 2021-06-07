@@ -865,11 +865,12 @@ desc_list <- function(file = ".") {
               "Suggests",
               "URL")) %>%
     rlang::set_names() %>%
-    purrr::map(desc_value)
+    purrr::map(desc_value,
+               file = file)
   
   if ("Authors@R" %in% fields) result[["Authors@R"]] <- desc::desc_get_authors(file = file)
-  if (any(c("Depends", "Imports", "Suggests") %in% fields)) result[["dependencies"]] <- desc::desc_get_deps()
-  if ("URL" %in% fields) result[["URL"]] <- desc::desc_get_urls()
+  if (any(c("Depends", "Imports", "Suggests") %in% fields)) result[["dependencies"]] <- desc::desc_get_deps(file = file)
+  if ("URL" %in% fields) result[["URL"]] <- desc::desc_get_urls(file = file)
   
   result
 }
