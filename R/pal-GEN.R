@@ -467,7 +467,7 @@ strip_md_footnotes <- function(x) {
 #' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output`. If `NULL`, it will only be
 #'   built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will be built with the \R option
 #'   `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
-#'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = !isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
+#'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
 #' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
 #' @return The path to `input` as a character scalar, invisibly.

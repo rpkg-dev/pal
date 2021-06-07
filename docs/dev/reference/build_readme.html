@@ -167,7 +167,7 @@
       <th>build_index_md</th>
       <td><p>Whether to build a separate <a href='https://pkgdown.r-lib.org/reference/pkgdown-package.html'>pkgdown</a>-optimized <code>pkgdown/index.md</code> alongside <code>output</code>. If <code>NULL</code>, it will only be
 built if the parent directory of <code>output</code> <a href='is_pkgdown_dir.html'>contains a pkgdown configuration file</a>. Note that it will be built with the <span style="R">R</span> option
-<code>pal.build_readme.is_pkgdown = TRUE</code>, allowing for conditional content inclusion in <code>input</code> – e.g. via the <a href='https://yihui.org/knitr/options/#code-evaluation'>code chunk option</a> <code>eval = !isTRUE(getOption("pal.build_readme.is_pkgdown"))</code>.</p></td>
+<code>pal.build_readme.is_pkgdown = TRUE</code>, allowing for conditional content inclusion in <code>input</code> – e.g. via the <a href='https://yihui.org/knitr/options/#code-evaluation'>code chunk option</a> <code>eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))</code>.</p></td>
     </tr>
     <tr>
       <th>env</th>
