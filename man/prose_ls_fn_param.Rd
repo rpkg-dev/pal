@@ -36,7 +36,7 @@ A character vector. Of length 1 if \code{as_scalar = TRUE}.
 Extracts the default value(s) of a function's definition and returns it in \link[=prose_ls]{prose style listing}.
 }
 \details{
-This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging \href{https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code}{inline \R code evaluation} as follows:\if{html}{\out{<div class="r">}}\preformatted{#' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
+This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging \href{https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code}{inline \R code evaluation} as follows:\if{html}{\out{<div class="sourceCode r">}}\preformatted{#' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
 some_fn <- function(some_param = c("a", "b", "c")) \{
   some_param <- rlang::arg_match(some_param)
   ...
