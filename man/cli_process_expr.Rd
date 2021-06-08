@@ -35,7 +35,7 @@ message. Use an empty string to suppress styling.a}
 \item{failed_class}{The style class to add to the unsuccessful
 termination message. Use an empty string to suppress styling.a}
 
-\item{env}{Environment to evaluate \code{expr}, as well as possible \link[glue:glue]{glue} expressions within \code{msg}, in.}
+\item{env}{Default environment to evaluate \code{expr}, as well as possible \link[glue:glue]{glue} expressions within \code{msg}, in.}
 }
 \value{
 The result of the evaluated \code{expr}.
@@ -53,7 +53,7 @@ msg <- "Spinning the cylinder \U0001F91E … "
 pal::cli_process_expr(msg = msg,
                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-                      {
+                      expr = {
                         if (interactive()) Sys.sleep(1)
                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
                       })}

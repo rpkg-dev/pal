@@ -355,10 +355,6 @@ test_that("`prose_ls_fn_param()` works as expected", {
                                      as_scalar = FALSE),
                    '`NULL`')
 
-
-
-
-
   # test inexistent param
   expect_error(prose_ls_fn_param(param = ".name_repair99",
                                      fn = tibble::as_tibble),
@@ -373,4 +369,45 @@ test_that("`prose_ls_fn_param()` works as expected", {
   expect_error(prose_ls_fn_param(param = "x",
                                  fn = base::as.character),
                regexp = "Primitives .* not supported")
+})
+
+# Extending other R packages ----
+## cli_process_expr ----
+test_that("`cli_process_expr()` works as expected", {
+
+  test <- function() {
+
+    local_string <- "WRONG-fn"
+    fn_string <- "good"
+    local_col_name <- "WRONG-fn"
+    fn_col_name <- "Petal.Width"
+    cli_process_expr(msg = "Omnitest",
+                     expr = {
+
+                       cat("\n")
+                       local_string <- "good"
+                       local_col_name <- "Species"
+
+                       expect_error(iris %>% dplyr::select(!!fn_string))
+
+                       expect_identical(global_string, "good")
+                       expect_identical(fn_string, "good")
+                       expect_identical(local_string, "good")
+                       expect_identical(iris %>% dplyr::select(!!global_col_name) %>% ncol(),
+                                        1L)
+                       expect_identical(iris %>% dplyr::select(!!fn_col_name) %>% ncol(),
+                                        1L)
+                       expect_identical(iris %>% dplyr::select(!!local_col_name) %>% ncol(),
+                                        1L)
+                     })
+  }
+
+  local_string <- "WRONG-global"
+  local_col_name <- "WRONG-global"
+  fn_string <- "WRONG-global"
+  fn_col_name <- "WRONG-global"
+  global_string <- "good"
+  global_col_name <- "Petal.Length"
+
+  test()
 })

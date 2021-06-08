@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9059</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9060</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@ termination message. Use an empty string to suppress styling.a</p></td>
     </tr>
     <tr>
       <th>env</th>
-      <td><p>Environment to evaluate <code>expr</code>, as well as possible <a href='https://glue.tidyverse.org/reference/glue.html'>glue</a> expressions within <code>msg</code>, in.</p></td>
+      <td><p>Default environment to evaluate <code>expr</code>, as well as possible <a href='https://glue.tidyverse.org/reference/glue.html'>glue</a> expressions within <code>msg</code>, in.</p></td>
     </tr>
     </table>
 
@@ -211,7 +211,7 @@ termination message. Use an empty string to suppress styling.a</p></td>
 <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cli_process_expr</span><span class='op'>(</span>msg <span class='op'>=</span> <span class='va'>msg</span>,
                       msg_done <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>msg</span>, <span class='st'>"and pulling the trigger – lucky again. \U0001F60C"</span><span class='op'>)</span>,
                       msg_failed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>msg</span>, <span class='st'>"and pulling the trigger – head blast!"</span><span class='op'>)</span>,
-                      <span class='op'>{</span>
+                      expr <span class='op'>=</span> <span class='op'>{</span>
                         <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
                         <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>1L</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.4</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='st'>"\U0001F92F\u2620"</span><span class='op'>)</span>
                       <span class='op'>}</span><span class='op'>)</span><span class='op'>}</span>

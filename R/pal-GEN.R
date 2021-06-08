@@ -477,25 +477,32 @@ build_readme <- function(input = "README.Rmd",
                          output = "README.md",
                          build_index_md = NULL,
                          env = parent.frame()) {
+  # add args to env
+  rlang::env_bind(.env = env,
+                  input = input,
+                  output = output,
+                  build_index_md = build_index_md)
   
-  assert_pkg("knitr")
-  assert_pkg("rmarkdown")
-  checkmate::assert_file(input,
-                         access = "r")
+  # add `pkg_metadata` to env
+  parent_dir <- fs::path_dir(input)
   
-  if (is_pkg_dir(fs::path_dir(input))) {
+  if (is_pkg_dir(parent_dir)) {
     
     assert_pkg("desc")
     
-    assign(x = "pkg_metadata",
-           value = desc_list(),
-           envir = env)
+    rlang::env_bind(.env = env,
+                    pkg_metadata = desc_list(parent_dir))
   }
   
   cli_process_expr(
     msg = "Building {.file {input}}",
+    env = env,
     expr = {
       
+      assert_pkg("knitr")
+      assert_pkg("rmarkdown")
+      checkmate::assert_file(input,
+                             access = "r")
       # generate `output`
       ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
       rmarkdown::render(input = input,
@@ -2069,7 +2076,7 @@ is_http_success <- function(url,
 #' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
 #'
 #' @param expr An expression to be evaluated.
-#' @param env Environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
+#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
 #' @inheritParams cli::cli_process_start
 #'
 #' @return The result of the evaluated `expr`.
@@ -2085,7 +2092,7 @@ is_http_success <- function(url,
 #' pal::cli_process_expr(msg = msg,
 #'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
 #'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                       {
+#'                       expr = {
 #'                         if (interactive()) Sys.sleep(1)
 #'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
 #'                       })}
@@ -2109,14 +2116,16 @@ cli_process_expr <- function(expr,
                                                     failed_class = failed_class,
                                                     .envir = env)
   
-  rlang::with_handlers(.expr = eval(expr = rlang::enexpr(expr),
-                                    envir = env),
-                       error = ~ {
-                         cli::cli_process_failed(status_bar_container_id)
-                         rlang::cnd_signal(.x)
-                       })
+  result <- rlang::with_handlers(.expr = rlang::eval_tidy(expr = {{ expr }},
+                                                          env = env),
+                                 error = ~ {
+                                   cli::cli_process_failed(status_bar_container_id)
+                                   rlang::cnd_signal(.x)
+                                 })
   
   cli::cli_process_done(status_bar_container_id)
+  
+  invisible(result)
 }
 
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
