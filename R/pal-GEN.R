@@ -436,13 +436,13 @@ strip_md <- function(x,
   
   assert_pkg("commonmark")
   
-  purrr::map_chr(.x = x,
-                 .f = ~ .x %>% purrr::when(is.na(.) ~ .,
-                                           ~ commonmark::markdown_text(text = .,
-                                                                       extensions = TRUE) %>%
-                                             stringr::str_remove(pattern = "\n$") %>%
-                                             purrr::when(strip_footnotes ~ strip_md_footnotes(.),
-                                                         ~ .)))
+  checkmate::assert_character(x) %>%
+    purrr::map_chr(~ .x %>% purrr::when(is.na(.) ~ .,
+                                        ~ commonmark::markdown_text(text = .,
+                                                                    extensions = TRUE) %>%
+                                          stringr::str_remove(pattern = "\n$") %>%
+                                          purrr::when(checkmate::assert_flag(strip_footnotes) ~ strip_md_footnotes(.),
+                                                      ~ .)))
 }
 
 #' Strip Markdown footnotes from character vector
@@ -457,8 +457,8 @@ strip_md <- function(x,
 #' @export
 strip_md_footnotes <- function(x) {
   
-  stringr::str_remove_all(string = x,
-                          pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
+  checkmate::assert_character(x) %>%
+    stringr::str_remove_all(pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
 }
 
 #' Build `README.Rmd`
