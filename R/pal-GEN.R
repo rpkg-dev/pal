@@ -478,10 +478,11 @@ build_readme <- function(input = "README.Rmd",
                          build_index_md = NULL,
                          env = parent.frame()) {
   # add args to env
-  rlang::env_bind(.env = env,
-                  input = input,
-                  output = output,
-                  build_index_md = build_index_md)
+  rlang::env_bind(.env = checkmate::assert_environment(env),
+                  input = checkmate::assert_string(input),
+                  output = checkmate::assert_path_for_output(output,
+                                                                        overwrite = TRUE),
+                  build_index_md = checkmate::assert_flag(build_index_md, null.ok = TRUE))
   
   # add `pkg_metadata` to env
   parent_dir <- fs::path_dir(input)
@@ -501,18 +502,16 @@ build_readme <- function(input = "README.Rmd",
       
       assert_pkg("knitr")
       assert_pkg("rmarkdown")
-      checkmate::assert_file(input,
-                             access = "r")
+      
       # generate `output`
       ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
       rmarkdown::render(input = input,
-                        output_file = checkmate::assert_path_for_output(output,
-                                                                        overwrite = TRUE),
+                        output_file = output,
                         quiet = TRUE,
                         envir = env)
       
       # generate `index.md` if indicated
-      if (!isFALSE(checkmate::assert_flag(build_index_md, null.ok = TRUE))) {
+      if (!isFALSE(build_index_md)) {
         
         output_dir <- fs::path_dir(output)
         
