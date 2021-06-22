@@ -1,5 +1,6 @@
 list(
-  rd_family_title = list(md = "Other (Pandoc) Markdown functions:",
+  rd_family_title = list(gh = "Other GitHub functions:",
+                         md = "Other (Pandoc) Markdown functions:",
                          rmd_knitr = "Other R Markdown and knitr functions:",
                          rpkgs = "Other R package functions:",
                          stat = "Other statistical computing / numeric functions:",
