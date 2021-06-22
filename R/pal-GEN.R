@@ -2385,7 +2385,7 @@ gh_text_file <- function(path,
 #' Read in text files from a GitHub repository
 #'
 #' @description
-#' Downloads text files under the specified path from a GitHub repository via [GitHub's GraphQL API v4](https://docs.github.com/graphql) and returns a named
+#' Downloads all text files under the specified path from a GitHub repository via [GitHub's GraphQL API v4](https://docs.github.com/graphql) and returns a named
 #' character vector with the file paths as names and the file contents as values.
 #'
 #' This is a simple convenience function combining [gh_ls()] and [gh_text_file()]. 
@@ -2479,6 +2479,7 @@ gh_ls <- function(path,
                   recurse = TRUE,
                   incl_dirs = TRUE,
                   incl_files = TRUE) {
+  
   checkmate::assert_flag(recurse)
   checkmate::assert_flag(incl_dirs)
   checkmate::assert_flag(incl_files)
@@ -2526,7 +2527,6 @@ gh_ls_single <- function(path,
                          owner,
                          name,
                          branch) {
-  
   assert_pkg("gh")
   checkmate::assert_string(owner)
   checkmate::assert_string(name)

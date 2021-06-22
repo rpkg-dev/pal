@@ -23,7 +23,7 @@ A named character vector of length equal to the number of files found under \cod
 values.
 }
 \description{
-Downloads text files under the specified path from a GitHub repository via \href{https://docs.github.com/graphql}{GitHub's GraphQL API v4} and returns a named
+Downloads all text files under the specified path from a GitHub repository via \href{https://docs.github.com/graphql}{GitHub's GraphQL API v4} and returns a named
 character vector with the file paths as names and the file contents as values.
 
 This is a simple convenience function combining \code{\link[=gh_ls]{gh_ls()}} and \code{\link[=gh_text_file]{gh_text_file()}}.
