@@ -2079,7 +2079,7 @@ is_http_success <- function(url,
 #' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
 #' @inheritParams cli::cli_process_start
 #'
-#' @return The result of the evaluated `expr`.
+#' @return The result of the evaluated `expr`, invisibly.
 #' @export
 #'
 #' @examples

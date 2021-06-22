@@ -38,7 +38,7 @@ termination message. Use an empty string to suppress styling.a}
 \item{env}{Default environment to evaluate \code{expr}, as well as possible \link[glue:glue]{glue} expressions within \code{msg}, in.}
 }
 \value{
-The result of the evaluated \code{expr}.
+The result of the evaluated \code{expr}, invisibly.
 }
 \description{
 Convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_start()}}, \code{\link[cli:cli_process_start]{cli::cli_process_done()}} and \code{\link[cli:cli_process_start]{cli::cli_process_failed()}}.
