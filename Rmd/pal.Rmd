@@ -50,9 +50,11 @@ Cf. <https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262>
 
 ```{r}
 utils::globalVariables(names = c(".",
+                                 "data",
                                  "everything",
                                  "package",
                                  "Package",
+                                 "repository",
                                  "where"))
 ```
 
