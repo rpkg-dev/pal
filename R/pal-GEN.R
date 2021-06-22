@@ -2360,7 +2360,7 @@ gh_text_file <- function(path,
                          owner,
                          name,
                          branch = "main") {
-  
+  assert_pkg("gh")
   checkmate::assert_string(owner)
   checkmate::assert_string(name)
   checkmate::assert_string(branch)
@@ -2477,7 +2477,6 @@ gh_ls <- function(path,
                   recurse = TRUE,
                   incl_dirs = TRUE,
                   incl_files = TRUE) {
-  
   checkmate::assert_flag(recurse)
   checkmate::assert_flag(incl_dirs)
   checkmate::assert_flag(incl_files)
@@ -2526,6 +2525,7 @@ gh_ls_single <- function(path,
                          name,
                          branch) {
   
+  assert_pkg("gh")
   checkmate::assert_string(owner)
   checkmate::assert_string(name)
   checkmate::assert_string(branch)
