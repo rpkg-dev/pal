@@ -2790,7 +2790,6 @@ gh_text_files <- function(path,
                           name,
                           branch = "main",
                           recurse = FALSE) {
-  
   gh_ls(path = path,
         owner = owner,
         name = name,
@@ -2856,14 +2855,34 @@ gh_ls <- function(path,
                   incl_dirs = TRUE,
                   incl_files = TRUE) {
   
+  assert_pkg("gh")
+  checkmate::assert_string(owner)
+  checkmate::assert_string(name)
+  checkmate::assert_string(branch)
   checkmate::assert_flag(recurse)
   checkmate::assert_flag(incl_dirs)
   checkmate::assert_flag(incl_files)
+  path %<>% normalize_tree_path()
   
-  entries <- gh_ls_single(path = path,
-                          owner = owner,
-                          name = name,
-                          branch = branch)
+  entries <-
+    gh::gh_gql(query = glue::glue('
+    {{
+      repository(name: "{name}", owner: "{owner}") {{
+        object(expression: "{branch}:{path}") {{
+          ... on Tree {{
+            entries {{
+              path
+              type
+            }}
+          }}
+        }}
+      }}
+    }}')) %$%
+    data %$%
+    repository %>%
+    purrr::pluck("object") %>%
+    purrr::pluck("entries")
+  
   dirs <-
     entries %>%
     purrr::keep(~ .x$type %in% c("tree")) %>%
@@ -2896,36 +2915,6 @@ gh_ls <- function(path,
   }
   
   result %>% sort()
-}
-
-# non-recursive helper function
-gh_ls_single <- function(path,
-                         owner,
-                         name,
-                         branch) {
-  assert_pkg("gh")
-  checkmate::assert_string(owner)
-  checkmate::assert_string(name)
-  checkmate::assert_string(branch)
-  path %<>% normalize_tree_path()
-  
-  gh::gh_gql(query = glue::glue('
-    {{
-      repository(name: "{name}", owner: "{owner}") {{
-        object(expression: "{branch}:{path}") {{
-          ... on Tree {{
-            entries {{
-              path
-              type
-            }}
-          }}
-        }}
-      }}
-    }}')) %$%
-    data %$%
-    repository %>%
-    purrr::pluck("object") %>%
-    purrr::pluck("entries")
 }
 ```
 
