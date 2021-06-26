@@ -14,7 +14,7 @@ gh_text_file(path, owner, name, rev = "HEAD")
 \item{name}{The repository name. A character scalar.}
 
 \item{rev}{The \href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{Git revision expression}
-matching the desired Git tree object, e.g. a branch name or another symbolic reference like \verb{HEAD@\{yesterday\}} or \code{HEAD~10}. A character scalar.}
+matching the desired Git tree object, e.g. a branch name or another symbolic reference like \code{"HEAD@{yesterday}"} or \code{"HEAD~10"}. A character scalar.}
 }
 \value{
 A character scalar, or an empty character vector in case no text file is found under \code{rev:path}.

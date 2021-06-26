@@ -14,7 +14,7 @@ gh_text_files(path, owner, name, rev = "HEAD", recurse = FALSE)
 \item{name}{The repository name. A character scalar.}
 
 \item{rev}{The \href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{Git revision expression}
-matching the desired Git tree object, e.g. a branch name or another symbolic reference like \verb{HEAD@\{yesterday\}} or \code{HEAD~10}. A character scalar.}
+matching the desired Git tree object, e.g. a branch name or another symbolic reference like \code{"HEAD@{yesterday}"} or \code{"HEAD~10"}. A character scalar.}
 
 \item{recurse}{Whether or not to also include text files in subfolders of \code{path}. A logical scalar. Enabling this option may result in many API calls and
 thus produce a significant delay.}

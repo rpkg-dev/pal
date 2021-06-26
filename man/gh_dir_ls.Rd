@@ -22,7 +22,7 @@ gh_dir_ls(
 \item{name}{The repository name. A character scalar.}
 
 \item{rev}{The \href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{Git revision expression}
-matching the desired Git tree object, e.g. a branch name or another symbolic reference like \verb{HEAD@\{yesterday\}} or \code{HEAD~10}. A character scalar.}
+matching the desired Git tree object, e.g. a branch name or another symbolic reference like \code{"HEAD@{yesterday}"} or \code{"HEAD~10"}. A character scalar.}
 
 \item{recurse}{Whether or not to recurse into subdirectories of \code{path}.}
 

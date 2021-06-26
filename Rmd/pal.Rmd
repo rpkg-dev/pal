@@ -2843,7 +2843,7 @@ gh_text_files <- function(path,
 #' @param owner The repository owner's GitHub user or organization name. A character scalar.
 #' @param name The repository name. A character scalar.
 #' @param rev The [Git revision expression](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem)
-#'   matching the desired Git tree object, e.g. a branch name or another symbolic reference like `HEAD@{yesterday}` or `HEAD~10`. A character scalar.
+#'   matching the desired Git tree object, e.g. a branch name or another symbolic reference like `"HEAD@{yesterday}"` or `"HEAD~10"`. A character scalar.
 #' @param recurse Whether or not to recurse into subdirectories of `path`.
 #' @param incl_dirs Whether or not to list directories (and subdirectories if `recurse = TRUE`).
 #' @param incl_files Whether or not to list files (also inside subdirectories if `recurse = TRUE`).
