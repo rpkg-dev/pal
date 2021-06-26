@@ -2695,6 +2695,29 @@ check_dot_named <- function(dot,
 
 ## gh
 
+NOTES:
+
+-   Use the [GitHub GraphQL API Explorer](https://docs.github.com/en/graphql/overview/explorer) to test raw queries like
+
+    ``` {.graphql}
+    {
+      repository(name: "pal", owner: "salim-b") {
+        object(expression: "master:tests") {
+          ... on Tree {
+            entries {
+              path
+              type
+            }
+          }
+        }
+      }
+    }
+    ```
+
+-   The documentation about the `expression` argument of the `object` field of the [`Repository` object
+    type](https://docs.github.com/en/graphql/reference/objects#repository) says it would accept "a Git revision expression suitable for rev-parse", but more
+    specifically only seems to support a `<rev>:<path>` specification and not [`<sha1>` etc.](https://git-scm.com/docs/git-rev-parse#_specifying_revisions)
+
 ### Read in a text file from a GitHub repository
 
 Inspiration: <https://gist.github.com/Integralist/9482061#gistcomment-2750049>
@@ -2806,29 +2829,6 @@ gh_text_files <- function(path,
 ```
 
 ### List files and directories in a GitHub repository
-
-NOTES:
-
--   Use the [GitHub GraphQL API Explorer](https://docs.github.com/en/graphql/overview/explorer) to test raw queries like
-
-    ``` {.graphql}
-    {
-      repository(name: "pal", owner: "salim-b") {
-        object(expression: "master:tests") {
-          ... on Tree {
-            entries {
-              path
-              type
-            }
-          }
-        }
-      }
-    }
-    ```
-
--   The documentation about the `expression` argument of the `object` field of the [`Repository` object
-    type](https://docs.github.com/en/graphql/reference/objects#repository) says it would accept "a Git revision expression suitable for rev-parse", but more
-    specifically only seems to support a `<rev>:<path>` specification and not [`<sha1>` etc.](https://git-scm.com/docs/git-rev-parse#_specifying_revisions)
 
 ```{r}
 #' List files and directories in a GitHub repository
