@@ -64,14 +64,3 @@ pal::prose_ls_fn_param(param = ".name_repair",
                        as_scalar = FALSE) |>
 pal::cat_lines()
 }
-\seealso{
-Other R package functions:
-\code{\link{assert_pkg}()},
-\code{\link{desc_list}()},
-\code{\link{desc_value}()},
-\code{\link{is_pkg_dir}()},
-\code{\link{is_pkg_installed}()},
-\code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()}
-}
-\concept{rpkgs}

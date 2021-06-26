@@ -43,7 +43,6 @@ Other R package functions:
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()},
-\code{\link{prose_ls_fn_param}()}
+\code{\link{ls_pkg}()}
 }
 \concept{rpkgs}

@@ -1085,119 +1085,6 @@ is_pkgdown_dir <- function(path = ".") {
     any()
 }
 
-#' List a function's default parameter values in prose-style
-#'
-#' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
-#'
-#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
-#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
-#'
-#' ```r
-#' #' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
-#' some_fn <- function(some_param = c("a", "b", "c")) {
-#'   some_param <- rlang::arg_match(some_param)
-#'   ...
-#' }
-#' ```
-#'
-#' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-#' `` `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% pal::as_md_list()` `` in the example above.
-#'
-#' # Caveats
-#'
-#' - This function does not work for [Primitives][base::.Primitive].
-#' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
-#'   this function.
-#'
-#' @param param The parameter name. A character scalar.
-#' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
-#' @param env The [environment][base::environment] `fn` is defined in. See [formals()] for details.
-#' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
-#' @param wrap The string (usually a single character) in which `param`s default values are to be wrapped.
-#' @param separator The separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
-#' @param last_separator The separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
-#'
-#' @return A character vector. Of length 1 if `as_scalar = TRUE`.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::prose_ls_fn_param(param = ".name_repair",
-#'                        fn = tibble::as_tibble) |>
-#' pal::cat_lines()
-#'
-#' pal::prose_ls_fn_param(param = ".name_repair",
-#'                        fn = tibble::as_tibble,
-#'                        as_scalar = FALSE) |>
-#' pal::cat_lines()
-prose_ls_fn_param <- function(param,
-                              fn = sys.function(sys.parent()),
-                              env = parent.frame(),
-                              as_scalar = TRUE,
-                              wrap = "`",
-                              separator = ",",
-                              last_separator = " or ") {
-  
-  checkmate::assert_string(param)
-  checkmate::assert_flag(as_scalar)
-  
-  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
-  if (is.character(fn)) {
-    fn %<>% get(mode = "function",
-                envir = env)
-  }
-  
-  if (is.primitive(fn)) rlang::abort("Listing parameters of R Primitives is not supported. Sorry.")
-  
-  default_vals <- formals(fun = fn,
-                          envir = env)
-  
-  if (param %in% names(default_vals)) {
-    default_vals <- default_vals[[param]]
-  } else {
-    fn_name <- deparse1(expr = substitute(fn),
-                        backtick = FALSE)
-    rlang::abort(glue::glue("The function `{fn_name}()` does not have a parameter named \"{param}\"."))
-  }
-  
-  if (missing(default_vals)) {
-    fn_name <- deparse1(expr = substitute(fn),
-                        backtick = FALSE)
-    rlang::abort(glue::glue("`{fn_name}()`'s parameter `{param}` does not have a default value."))
-  }
-  
-  # evaluate default param if it results in a character vector
-  if (is.language(default_vals)) {
-    
-    evaluated_default_vals <- rlang::with_handlers(.expr = eval(expr = default_vals,
-                                                                envir = env),
-                                                   error = ~ NULL)
-    
-    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
-  }
-  
-  if (is.character(default_vals)) {
-    default_vals %<>% wrap_chr()
-  } else {
-    default_vals %<>% deparse1(backtick = FALSE,
-                               control = c("keepNA",
-                                           "keepInteger",
-                                           "niceNames",
-                                           "showAttributes",
-                                           "warnIncomplete"))
-  }
-  
-  if (as_scalar) {
-    default_vals %<>% prose_ls(wrap = wrap,
-                               separator = separator,
-                               last_separator = last_separator)
-  } else {
-    default_vals %<>% wrap_chr(wrap = wrap)
-  }
-  
-  default_vals
-}
-
 #' List a subset of all installed packages
 #'
 #' @param pkg A character vector of package names.
@@ -2004,6 +1891,118 @@ capture_print <- function(x,
                         type = "output",
                         split = FALSE) %>%
     paste0(collapse = collapse)
+}
+
+#' List a function's default parameter values in prose-style
+#'
+#' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
+#'
+#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
+#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
+#'
+#' ```r
+#' #' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
+#' some_fn <- function(some_param = c("a", "b", "c")) {
+#'   some_param <- rlang::arg_match(some_param)
+#'   ...
+#' }
+#' ```
+#'
+#' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
+#' `` `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% pal::as_md_list()` `` in the example above.
+#'
+#' # Caveats
+#'
+#' - This function does not work for [Primitives][base::.Primitive].
+#' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
+#'   this function.
+#'
+#' @param param The parameter name. A character scalar.
+#' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
+#' @param env The [environment][base::environment] `fn` is defined in. See [formals()] for details.
+#' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
+#' @param wrap The string (usually a single character) in which `param`s default values are to be wrapped.
+#' @param separator The separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param last_separator The separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
+#'
+#' @return A character vector. Of length 1 if `as_scalar = TRUE`.
+#' @export
+#'
+#' @examples
+#' pal::prose_ls_fn_param(param = ".name_repair",
+#'                        fn = tibble::as_tibble) |>
+#' pal::cat_lines()
+#'
+#' pal::prose_ls_fn_param(param = ".name_repair",
+#'                        fn = tibble::as_tibble,
+#'                        as_scalar = FALSE) |>
+#' pal::cat_lines()
+prose_ls_fn_param <- function(param,
+                              fn = sys.function(sys.parent()),
+                              env = parent.frame(),
+                              as_scalar = TRUE,
+                              wrap = "`",
+                              separator = ",",
+                              last_separator = " or ") {
+  
+  checkmate::assert_string(param)
+  checkmate::assert_flag(as_scalar)
+  
+  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
+  if (is.character(fn)) {
+    fn %<>% get(mode = "function",
+                envir = env)
+  }
+  
+  if (is.primitive(fn)) rlang::abort("Listing parameters of R Primitives is not supported. Sorry.")
+  
+  default_vals <- formals(fun = fn,
+                          envir = env)
+  
+  if (param %in% names(default_vals)) {
+    default_vals <- default_vals[[param]]
+  } else {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    rlang::abort(glue::glue("The function `{fn_name}()` does not have a parameter named \"{param}\"."))
+  }
+  
+  if (missing(default_vals)) {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    rlang::abort(glue::glue("`{fn_name}()`'s parameter `{param}` does not have a default value."))
+  }
+  
+  # evaluate default param if it results in a character vector
+  if (is.language(default_vals)) {
+    
+    evaluated_default_vals <- rlang::with_handlers(.expr = eval(expr = default_vals,
+                                                                envir = env),
+                                                   error = ~ NULL)
+    
+    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
+  }
+  
+  if (is.character(default_vals)) {
+    default_vals %<>% wrap_chr()
+  } else {
+    default_vals %<>% deparse1(backtick = FALSE,
+                               control = c("keepNA",
+                                           "keepInteger",
+                                           "niceNames",
+                                           "showAttributes",
+                                           "warnIncomplete"))
+  }
+  
+  if (as_scalar) {
+    default_vals %<>% prose_ls(wrap = wrap,
+                               separator = separator,
+                               last_separator = last_separator)
+  } else {
+    default_vals %<>% wrap_chr(wrap = wrap)
+  }
+  
+  default_vals
 }
 
 #' Order a vector by another vector
