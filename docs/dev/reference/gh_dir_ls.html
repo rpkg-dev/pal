@@ -58,8 +58,8 @@
   
 
 <meta property="og:title" content="List files and directories in a GitHub repository — gh_dir_ls" />
-<meta name="description" content="List files and directories in a GitHub repository">
-<meta property="og:description" content="List files and directories in a GitHub repository" />
+<meta name="description" content="Lists file and directory names found under rev:path in a GitHub repository.">
+<meta property="og:description" content="Lists file and directory names found under rev:path in a GitHub repository." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9061</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9062</span>
       </span>
     </div>
 
@@ -141,7 +141,8 @@
     </div>
 
     <div class="ref-description">
-    <p>List files and directories in a GitHub repository</p>
+    <p>Lists file and directory names found under
+<a href='https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem'><code>rev:path</code></a> in a GitHub repository.</p>
     </div>
 
     <pre class="usage"><span class='fu'>gh_dir_ls</span><span class='op'>(</span>
@@ -191,6 +192,9 @@ matching the desired Git tree object, e.g. a branch name or another symbolic ref
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A character vector of paths from the repository root to the files and subdirectories found under <code>rev:path</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized <a href='https://gh.r-lib.org/reference/gh_token.html'>GitHub Personal Access Token (PAT)</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other GitHub functions:

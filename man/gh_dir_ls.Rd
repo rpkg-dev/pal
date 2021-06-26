@@ -34,7 +34,11 @@ matching the desired Git tree object, e.g. a branch name or another symbolic ref
 A character vector of paths from the repository root to the files and subdirectories found under \code{rev:path}.
 }
 \description{
-List files and directories in a GitHub repository
+Lists file and directory names found under
+\href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{\code{rev:path}} in a GitHub repository.
+}
+\details{
+Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized \link[gh:gh_token]{GitHub Personal Access Token (PAT)}.
 }
 \examples{
 # you can opt-out from directory recursion

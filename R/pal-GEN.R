@@ -2434,6 +2434,12 @@ gh_text_files <- function(path,
 
 #' List files and directories in a GitHub repository
 #'
+#' Lists file and directory names found under
+#' [`rev:path`](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem) in a GitHub repository.
+#'
+#' Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized [GitHub Personal Access Token
+#' (PAT)][gh::gh_token].
+#'
 #' @param path The path from the repository's root to the desired directory. A [path][fs::fs_path] or character scalar.
 #' @param owner The repository owner's GitHub user or organization name. A character scalar.
 #' @param name The repository name. A character scalar.
