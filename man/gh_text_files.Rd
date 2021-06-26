@@ -4,29 +4,30 @@
 \alias{gh_text_files}
 \title{Read in text files from a GitHub repository}
 \usage{
-gh_text_files(path, owner, name, branch = "main", recurse = FALSE)
+gh_text_files(path, owner, name, rev = "HEAD", recurse = FALSE)
 }
 \arguments{
-\item{path}{The path from the repository's root to the desired directory or file. A \link[fs:fs_path]{path} or character scalar.}
+\item{path}{The path from the repository's root to the desired directory. A \link[fs:fs_path]{path} or character scalar.}
 
 \item{owner}{The repository owner's GitHub user or organization name. A character scalar.}
 
 \item{name}{The repository name. A character scalar.}
 
-\item{branch}{The repository's desired branch name. A character scalar.}
+\item{rev}{The \href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{Git revision expression}
+matching the desired Git tree object, e.g. a branch name or another symbolic reference like \verb{HEAD@\{yesterday\}} or \code{HEAD~10}. A character scalar.}
 
 \item{recurse}{Whether or not to also include text files in subfolders of \code{path}. A logical scalar. Enabling this option may result in many API calls and
 thus produce a significant delay.}
 }
 \value{
-A named character vector of length equal to the number of files found under \code{branch:path} with the file paths as names and the file contents as
+A named character vector of length equal to the number of files found under \code{rev:path} with the file paths as names and the file contents as
 values.
 }
 \description{
 Downloads all text files under the specified path from a GitHub repository via \href{https://docs.github.com/graphql}{GitHub's GraphQL API v4} and returns a named
 character vector with the file paths as names and the file contents as values.
 
-This is a simple convenience function combining \code{\link[=gh_ls]{gh_ls()}} and \code{\link[=gh_text_file]{gh_text_file()}}.
+This is a simple convenience function combining \code{\link[=gh_dir_ls]{gh_dir_ls()}} and \code{\link[=gh_text_file]{gh_text_file()}}.
 }
 \details{
 Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized \link[gh:gh_token]{GitHub Personal Access Token (PAT)}.
@@ -37,20 +38,18 @@ Note that nothing is returned in case of a \href{https://en.wikipedia.org/wiki/B
 \examples{
 pal::gh_text_files(path = "tests",
                    owner = "salim-b",
-                   name = "pal",
-                   branch = "master")
+                   name = "pal")
 
 # you have to opt-in into directory recursion
 pal::gh_text_files(path = "tests",
                    owner = "salim-b",
                    name = "pal",
-                   branch = "master",
                    recurse = TRUE) |>
   str()
 }
 \seealso{
 Other GitHub functions:
-\code{\link{gh_ls}()},
+\code{\link{gh_dir_ls}()},
 \code{\link{gh_text_file}()}
 }
 \concept{gh}

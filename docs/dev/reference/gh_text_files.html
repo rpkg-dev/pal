@@ -58,8 +58,8 @@
   
 
 <meta property="og:title" content="Read in text files from a GitHub repository — gh_text_files" />
-<meta name="description" content="Downloads text files under the specified path from a GitHub repository via GitHub's GraphQL API v4 and returns a named character vector with the file paths as names and the file contents as values. This is a simple convenience function combining gh_ls() and gh_text_file().">
-<meta property="og:description" content="Downloads text files under the specified path from a GitHub repository via GitHub's GraphQL API v4 and returns a named character vector with the file paths as names and the file contents as values. This is a simple convenience function combining gh_ls() and gh_text_file()." />
+<meta name="description" content="Downloads all text files under the specified path from a GitHub repository via GitHub's GraphQL API v4 and returns a named character vector with the file paths as names and the file contents as values. This is a simple convenience function combining gh_dir_ls() and gh_text_file().">
+<meta property="og:description" content="Downloads all text files under the specified path from a GitHub repository via GitHub's GraphQL API v4 and returns a named character vector with the file paths as names and the file contents as values. This is a simple convenience function combining gh_dir_ls() and gh_text_file()." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -141,19 +141,19 @@
     </div>
 
     <div class="ref-description">
-    <p>Downloads text files under the specified path from a GitHub repository via <a href='https://docs.github.com/graphql'>GitHub's GraphQL API v4</a> and returns a named
+    <p>Downloads all text files under the specified path from a GitHub repository via <a href='https://docs.github.com/graphql'>GitHub's GraphQL API v4</a> and returns a named
 character vector with the file paths as names and the file contents as values.</p>
-<p>This is a simple convenience function combining <code><a href='gh_ls.html'>gh_ls()</a></code> and <code><a href='gh_text_file.html'>gh_text_file()</a></code>.</p>
+<p>This is a simple convenience function combining <code><a href='gh_dir_ls.html'>gh_dir_ls()</a></code> and <code><a href='gh_text_file.html'>gh_text_file()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_text_files</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>owner</span>, <span class='va'>name</span>, branch <span class='op'>=</span> <span class='st'>"main"</span>, recurse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>gh_text_files</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>owner</span>, <span class='va'>name</span>, rev <span class='op'>=</span> <span class='st'>"HEAD"</span>, recurse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>The path from the repository's root to the desired directory or file. A <a href='http://fs.r-lib.org/reference/fs_path.html'>path</a> or character scalar.</p></td>
+      <td><p>The path from the repository's root to the desired directory. A <a href='http://fs.r-lib.org/reference/fs_path.html'>path</a> or character scalar.</p></td>
     </tr>
     <tr>
       <th>owner</th>
@@ -164,8 +164,9 @@ character vector with the file paths as names and the file contents as values.</
       <td><p>The repository name. A character scalar.</p></td>
     </tr>
     <tr>
-      <th>branch</th>
-      <td><p>The repository's desired branch name. A character scalar.</p></td>
+      <th>rev</th>
+      <td><p>The <a href='https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem'>Git revision expression</a>
+matching the desired Git tree object, e.g. a branch name or another symbolic reference like <code>HEAD@{yesterday}</code> or <code>HEAD~10</code>. A character scalar.</p></td>
     </tr>
     <tr>
       <th>recurse</th>
@@ -176,7 +177,7 @@ thus produce a significant delay.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named character vector of length equal to the number of files found under <code>branch:path</code> with the file paths as names and the file contents as
+    <p>A named character vector of length equal to the number of files found under <code>rev:path</code> with the file paths as names and the file contents as
 values.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -186,21 +187,19 @@ values.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other GitHub functions:
-<code><a href='gh_ls.html'>gh_ls</a>()</code>,
+<code><a href='gh_dir_ls.html'>gh_dir_ls</a>()</code>,
 <code><a href='gh_text_file.html'>gh_text_file</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_text_files</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"tests"</span>,
                    owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
-                   name <span class='op'>=</span> <span class='st'>"pal"</span>,
-                   branch <span class='op'>=</span> <span class='st'>"master"</span><span class='op'>)</span>
+                   name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                                           tests/testthat.R 
 #&gt; "library(testthat)\nlibrary(pal)\n\ntest_check(\"pal\")\n" </div><div class='input'>
 <span class='co'># you have to opt-in into directory recursion</span>
 <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_text_files</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"tests"</span>,
                    owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
                    name <span class='op'>=</span> <span class='st'>"pal"</span>,
-                   branch <span class='op'>=</span> <span class='st'>"master"</span>,
                    recurse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> |&gt;
   <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  Named chr [1:2] "library(testthat)\nlibrary(pal)\n\ntest_check(\"pal\")\n" ...

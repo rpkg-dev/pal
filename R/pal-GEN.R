@@ -2346,9 +2346,9 @@ check_dot_named <- function(dot,
 #' Note that nothing is returned in case of a [_binary_ file](https://en.wikipedia.org/wiki/Binary_file), as if no file at all existed under the given
 #' `path`.
 #'
-#' @inheritParams gh_ls
+#' @inheritParams gh_dir_ls
 #'
-#' @return A character scalar, or an empty character vector in case no text file is found under `branch:path`.
+#' @return A character scalar, or an empty character vector in case no text file is found under `rev:path`.
 #' @family gh
 #' @export
 #'
@@ -2356,22 +2356,22 @@ check_dot_named <- function(dot,
 #' pal::gh_text_file(path = "pal.Rproj",
 #'                   owner = "salim-b",
 #'                   name = "pal",
-#'                   branch = "master") |>
+#'                   rev = "HEAD~2") |>
 #'   cat()
 gh_text_file <- function(path,
                          owner,
                          name,
-                         branch = "main") {
+                         rev = "HEAD") {
   assert_pkg("gh")
   checkmate::assert_string(owner)
   checkmate::assert_string(name)
-  checkmate::assert_string(branch)
+  checkmate::assert_string(rev)
   path %<>% normalize_tree_path()
   
   gh::gh_gql(query = glue::glue('
     {{
       repository(name: "{name}", owner: "{owner}") {{
-        object(expression: "{branch}:{path}") {{
+        object(expression: "{rev}:{path}") {{
           ... on Blob {{
             text
           }}
@@ -2388,14 +2388,14 @@ gh_text_file <- function(path,
 #' Downloads all text files under the specified path from a GitHub repository via [GitHub's GraphQL API v4](https://docs.github.com/graphql) and returns a named
 #' character vector with the file paths as names and the file contents as values.
 #'
-#' This is a simple convenience function combining [gh_ls()] and [gh_text_file()]. 
+#' This is a simple convenience function combining [gh_dir_ls()] and [gh_text_file()]. 
 #'
 #' @param recurse Whether or not to also include text files in subfolders of `path`. A logical scalar. Enabling this option may result in many API calls and
 #'   thus produce a significant delay.
-#' @inheritParams gh_ls
+#' @inheritParams gh_dir_ls
 #' @inherit gh_text_file details
 #'
-#' @return A named character vector of length equal to the number of files found under `branch:path` with the file paths as names and the file contents as
+#' @return A named character vector of length equal to the number of files found under `rev:path` with the file paths as names and the file contents as
 #'   values.
 #' @family gh
 #' @export
@@ -2403,86 +2403,81 @@ gh_text_file <- function(path,
 #' @examples
 #' pal::gh_text_files(path = "tests",
 #'                    owner = "salim-b",
-#'                    name = "pal",
-#'                    branch = "master")
+#'                    name = "pal")
 #' 
 #' # you have to opt-in into directory recursion
 #' pal::gh_text_files(path = "tests",
 #'                    owner = "salim-b",
 #'                    name = "pal",
-#'                    branch = "master",
 #'                    recurse = TRUE) |>
 #'   str()
 gh_text_files <- function(path,
                           owner,
                           name,
-                          branch = "main",
+                          rev = "HEAD",
                           recurse = FALSE) {
-  gh_ls(path = path,
-        owner = owner,
-        name = name,
-        branch = branch,
-        recurse = recurse,
-        incl_dirs = FALSE) %>%
+  gh_dir_ls(path = path,
+            owner = owner,
+            name = name,
+            rev = rev,
+            recurse = recurse,
+            incl_dirs = FALSE) %>%
     magrittr::set_names(x = .,
                         value = .) %>%
-    purrr::map_chr(gh_text_file,
-                   owner = owner,
-                   name = name,
-                   branch = branch)
+    purrr::map(gh_text_file,
+               owner = owner,
+               name = name,
+               rev = rev) %>%
+    purrr::compact() %>%
+    unlist()
 }
 
 #' List files and directories in a GitHub repository
 #'
+#' @param path The path from the repository's root to the desired directory. A [path][fs::fs_path] or character scalar.
 #' @param owner The repository owner's GitHub user or organization name. A character scalar.
 #' @param name The repository name. A character scalar.
-#' @param branch The repository's desired branch name. A character scalar.
-#' @param path The path from the repository's root to the desired directory or file. A [path][fs::fs_path] or character scalar.
+#' @param rev The [Git revision expression](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem)
+#'   matching the desired Git tree object, e.g. a branch name or another symbolic reference like `HEAD@{yesterday}` or `HEAD~10`. A character scalar.
 #' @param recurse Whether or not to recurse into subdirectories of `path`.
 #' @param incl_dirs Whether or not to list directories (and subdirectories if `recurse = TRUE`).
 #' @param incl_files Whether or not to list files (also inside subdirectories if `recurse = TRUE`).
 #'
-#' @return A character vector of paths from the repository root to the files and subdirectories found under `branch:path`.
+#' @return A character vector of paths from the repository root to the files and subdirectories found under `rev:path`.
 #' @family gh
 #' @export
 #'
 #' @examples
-#' pal::gh_ls(path = "tests",
-#'            owner = "salim-b",
-#'            name = "pal",
-#'            branch = "master")
-#'
 #' # you can opt-out from directory recursion
-#' pal::gh_ls(path = "tests",
-#'            owner = "salim-b",
-#'            name = "pal",
-#'            branch = "master",
-#'            recurse = FALSE)
+#' pal::gh_dir_ls(owner = "salim-b",
+#'                name = "pal",
+#'                recurse = FALSE) |>
+#'   pal::cat_lines()
 #'
 #' # or list only files or directories
-#' pal::gh_ls(path = "tests",
-#'            owner = "salim-b",
-#'            name = "pal",
-#'            branch = "master",
-#'            incl_files = FALSE)
+#' pal::gh_dir_ls(path = "tests",
+#'                owner = "salim-b",
+#'                name = "pal",
+#'                incl_files = FALSE) |>
+#'   pal::cat_lines()
 #'
-#' pal::gh_ls(path = "tests",
-#'            owner = "salim-b",
-#'            name = "pal",
-#'            branch = "master",
-#'            incl_dirs = FALSE)
-gh_ls <- function(path,
-                  owner,
-                  name,
-                  branch = "main",
-                  recurse = TRUE,
-                  incl_dirs = TRUE,
-                  incl_files = TRUE) {
+#' pal::gh_dir_ls(path = "tests",
+#'                owner = "salim-b",
+#'                name = "pal",
+#'                incl_dirs = FALSE) |>
+#'   pal::cat_lines()
+gh_dir_ls <- function(path = "",
+                      owner,
+                      name,
+                      rev = "HEAD",
+                      recurse = TRUE,
+                      incl_dirs = TRUE,
+                      incl_files = TRUE) {
   
   assert_pkg("gh")
   checkmate::assert_string(owner)
   checkmate::assert_string(name)
-  checkmate::assert_string(branch)
+  checkmate::assert_string(rev)
   checkmate::assert_flag(recurse)
   checkmate::assert_flag(incl_dirs)
   checkmate::assert_flag(incl_files)
@@ -2492,7 +2487,7 @@ gh_ls <- function(path,
     gh::gh_gql(query = glue::glue('
     {{
       repository(name: "{name}", owner: "{owner}") {{
-        object(expression: "{branch}:{path}") {{
+        object(expression: "{rev}:{path}") {{
           ... on Tree {{
             entries {{
               path
@@ -2527,10 +2522,10 @@ gh_ls <- function(path,
     
     result <-
       dirs %>%
-      purrr::map(.f = gh_ls,
+      purrr::map(.f = gh_dir_ls,
                  owner = owner,
                  name = name,
-                 branch = branch,
+                 rev = rev,
                  recurse = TRUE,
                  incl_dirs = incl_dirs,
                  incl_files = incl_files) %>%
