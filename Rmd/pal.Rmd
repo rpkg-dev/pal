@@ -2467,7 +2467,6 @@ cli_process_expr <- function(expr,
                              done_class = "alert-success",
                              failed_class = "alert-danger",
                              env = parent.frame()) {
-  assert_pkg("cli")
   checkmate::assert_string(msg,
                            # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
                            min.chars = 1L)
