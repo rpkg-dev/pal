@@ -180,12 +180,8 @@ parameter names. In case of an invalid or <code>.forbidden</code> argument, an i
     </tr>
     <tr>
       <th>.action</th>
-      <td><p>The action to take when the check fails. One of</p><ul>
-<li><p><code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::abort</a></code></p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::warn</a></code></p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::inform</a></code></p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::signal</a></code></p></li>
-</ul></td>
+      <td><p>The action to take when the check fails. A function expecting an error message string as first argument. For example
+<code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::abort</a></code>, <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::warn</a></code>, <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::inform</a></code> or <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::signal</a></code>.</p></td>
     </tr>
     </table>
 

@@ -381,6 +381,7 @@ test_that("`cli_process_expr()` works as expected", {
     fn_string <- "good"
     local_col_name <- "WRONG-fn"
     fn_col_name <- "Petal.Width"
+
     cli_process_expr(msg = "Omnitest",
                      expr = {
 

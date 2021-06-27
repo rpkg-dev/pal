@@ -225,7 +225,7 @@ reduce_df_list <- function(x,
   } else if (purrr::vec_depth(x) < 2L) {
     
     if (checkmate::assert_flag(strict)) {
-      rlang::abort("At least one element of the list to be reduced is not a data frame / tibble!")
+      rlang::abort(cli::format_error("At least one element of the list to be reduced is not a data frame / tibble!"))
       
     } else return(NULL)
     
@@ -583,7 +583,7 @@ build_readme <- function(input = "README.Rmd",
   rlang::env_bind(.env = checkmate::assert_environment(env),
                   input = checkmate::assert_string(input),
                   output = checkmate::assert_path_for_output(output,
-                                                                        overwrite = TRUE),
+                                                             overwrite = TRUE),
                   build_index_md = checkmate::assert_flag(build_index_md, null.ok = TRUE))
   
   # add `pkg_metadata` to env
@@ -694,16 +694,21 @@ knitr_table_format <- function(default = c("pipe",
   
   allowed_formats <- eval(formals()$default)
   
-  result <- getOption("knitr.table.format",
-                      default = rlang::arg_match(default))
+  opt <- getOption("knitr.table.format")
+  result <- opt %||% rlang::arg_match(default)
   
   if (is.function(result)) result <- result()
   
   if (!(result %in% allowed_formats)) {
-    rlang::abort(paste0("Invalid R option `knitr.table.format`. Must evaluate to one of ",
-                        prose_ls(x = wrap_chr(allowed_formats),
-                                 wrap = "`",
-                                 last_separator = " or ")))
+    
+    rlang::abort(cli::format_error(paste0("R option {.field knitr.table.format} must evaluate to one of ",
+                                          prose_ls(x = paste0("{.val ", allowed_formats, "}"),
+                                                   last_separator = " or "),
+                                          ", but is {.code {deparse1(opt)}}",
+                                          dplyr::if_else(is.function(opt),
+                                                         " which evaluates to {.val {result}}",
+                                                         ""),
+                                          ".")))
   }
   
   result
@@ -1176,7 +1181,7 @@ is_pkg_installed <- function(pkg,
                                         error = ~ list(NULL, .x$message))
     
     if (is.null(min_version[[1L]])) {
-      rlang::abort(paste0("`min_version` must be a vector of package versions or something coercible to: ", min_version[[2L]]))
+      rlang::abort(cli::format_error("{arg min_version} must be a vector of package versions or something coercible to: ", min_version[[2L]]))
     }
     
     is_pkg_installed(pkg = checkmate::assert_character(pkg, any.missing = FALSE)) %>%
@@ -2152,7 +2157,7 @@ path_script <- function() {
     }
   }
   
-  rlang::abort("Couldn't determine script path!'")
+  rlang::abort(cli::format_error("Couldn't determine script path."))
 }
 ```
 
@@ -2270,7 +2275,7 @@ prose_ls_fn_param <- function(param,
                 envir = env)
   }
   
-  if (is.primitive(fn)) rlang::abort("Listing parameters of R Primitives is not supported. Sorry.")
+  if (is.primitive(fn)) rlang::abort(cli::format_error("Listing parameters of R Primitives is not supported. Sorry."))
   
   default_vals <- formals(fun = fn,
                           envir = env)
@@ -2280,13 +2285,13 @@ prose_ls_fn_param <- function(param,
   } else {
     fn_name <- deparse1(expr = substitute(fn),
                         backtick = FALSE)
-    rlang::abort(glue::glue("The function `{fn_name}()` does not have a parameter named \"{param}\"."))
+    rlang::abort(cli::format_error("The function {.fn {fn_name}}` does not have a parameter named {.arg {param}}."))
   }
   
   if (missing(default_vals)) {
     fn_name <- deparse1(expr = substitute(fn),
                         backtick = FALSE)
-    rlang::abort(glue::glue("`{fn_name}()`'s parameter `{param}` does not have a default value."))
+    rlang::abort(cli::format_error("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value."))
   }
   
   # evaluate default param if it results in a character vector
@@ -2408,7 +2413,7 @@ is_http_success <- function(url,
                                                      times = retries + 1L,
                                                      quiet = quiet)),
                        error = ~ FALSE,
-                       interrupt = ~ rlang::abort("Terminated by the user"))
+                       interrupt = ~ rlang::abort(cli::format_error("Terminated by the user")))
 }
 ```
 
@@ -2463,6 +2468,15 @@ cli_process_expr <- function(expr,
                              failed_class = "alert-danger",
                              env = parent.frame()) {
   assert_pkg("cli")
+  checkmate::assert_string(msg,
+                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
+                           min.chars = 1L)
+  checkmate::assert_string(msg_done)
+  checkmate::assert_string(msg_failed)
+  checkmate::assert_string(msg_class)
+  checkmate::assert_string(done_class)
+  checkmate::assert_string(failed_class)
+  checkmate::assert_environment(env)
   
   # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function will never be called because we actually throw
   #       the error using `rlang::cnd_signal(.x)`.
@@ -2497,6 +2511,11 @@ cli_process_expr <- function(expr,
 
 -   Function has been proposed upstream in [PR \#35](https://github.com/r-lib/ellipsis/pull/35).
 
+TODO:
+
+-   The `msg` gets truncated if more cli classes are used (e.g. `"{.fn {fn_name}}"`) so we have to avoid it below. Investigate what exactly is going on and
+    report upstream!
+
 ```{r}
 #' Check that all dot parameter names are a valid subset of a function's parameter names.
 #'
@@ -2524,11 +2543,8 @@ cli_process_expr <- function(expr,
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.function`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action The action to take when the check fails. One of
-#'   - [`rlang::abort`][rlang::abort()]
-#'   - [`rlang::warn`][rlang::warn()]
-#'   - [`rlang::inform`][rlang::inform()]
-#'   - [`rlang::signal`][rlang::signal()]
+#' @param .action The action to take when the check fails. A function expecting an error message string as first argument. For example
+#'   [`rlang::abort`][rlang::abort()], [`rlang::warn`][rlang::warn()], [`rlang::inform`][rlang::inform()] or [`rlang::signal`][rlang::signal()].
 #' @export
 #'
 #' @examples
@@ -2598,21 +2614,31 @@ check_dots_named <- function(...,
                              .empty_ok = TRUE,
                              .action = rlang::abort) {
   
+  checkmate::assert_function(.function)
+  checkmate::assert_character(.additional,
+                              any.missing = FALSE,
+                              null.ok = TRUE)
+  checkmate::assert_character(.forbidden,
+                              any.missing = FALSE,
+                              null.ok = TRUE)
+  checkmate::assert_flag(.empty_ok)
+  checkmate::assert_function(.action)
+  
   if (...length()) {
     
     # determine original function name the `...` will be passed on to
-    fun_arg_name <- deparse1(substitute(.function))
+    fn_arg_name <- deparse1(substitute(.function))
     parent_call <- as.list(sys.call(-1L))
     parent_param_names <- methods::formalArgs(sys.function(-1L))
     
-    if (fun_arg_name %in% parent_param_names) {
-      fun_name <- as.character(parent_call[which(parent_param_names == fun_arg_name) + 1L][[1L]])
+    if (fn_arg_name %in% parent_param_names) {
+      fn_name <- as.character(parent_call[which(parent_param_names == fn_arg_name) + 1L][[1L]])
     } else {
-      fun_name <- fun_arg_name
+      fn_name <- fn_arg_name
     }
     
     # determine param names of the function the `...` will be passed on to
-    dots_param_names <- methods::formalArgs(checkmate::assert_function(.function))
+    dots_param_names <- methods::formalArgs(.function)
     
     # check named `...` args
     purrr::walk(.x = setdiff(names(c(...)),
@@ -2620,33 +2646,20 @@ check_dots_named <- function(...,
                 .f = check_dot_named,
                 values = dots_param_names,
                 allowed_values = setdiff(union(dots_param_names,
-                                               checkmate::assert_character(.additional,
-                                                                           any.missing = FALSE,
-                                                                           null.ok = TRUE)),
-                                         checkmate::assert_character(.forbidden,
-                                                                     any.missing = FALSE,
-                                                                     null.ok = TRUE)),
-                fun_name = fun_name,
+                                               .additional),
+                                         .forbidden),
+                fn_name = fn_name,
                 action = .action)
     
-  } else if (!checkmate::assert_flag(.empty_ok)) {
-    
-    checkmate::assert_function(.action) %>%
-      deparse() %>%
-      substitute() %>%
-      checkmate::assert_choice(choices = paste0("rlang::", c("abort",
-                                                             "warn",
-                                                             "inform",
-                                                             "signal")))
-    
-    .action(message = "`...` must be provided (!= NULL)!")
+  } else if (!.empty_ok) {
+    .action(cli::format_error("{.arg ...} must be provided (!= NULL)."))
   }
 }
 
 check_dot_named <- function(dot,
                             values,
                             allowed_values,
-                            fun_name,
+                            fn_name,
                             action) {
   
   # The following code is largely borrowed from `rlang::arg_match()`
@@ -2658,23 +2671,24 @@ check_dot_named <- function(dot,
     is_restricted <- !setequal(values,
                                allowed_values)
     
-    msg <- glue::glue(dplyr::if_else(is_forbidden,
-                                     "Forbidden",
-                                     "Invalid"), " argument provided in `...`: `{dot}`\n",
-                      .trim = FALSE)
+    msg <- paste0(dplyr::if_else(is_forbidden,
+                                 "Forbidden",
+                                 "Invalid"),
+                  " argument provided in `...`: `{dot}`\n\n")
     
     if (length(allowed_values) > 0L) {
       
-      msg %<>% glue::glue(dplyr::if_else(is_restricted,
-                                         "Arguments allowed to pass on to ",
-                                         "Valid arguments for "), "`{fun_name}()` include: ", prose_ls(allowed_values, wrap = "`"), "\n",
-                          .trim = FALSE)
+      msg %<>% paste0(dplyr::if_else(is_restricted,
+                                     "Arguments allowed to pass on to ",
+                                     "Valid arguments for "),
+                      "`{fn_name}()` include: ", prose_ls(allowed_values, wrap = "`"), ".")
     } else {
       
-      msg %<>% glue::glue("Only unnamed arguments are ", dplyr::if_else(is_restricted, "allowed", "valid"), " for `{fun_name}()`.")
+      msg %<>% paste0("Only unnamed arguments are ", dplyr::if_else(is_restricted, "allowed", "valid"), " for `{fn_name}()`.")
     }
     
     i_partial <- pmatch(dot, allowed_values)
+    candidate <- NULL
     
     if (!rlang::is_na(i_partial)) {
       candidate <- allowed_values[[i_partial]]
@@ -2686,13 +2700,11 @@ check_dot_named <- function(dot,
       candidate <- allowed_values[[which.min(i_close)]]
     }
     
-    if (exists("candidate")) {
-      candidate <- prose_ls(candidate, wrap = "`")
-      msg <- paste0(msg, "\n", "Did you mean ", candidate, 
-                    "?")
+    if (!is.null(candidate)) {
+      msg <- paste0(msg, "\n\nDid you mean {.arg {candidate}}?")
     }
     
-    action(msg)
+    action(cli::format_error(msg))
   }
 }
 ```
@@ -3027,7 +3039,7 @@ cols_regex <- function(...,
   patterns <- rlang::list2(...)
   
   if (length(setdiff(names(patterns), "")) < length(patterns)) {
-    rlang::abort("All column specifications in `...` must be named by a regular expression.")
+    rlang::abort(cli::format_error("All column specifications in {.arg ...} must be named by a regular expression."))
   }
   
   for (i in seq_along(patterns)) {
