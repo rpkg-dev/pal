@@ -2770,21 +2770,24 @@ gh_text_file <- function(path,
                          name,
                          rev = "HEAD") {
   assert_pkg("gh")
+  path <- checkmate::assert_string(path) %>% normalize_tree_path()
   checkmate::assert_string(owner)
   checkmate::assert_string(name)
   checkmate::assert_string(rev)
-  path %<>% normalize_tree_path()
   
-  gh::gh_gql(query = glue::glue('
-    {{
-      repository(name: "{name}", owner: "{owner}") {{
-        object(expression: "{rev}:{path}") {{
-          ... on Blob {{
-            text
-          }}
-        }}
-      }}
-    }}'))$data$repository$object$text %>%
+  gh::gh_gql(query = 'query ($name: String!, $owner: String!, $expression: String!) {
+                        repository(name: $name, owner: $owner) {
+                          object(expression: $expression) {
+                            ... on Blob {
+                              text
+                            }
+                          }
+                        }
+                      }',
+             variables = list(name = name,
+                              owner = owner,
+                              expression = glue::glue("{rev}:{path}"))) %>%
+    purrr::pluck("data", "repository", "object", "text") %>%
     purrr::when(is.null(.) ~ character(),
                 ~ .)
 }
@@ -2871,19 +2874,20 @@ gh_text_files <- function(path,
 #' @export
 #'
 #' @examples
-#' # you can opt-out from directory recursion
+#' # you can opt-out from directory recursion...
 #' pal::gh_dir_ls(owner = "salim-b",
 #'                name = "pal",
 #'                recurse = FALSE) |>
 #'   pal::cat_lines()
 #'
-#' # or list only files or directories
+#' # ...or list only files...
 #' pal::gh_dir_ls(path = "tests",
 #'                owner = "salim-b",
 #'                name = "pal",
 #'                incl_files = FALSE) |>
 #'   pal::cat_lines()
 #'
+#' # ...or directories
 #' pal::gh_dir_ls(path = "tests",
 #'                owner = "salim-b",
 #'                name = "pal",
@@ -2898,32 +2902,31 @@ gh_dir_ls <- function(path = "",
                       incl_files = TRUE) {
   
   assert_pkg("gh")
+  path <- checkmate::assert_string(path) %>% normalize_tree_path()
   checkmate::assert_string(owner)
   checkmate::assert_string(name)
   checkmate::assert_string(rev)
   checkmate::assert_flag(recurse)
   checkmate::assert_flag(incl_dirs)
   checkmate::assert_flag(incl_files)
-  path %<>% normalize_tree_path()
   
   entries <-
-    gh::gh_gql(query = glue::glue('
-    {{
-      repository(name: "{name}", owner: "{owner}") {{
-        object(expression: "{rev}:{path}") {{
-          ... on Tree {{
-            entries {{
-              path
-              type
-            }}
-          }}
-        }}
-      }}
-    }}')) %$%
-    data %$%
-    repository %>%
-    purrr::pluck("object") %>%
-    purrr::pluck("entries")
+    gh::gh_gql(query = 'query($name:String!, $owner:String!, $expression:String!) {
+                          repository(name: $name, owner: $owner) {
+                            object(expression: $expression) {
+                              ... on Tree {
+                                entries {
+                                  path
+                                  type
+                                }
+                              }
+                            }
+                          }
+                        }',
+    variables = list(name = name,
+                     owner = owner,
+                     expression = glue::glue("{rev}:{path}"))) %>%
+    purrr::pluck("data", "repository", "object", "entries")
   
   dirs <-
     entries %>%
