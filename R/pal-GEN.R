@@ -677,7 +677,10 @@ knitr_table_format <- function(default = c("pipe",
 #'               destfile = tmp_file)
 #'
 #' rmarkdown::render(input = tmp_file,
-#'                   output_format = pal::gitlab_document())}
+#'                   output_format = pal::gitlab_document(),
+#'                   quiet = TRUE) |>
+#'   brio::read_lines() |>
+#'   length()}
 gitlab_document <- function(smart_punctuation = TRUE,
                             parse_emoji_markup = FALSE,
                             df_print = "kable",

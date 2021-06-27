@@ -104,7 +104,10 @@ download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.
               destfile = tmp_file)
 
 rmarkdown::render(input = tmp_file,
-                  output_format = pal::gitlab_document())}
+                  output_format = pal::gitlab_document(),
+                  quiet = TRUE) |>
+  brio::read_lines() |>
+  length()}
 }
 \seealso{
 Other R Markdown and knitr functions:

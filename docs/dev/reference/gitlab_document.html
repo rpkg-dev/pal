@@ -273,9 +273,11 @@ Pandoc during conversion.</p></li>
               destfile <span class='op'>=</span> <span class='va'>tmp_file</span><span class='op'>)</span>
 
 <span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,
-                  output_format <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gitlab_document</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span>
-</div><div class='output co'>#&gt; /usr/bin/pandoc +RTS -K512m -RTS file2b15d3a8720a5 --to markdown-smart-simple_tables-multiline_tables-grid_tables-fenced_code_attributes-inline_code_attributes-raw_attribute-pandoc_title_block-yaml_metadata_block --from markdown --output file2b15d3a8720a5.md --columns=9999 --standalone </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Output created: file2b15d3a8720a5.md</span></div></pre>
+                  output_format <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gitlab_document</span><span class='op'>(</span><span class='op'>)</span>,
+                  quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> |&gt;
+  <span class='fu'>brio</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/brio/man/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='op'>)</span> |&gt;
+  <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='op'>)</span><span class='co'># }</span>
+</div><div class='output co'>#&gt; [1] 3095</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
