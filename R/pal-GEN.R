@@ -1496,7 +1496,7 @@ as_string <- function(...,
 #'
 #' Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
 #'
-#' Note that this function doesn't alter any characters in `x` other than the first and the last.
+#' Note that this function doesn't alter any characters in `x` other than the first and the last one.
 #'
 #' @param x The input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
 #' @param punctuation_mark The punctuation mark to be appended to `x`. A character scalar.
