@@ -25,10 +25,10 @@ Checks if a CLI tool is found on the system's \href{https://en.wikipedia.org/wik
 path.
 }
 \examples{
-check_cli("Rscript")
+pal::check_cli("Rscript")
 
 cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
-check_cli(cmd, get_cmd_path = TRUE)
+pal::check_cli(cmd, get_cmd_path = TRUE)
 }
 \seealso{
 Other system interaction functions:

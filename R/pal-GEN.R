@@ -1280,8 +1280,8 @@ safe_min <- function(...,
 #' @export
 #'
 #' @examples
-#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> round_to(to = 0.05)
-#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> round_to(to = 0.05, round_up = FALSE)
+#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> pal::round_to(to = 0.05)
+#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> pal::round_to(to = 0.05, round_up = FALSE)
 round_to <- function(x,
                      to = 0.2,
                      round_up = TRUE) {
@@ -1761,9 +1761,9 @@ cat_lines <- function(...) {
 #' library(magrittr)
 #'
 #' mtcars %>%
-#'   magrittr::set_colnames(wrap_chr(x = colnames(.),
-#'                                   wrap = "`")) %>%
-#'   pipe_table()
+#'   magrittr::set_colnames(pal::wrap_chr(x = colnames(.),
+#'                                        wrap = "`")) %>%
+#'   pal::pipe_table()
 wrap_chr <- function(x,
                      wrap = "\"") {
   
@@ -1788,10 +1788,10 @@ wrap_chr <- function(x,
 #' @export
 #'
 #' @examples
-#' check_cli("Rscript")
+#' pal::check_cli("Rscript")
 #'
 #' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
-#' check_cli(cmd, get_cmd_path = TRUE)
+#' pal::check_cli(cmd, get_cmd_path = TRUE)
 check_cli <- function(cmd,
                       get_cmd_path = FALSE,
                       force_which = FALSE) {

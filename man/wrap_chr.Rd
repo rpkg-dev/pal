@@ -21,9 +21,9 @@ Wrap character vector in string
 library(magrittr)
 
 mtcars \%>\%
-  magrittr::set_colnames(wrap_chr(x = colnames(.),
-                                  wrap = "`")) \%>\%
-  pipe_table()
+  magrittr::set_colnames(pal::wrap_chr(x = colnames(.),
+                                       wrap = "`")) \%>\%
+  pal::pipe_table()
 }
 \seealso{
 Other string functions:
