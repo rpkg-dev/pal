@@ -10,7 +10,7 @@ check_dots_named(
   .additional = NULL,
   .forbidden = NULL,
   .empty_ok = TRUE,
-  .action = rlang::abort
+  .action = cli::cli_abort
 )
 }
 \arguments{
@@ -24,8 +24,8 @@ check_dots_named(
 
 \item{.empty_ok}{Set to \code{TRUE} if empty \code{...} should be allowed, or to \code{FALSE} otherwise.}
 
-\item{.action}{The action to take when the check fails. A function expecting an error message string as first argument. For example
-\code{\link[rlang:abort]{rlang::abort}}, \code{\link[rlang:abort]{rlang::warn}}, \code{\link[rlang:abort]{rlang::inform}} or \code{\link[rlang:abort]{rlang::signal}}.}
+\item{.action}{The action to take when the check fails. A function expecting a condition message string as first argument. For example \code{\link[cli:cli_abort]{cli::cli_abort()}},
+\code{\link[cli:cli_abort]{cli::cli_warn()}}, \code{\link[cli:cli_abort]{cli::cli_inform()}} or \code{\link[rlang:abort]{rlang::signal()}}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

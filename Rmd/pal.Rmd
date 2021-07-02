@@ -225,7 +225,7 @@ reduce_df_list <- function(x,
   } else if (purrr::vec_depth(x) < 2L) {
     
     if (checkmate::assert_flag(strict)) {
-      rlang::abort(cli::format_error("At least one element of the list to be reduced is not a data frame / tibble!"))
+      cli::cli_abort("At least one element of the list to be reduced is not a data frame / tibble!")
       
     } else return(NULL)
     
@@ -701,14 +701,14 @@ knitr_table_format <- function(default = c("pipe",
   
   if (!(result %in% allowed_formats)) {
     
-    rlang::abort(cli::format_error(paste0("R option {.field knitr.table.format} must evaluate to one of ",
-                                          prose_ls(x = paste0("{.val ", allowed_formats, "}"),
-                                                   last_separator = " or "),
-                                          ", but is {.code {deparse1(opt)}}",
-                                          dplyr::if_else(is.function(opt),
-                                                         " which evaluates to {.val {result}}",
-                                                         ""),
-                                          ".")))
+    cli::cli_abort(paste0("R option {.field knitr.table.format} must evaluate to one of ",
+                          prose_ls(x = paste0("{.val ", allowed_formats, "}"),
+                                   last_separator = " or "),
+                          ", but is {.code {deparse1(opt)}}",
+                          dplyr::if_else(is.function(opt),
+                                         " which evaluates to {.val {result}}",
+                                         ""),
+                          "."))
   }
   
   result
@@ -987,7 +987,7 @@ assert_pkg <- function(pkg,
       }
     }
     
-    rlang::abort(cli::format_error(paste(message, install_hint)))
+    cli::cli_abort(paste(message, install_hint))
     
   } else {
     invisible(pkg)
@@ -1060,7 +1060,7 @@ TODO:
 -   [ ] Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
 
     ``` {.r}
-    pal::desc_value("Suggestss", default = rlang::abort(glue::glue("No \x60{key}\x60 field set in DESCRIPTION!")))
+    pal::desc_value("Suggestss", default = cli::cli_abort("No {.field {key}} field set in {.file DESCRIPTION}!")))
     ```
 
 ```{r}
@@ -1184,7 +1184,7 @@ is_pkg_installed <- function(pkg,
                                         error = ~ list(NULL, .x$message))
     
     if (is.null(min_version[[1L]])) {
-      rlang::abort(cli::format_error("{arg min_version} must be a vector of package versions or something coercible to: ", min_version[[2L]]))
+      cli::cli_abort("{arg min_version} must be a vector of package versions or something coercible to: ", min_version[[2L]])
     }
     
     is_pkg_installed(pkg = checkmate::assert_character(pkg, any.missing = FALSE)) %>%
@@ -2160,7 +2160,7 @@ path_script <- function() {
     }
   }
   
-  rlang::abort(cli::format_error("Couldn't determine script path."))
+  cli::cli_abort("Couldn't determine script path.")
 }
 ```
 
@@ -2278,7 +2278,7 @@ prose_ls_fn_param <- function(param,
                 envir = env)
   }
   
-  if (is.primitive(fn)) rlang::abort(cli::format_error("Listing parameters of R Primitives is not supported. Sorry."))
+  if (is.primitive(fn)) cli::cli_abort("Listing parameters of R Primitives is not supported. Sorry.")
   
   default_vals <- formals(fun = fn,
                           envir = env)
@@ -2288,13 +2288,13 @@ prose_ls_fn_param <- function(param,
   } else {
     fn_name <- deparse1(expr = substitute(fn),
                         backtick = FALSE)
-    rlang::abort(cli::format_error("The function {.fn {fn_name}}` does not have a parameter named {.arg {param}}."))
+    cli::cli_abort("The function {.fn {fn_name}}` does not have a parameter named {.arg {param}}.")
   }
   
   if (missing(default_vals)) {
     fn_name <- deparse1(expr = substitute(fn),
                         backtick = FALSE)
-    rlang::abort(cli::format_error("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value."))
+    cli::cli_abort("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value.")
   }
   
   # evaluate default param if it results in a character vector
@@ -2416,7 +2416,7 @@ is_http_success <- function(url,
                                                      times = retries + 1L,
                                                      quiet = quiet)),
                        error = ~ FALSE,
-                       interrupt = ~ rlang::abort(cli::format_error("Terminated by the user")))
+                       interrupt = ~ cli::cli_abort("Terminated by the user"))
 }
 ```
 
@@ -2545,8 +2545,8 @@ TODO:
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.function`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action The action to take when the check fails. A function expecting an error message string as first argument. For example
-#'   [`rlang::abort`][rlang::abort()], [`rlang::warn`][rlang::warn()], [`rlang::inform`][rlang::inform()] or [`rlang::signal`][rlang::signal()].
+#' @param .action The action to take when the check fails. A function expecting a condition message string as first argument. For example [cli::cli_abort()],
+#'   [cli::cli_warn()], [cli::cli_inform()] or [rlang::signal()].
 #' @export
 #'
 #' @examples
@@ -2614,7 +2614,7 @@ check_dots_named <- function(...,
                              .additional = NULL,
                              .forbidden = NULL,
                              .empty_ok = TRUE,
-                             .action = rlang::abort) {
+                             .action = cli::cli_abort) {
   
   checkmate::assert_function(.function)
   checkmate::assert_character(.additional,
@@ -2706,7 +2706,7 @@ check_dot_named <- function(dot,
       msg <- paste0(msg, "\n\nDid you mean {.arg {candidate}}?")
     }
     
-    action(cli::format_error(msg))
+    action(msg)
   }
 }
 ```
@@ -3044,7 +3044,7 @@ cols_regex <- function(...,
   patterns <- rlang::list2(...)
   
   if (length(setdiff(names(patterns), "")) < length(patterns)) {
-    rlang::abort(cli::format_error("All column specifications in {.arg ...} must be named by a regular expression."))
+    cli::cli_abort("All column specifications in {.arg ...} must be named by a regular expression.")
   }
   
   for (i in seq_along(patterns)) {

@@ -16,7 +16,7 @@ Depends:
     R (>= 4.1)
 Imports: 
     checkmate (>= 2.0.0),
-    cli (>= 2.5.0),
+    cli (>= 3.0.0),
     dplyr (>= 1.0.2),
     fs (>= 1.4.1),
     glue (>= 1.4.1),
