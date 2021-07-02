@@ -1280,8 +1280,10 @@ safe_min <- function(...,
 #' @export
 #'
 #' @examples
-#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> pal::round_to(to = 0.05)
-#' c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1) |> pal::round_to(to = 0.05, round_up = FALSE)
+#' vals = c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1)
+#' vals |> pal::round_to(to = 0.05)
+#' vals |> pal::round_to(to = 0.05,
+#'                       round_up = FALSE)
 round_to <- function(x,
                      to = 0.2,
                      round_up = TRUE) {
