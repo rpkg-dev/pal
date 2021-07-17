@@ -105,3 +105,4 @@ sapply_safe(X = c(0,50),
             100,
             5)
 }
+\concept{dots}

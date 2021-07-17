@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9062</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9063</span>
       </span>
     </div>
 
@@ -160,7 +160,7 @@
     <p>None (invisible <code>NULL</code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/cli/man/cat_line.html'>cli::cat_line()</a></code> for a faster alternative that doesn't <em>recursively</em> convert its input to type character.</p>
+    <div class='dont-index'><p><code><a href='https://cli.r-lib.org/reference/cat_line.html'>cli::cat_line()</a></code> for a faster alternative that doesn't <em>recursively</em> convert its input to type character.</p>
 <p><code><a href='https://rdrr.io/pkg/xfun/man/raw_string.html'>xfun::raw_string()</a></code> (and <code><a href='https://rdrr.io/pkg/xfun/man/file_string.html'>xfun::file_string()</a></code>) for an alternative approach to the same use case (but without any conversion to type character at all).</p>
 <p>Other string functions:
 <code><a href='as_chr.html'>as_chr</a>()</code>,
@@ -183,7 +183,7 @@
   <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Package: pal
 #&gt; Title: Friendly Convenience/Utility Functions
-#&gt; Version: 0.0.9062
+#&gt; Version: 0.0.9063
 #&gt; Authors@R: 
 #&gt;     person(given = "Salim",
 #&gt;            family = "Brüggemann",
@@ -196,7 +196,7 @@
 #&gt; URL: https://rpkg.dev/pal, https://gitlab.com/salim_b/r/pkgs/pal
 #&gt; BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues
 #&gt; Depends: R (&gt;= 4.1)
-#&gt; Imports: checkmate (&gt;= 2.0.0), cli (&gt;= 2.5.0), dplyr (&gt;= 1.0.2), fs (&gt;=
+#&gt; Imports: checkmate (&gt;= 2.0.0), cli (&gt;= 3.0.0), dplyr (&gt;= 1.0.2), fs (&gt;=
 #&gt;         1.4.1), glue (&gt;= 1.4.1), lifecycle (&gt;= 0.2.0), magrittr (&gt;=
 #&gt;         1.5), methods, purrr (&gt;= 0.3.4), rlang (&gt;= 0.4.4), stringr (&gt;=
 #&gt;         1.4.0), tibble (&gt;= 2.1.3), utils
@@ -214,7 +214,7 @@
 #&gt; RoxygenNote: 7.1.1.9001
 #&gt; Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)
 #&gt; Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;
-#&gt; Built: R 4.1.0; ; 2021-06-30 17:22:23 UTC; unix</div><div class='input'>
+#&gt; Built: R 4.1.0; ; 2021-07-17 18:49:15 UTC; unix</div><div class='input'>
 <span class='co'># recursive conversion to type character or not</span>
 <span class='va'>to_convert</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>
@@ -245,7 +245,7 @@
 #&gt; 3
 #&gt; A
 #&gt; wonderful
-#&gt; day</div><div class='input'><span class='va'>to_convert</span> <span class='op'>%&gt;%</span> <span class='fu'>cli</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/cli/man/cat_line.html'>cat_line</a></span><span class='op'>(</span><span class='op'>)</span>
+#&gt; day</div><div class='input'><span class='va'>to_convert</span> <span class='op'>%&gt;%</span> <span class='fu'>cli</span><span class='fu'>::</span><span class='fu'><a href='https://cli.r-lib.org/reference/cat_line.html'>cat_line</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; list(a = 1:3)
 #&gt; A
 #&gt; 1

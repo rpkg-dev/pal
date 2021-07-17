@@ -101,7 +101,8 @@ Pandoc during conversion.
 \donttest{
 tmp_file <- fs::file_temp()
 download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd",
-              destfile = tmp_file)
+              destfile = tmp_file,
+              quiet = TRUE)
 
 rmarkdown::render(input = tmp_file,
                   output_format = pal::gitlab_document(),
@@ -111,6 +112,7 @@ rmarkdown::render(input = tmp_file,
 }
 \seealso{
 Other R Markdown and knitr functions:
-\code{\link{build_readme}()}
+\code{\link{build_readme}()},
+\code{\link{knitr_table_format}()}
 }
 \concept{rmd_knitr}

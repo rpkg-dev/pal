@@ -30,10 +30,13 @@ pal::desc_list(file = fs::path_package(package = "pal"))
 \seealso{
 Other R package functions:
 \code{\link{assert_pkg}()},
+\code{\link{desc_url_git}()},
 \code{\link{desc_value}()},
+\code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()}
+\code{\link{ls_pkg}()},
+\code{\link{roxy_tag_value}()}
 }
 \concept{rpkgs}

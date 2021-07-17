@@ -73,9 +73,280 @@ normalize_tree_path <- function(path) {
 }
 ```
 
+# Statistical computing / numbers
+
+## `safe_seq_len`
+
+```{r}
+#' Generate an integer sequence of specific length (safe)
+#'
+#' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
+#'
+#' @param n The desired length of the integer sequence.
+#'
+#' @return An integer sequence starting from `1L`.
+#' @family stat
+#' @export
+#'
+#' @examples
+#' pal::safe_seq_len(5)
+#'
+#' # this function simply returns a zero-length integer for zero-length inputs ...
+#' pal::safe_seq_len(NULL)
+#' pal::safe_seq_len(integer())
+#' 
+#' # ... while `seq_len()` throws an error
+#' \dontrun{
+#' seq_len(NULL)
+#' seq_len(integer())}
+safe_seq_len <- function(n) {
+  
+  if (length(n)) {
+    return(seq_len(n))
+    
+  } else return(integer())
+}
+```
+
+## `safe_max`
+
+Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
+Thus it is possible to feed `NA_character_` to the two functions below. A new param `typed.missing` has been [introduced in checkmate
+devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon as a new stable release is published!
+
+```{r}
+#' Maximum (safe)
+#'
+#' @description
+#' Modified version of [`max()`][base::max()] that differs in the following ways:
+#'
+#' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
+#' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
+#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
+#' - `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @param ... The numeric objects of which to determine the maximum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param rm_na Ignore missing values in `...`. If missing values are present and `rm_na = FALSE`, the result will always be `NA`.
+#'
+#' @return A numeric scalar or empty value, of the same type as `...`.
+#' @family stat
+#' @export
+#'
+#' @examples
+#' # other than `base::max()`, this function removes `NA`s by default
+#' max(1, NA, 2)
+#' pal::safe_max(1, NA, 2)
+#'
+#' # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
+#' # zero-length inputs
+#' \dontrun{
+#' max(NULL)
+#' max(character())
+#' max(integer())
+#' pal::safe_max(NULL)
+#' pal::safe_max(character())
+#' pal::safe_max(integer())
+#' 
+#' # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
+#' max("zero", 1L)
+#' max("zero", "one")
+#' pal::safe_max("zero", 1L)
+#' pal::safe_max("zero", "one")}
+safe_max <- function(...,
+                     rm_na = TRUE) {
+  
+  rlang::list2(...) %>%
+    purrr::map(checkmate::assert_numeric,
+               null.ok = TRUE,
+               .var.name = "...") %>%
+    unlist() %>%
+    purrr::when(length(.) == 0L ~ .[0L],
+                all(is.na(.)) && rm_na ~ .[NA],
+                ~ max(., na.rm = rm_na))
+}
+```
+
+## `safe_min`
+
+```{r}
+#' Minimum (safe)
+#'
+#' @description
+#' Modified version of [`min()`][base::min()] that differs in the following ways:
+#'
+#' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
+#' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
+#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
+#' - `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @param ... The numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @inheritParams safe_max
+#'
+#' @inherit safe_max return
+#' @family stat
+#' @export
+#'
+#' @examples
+#' # other than `base::min()`, this function removes `NA`s by default
+#' min(1, NA, 2)
+#' pal::safe_min(1, NA, 2)
+#'
+#' # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
+#' # zero-length inputs
+#' \dontrun{
+#' min(NULL)
+#' min(character())
+#' min(integer())
+#' pal::safe_min(NULL)
+#' pal::safe_min(character())
+#' pal::safe_min(integer())
+#' 
+#' # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
+#' min("zero", 1L)
+#' min("zero", "one")
+#' pal::safe_min("zero", 1L)
+#' pal::safe_min("zero", "one")}
+safe_min <- function(...,
+                     rm_na = TRUE) {
+  
+  rlang::list2(...) %>%
+    purrr::map(checkmate::assert_numeric,
+               null.ok = TRUE,
+               .var.name = "...") %>%
+    unlist() %>%
+    purrr::when(length(.) == 0L ~ .[0L],
+                all(is.na(.)) && rm_na ~ .[NA],
+                ~ min(., na.rm = rm_na))
+}
+```
+
+## `round_to`
+
+```{r}
+#' Round to any number
+#'
+#' Round a numeric vector to any number, rounded up by default (`round_up = TRUE`).
+#'
+#' This function's precision is limited to 15 significant digits in order to account for the [limits of R's floating point
+#' representation](https://stackoverflow.com/a/35349949/7196903).
+#'
+#' A computationally more efficient alternative would be the unexported `scales:::round_any()` which drives [scales::number()] – with the drawback that it lacks
+#' control of rounding up exact remainders of `accuracy / 2`, i.e. it _always_ rounds _off_.
+#'
+#' @param x A vector of numbers to round.
+#' @param to The number to round `x` to. A numeric scalar.
+#' @param round_up Whether to round a remainder of exactly `to / 2` _up_ or not. Set to `FALSE` in order to round _off_.
+#'
+#' @return A numeric vector of the same length as `x`.
+#' @family stat
+#' @export
+#'
+#' @examples
+#' vals = c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1)
+#' vals |> pal::round_to(to = 0.05)
+#' vals |> pal::round_to(to = 0.05,
+#'                       round_up = FALSE)
+round_to <- function(x,
+                     to = 0.2,
+                     round_up = TRUE) {
+  
+  checkmate::assert_number(to,
+                           lower = 0L,
+                           finite = TRUE)
+  checkmate::assert_flag(round_up)
+  
+  result <- x %/% to
+  remainder <- signif(x %% to,
+                      # round to a max of 15 significant digits to avoid exceeding floating-point representation limits
+                      digits = 15L)
+  
+  if (round_up) {
+    which_round <- remainder >= (to / 2L)
+  } else {
+    which_round <- remainder > (to / 2L)
+  }
+  
+  result[which_round] <- result[which_round] + 1L
+  
+  result * to
+}
+```
+
+## `stat_mode`
+
+-   Solution borrowed from [hugovdberg](https://stackoverflow.com/a/38097776/7196903) and others.
+
+```{r}
+#' Statistical mode
+#'
+#' Computes the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most frequent value, i.e. the
+#' value that is most likely to be sampled.
+#'
+#' @param x An \R object.
+#' @param type What the function should calculate.
+#'   - `"one"`: Return _the_ mode of `x`. If multiple modes or no mode at all exists, `NA` is returned.
+#'   - `"all"`: Return _all_ modes of `x`. If none exists (e.g. because all values of `x` are distinct), `NA` is returned.
+#'   - `"n"`: Return the number of modes of `x`.
+#' @param rm_na Ignore missing values in `x`. A logical scalar.
+#'
+#' @return If `type = "n"`, the number of modes in `x` (an integer). Otherwise, the mode(s) of `x` or `NA` if none exist(s) (same type as `x`).
+#' @family stat
+#' @seealso The package [modeest](https://cran.r-project.org/package=modeest) for more powerful mode estimation functions.
+#' @export
+#'
+#' @examples
+#' pal::stat_mode(c(rep(3L, times = 3), 1:9))
+#' pal::stat_mode(c(1.5, 4, 9.9))
+#' 
+#' # if no mode exists, `NA` (of the same type as x) is returned
+#' pal::stat_mode(letters)
+#' pal::stat_mode(c(letters, "a"))
+#' 
+#' # if multiple modes exist, `NA` is returned by default
+#' pal::stat_mode(c(letters, "a", "b"))
+#' # set `type = "all"` to return all modes instead
+#' pal::stat_mode(c(letters, "a", "b"),
+#'                type = "all")
+#' 
+#' # `NA` is treated as any other value by default
+#' pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
+#'                type = "all")
+#' # set `rm_na = TRUE` to ignore `NA` values
+#' pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
+#'                type = "all",
+#'                rm_na = TRUE)
+stat_mode <- function(x,
+                      type = c("one", "all", "n"),
+                      rm_na = FALSE) {
+  x <- unlist(x)
+  type <- rlang::arg_match(type)
+  if (checkmate::assert_flag(rm_na)) x <- x[!is.na(x)]
+  
+  # get unique values
+  u_x <- unique(x)
+  n_u_x <- length(u_x)
+  
+  # get frequencies of all unique values
+  frequencies <- tabulate(match(x, u_x))
+  modes <- frequencies == max(frequencies)
+  
+  # determine number of modes
+  n_modes <- sum(modes) %>% dplyr::if_else(. == n_u_x, 0L, .)
+  
+  type %>% purrr::when(
+    # return the number of modes if requested
+    . == "n" ~ n_modes,
+    # or return mode(s) if requested and existing
+    (. == "one" && n_modes == 1L) || (. == "all" && n_modes > 0L) ~ u_x[which(modes)],
+    # else return `NA` (of the same type as `x`)
+    ~ x[NA][1L]
+  )
+}
+```
+
 # Data frames / Tibbles
 
-## Determine if two data frames/tibbles are equal
+## `is_equal_df`
 
 ```{r}
 #' Determine if two data frames/tibbles are equal
@@ -200,7 +471,7 @@ is_equal_df <- function(x,
 }
 ```
 
-## Reduce a nested list of data frames / tibbles to a single tibble
+## `reduce_df_list`
 
 TODO: Add an example where this fn is useful.
 
@@ -237,7 +508,7 @@ reduce_df_list <- function(x,
 
 # Lists
 
-## Convert to a flat list
+## `as_flat_list`
 
 ```{r}
 #' Convert to a flat list
@@ -257,6 +528,7 @@ reduce_df_list <- function(x,
 #' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
 #'
 #' @return A [list][base::list()].
+#' @family list
 #' @export
 #'
 #' @examples
@@ -351,1256 +623,9 @@ rm_list_level <- function(x,
 }
 ```
 
-# (Pandoc) Markdown
-
-## Convert a character vector to a Markdown list
-
-TODO:
-
--   [ ] Mention usefulness of this fn for roxygen2 doc as soon as [issue \#1112](https://github.com/r-lib/roxygen2/issues/1112) is resolved.
-
-```{r}
-#' Convert a character vector to a Markdown list
-#'
-#' Convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
-#' list](https://pandoc.org/MANUAL.html#lists).
-#'
-#' @param x The character vector to be converted to a Markdown list.
-#' @param type The Markdown list type. One of
-#'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to `<ul>` in HTML.
-#'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to `<ol>` in HTML.
-#'   - `"ordered_roman"` for a variation of an ordered/numbered list with uppercase roman numerals instead of Arabic numerals as list markers.
-#' @param tight Whether or not to add additional spacing between list items.
-#' @param indent_lvl The level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
-#'   integer scalar.
-#' @param wrap An optional string to wrap the list items in.
-#'
-#' @return A character scalar.
-#' @family md
-#' @export
-#'
-#' @examples
-#' rownames(mtcars) |> pal::as_md_list() |> cat()
-as_md_list <- function(x,
-                       type = c("unordered", "ordered", "ordered_roman"),
-                       tight = TRUE,
-                       indent_lvl = 0L,
-                       wrap = NULL) {
-  
-  type <- rlang::arg_match(type)
-  checkmate::assert_flag(tight)
-  checkmate::assert_count(indent_lvl)
-  checkmate::assert_string(wrap,
-                           null.ok = TRUE)
-  assert_pkg("pander")
-  
-  pander::pandoc.list.return(elements = paste0(wrap, as_chr(x), wrap),
-                             style = switch(EXPR = type,
-                                            unordered = "bullet",
-                                            ordered = "ordered",
-                                            ordered_roman = "roman"),
-                             loose = !tight,
-                             indent.level = indent_lvl,
-                             add.line.breaks = FALSE,
-                             add.end.of.list = FALSE)
-}
-```
-
-## Convert dataframe/tibble to Markdown pipe table
-
-```{r}
-#' Convert dataframe/tibble to Markdown pipe table
-#'
-#' Convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a [Markdown pipe
-#' table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
-#' 
-#' # Create tables dynamically in roxygen2 documentation
-#' 
-#' This function can be useful to create tables inside [roxygen2][roxygen2::roxygen2] documentation programmatically from data using
-#' [dynamic \R code](https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1).
-#' 
-#' For example, the inline code
-#' 
-#' `` `r mtcars %>% head() %>% pipe_table()` ``
-#'
-#' should produce the following table in [roxygen2 7.1.0](https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/) and above:
-#'
-#' `r mtcars %>% head() %>% pipe_table()`
-#'
-#' @inherit knitr::kable details
-#'
-#' @param x The dataframe/tibble/matrix to be converted to a pipe table.
-#' @param incl_rownames Whether to include row names or not. A logical scalar or `NULL`. If `NULL`, row names are included if `rownames(x)` is neither `NULL`
-#'   nor identical to `seq_len(nrow(x))`.
-#' @param strong_colnames Highlight column names by formatting them `<strong>` (wrapping them in two asterisks).
-#' @param strong_rownames Highlight row names by formatting them `<strong>` (wrapping them in two asterisks).
-#' @param align Column alignment. Either `NULL` for auto-alignment or a character vector consisting of `'l'` (left), `'c'` (center) and/or `'r'` (right). If
-#'   `align = NULL`, numeric columns are right-aligned, and other columns are left-aligned. If `length(align) == 1L`, the string will be expanded to a vector
-#'   of individual letters, e.g. `'clc'` becomes `c('c', 'l', 'c')`.
-#' @param format_args A list of arguments to be passed to [format()] to format table values, e.g. `list(big.mark = ',')`.
-#' @inheritParams knitr::kable
-#'
-#' @return A character vector.
-#' @family md
-#' @export
-#'
-#' @examples
-#' mtcars |> head() |> pal::pipe_table() |> pal::cat_lines()
-pipe_table <- function(x,
-                       incl_rownames = NULL,
-                       strong_colnames = TRUE,
-                       strong_rownames = TRUE,
-                       align = NULL,
-                       label = NULL,
-                       digits = getOption("digits"),
-                       format_args = list()) {
-  
-  assert_pkg("knitr")
-  checkmate::assert_flag(incl_rownames,
-                         null.ok = TRUE)
-  
-  # format rownames <strong> if requested and sensible
-  if ((isTRUE(incl_rownames) && !is.null(rownames(x))) ||
-      (is.null(incl_rownames) && !identical(rownames(x), as.character(seq_len(nrow(x)))))) {
-    
-    rownames(x) %<>% paste0("**", ., "**")
-  }
-  
-  kable_args <-
-    alist(x = x,
-          format = "pipe",
-          digits = digits,
-          row.names = ifelse(is.null(incl_rownames),
-                             NA,
-                             incl_rownames),
-          col.names = colnames(x) %>% purrr::when(checkmate::assert_flag(strong_colnames) ~ paste0("**", ., "**"),
-                                                  ~ .),
-          label = label,
-          format.args = format_args) %>%
-    purrr::when(!is.null(align) ~ c(., alist(align = align)),
-                ~ .)
-  
-  do.call(what = knitr::kable,
-          args = kable_args)
-}
-```
-
-## Strip Markdown formatting from character vector
-
-```{r}
-#' Strip Markdown formatting from character vector
-#'
-#' Removes all Markdown formatting from a character vector.
-#'
-#' This function relies on [commonmark::markdown_text()] which [supports the CommonMark specification plus the Github
-#' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) aren't supported
-#' (yet). Therefore a separate option `strip_footnotes` is offered which relies on a simple regular expression to remove inline footnotes and footnote
-#' references.
-#'
-#' @param x A character vector to strip Markdown formatting from.
-#' @param strip_footnotes Whether to remove Markdown footnotes, too.
-#'
-#' @return A character vector of the same length as `x`.
-#' @family md
-#' @export
-#'
-#' @examples
-#' pal::strip_md(
-#'   "A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))"
-#' )
-#'
-#' # link references are only removed *iff* the reference is included in `x`:
-#' pal::strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
-#' pal::strip_md("[A reference link][refid]\n\n_No ref here..._")
-strip_md <- function(x,
-                     strip_footnotes = TRUE) {
-  
-  assert_pkg("commonmark")
-  
-  checkmate::assert_character(x) %>%
-    purrr::map_chr(~ .x %>% purrr::when(is.na(.) ~ .,
-                                        ~ commonmark::markdown_text(text = .,
-                                                                    extensions = TRUE) %>%
-                                          stringr::str_remove(pattern = "\n$") %>%
-                                          purrr::when(checkmate::assert_flag(strip_footnotes) ~ strip_md_footnotes(.),
-                                                      ~ .)))
-}
-```
-
-## Strip Markdown footnotes from character vector
-
-TODO: Write some tests!
-
-```{r}
-#' Strip Markdown footnotes from character vector
-#'
-#' Removes all Markdown footnotes from a character vector.
-#'
-#' @param x A character vector to strip Markdown footnotes from. Note that elements in `x` are processed as separate Markdown domains, i.e. _not_ as individual
-#' lines belonging to the same Markdown document.
-#'
-#' @return A character vector of the same length as `x`.
-#' @family md
-#' @export
-strip_md_footnotes <- function(x) {
-  
-  checkmate::assert_character(x) %>%
-    stringr::str_remove_all(pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
-}
-```
-
-# R Markdown / knitr
-
-## Build `README.Rmd`
-
-```{r}
-#' Build `README.Rmd`
-#'
-#' A simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library before building the
-#' `README.Rmd`. This has the pleasant side effect that, other than the latter function, it also works for `.Rmd` files which aren't part of an \R package.
-#' 
-#' Note that for public package repositories, it's recommended to use [devtools::build_readme()] since it ensures the `README.Rmd` can be built _reproducibly_,
-#' which means all the objects and files it references must be accessible from the repository.
-#' 
-#' `r pkgsnip::md_snip("rstudio_addin_hint")`
-#'
-#' @param input The path to the R Markdown README file to be built. A character scalar.
-#' @param output The path of the built Markdown README. A character scalar.
-#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output` (i.e. in the same parent
-#'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
-#'   be built with the \R option `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
-#'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
-#' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
-#'
-#' @return The path to `input` as a character scalar, invisibly.
-#' @family rmd_knitr
-#' @export
-build_readme <- function(input = "README.Rmd",
-                         output = "README.md",
-                         build_index_md = NULL,
-                         env = parent.frame()) {
-  # add args to env
-  rlang::env_bind(.env = checkmate::assert_environment(env),
-                  input = checkmate::assert_string(input),
-                  output = checkmate::assert_path_for_output(output,
-                                                             overwrite = TRUE),
-                  build_index_md = checkmate::assert_flag(build_index_md, null.ok = TRUE))
-  
-  # add `pkg_metadata` to env
-  parent_dir <- fs::path_dir(input)
-  
-  if (is_pkg_dir(parent_dir)) {
-    
-    assert_pkg("desc")
-    
-    rlang::env_bind(.env = env,
-                    pkg_metadata = desc_list(parent_dir))
-  }
-  
-  cli_process_expr(
-    msg = "Building {.file {input}}",
-    env = env,
-    expr = {
-      
-      assert_pkg("knitr")
-      assert_pkg("rmarkdown")
-      
-      # generate `output`
-      ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
-      rmarkdown::render(input = input,
-                        output_file = output,
-                        quiet = TRUE,
-                        envir = env)
-      
-      # generate `index.md` if indicated
-      if (!isFALSE(build_index_md)) {
-        
-        output_dir <- fs::path_dir(output)
-        
-        if (is_pkgdown_dir(output_dir)) {
-          
-          index_md_path <-
-            fs::path(output_dir, "pkgdown") %>%
-            fs::dir_create() %>%
-            fs::path("index.md") %>%
-            checkmate::assert_path_for_output(overwrite = TRUE) %>%
-            fs::path_abs()
-          
-          # clean MD file
-          # TODO: submit PR to pkgdown doing this?
-          assert_pkg("brio")
-          tmp_file <- fs::file_temp(pattern = "index",
-                                    ext = "Rmd")
-          
-          brio::read_file(input) %>%
-            # remove trailing horizontal line in MD file since pkgdown always adds one below content
-            stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
-                                 replacement = "\\2") %>%
-            # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)
-            stringr::str_replace_all(pattern = "(<img [^>]+)(align=['\"].*?['\"]\\s*)",
-                                     replacement = "\\1") %>%
-            stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
-                                     replacement = "\\1") %>%
-            brio::write_file(path = tmp_file)
-          
-          # render `pkgdown/index.md`
-          withr::with_options(
-            new = list(pal.build_readme.is_pkgdown = TRUE),
-            code = rmarkdown::render(input = tmp_file,
-                                     output_file = index_md_path,
-                                     output_format =
-                                       rmarkdown::md_document(variant = "markdown",
-                                                              # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
-                                                              md_extensions = c("-autolink_bare_uris",
-                                                                                "-tex_math_single_backslash"),
-                                                              pandoc_args = "--columns=9999") %>%
-                                       # disable Pandoc's raw attributes in output to have more control over inline HTML
-                                       purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
-                                     knit_root_dir = fs::path_wd(),
-                                     quiet = TRUE,
-                                     envir = env)
-          )
-        }
-      }
-    }
-  )
-}
-```
-
-## Determine knitr table format
-
-```{r}
-#' Determine current knitr table format
-#'
-#' Determines the current knitr table format based on the \R option
-#' [`knitr.table.format`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats) which can either be set directly to a valid format string or
-#' to a function returning one of these strings conditionally.
-#'
-#' This is basically a convenience wrapper to be able to access the current `knitr.table.format` in a hassle-free way, i.e. it provides the conditional logic to
-#' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
-#'
-#' @param default The knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
-#'   `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
-#'   
-#' See [knitr::kable()]'s `format` argument for details.
-#'
-#' @return A character scalar.
-#' @export
-knitr_table_format <- function(default = c("pipe",
-                                           "simple",
-                                           "html",
-                                           "latex",
-                                           "rst")) {
-  
-  allowed_formats <- eval(formals()$default)
-  
-  opt <- getOption("knitr.table.format")
-  result <- opt %||% rlang::arg_match(default)
-  
-  if (is.function(result)) result <- result()
-  
-  if (!(result %in% allowed_formats)) {
-    
-    cli::cli_abort(paste0("R option {.field knitr.table.format} must evaluate to one of ",
-                          prose_ls(x = paste0("{.val ", allowed_formats, "}"),
-                                   last_separator = " or "),
-                          ", but is {.code {deparse1(opt)}}",
-                          dplyr::if_else(is.function(opt),
-                                         " which evaluates to {.val {result}}",
-                                         ""),
-                          "."))
-  }
-  
-  result
-}
-```
-
-## Output formats
-
-These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output
-formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
-
-### `gitlab_document`
-
-TODO:
-
--   Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to
-    `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?\`
-
-    Setting `df_print = "kable"` should actually produce a [pipe table](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats)...
-
--   Finish the damn tocr package and switch to it for TOC generation instead of Pandoc's built-in but very limited `--table-of-contents` option!
-
--   As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://github.com/jgm/pandoc/issues/3977), switching to that will be the next step.
-
-```{r}
-#' Convert to GitLab Flavored Markdown
-#'
-#' Format for converting from R Markdown to [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
-#'
-#' This is the GitLab equivalent to the [`github_document`][rmarkdown::github_document()] R Markdown
-#' [output format](https://bookdown.org/yihui/rmarkdown/output-formats.html). It basically ensures Pandoc is called with a custom set of options optimized for 
-#' maximum compatibility with [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
-#'
-#' ## Caveats regarding GitLab-Flavored-Markdown-specific features
-#'
-#' GitLab Flavored Markdown extends the [CommonMark](https://spec.commonmark.org/current/) Markdown specification with a bunch of
-#' [special features](https://gitlab.com/help/user/markdown.md#gfm-extends-standard-markdown). To be able to properly make use of them, observe the following
-#' points:
-#'
-#' - For [inline diffs](https://gitlab.com/help/user/markdown.md#inline-diff), only use curly braces (`{}`), not square brackets (`[]`). The latter will be
-#'   escaped by Pandoc during conversion and thus not recognized by GitLab as starting/ending an inline diff.
-#'
-#' - You have to set `smart_punctuation = FALSE` in order to leave certain
-#'   [special GitLab references](https://gitlab.com/help/user/markdown.md#special-gitlab-references) (like commit range comparisons) untouched for GitLab to
-#'   interpret them correctly.
-#'
-#'   All the special GitLab references for snippets and labels that start with a tilde (`~`) or a dollar sign (`$`) won't work because these characters will be
-#'   escaped by Pandoc during conversion.
-#'
-#' - The `[[_TOC_]]` tag to let GitLab [generate a table of contents](https://gitlab.com/help/user/markdown.md#table-of-contents) won't work because it will be
-#'   escaped by Pandoc during conversion. You can let Pandoc generate the TOC instead by setting `toc = TRUE`.
-#'
-#' - [Multiline blockquotes](https://gitlab.com/help/user/markdown.md#multiline-blockquote) won't work because the fence delimiters `>>>` will be escaped by
-#'   Pandoc during conversion.
-#'
-#' @param smart_punctuation Whether to enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts straight quotes to
-#'   curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
-#'   `Mr.`.
-#' @param parse_emoji_markup Whether to enable [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji markup (e.g.
-#'   `:smile:`) as Unicode emoticons.
-#' @param toc Include a table of contents (TOC) [automatically generated by Pandoc](https://pandoc.org/MANUAL.html#option--toc). Note that the TOC will be
-#'   placed _before_ the README's body, meaning also _before_ the first Markdown header.
-#' @param add_footnotes_hr Whether to add a trailing horizontal rule (`---`) to the final Markdown file if it doesn't already end in one and contains footnotes
-#'   (currently only checks for Pandoc's [reference-style footnotes](https://pandoc.org/MANUAL.html#footnotes) and not inline footnotes). This improves
-#'   readability when the file is rendered on `GitLab.com`.
-#' @param autolink_bare_uris Enable the [`autolink_bare_uris` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-autolink_bare_uris) which
-#'   makes all absolute URIs into links, even when not surrounded by pointy braces `<...>`.
-#' @param tex_math_single_backslash Enable the
-#'   [`tex_math_single_backslash` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash) which causes anything between
-#'   `\(` and `\)` to be interpreted as inline TeX math, and anything between `\[` and `\]` to be interpreted as display TeX math. Note: a drawback of this
-#'   extension is that it precludes escaping `(` and `[`.
-#' @inheritParams rmarkdown::output_format
-#' @inheritParams rmarkdown::md_document
-#'
-#' @return R Markdown output format intended to be fed to [rmarkdown::render()].
-#' @family rmd_knitr
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' tmp_file <- fs::file_temp()
-#' download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd",
-#'               destfile = tmp_file)
-#'
-#' rmarkdown::render(input = tmp_file,
-#'                   output_format = pal::gitlab_document(),
-#'                   quiet = TRUE) |>
-#'   brio::read_lines() |>
-#'   length()}
-gitlab_document <- function(smart_punctuation = TRUE,
-                            parse_emoji_markup = FALSE,
-                            df_print = "kable",
-                            toc = FALSE,
-                            toc_depth = 6L,
-                            fig_width = 7L,
-                            fig_height = 5L,
-                            dev = "png",
-                            preserve_yaml = FALSE,
-                            add_footnotes_hr = TRUE,
-                            autolink_bare_uris = FALSE,
-                            tex_math_single_backslash = FALSE) {
-  assert_pkg("rmarkdown")
-  
-  # `post_process` fn to ensure MD ends in trailing horizontal rule
-  if (checkmate::assert_flag(add_footnotes_hr)) {
-    
-    ensure_trailing_md_hr <- function(metadata,
-                                      input_file,
-                                      output_file,
-                                      clean,
-                                      verbose) {
-      assert_pkg("brio")
-      
-      md <-
-        checkmate::assert_file(output_file,
-                               access = "w") %>%
-        brio::read_file()
-      
-      # check if file contains footnotes
-      if (stringr::str_detect(string = md,
-                              pattern = "(\\n\\[\\^[\\w-]+\\]:.*)")) {
-        
-        # check if there's already a trailing horizontal rule
-        if (!stringr::str_detect(string = md,
-                                 pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)")) {
-          
-          md %>%
-            stringr::str_replace(pattern = "((\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
-                                 replacement = "\n---\n\\1") %>%
-            brio::write_file(path = output_file)
-        }
-        
-      }
-      
-      output_file
-    }
-  } else {
-    ensure_trailing_md_hr <- NULL
-  }
-  
-  # create rmd output format
-  rmarkdown::output_format(
-    knitr = rmarkdown::knitr_options_html(fig_width = fig_width,
-                                          fig_height = fig_height,
-                                          fig_retina = NULL,
-                                          keep_md = FALSE,
-                                          dev = dev),
-    pandoc = rmarkdown::pandoc_options(to =
-                                         c("markdown",
-                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)],
-                                           "-smart",
-                                           "-simple_tables",
-                                           "-multiline_tables",
-                                           "-grid_tables",
-                                           "-fenced_code_attributes",
-                                           "-inline_code_attributes",
-                                           "-raw_attribute",
-                                           "-pandoc_title_block",
-                                           "-yaml_metadata_block"[!checkmate::assert_flag(preserve_yaml)]) %>%
-                                         paste0(collapse = ""),
-                                       from =
-                                         c("markdown",
-                                           "+autolink_bare_uris"[checkmate::assert_flag(autolink_bare_uris)],
-                                           "+tex_math_single_backslash"[checkmate::assert_flag(tex_math_single_backslash)],
-                                           "-smart"[!checkmate::assert_flag(smart_punctuation)]) %>%
-                                         paste0(collapse = ""),
-                                       args = c("--columns=9999",
-                                                "--standalone",
-                                                "--table-of-contents"[checkmate::assert_flag(toc)],
-                                                paste0("--toc-depth=", checkmate::assert_int(toc_depth,
-                                                                                             lower = 1L,
-                                                                                             upper = 6L))[checkmate::assert_flag(toc)])),
-    df_print = df_print,
-    pre_knit = NULL,
-    post_knit = NULL,
-    pre_processor = NULL,
-    intermediates_generator = NULL,
-    post_processor = ensure_trailing_md_hr,
-    on_exit = NULL,
-    base_format = NULL
-  )
-}
-```
-
-# R Packages
-
-## Assert a package is installed
-
-TODO:
-
--   Incorporate code from FA.
-
--   Add additional params `install_source`. Open question: How to best handle multiple pkgs at once if they don't share the install source? Just recycle
-    `install_source`?
-
-```{r}
-#' Assert a package is installed
-#'
-#' @param pkg Package name. A character scalar.
-#' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
-#'   [`package_version`][base::package_version()] or something coercible to.
-#' @param message The error message to display in case the package is not installed. If `NULL`, a sensible standard message is generated.
-#' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
-#'   character scalar. Set `install_hint = ""` in order to disable the hint.
-#'
-#' @return `pkg` invisibly.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::assert_pkg("pal")
-#'
-#' pal::assert_pkg(pkg = "glue",
-#'                 message = paste0("You should really consider to install the awesome `glue` ",
-#'                                  "package! It's the glue that keeps strings and variables ",
-#'                                  "together 🤲."))
-#' \dontrun{
-#' pal::assert_pkg("pal", min_version = 9999.9)
-#' 
-#' pal::assert_pkg("yay",
-#'                 install_hint = paste0("To install the latest development version, run ",
-#'                                       "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
-assert_pkg <- function(pkg,
-                       min_version = NULL,
-                       message = NULL,
-                       install_hint = NULL) {
-  
-  # check if required version is available
-  if (!is_pkg_installed(pkg = checkmate::assert_string(pkg),
-                        min_version = checkmate::assert_vector(min_version,
-                                                               len = 1L,
-                                                               any.missing = FALSE,
-                                                               null.ok = TRUE))) {
-    
-    # check if pkg is installed at all
-    lacks_min_version <- !is.null(min_version) && is_pkg_installed(pkg = pkg)
-    
-    # generate message if necessary
-    if (is.null(checkmate::assert_string(message, null.ok = TRUE))) {
-      
-      message <- paste0("Package {.pkg {pkg}",
-                        dplyr::if_else(is.null(min_version),
-                                       "",
-                                       " (>= {as.package_version(min_version)})"),
-                        "} is required for this operation but ",
-                        dplyr::if_else(lacks_min_version,
-                                       paste0("installed version is ",
-                                              max(as.package_version(ls_pkg(pkg = pkg)$Version)), "."),
-                                       "is not installed."))
-    }
-    
-    # generate installation hint if necessary
-    if (is.null(checkmate::assert_string(install_hint, null.ok = TRUE))) {
-      
-      assert_pkg("pkgsearch")
-      
-      cran <- pkgsearch::pkg_search(pkg, size = 1L)
-      is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
-      is_cran_min_version <- ifelse(is.null(min_version),
-                                    is_cran_pkg,
-                                    cran %>%
-                                      dplyr::filter(version >= as.package_version(min_version)) %$%
-                                      package %>%
-                                      intersect(pkg) %>%
-                                      length() %>%
-                                      magrittr::is_greater_than(0L))
-      
-      if (is_cran_min_version) {
-        install_hint <- "To install the latest version, run {.code install.packages(\"{pkg}\")}."
-        
-      } else {
-        install_hint <- paste0("Please first ", dplyr::if_else(lacks_min_version, "update {.pkg {pkg}}", "install it"),
-                               " and then try again. Note that ",
-                               dplyr::if_else(is_cran_pkg, "the required version of {.pkg {pkg}} is not available on CRAN (yet).",
-                                              "{.pkg {pkg}} is not available on CRAN."))
-      }
-    }
-    
-    cli::cli_abort(paste(message, install_hint))
-    
-  } else {
-    invisible(pkg)
-  }
-}
-```
-
-## Get all `DESCRIPTION` file fields as cleaned up list
-
-TODO:
-
--   [ ] Figure out why the example below throws the error
-
-    ``` {.error}
-    No root directory found in .../r/pkgs/pal.Rcheck or its parent directories.
-    Root criterion: contains a file "DESCRIPTION" with contents matching "^Package: "
-    ```
-
-    during R CMD Check while almost the same example in `desc_value()` doesn't...!?
-
-```{r}
-#' Get all `DESCRIPTION` file fields as cleaned up list
-#'
-#' @description
-#' Returns all fields from a specific `DESCRIPTION` file as a named list with values cleaned up:
-#' - Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
-#' - Multi-value fields are returned as vectors.
-#' - The fields `Depends`, `Imports` and `Suggests` are returned as a single data frame named `dependencies`.
-#'
-#' @inheritParams desc_value
-#'
-#' @return A list.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' pal::desc_list(file = fs::path_package(package = "pal"))
-#' }
-desc_list <- function(file = ".") {
-  
-  fields <- desc::desc_fields(file = file)
-  
-  result <-
-    fields %>%
-    setdiff(c("Authors@R",
-              "Depends",
-              "Imports",
-              "Suggests",
-              "URL")) %>%
-    rlang::set_names() %>%
-    purrr::map(desc_value,
-               file = file)
-  
-  if ("Authors@R" %in% fields) result[["Authors@R"]] <- desc::desc_get_authors(file = file)
-  if (any(c("Depends", "Imports", "Suggests") %in% fields)) result[["dependencies"]] <- desc::desc_get_deps(file = file)
-  if ("URL" %in% fields) result[["URL"]] <- desc::desc_get_urls(file = file)
-  
-  result
-}
-```
-
-## Get the value from a `DESCRIPTION` file field, cleaned up and with fallback
-
-TODO:
-
--   [ ] Use `desc::desc_get_field()`'s `squish_ws` param as soon as the next stable version containing [\#101](https://github.com/r-lib/desc/pull/101) is
-    released. And rename fn to something like `desc_get_field_safe()`?
-
--   [ ] Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
-
-    ``` {.r}
-    pal::desc_value("Suggestss", default = cli::cli_abort("No {.field {key}} field set in {.file DESCRIPTION}!")))
-    ```
-
-```{r}
-#' Get the value from a `DESCRIPTION` file field, cleaned up and with fallback
-#'
-#' Returns the value from a specific `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
-#' it are removed.
-#'
-#' By default, the following string is returned if `key = "NoRealKey"` is not found:
-#'
-#' ```
-#' "<No `NoRealKey` field set in DESCRIPTION!>"
-#' ```
-#'
-#' If you rather want to take an action like throwing an error, it's recommended to call [desc::desc_get_field()] directly.
-#'
-#' @param default Default value to return if `key` is not found.
-#' @inheritParams desc::desc_get_field
-#'
-#' @return A character scalar.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::desc_value(key = "Description",
-#'                 file = fs::path_package("pal"))
-desc_value <- function(key,
-                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
-                       file = ".") {
-  assert_pkg("desc")
-  
-  desc::desc_get_field(key = key,
-                       default = default,
-                       file = file) %>%
-    stringr::str_squish()
-}
-```
-
-## Get the Git repository URL from a `DESCRIPTION` file
-
-TODO:
-
--   [ ] Propose this function in upstream.
-
-```{r}
-#' Get the Git repository URL from a `DESCRIPTION` file
-#'
-#' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
-#'
-#' Currently, this function recognizes [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
-#' [Codeberg](https://codeberg.org/), [Pagure](https://pagure.io/), [Bitbucket](https://bitbucket.org/) and [SourceHut](https://sr.ht/) repository URLs.
-#'
-#' @inheritParams desc::desc_get_field
-#'
-#' @return A character scalar.
-#' @export
-desc_url_git <- function(file = ".") {
-  
-  assert_pkg("desc")
-  
-  desc::desc_get_field(key = "BugReports",
-                       default = character(),
-                       file = file) %>%
-    stringr::str_replace(pattern = "/issues/?$",
-                         replacement = "/") %>%
-    c(desc::desc_get_urls(), .) %>%
-    stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") %>%
-    dplyr::first()
-}
-```
-
-## Test if packages are installed
-
-Part of this function [was originally proposed by Artem Klevtsov on Stack Overflow](https://stackoverflow.com/a/38082613/7196903).
-
-```{r}
-#' Test if packages are installed
-#'
-#' Returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not, optionally ensuring a `min_version`.
-#'
-#' In contrast to [base::require()], it checks if the packages are installed without attaching their namespaces if so.
-#' 
-#' In contrast to [rlang::is_installed()] or [xfun::pkg_available()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns
-#' a (named) logical vector of the same length as `pkg`.
-#' 
-#' It is [considerably
-#' faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the commonly used
-#' `pkg %in% rownames(installed.packages())` check.
-#'
-#' @param pkg Package names. A character vector.
-#' @param min_version Minimum required version number of each `pkg`. Must be either `NULL` to ignore version numbers, or a vector of
-#'   [`package_version`][base::package_version()]s or something coercible to.
-#'
-#' @return A named logical vector of the same length as `pkg`.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::is_pkg_installed("tidyverse")
-#'
-#' # it is vectorized ...
-#' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
-#'                       min_version = c("1.0", "2.0", "99.9.9000"))
-#'
-#' # ... and scalar arguments will be recycled
-#' pal::is_pkg_installed(pkg = "dplyr",
-#'                       min_version = c("0.5", "1.0", "99.9.9000"))
-#'
-#' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
-#'                       min_version = "1.0")
-is_pkg_installed <- function(pkg,
-                             min_version = NULL) {
-  
-  if (is.null(min_version)) {
-    
-    purrr::map_lgl(magrittr::set_names(pkg, pkg),
-                   ~ nzchar(system.file(package = .x)))
-  } else {
-    
-    min_version <- rlang::with_handlers(as.package_version(min_version),
-                                        error = ~ list(NULL, .x$message))
-    
-    if (is.null(min_version[[1L]])) {
-      cli::cli_abort("{arg min_version} must be a vector of package versions or something coercible to: ", min_version[[2L]])
-    }
-    
-    is_pkg_installed(pkg = checkmate::assert_character(pkg, any.missing = FALSE)) %>%
-      list(names(.), min_version) %>%
-      purrr::pmap_lgl(~ {
-        if (..1) utils::packageVersion(pkg = ..2) >= ..3 else ..1
-      })
-  }
-}
-```
-
-## Test if a directory is an R package
-
-```{r}
-#' Test if a directory is an \R package
-#'
-#' Convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that it will only return `TRUE` for the root of a
-#' package directory, not its subdirectories.
-#'
-#' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
-#'
-#' @return `TRUE` if `path` is the root directory of an \R package, `FALSE` otherwise.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::is_pkg_dir()
-#' pal::is_pkg_dir(fs::path_package("pal"))
-is_pkg_dir <- function(path = ".") {
-  
-  assert_pkg("rprojroot")
-  checkmate::assert_directory(path,
-                              access = "r")
-  
-  rprojroot::is_r_package$testfun %>%
-    purrr::map_lgl(~ .x(path = path)) %>%
-    any()
-}
-```
-
-## Test if a package is available on CRAN
-
-```{r}
-#' Test if a package is available on CRAN
-#'
-#' @inheritParams assert_pkg
-#'
-#' @return A logical scalar.
-#' @export
-#'
-#' @examples
-#' pal::is_pkg_cran("foobar")
-#' pal::is_pkg_cran("dplyr")
-#' pal::is_pkg_cran("dplyr", min_version = 9999.9)
-is_pkg_cran <- function(pkg,
-                        min_version = NULL) {
-  
-  assert_pkg("pkgsearch")
-  
-  checkmate::assert_string(pkg) %>%
-    pkgsearch::pkg_search(size = 1L) %>%
-    purrr::when(is.null(min_version) ~ .,
-                ~ dplyr::filter(.data = .,
-                                version >= as.package_version(min_version))) %$%
-    package %>%
-    intersect(pkg) %>%
-    length() %>%
-    magrittr::is_greater_than(0L)
-}
-```
-
-## Test if pkgdown is set up for an R package directory
-
-TODO:
-
--   [ ] Remove custom `Remotes:` dep as soon as [this](https://github.com/r-lib/rprojroot/pull/79) is merged and released.
-
-```{r}
-#' Test if pkgdown is set up for an R package directory
-#'
-#' Convenience wrapper around the [rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the root of a
-#' package directory and the `pkgdown` subdirectory, not other subdirectories.
-#'
-#' @param path The path of the R package directory to check. A character scalar. Defaults to the current working directory.
-#'
-#' @return `TRUE` if pkgdown is set up for `path`, `FALSE` otherwise.
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::is_pkgdown_dir()
-#' pal::is_pkgdown_dir(fs::path_package("pal"))
-is_pkgdown_dir <- function(path = ".") {
-  
-  assert_pkg("rprojroot")
-  checkmate::assert_directory(path,
-                              access = "r")
-  
-  rprojroot::is_pkgdown_project$testfun %>%
-    purrr::map_lgl(~ .x(path = path)) %>%
-    any()
-}
-```
-
-## List a subset of all installed packages
-
-```{r}
-#' List a subset of all installed packages
-#'
-#' @param pkg A character vector of package names.
-#' @param ignore_case Do not distinguish between upper and lower case letters in `pkg`. If `FALSE`, `pkg` is treated case-sensitive.
-#' @param as_regex Interpret `pkg` as regular expression(s). If `FALSE`, `pkg` is interpreted literally.
-#'
-#' @return A [tibble][tibble::tbl_df].
-#' @family rpkgs
-#' @export
-#'
-#' @examples
-#' pal::ls_pkg(pkg = c("pal", "tibble", "dplyr"))
-ls_pkg <- function(pkg,
-                   ignore_case = TRUE,
-                   as_regex = FALSE) {
-  
-  regex <-
-    checkmate::assert_character(pkg,
-                                any.missing = FALSE,
-                                min.chars = 1L) %>%
-    purrr::when(checkmate::assert_flag(as_regex) ~ .,
-                ~ paste0("\\Q", ., "\\E")) %>%
-    fuse_regex() %>%
-    purrr::when(checkmate::assert_flag(ignore_case) ~ paste0("(?i)", .),
-                ~ .) %>%
-    purrr::when(as_regex ~ .,
-                ~ paste0("^", ., "$"))
-  
-  utils::installed.packages() %>%
-    tibble::as_tibble() %>%
-    dplyr::filter(stringr::str_detect(string = Package,
-                                      pattern = regex))
-}
-```
-
-# Statistical computing / numbers
-
-## Generate an integer sequence of specific length (safe)
-
-```{r}
-#' Generate an integer sequence of specific length (safe)
-#'
-#' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
-#'
-#' @param n The desired length of the integer sequence.
-#'
-#' @return An integer sequence starting from `1L`.
-#' @family stat
-#' @export
-#'
-#' @examples
-#' pal::safe_seq_len(5)
-#'
-#' # this function simply returns a zero-length integer for zero-length inputs ...
-#' pal::safe_seq_len(NULL)
-#' pal::safe_seq_len(integer())
-#' 
-#' # ... while `seq_len()` throws an error
-#' \dontrun{
-#' seq_len(NULL)
-#' seq_len(integer())}
-safe_seq_len <- function(n) {
-  
-  if (length(n)) {
-    return(seq_len(n))
-    
-  } else return(integer())
-}
-```
-
-## Maximum (safe)
-
-Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
-Thus it is possible to feed `NA_character_` to the two functions below. A new param `typed.missing` has been [introduced in checkmate
-devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon as a new stable release is published!
-
-```{r}
-#' Maximum (safe)
-#'
-#' @description
-#' Modified version of [`max()`][base::max()] that differs in the following ways:
-#'
-#' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
-#' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
-#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
-#' - `r pkgsnip::roxy_label("dyn_dots_support")`
-#'
-#' @param ... The numeric objects of which to determine the maximum. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @param rm_na Ignore missing values in `...`. If missing values are present and `rm_na = FALSE`, the result will always be `NA`.
-#'
-#' @return A numeric scalar or empty value, of the same type as `...`.
-#' @family stat
-#' @export
-#'
-#' @examples
-#' # other than `base::max()`, this function removes `NA`s by default
-#' max(1, NA, 2)
-#' pal::safe_max(1, NA, 2)
-#'
-#' # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
-#' # zero-length inputs
-#' \dontrun{
-#' max(NULL)
-#' max(character())
-#' max(integer())
-#' pal::safe_max(NULL)
-#' pal::safe_max(character())
-#' pal::safe_max(integer())
-#' 
-#' # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
-#' max("zero", 1L)
-#' max("zero", "one")
-#' pal::safe_max("zero", 1L)
-#' pal::safe_max("zero", "one")}
-safe_max <- function(...,
-                     rm_na = TRUE) {
-  
-  rlang::list2(...) %>%
-    purrr::map(checkmate::assert_numeric,
-               null.ok = TRUE,
-               .var.name = "...") %>%
-    unlist() %>%
-    purrr::when(length(.) == 0L ~ .[0L],
-                all(is.na(.)) && rm_na ~ .[NA],
-                ~ max(., na.rm = rm_na))
-}
-```
-
-## Minimum (safe)
-
-```{r}
-#' Minimum (safe)
-#'
-#' @description
-#' Modified version of [`min()`][base::min()] that differs in the following ways:
-#'
-#' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
-#' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
-#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
-#' - `r pkgsnip::roxy_label("dyn_dots_support")`
-#'
-#' @param ... The numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @inheritParams safe_max
-#'
-#' @inherit safe_max return
-#' @family stat
-#' @export
-#'
-#' @examples
-#' # other than `base::min()`, this function removes `NA`s by default
-#' min(1, NA, 2)
-#' pal::safe_min(1, NA, 2)
-#'
-#' # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
-#' # zero-length inputs
-#' \dontrun{
-#' min(NULL)
-#' min(character())
-#' min(integer())
-#' pal::safe_min(NULL)
-#' pal::safe_min(character())
-#' pal::safe_min(integer())
-#' 
-#' # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
-#' min("zero", 1L)
-#' min("zero", "one")
-#' pal::safe_min("zero", 1L)
-#' pal::safe_min("zero", "one")}
-safe_min <- function(...,
-                     rm_na = TRUE) {
-  
-  rlang::list2(...) %>%
-    purrr::map(checkmate::assert_numeric,
-               null.ok = TRUE,
-               .var.name = "...") %>%
-    unlist() %>%
-    purrr::when(length(.) == 0L ~ .[0L],
-                all(is.na(.)) && rm_na ~ .[NA],
-                ~ min(., na.rm = rm_na))
-}
-```
-
-## Round to any number
-
-```{r}
-#' Round to any number
-#'
-#' Round a numeric vector to any number, rounded up by default (`round_up = TRUE`).
-#'
-#' This function's precision is limited to 15 significant digits in order to account for the [limits of R's floating point
-#' representation](https://stackoverflow.com/a/35349949/7196903).
-#'
-#' A computationally more efficient alternative would be the unexported `scales:::round_any()` which drives [scales::number()] – with the drawback that it lacks
-#' control of rounding up exact remainders of `accuracy / 2`, i.e. it _always_ rounds _off_.
-#'
-#' @param x A vector of numbers to round.
-#' @param to The number to round `x` to. A numeric scalar.
-#' @param round_up Whether to round a remainder of exactly `to / 2` _up_ or not. Set to `FALSE` in order to round _off_.
-#'
-#' @return A numeric vector of the same length as `x`.
-#' @family stat
-#' @export
-#'
-#' @examples
-#' vals = c(0.025, 0.1, 0.1999, 0.099999, 0.49, 0.55, 0.5, 0.9, 1)
-#' vals |> pal::round_to(to = 0.05)
-#' vals |> pal::round_to(to = 0.05,
-#'                       round_up = FALSE)
-round_to <- function(x,
-                     to = 0.2,
-                     round_up = TRUE) {
-  
-  checkmate::assert_number(to,
-                           lower = 0L,
-                           finite = TRUE)
-  checkmate::assert_flag(round_up)
-  
-  result <- x %/% to
-  remainder <- signif(x %% to,
-                      # round to a max of 15 significant digits to avoid exceeding floating-point representation limits
-                      digits = 15L)
-  
-  if (round_up) {
-    which_round <- remainder >= (to / 2L)
-  } else {
-    which_round <- remainder > (to / 2L)
-  }
-  
-  result[which_round] <- result[which_round] + 1L
-  
-  result * to
-}
-```
-
-## Statistical mode
-
--   Solution borrowed from [hugovdberg](https://stackoverflow.com/a/38097776/7196903) and others.
-
-```{r}
-#' Statistical mode
-#'
-#' Computes the [statistical mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a set of values. The mode is defined as the most frequent value, i.e. the
-#' value that is most likely to be sampled.
-#'
-#' @param x An \R object.
-#' @param type What the function should calculate.
-#'   - `"one"`: Return _the_ mode of `x`. If multiple modes or no mode at all exists, `NA` is returned.
-#'   - `"all"`: Return _all_ modes of `x`. If none exists (e.g. because all values of `x` are distinct), `NA` is returned.
-#'   - `"n"`: Return the number of modes of `x`.
-#' @param rm_na Ignore missing values in `x`. A logical scalar.
-#'
-#' @return If `type = "n"`, the number of modes in `x` (an integer). Otherwise, the mode(s) of `x` or `NA` if none exist(s) (same type as `x`).
-#' @family stat
-#' @seealso The package [modeest](https://cran.r-project.org/package=modeest) for more powerful mode estimation functions.
-#' @export
-#'
-#' @examples
-#' pal::stat_mode(c(rep(3L, times = 3), 1:9))
-#' pal::stat_mode(c(1.5, 4, 9.9))
-#' 
-#' # if no mode exists, `NA` (of the same type as x) is returned
-#' pal::stat_mode(letters)
-#' pal::stat_mode(c(letters, "a"))
-#' 
-#' # if multiple modes exist, `NA` is returned by default
-#' pal::stat_mode(c(letters, "a", "b"))
-#' # set `type = "all"` to return all modes instead
-#' pal::stat_mode(c(letters, "a", "b"),
-#'                type = "all")
-#' 
-#' # `NA` is treated as any other value by default
-#' pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
-#'                type = "all")
-#' # set `rm_na = TRUE` to ignore `NA` values
-#' pal::stat_mode(c(letters, "a", NA_character_, NA_character_),
-#'                type = "all",
-#'                rm_na = TRUE)
-stat_mode <- function(x,
-                      type = c("one", "all", "n"),
-                      rm_na = FALSE) {
-  x <- unlist(x)
-  type <- rlang::arg_match(type)
-  if (checkmate::assert_flag(rm_na)) x <- x[!is.na(x)]
-  
-  # get unique values
-  u_x <- unique(x)
-  n_u_x <- length(u_x)
-  
-  # get frequencies of all unique values
-  frequencies <- tabulate(match(x, u_x))
-  modes <- frequencies == max(frequencies)
-  
-  # determine number of modes
-  n_modes <- sum(modes) %>% dplyr::if_else(. == n_u_x, 0L, .)
-  
-  type %>% purrr::when(
-    # return the number of modes if requested
-    . == "n" ~ n_modes,
-    # or return mode(s) if requested and existing
-    (. == "one" && n_modes == 1L) || (. == "all" && n_modes > 0L) ~ u_x[which(modes)],
-    # else return `NA` (of the same type as `x`)
-    ~ x[NA][1L]
-  )
-}
-```
-
 # Strings
 
-## Assemble an (R) comment string of the desired line width
+## `as_comment_string`
 
 ```{r}
 #' Assemble an (R) comment string of the desired line width
@@ -1650,7 +675,7 @@ as_comment_string <- function(...,
 }
 ```
 
-## Convert to a character vector
+## `as_chr`
 
 ```{r}
 #' Convert to a character vector
@@ -1692,7 +717,7 @@ as_chr <- function(...) {
 }
 ```
 
-## Convert to a character scalar (aka string)
+## `as_string`
 
 ```{r}
 #' Convert to a character scalar (aka string)
@@ -1731,7 +756,7 @@ as_string <- function(...,
 }
 ```
 
-## Convert to sentence case with trailing punctuation mark
+## `sentenceify`
 
 ```{r}
 #' Convert to sentence case with trailing punctuation mark
@@ -1775,7 +800,7 @@ sentenceify <- function(x,
 }
 ```
 
-## Escape line feeds / newlines
+## `escape_lf`
 
 ```{r}
 #' Escape line feeds / newlines
@@ -1816,7 +841,7 @@ escape_lf <- function(x,
 }
 ```
 
-## Fuse regex
+## `fuse_regex`
 
 TODO:
 
@@ -1859,7 +884,7 @@ fuse_regex <- function(...) {
 }
 ```
 
-## Get column names of a delimiter-separated string
+## `dsv_colnames`
 
 ```{r}
 #' Get column names of a delimiter-separated string
@@ -1899,7 +924,7 @@ dsv_colnames <- function(x,
 }
 ```
 
-## List items concatenated in prose style (..., ... and ...)
+## `prose_ls`
 
 TODO: Thoroughly compare this fn to `knitr::combine_words()` and maybe deprecate it in favor of the latter?
 
@@ -1943,7 +968,7 @@ prose_ls <- function(x,
 }
 ```
 
-## Prettify a numeric vector
+## `prettify_nr`
 
 ```{r}
 #' Prettify a numeric vector
@@ -1986,7 +1011,7 @@ prettify_nr <- function(x,
 }
 ```
 
-## Print `x` as newline-separated character vector using `cat()`
+## `cat_lines`
 
 ```{r}
 #' Print `x` as newline-separated character vector using `cat()`.
@@ -2025,7 +1050,7 @@ cat_lines <- function(...) {
 }
 ```
 
-## Wrap character vector in string
+## `wrap_chr`
 
 ```{r}
 #' Wrap character vector in string
@@ -2051,467 +1076,17 @@ wrap_chr <- function(x,
 }
 ```
 
-# System interaction
+# Dots
 
-## Check if CLI tool is available on the system
+Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another
+bit safer.
 
-```{r}
-#' Check if CLI tool is available on the system
-#'
-#' Checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem
-#' path.
-#'
-#' @param cmd The system command to invoke the CLI tool. A character scalar.
-#' @param get_cmd_path Return the filesystem path to the CLI tool. If `FALSE` (the default), a boolean is returned indicating if the CLI tool is found on the
-#'   system or not.
-#' @param force_which If set to `TRUE`, [Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
-#'   availability of `cmd` on Unix-like systems. On Windows, `Sys.which()` is used in any case. `command -v` is
-#'   [generally recommended for bourne-like shells](https://unix.stackexchange.com/q/85249/201803) and therefore is the default on Linux, macOS and other
-#'   [Unixes](https://en.wikipedia.org/wiki/Unix-like).
-#'
-#' @return A logical scalar if `get_cmd_path = FALSE`, otherwise the filesystem [path][fs::path] to the `cmd` executable.
-#' @family sys
-#' @export
-#'
-#' @examples
-#' pal::check_cli("Rscript")
-#'
-#' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
-#' pal::check_cli(cmd, get_cmd_path = TRUE)
-check_cli <- function(cmd,
-                      get_cmd_path = FALSE,
-                      force_which = FALSE) {
-  
-  checkmate::assert_string(cmd)
-  checkmate::assert_flag(get_cmd_path)
-  checkmate::assert_flag(force_which)
-  
-  if (force_which | !xfun::is_unix()) {
-    
-    Sys.which(names = cmd) %>%
-      as.character() %>%
-      purrr::when(. == "" ~ character(0L),
-                  ~ .) %>%
-      purrr::when(get_cmd_path ~ fs::path(.),
-                  length(.) == 0L ~ FALSE,
-                  ~ TRUE)
-    
-  } else {
-    
-    # define "defused" warning/error handler
-    defuse <- function(e) if (get_cmd_path) character(0L) else FALSE
-    
-    rlang::with_handlers(system2(command = "command",
-                                 args = c("-v",
-                                          cmd),
-                                 stdout = get_cmd_path,
-                                 stderr = get_cmd_path),
-                         warning = defuse,
-                         error = defuse) %>%
-      purrr::when(get_cmd_path ~ fs::path(.),
-                  isFALSE(.) ~ .,
-                  ~ TRUE)
-  }
-}
-```
-
-## Determine file path of executing script
-
-This function is inspired by an [answer from Stack Overflow user Jerry T](https://stackoverflow.com/a/36777602/7196903).
-
-```{r}
-#' Determine file path of executing script
-#'
-#' Tries to determine the path to the R/Rmd script that this function is called from.
-#'
-#' @return The file path to the executing script.
-#' @family sys
-#' @export
-path_script <- function() {
-  
-  assert_pkg("rprojroot")
-  assert_pkg("rstudioapi")
-  cmd_args <- commandArgs(trailingOnly = FALSE)
-  needle <- "--file="
-  match <- grep(x = cmd_args,
-                pattern = needle)
-  
-  # Rscript
-  if (length(match) > 0L) {
-    
-    return(normalizePath(sub(needle, "", cmd_args[match])))
-  }
-  
-  # `source()`d via R console
-  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
-    
-    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
-    
-    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
-  } else if (!is.null(rprojroot::thisfile())) {
-    
-    return(rprojroot::thisfile())
-    
-    # RStudio document
-  } else {
-    
-    path <- rstudioapi::getActiveDocumentContext()[["path"]]
-    
-    if (path != "") {
-      return(normalizePath(path))
-    }
-  }
-  
-  cli::cli_abort("Couldn't determine script path.")
-}
-```
-
-## Run CLI tool and get output as character vector
-
-TODO!
-
-```{r}
-run_cli <- function(cmd,
-                    ...) {
-  
-  
-}
-```
-
-# Miscellaneous
-
-## Capture printed output as string
-
-```{r}
-#' Capture printed console output as string
-#'
-#' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as an atomic character vector
-#' (i.e. a string), otherwise as a character vector of output lines.
-#'
-#' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
-#' (e.g. as output by the `print()` methods of tidyverse packages) are not captured (i.e. lost).
-#'
-#' @param x The \R object of which the output of `print()` is to be captured.
-#' @param collapse An optional string for concatenating the results. If `NULL`, a character vector of print lines is returned.
-#'
-#' @return A character vector if `collapse = NULL`, otherwise a character scalar.
-#' @export
-#'
-#' @examples
-#' mtcars |> pal::capture_print()
-#' mtcars |> pal::capture_print(collapse = "\n") |> cat()
-capture_print <- function(x,
-                          collapse = NULL) {
-  
-  utils::capture.output(print(x),
-                        file = NULL,
-                        type = "output",
-                        split = FALSE) %>%
-    paste0(collapse = collapse)
-}
-```
-
-## List a function's default parameter values in prose-style
-
-TODO:
-
--   Write tests for non-character default vals.
--   Wrap `eval(expr = default_vals, envir = env)` in try-catch if necessary (test!).
-
-```{r}
-#' List a function's default parameter values in prose-style
-#'
-#' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
-#'
-#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
-#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
-#'
-#' ```r
-#' #' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
-#' some_fn <- function(some_param = c("a", "b", "c")) {
-#'   some_param <- rlang::arg_match(some_param)
-#'   ...
-#' }
-#' ```
-#'
-#' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-#' `` `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% pal::as_md_list()` `` in the example above.
-#'
-#' # Caveats
-#'
-#' - This function does not work for [Primitives][base::.Primitive].
-#' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
-#'   this function.
-#'
-#' @param param The parameter name. A character scalar.
-#' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
-#' @param env The [environment][base::environment] `fn` is defined in. See [formals()] for details.
-#' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
-#' @param wrap The string (usually a single character) in which `param`s default values are to be wrapped.
-#' @param separator The separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
-#' @param last_separator The separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
-#'
-#' @return A character vector. Of length 1 if `as_scalar = TRUE`.
-#' @export
-#'
-#' @examples
-#' pal::prose_ls_fn_param(param = ".name_repair",
-#'                        fn = tibble::as_tibble) |>
-#' pal::cat_lines()
-#'
-#' pal::prose_ls_fn_param(param = ".name_repair",
-#'                        fn = tibble::as_tibble,
-#'                        as_scalar = FALSE) |>
-#' pal::cat_lines()
-prose_ls_fn_param <- function(param,
-                              fn = sys.function(sys.parent()),
-                              env = parent.frame(),
-                              as_scalar = TRUE,
-                              wrap = "`",
-                              separator = ",",
-                              last_separator = " or ") {
-  
-  checkmate::assert_string(param)
-  checkmate::assert_flag(as_scalar)
-  
-  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
-  if (is.character(fn)) {
-    fn %<>% get(mode = "function",
-                envir = env)
-  }
-  
-  if (is.primitive(fn)) cli::cli_abort("Listing parameters of R Primitives is not supported. Sorry.")
-  
-  default_vals <- formals(fun = fn,
-                          envir = env)
-  
-  if (param %in% names(default_vals)) {
-    default_vals <- default_vals[[param]]
-  } else {
-    fn_name <- deparse1(expr = substitute(fn),
-                        backtick = FALSE)
-    cli::cli_abort("The function {.fn {fn_name}}` does not have a parameter named {.arg {param}}.")
-  }
-  
-  if (missing(default_vals)) {
-    fn_name <- deparse1(expr = substitute(fn),
-                        backtick = FALSE)
-    cli::cli_abort("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value.")
-  }
-  
-  # evaluate default param if it results in a character vector
-  if (is.language(default_vals)) {
-    
-    evaluated_default_vals <- rlang::with_handlers(.expr = eval(expr = default_vals,
-                                                                envir = env),
-                                                   error = ~ NULL)
-    
-    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
-  }
-  
-  if (is.character(default_vals)) {
-    default_vals %<>% wrap_chr()
-  } else {
-    default_vals %<>% deparse1(backtick = FALSE,
-                               control = c("keepNA",
-                                           "keepInteger",
-                                           "niceNames",
-                                           "showAttributes",
-                                           "warnIncomplete"))
-  }
-  
-  if (as_scalar) {
-    default_vals %<>% prose_ls(wrap = wrap,
-                               separator = separator,
-                               last_separator = last_separator)
-  } else {
-    default_vals %<>% wrap_chr(wrap = wrap)
-  }
-  
-  default_vals
-}
-```
-
-## Order a vector by another vector
-
-```{r}
-#' Order a vector by another vector
-#'
-#' @param x The vector to be ordered.
-#' @param by The reference vector which `x` will be ordered by.
-#'
-#' @return A permutation of `x`.
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' # generate 100 random letters
-#' random_letters <-
-#'   letters %>%
-#'   magrittr::extract(sample.int(n = 26L,
-#'                                size = 100L,
-#'                                replace = TRUE)) %T>%
-#'   print()
-#'
-#' # sort the random letters alphabetically
-#' random_letters %>% pal::order_by(by = letters)
-order_by <- function(x,
-                     by) {
-  
-  x[order(match(x = x, table = by))]
-}
-```
-
-## Test if an HTTP request is successful
-
-A shorter way to define a very similar function would be:
-
-``` {.r}
-is_http_success <- purrr::possibly(~ !httr::http_error(.x),
-                                   otherwise = FALSE)
-```
-
-TODO: Figure out if it's really sensible to handle/catch interrupts.
-
-```{r}
-#' Test if an HTTP request is successful
-#'
-#' @description
-#' Convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
-#'
-#' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD`](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) request could
-#'   be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), or
-#'
-#' - `FALSE` in any other case.
-#'
-#' @details
-#' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
-#' based on [curl](https://jeroen.cran.dev/curl/).
-#'
-#' @param url The HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
-#' @param retries The maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar >= `0`. The retries are performed using
-#'   exponential backoff and jitter, see [httr::RETRY()] for details.
-#' @param quiet Suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant if `retries > 0`.
-#'
-#' @return A logical scalar.
-#' @seealso [RCurl::url.exists()]
-#' @export
-#'
-#' @examples
-#' pal::is_http_success("goo.gl")
-#' pal::is_http_success("https://google.com/")
-#' pal::is_http_success("https://google.not/")
-#' pal::is_http_success("https://google.not/",
-#'                      retries = 2,
-#'                      quiet = FALSE)
-is_http_success <- function(url,
-                            retries = 0L,
-                            quiet = TRUE) {
-  assert_pkg("httr")
-  checkmate::assert_string(url)
-  checkmate::assert_count(retries)
-  checkmate::assert_flag(quiet)
-  
-  rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
-                                                     url = url,
-                                                     times = retries + 1L,
-                                                     quiet = quiet)),
-                       error = ~ FALSE,
-                       interrupt = ~ cli::cli_abort("Terminated by the user"))
-}
-```
-
-# Extending other R packages
-
-These functions are likely to be proposed upstream, and if accepted, will be removed from this package.
-
-## cli
-
-### Evaluate an expression with cli process indication
-
-TODO:
-
--   Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
-
-    The class of the condition has to be changed for this before feeding it to `rlang::cnd_signal`.
-
--   Propose this function upstream!
-
-```{r}
-#' Evaluate an expression with cli process indication
-#'
-#' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
-#'
-#' @param expr An expression to be evaluated.
-#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
-#' @inheritParams cli::cli_process_start
-#'
-#' @return The result of the evaluated `expr`, invisibly.
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
-#'
-#' \dontrun{
-#' # "russian roulette"
-#' msg <- "Spinning the cylinder \U0001F91E … "
-#' pal::cli_process_expr(msg = msg,
-#'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-#'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                       expr = {
-#'                         if (interactive()) Sys.sleep(1)
-#'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-#'                       })}
-cli_process_expr <- function(expr,
-                             msg,
-                             msg_done = paste(msg, "... done"),
-                             msg_failed = paste(msg, "... failed"),
-                             msg_class = "alert-info",
-                             done_class = "alert-success",
-                             failed_class = "alert-danger",
-                             env = parent.frame()) {
-  checkmate::assert_string(msg,
-                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
-                           min.chars = 1L)
-  checkmate::assert_string(msg_done)
-  checkmate::assert_string(msg_failed)
-  checkmate::assert_string(msg_class)
-  checkmate::assert_string(done_class)
-  checkmate::assert_string(failed_class)
-  checkmate::assert_environment(env)
-  
-  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function will never be called because we actually throw
-  #       the error using `rlang::cnd_signal(.x)`.
-  status_bar_container_id <- cli::cli_process_start(msg = msg,
-                                                    msg_done = msg_done,
-                                                    msg_failed = msg_failed,
-                                                    msg_class = msg_class,
-                                                    done_class = done_class,
-                                                    failed_class = failed_class,
-                                                    .envir = env)
-  
-  result <- rlang::with_handlers(.expr = rlang::eval_tidy(expr = {{ expr }},
-                                                          env = env),
-                                 error = ~ {
-                                   cli::cli_process_failed(status_bar_container_id)
-                                   rlang::cnd_signal(.x)
-                                 })
-  
-  cli::cli_process_done(status_bar_container_id)
-  
-  invisible(result)
-}
-```
-
-## ellipsis
-
-### Check that all dot parameter names are a valid subset of a function's parameter names.
+## `check_dots_named`
 
 **Remarks:**
 
--   Code to suggest proper dots params largely borrowed from `rlang::arg_match()`.
+-   Code to suggest proper dots params largely borrowed from
+    [`rlang:::stop_arg_match()`](https://github.com/r-lib/rlang/blob/2a269c44aaa3985ce742e0e91a48b2d3c4664f3c/R/arg.R#L79-L110) (MIT-licensed).
 
 -   Function has been proposed upstream in [PR \#35](https://github.com/r-lib/ellipsis/pull/35).
 
@@ -2549,6 +1124,8 @@ TODO:
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
 #' @param .action The action to take when the check fails. A function expecting a condition message string as first argument. For example [cli::cli_abort()],
 #'   [cli::cli_warn()], [cli::cli_inform()] or [rlang::signal()].
+#'
+#' @family dots
 #' @export
 #'
 #' @examples
@@ -2713,7 +1290,1070 @@ check_dot_named <- function(dot,
 }
 ```
 
-## gh
+# R packages
+
+## `ls_pkg`
+
+```{r}
+#' List a subset of all installed packages
+#'
+#' @param pkg A character vector of package names.
+#' @param ignore_case Do not distinguish between upper and lower case letters in `pkg`. If `FALSE`, `pkg` is treated case-sensitive.
+#' @param as_regex Interpret `pkg` as regular expression(s). If `FALSE`, `pkg` is interpreted literally.
+#'
+#' @return A [tibble][tibble::tbl_df].
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::ls_pkg(pkg = c("pal", "tibble", "dplyr"))
+ls_pkg <- function(pkg,
+                   ignore_case = TRUE,
+                   as_regex = FALSE) {
+  
+  regex <-
+    checkmate::assert_character(pkg,
+                                any.missing = FALSE,
+                                min.chars = 1L) %>%
+    purrr::when(checkmate::assert_flag(as_regex) ~ .,
+                ~ paste0("\\Q", ., "\\E")) %>%
+    fuse_regex() %>%
+    purrr::when(checkmate::assert_flag(ignore_case) ~ paste0("(?i)", .),
+                ~ .) %>%
+    purrr::when(as_regex ~ .,
+                ~ paste0("^", ., "$"))
+  
+  utils::installed.packages() %>%
+    tibble::as_tibble() %>%
+    dplyr::filter(stringr::str_detect(string = Package,
+                                      pattern = regex))
+}
+```
+
+## `assert_pkg`
+
+TODO:
+
+-   Incorporate code from FA.
+
+-   Add additional params `install_source`. Open question: How to best handle multiple pkgs at once if they don't share the install source? Just recycle
+    `install_source`?
+
+```{r}
+#' Assert a package is installed
+#'
+#' @param pkg Package name. A character scalar.
+#' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
+#'   [`package_version`][base::package_version()] or something coercible to.
+#' @param message The error message to display in case the package is not installed. If `NULL`, a sensible standard message is generated.
+#' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
+#'   character scalar. Set `install_hint = ""` in order to disable the hint.
+#'
+#' @return `pkg` invisibly.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::assert_pkg("pal")
+#'
+#' pal::assert_pkg(pkg = "glue",
+#'                 message = paste0("You should really consider to install the awesome `glue` ",
+#'                                  "package! It's the glue that keeps strings and variables ",
+#'                                  "together 🤲."))
+#' \dontrun{
+#' pal::assert_pkg("pal", min_version = 9999.9)
+#' 
+#' pal::assert_pkg("yay",
+#'                 install_hint = paste0("To install the latest development version, run ",
+#'                                       "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
+assert_pkg <- function(pkg,
+                       min_version = NULL,
+                       message = NULL,
+                       install_hint = NULL) {
+  
+  # check if required version is available
+  if (!is_pkg_installed(pkg = checkmate::assert_string(pkg),
+                        min_version = checkmate::assert_vector(min_version,
+                                                               len = 1L,
+                                                               any.missing = FALSE,
+                                                               null.ok = TRUE))) {
+    
+    # check if pkg is installed at all
+    lacks_min_version <- !is.null(min_version) && is_pkg_installed(pkg = pkg)
+    
+    # generate message if necessary
+    if (is.null(checkmate::assert_string(message, null.ok = TRUE))) {
+      
+      message <- paste0("Package {.pkg {pkg}",
+                        dplyr::if_else(is.null(min_version),
+                                       "",
+                                       " (>= {as.package_version(min_version)})"),
+                        "} is required for this operation but ",
+                        dplyr::if_else(lacks_min_version,
+                                       paste0("installed version is ",
+                                              max(as.package_version(ls_pkg(pkg = pkg)$Version)), "."),
+                                       "is not installed."))
+    }
+    
+    # generate installation hint if necessary
+    if (is.null(checkmate::assert_string(install_hint, null.ok = TRUE))) {
+      
+      assert_pkg("pkgsearch")
+      
+      cran <- pkgsearch::pkg_search(pkg, size = 1L)
+      is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
+      is_cran_min_version <- ifelse(is.null(min_version),
+                                    is_cran_pkg,
+                                    cran %>%
+                                      dplyr::filter(version >= as.package_version(min_version)) %$%
+                                      package %>%
+                                      intersect(pkg) %>%
+                                      length() %>%
+                                      magrittr::is_greater_than(0L))
+      
+      if (is_cran_min_version) {
+        install_hint <- "To install the latest version, run {.code install.packages(\"{pkg}\")}."
+        
+      } else {
+        install_hint <- paste0("Please first ", dplyr::if_else(lacks_min_version, "update {.pkg {pkg}}", "install it"),
+                               " and then try again. Note that ",
+                               dplyr::if_else(is_cran_pkg, "the required version of {.pkg {pkg}} is not available on CRAN (yet).",
+                                              "{.pkg {pkg}} is not available on CRAN."))
+      }
+    }
+    
+    cli::cli_abort(paste(message, install_hint))
+    
+  } else {
+    invisible(pkg)
+  }
+}
+```
+
+## `is_pkg_installed`
+
+Part of this function [was originally proposed by Artem Klevtsov on Stack Overflow](https://stackoverflow.com/a/38082613/7196903).
+
+```{r}
+#' Test if packages are installed
+#'
+#' Returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not, optionally ensuring a `min_version`.
+#'
+#' In contrast to [base::require()], it checks if the packages are installed without attaching their namespaces if so.
+#' 
+#' In contrast to [rlang::is_installed()] or [xfun::pkg_available()], it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns
+#' a (named) logical vector of the same length as `pkg`.
+#' 
+#' It is [considerably
+#' faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the commonly used
+#' `pkg %in% rownames(installed.packages())` check.
+#'
+#' @param pkg Package names. A character vector.
+#' @param min_version Minimum required version number of each `pkg`. Must be either `NULL` to ignore version numbers, or a vector of
+#'   [`package_version`][base::package_version()]s or something coercible to.
+#'
+#' @return A named logical vector of the same length as `pkg`.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::is_pkg_installed("tidyverse")
+#'
+#' # it is vectorized ...
+#' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+#'                       min_version = c("1.0", "2.0", "99.9.9000"))
+#'
+#' # ... and scalar arguments will be recycled
+#' pal::is_pkg_installed(pkg = "dplyr",
+#'                       min_version = c("0.5", "1.0", "99.9.9000"))
+#'
+#' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
+#'                       min_version = "1.0")
+is_pkg_installed <- function(pkg,
+                             min_version = NULL) {
+  
+  if (is.null(min_version)) {
+    
+    purrr::map_lgl(magrittr::set_names(pkg, pkg),
+                   ~ nzchar(system.file(package = .x)))
+  } else {
+    
+    min_version <- rlang::with_handlers(as.package_version(min_version),
+                                        error = ~ list(NULL, .x$message))
+    
+    if (is.null(min_version[[1L]])) {
+      cli::cli_abort("{arg min_version} must be a vector of package versions or something coercible to: ", min_version[[2L]])
+    }
+    
+    is_pkg_installed(pkg = checkmate::assert_character(pkg, any.missing = FALSE)) %>%
+      list(names(.), min_version) %>%
+      purrr::pmap_lgl(~ {
+        if (..1) utils::packageVersion(pkg = ..2) >= ..3 else ..1
+      })
+  }
+}
+```
+
+## `is_pkg_cran`
+
+```{r}
+#' Test if a package is available on CRAN
+#'
+#' @inheritParams assert_pkg
+#'
+#' @return A logical scalar.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::is_pkg_cran("foobar")
+#' pal::is_pkg_cran("dplyr")
+#' pal::is_pkg_cran("dplyr", min_version = 9999.9)
+is_pkg_cran <- function(pkg,
+                        min_version = NULL) {
+  
+  assert_pkg("pkgsearch")
+  
+  checkmate::assert_string(pkg) %>%
+    pkgsearch::pkg_search(size = 1L) %>%
+    purrr::when(is.null(min_version) ~ .,
+                ~ dplyr::filter(.data = .,
+                                version >= as.package_version(min_version))) %$%
+    package %>%
+    intersect(pkg) %>%
+    length() %>%
+    magrittr::is_greater_than(0L)
+}
+```
+
+## `is_pkg_dir`
+
+```{r}
+#' Test if a directory is an \R package
+#'
+#' Convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that it will only return `TRUE` for the root of a
+#' package directory, not its subdirectories.
+#'
+#' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
+#'
+#' @return `TRUE` if `path` is the root directory of an \R package, `FALSE` otherwise.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::is_pkg_dir()
+#' pal::is_pkg_dir(fs::path_package("pal"))
+is_pkg_dir <- function(path = ".") {
+  
+  assert_pkg("rprojroot")
+  checkmate::assert_directory(path,
+                              access = "r")
+  
+  rprojroot::is_r_package$testfun %>%
+    purrr::map_lgl(~ .x(path = path)) %>%
+    any()
+}
+```
+
+## `is_pkgdown_dir`
+
+TODO:
+
+-   [ ] Remove custom `Remotes:` dep as soon as [this](https://github.com/r-lib/rprojroot/pull/79) is merged and released.
+
+```{r}
+#' Test if pkgdown is set up for an R package directory
+#'
+#' Convenience wrapper around the [rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the root of a
+#' package directory and the `pkgdown` subdirectory, not other subdirectories.
+#'
+#' @param path The path of the R package directory to check. A character scalar. Defaults to the current working directory.
+#'
+#' @return `TRUE` if pkgdown is set up for `path`, `FALSE` otherwise.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::is_pkgdown_dir()
+#' pal::is_pkgdown_dir(fs::path_package("pal"))
+is_pkgdown_dir <- function(path = ".") {
+  
+  assert_pkg("rprojroot")
+  checkmate::assert_directory(path,
+                              access = "r")
+  
+  rprojroot::is_pkgdown_project$testfun %>%
+    purrr::map_lgl(~ .x(path = path)) %>%
+    any()
+}
+```
+
+## `desc_list`
+
+TODO:
+
+-   [ ] Figure out why the example below throws the error
+
+    ``` {.error}
+    No root directory found in .../r/pkgs/pal.Rcheck or its parent directories.
+    Root criterion: contains a file "DESCRIPTION" with contents matching "^Package: "
+    ```
+
+    during R CMD Check while almost the same example in `desc_value()` doesn't...!?
+
+```{r}
+#' Get all `DESCRIPTION` file fields as cleaned up list
+#'
+#' @description
+#' Returns all fields from a specific `DESCRIPTION` file as a named list with values cleaned up:
+#' - Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
+#' - Multi-value fields are returned as vectors.
+#' - The fields `Depends`, `Imports` and `Suggests` are returned as a single data frame named `dependencies`.
+#'
+#' @inheritParams desc_value
+#'
+#' @return A list.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pal::desc_list(file = fs::path_package(package = "pal"))
+#' }
+desc_list <- function(file = ".") {
+  
+  fields <- desc::desc_fields(file = file)
+  
+  result <-
+    fields %>%
+    setdiff(c("Authors@R",
+              "Depends",
+              "Imports",
+              "Suggests",
+              "URL")) %>%
+    rlang::set_names() %>%
+    purrr::map(desc_value,
+               file = file)
+  
+  if ("Authors@R" %in% fields) result[["Authors@R"]] <- desc::desc_get_authors(file = file)
+  if (any(c("Depends", "Imports", "Suggests") %in% fields)) result[["dependencies"]] <- desc::desc_get_deps(file = file)
+  if ("URL" %in% fields) result[["URL"]] <- desc::desc_get_urls(file = file)
+  
+  result
+}
+```
+
+## `desc_value`
+
+TODO:
+
+-   [ ] Use `desc::desc_get_field()`'s `squish_ws` param as soon as the next stable version containing [\#101](https://github.com/r-lib/desc/pull/101) is
+    released. And rename fn to something like `desc_get_field_safe()`?
+
+-   [ ] Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
+
+    ``` {.r}
+    pal::desc_value("Suggestss", default = cli::cli_abort("No {.field {key}} field set in {.file DESCRIPTION}!")))
+    ```
+
+```{r}
+#' Get the value from a `DESCRIPTION` file field, cleaned up and with fallback
+#'
+#' Returns the value from a specific `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
+#' it are removed.
+#'
+#' By default, the following string is returned if `key = "NoRealKey"` is not found:
+#'
+#' ```
+#' "<No `NoRealKey` field set in DESCRIPTION!>"
+#' ```
+#'
+#' If you rather want to take an action like throwing an error, it's recommended to call [desc::desc_get_field()] directly.
+#'
+#' @param default Default value to return if `key` is not found.
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::desc_value(key = "Description",
+#'                 file = fs::path_package("pal"))
+desc_value <- function(key,
+                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
+                       file = ".") {
+  assert_pkg("desc")
+  
+  desc::desc_get_field(key = key,
+                       default = default,
+                       file = file) %>%
+    stringr::str_squish()
+}
+```
+
+## `desc_url_git`
+
+TODO:
+
+-   [ ] Propose this function in upstream.
+
+```{r}
+#' Get the Git repository URL from a `DESCRIPTION` file
+#'
+#' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
+#'
+#' Currently, this function recognizes [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
+#' [Codeberg](https://codeberg.org/), [Pagure](https://pagure.io/), [Bitbucket](https://bitbucket.org/) and [SourceHut](https://sr.ht/) repository URLs.
+#'
+#' @inheritParams desc::desc_get_field
+#'
+#' @return A character scalar.
+#' @family rpkgs
+#' @export
+desc_url_git <- function(file = ".") {
+  
+  assert_pkg("desc")
+  
+  desc::desc_get_field(key = "BugReports",
+                       default = character(),
+                       file = file) %>%
+    stringr::str_replace(pattern = "/issues/?$",
+                         replacement = "/") %>%
+    c(desc::desc_get_urls(), .) %>%
+    stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") %>%
+    dplyr::first()
+}
+```
+
+## `roxy_tag_value`
+
+```{r}
+#' Get an object's roxygen2 tag value
+#'
+#' Parses `text` for [roxygen2 blocks][roxygen2::roxy_block()] and extracts the value(s) belonging to the `tag_name`s documenting `obj_name`.
+#'
+#' @param text The \R source code to extract the object's roxygen2 tag value from. A character vector.
+#' @param obj_name The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.
+#' @param tag_name The name of the [roxygen2 tag](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value from. A character scalar.
+#' @param param_name The parameter name to extract the value from. Only relevant if `tag_name = "param"`. A character scalar.
+#'
+#' @return A character scalar if `tag_name = "param"` and `param_name != NULL`, otherwise a list.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
+#'                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
+#'
+#' pal::roxy_tag_value(text = text,
+#'                     obj_name = "as_function",
+#'                     param_name = "x")
+roxy_tag_value <- function(text,
+                           obj_name,
+                           tag_name = "param",
+                           param_name = NULL) {
+  
+  assert_pkg("roxygen2")
+  roxy_blocks <- roxygen2::parse_text(text = text)
+  
+  i_obj <-
+    roxy_blocks %>%
+    purrr::map_depth(.depth = 1L,
+                     .f = purrr::pluck,
+                     "object", "topic") %>%
+    purrr::compact() %>%
+    purrr::flatten_chr() %>%
+    magrittr::equals(obj_name) %>%
+    which()
+  
+  i_tag <-
+    roxy_blocks[[i_obj]]$tags %>%
+    purrr::map_depth(.depth = 1L,
+                     .f = purrr::pluck,
+                     "tag") %>%
+    purrr::compact() %>%
+    purrr::flatten_chr() %>%
+    magrittr::equals(tag_name) %>%
+    which()
+  
+  tag_values <-
+    i_tag %>%
+    purrr::map(~ roxy_blocks[[i_obj]]$tags[[.x]]) %>%
+    purrr::map_depth(.depth = 1L,
+                     .f = purrr::pluck,
+                     "val") %>%
+    purrr::compact()
+  
+  if (tag_name == "param" & !is.null(param_name)) {
+    
+    i_param <-
+      tag_values %>%
+      purrr::map_depth(.depth = 1L,
+                       .f = purrr::pluck,
+                       "name") %>%
+      purrr::compact() %>%
+      purrr::flatten_chr() %>%
+      magrittr::equals(checkmate::assert_string(param_name)) %>%
+      which()
+    
+    result <- tag_values[[i_param]]$description
+    
+  } else {
+    result <- tag_values
+  }
+  
+  result
+}
+```
+
+# (Pandoc) Markdown
+
+## `as_md_list`
+
+TODO:
+
+-   [ ] Mention usefulness of this fn for roxygen2 doc as soon as [issue \#1112](https://github.com/r-lib/roxygen2/issues/1112) is resolved.
+
+```{r}
+#' Convert a character vector to a Markdown list
+#'
+#' Convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
+#' list](https://pandoc.org/MANUAL.html#lists).
+#'
+#' @param x The character vector to be converted to a Markdown list.
+#' @param type The Markdown list type. One of
+#'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to `<ul>` in HTML.
+#'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to `<ol>` in HTML.
+#'   - `"ordered_roman"` for a variation of an ordered/numbered list with uppercase roman numerals instead of Arabic numerals as list markers.
+#' @param tight Whether or not to add additional spacing between list items.
+#' @param indent_lvl The level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
+#'   integer scalar.
+#' @param wrap An optional string to wrap the list items in.
+#'
+#' @return A character scalar.
+#' @family md
+#' @export
+#'
+#' @examples
+#' rownames(mtcars) |> pal::as_md_list() |> cat()
+as_md_list <- function(x,
+                       type = c("unordered", "ordered", "ordered_roman"),
+                       tight = TRUE,
+                       indent_lvl = 0L,
+                       wrap = NULL) {
+  
+  type <- rlang::arg_match(type)
+  checkmate::assert_flag(tight)
+  checkmate::assert_count(indent_lvl)
+  checkmate::assert_string(wrap,
+                           null.ok = TRUE)
+  assert_pkg("pander")
+  
+  pander::pandoc.list.return(elements = paste0(wrap, as_chr(x), wrap),
+                             style = switch(EXPR = type,
+                                            unordered = "bullet",
+                                            ordered = "ordered",
+                                            ordered_roman = "roman"),
+                             loose = !tight,
+                             indent.level = indent_lvl,
+                             add.line.breaks = FALSE,
+                             add.end.of.list = FALSE)
+}
+```
+
+## `pipe_table`
+
+```{r}
+#' Convert dataframe/tibble to Markdown pipe table
+#'
+#' Convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a [Markdown pipe
+#' table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
+#' 
+#' # Create tables dynamically in roxygen2 documentation
+#' 
+#' This function can be useful to create tables inside [roxygen2][roxygen2::roxygen2] documentation programmatically from data using
+#' [dynamic \R code](https://roxygen2.r-lib.org/articles/rd-formatting.html#dynamic-r-code-1).
+#' 
+#' For example, the inline code
+#' 
+#' `` `r mtcars %>% head() %>% pipe_table()` ``
+#'
+#' should produce the following table in [roxygen2 7.1.0](https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/) and above:
+#'
+#' `r mtcars %>% head() %>% pipe_table()`
+#'
+#' @inherit knitr::kable details
+#'
+#' @param x The dataframe/tibble/matrix to be converted to a pipe table.
+#' @param incl_rownames Whether to include row names or not. A logical scalar or `NULL`. If `NULL`, row names are included if `rownames(x)` is neither `NULL`
+#'   nor identical to `seq_len(nrow(x))`.
+#' @param strong_colnames Highlight column names by formatting them `<strong>` (wrapping them in two asterisks).
+#' @param strong_rownames Highlight row names by formatting them `<strong>` (wrapping them in two asterisks).
+#' @param align Column alignment. Either `NULL` for auto-alignment or a character vector consisting of `'l'` (left), `'c'` (center) and/or `'r'` (right). If
+#'   `align = NULL`, numeric columns are right-aligned, and other columns are left-aligned. If `length(align) == 1L`, the string will be expanded to a vector
+#'   of individual letters, e.g. `'clc'` becomes `c('c', 'l', 'c')`.
+#' @param format_args A list of arguments to be passed to [format()] to format table values, e.g. `list(big.mark = ',')`.
+#' @inheritParams knitr::kable
+#'
+#' @return A character vector.
+#' @family md
+#' @export
+#'
+#' @examples
+#' mtcars |> head() |> pal::pipe_table() |> pal::cat_lines()
+pipe_table <- function(x,
+                       incl_rownames = NULL,
+                       strong_colnames = TRUE,
+                       strong_rownames = TRUE,
+                       align = NULL,
+                       label = NULL,
+                       digits = getOption("digits"),
+                       format_args = list()) {
+  
+  assert_pkg("knitr")
+  checkmate::assert_flag(incl_rownames,
+                         null.ok = TRUE)
+  
+  # format rownames <strong> if requested and sensible
+  if ((isTRUE(incl_rownames) && !is.null(rownames(x))) ||
+      (is.null(incl_rownames) && !identical(rownames(x), as.character(seq_len(nrow(x)))))) {
+    
+    rownames(x) %<>% paste0("**", ., "**")
+  }
+  
+  kable_args <-
+    alist(x = x,
+          format = "pipe",
+          digits = digits,
+          row.names = ifelse(is.null(incl_rownames),
+                             NA,
+                             incl_rownames),
+          col.names = colnames(x) %>% purrr::when(checkmate::assert_flag(strong_colnames) ~ paste0("**", ., "**"),
+                                                  ~ .),
+          label = label,
+          format.args = format_args) %>%
+    purrr::when(!is.null(align) ~ c(., alist(align = align)),
+                ~ .)
+  
+  do.call(what = knitr::kable,
+          args = kable_args)
+}
+```
+
+## `strip_md`
+
+```{r}
+#' Strip Markdown formatting from character vector
+#'
+#' Removes all Markdown formatting from a character vector.
+#'
+#' This function relies on [commonmark::markdown_text()] which [supports the CommonMark specification plus the Github
+#' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) aren't supported
+#' (yet). Therefore a separate option `strip_footnotes` is offered which relies on a simple regular expression to remove inline footnotes and footnote
+#' references.
+#'
+#' @param x A character vector to strip Markdown formatting from.
+#' @param strip_footnotes Whether to remove Markdown footnotes, too.
+#'
+#' @return A character vector of the same length as `x`.
+#' @family md
+#' @export
+#'
+#' @examples
+#' pal::strip_md(
+#'   "A **MD** formatted [string](https://en.wikipedia.org/wiki/String_(computer_science))"
+#' )
+#'
+#' # link references are only removed *iff* the reference is included in `x`:
+#' pal::strip_md("[A reference link][refid]\n\n[refid]: https://example.com")
+#' pal::strip_md("[A reference link][refid]\n\n_No ref here..._")
+strip_md <- function(x,
+                     strip_footnotes = TRUE) {
+  
+  assert_pkg("commonmark")
+  
+  checkmate::assert_character(x) %>%
+    purrr::map_chr(~ .x %>% purrr::when(is.na(.) ~ .,
+                                        ~ commonmark::markdown_text(text = .,
+                                                                    extensions = TRUE) %>%
+                                          stringr::str_remove(pattern = "\n$") %>%
+                                          purrr::when(checkmate::assert_flag(strip_footnotes) ~ strip_md_footnotes(.),
+                                                      ~ .)))
+}
+```
+
+## `strip_md_footnotes`
+
+TODO: Write some tests!
+
+```{r}
+#' Strip Markdown footnotes from character vector
+#'
+#' Removes all Markdown footnotes from a character vector.
+#'
+#' @param x A character vector to strip Markdown footnotes from. Note that elements in `x` are processed as separate Markdown domains, i.e. _not_ as individual
+#' lines belonging to the same Markdown document.
+#'
+#' @return A character vector of the same length as `x`.
+#' @family md
+#' @export
+strip_md_footnotes <- function(x) {
+  
+  checkmate::assert_character(x) %>%
+    stringr::str_remove_all(pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
+}
+```
+
+# R Markdown / knitr
+
+## `build_readme`
+
+```{r}
+#' Build `README.Rmd`
+#'
+#' A simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library before building the
+#' `README.Rmd`. This has the pleasant side effect that, other than the latter function, it also works for `.Rmd` files which aren't part of an \R package.
+#' 
+#' Note that for public package repositories, it's recommended to use [devtools::build_readme()] since it ensures the `README.Rmd` can be built _reproducibly_,
+#' which means all the objects and files it references must be accessible from the repository.
+#' 
+#' `r pkgsnip::md_snip("rstudio_addin_hint")`
+#'
+#' @param input The path to the R Markdown README file to be built. A character scalar.
+#' @param output The path of the built Markdown README. A character scalar.
+#' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output` (i.e. in the same parent
+#'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
+#'   be built with the \R option `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
+#'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
+#' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
+#'
+#' @return The path to `input` as a character scalar, invisibly.
+#' @family rmd_knitr
+#' @export
+build_readme <- function(input = "README.Rmd",
+                         output = "README.md",
+                         build_index_md = NULL,
+                         env = parent.frame()) {
+  # add args to env
+  rlang::env_bind(.env = checkmate::assert_environment(env),
+                  input = checkmate::assert_string(input),
+                  output = checkmate::assert_path_for_output(output,
+                                                             overwrite = TRUE),
+                  build_index_md = checkmate::assert_flag(build_index_md, null.ok = TRUE))
+  
+  # add `pkg_metadata` to env
+  parent_dir <- fs::path_dir(input)
+  
+  if (is_pkg_dir(parent_dir)) {
+    
+    assert_pkg("desc")
+    
+    rlang::env_bind(.env = env,
+                    pkg_metadata = desc_list(parent_dir))
+  }
+  
+  cli_process_expr(
+    msg = "Building {.file {input}}",
+    env = env,
+    expr = {
+      
+      assert_pkg("knitr")
+      assert_pkg("rmarkdown")
+      
+      # generate `output`
+      ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
+      rmarkdown::render(input = input,
+                        output_file = output,
+                        quiet = TRUE,
+                        envir = env)
+      
+      # generate `index.md` if indicated
+      if (!isFALSE(build_index_md)) {
+        
+        output_dir <- fs::path_dir(output)
+        
+        if (is_pkgdown_dir(output_dir)) {
+          
+          index_md_path <-
+            fs::path(output_dir, "pkgdown") %>%
+            fs::dir_create() %>%
+            fs::path("index.md") %>%
+            checkmate::assert_path_for_output(overwrite = TRUE) %>%
+            fs::path_abs()
+          
+          # clean MD file
+          # TODO: submit PR to pkgdown doing this?
+          assert_pkg("brio")
+          tmp_file <- fs::file_temp(pattern = "index",
+                                    ext = "Rmd")
+          
+          brio::read_file(input) %>%
+            # remove trailing horizontal line in MD file since pkgdown always adds one below content
+            stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
+                                 replacement = "\\2") %>%
+            # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)
+            stringr::str_replace_all(pattern = "(<img [^>]+)(align=['\"].*?['\"]\\s*)",
+                                     replacement = "\\1") %>%
+            stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
+                                     replacement = "\\1") %>%
+            brio::write_file(path = tmp_file)
+          
+          # render `pkgdown/index.md`
+          withr::with_options(
+            new = list(pal.build_readme.is_pkgdown = TRUE),
+            code = rmarkdown::render(input = tmp_file,
+                                     output_file = index_md_path,
+                                     output_format =
+                                       rmarkdown::md_document(variant = "markdown",
+                                                              # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
+                                                              md_extensions = c("-autolink_bare_uris",
+                                                                                "-tex_math_single_backslash"),
+                                                              pandoc_args = "--columns=9999") %>%
+                                       # disable Pandoc's raw attributes in output to have more control over inline HTML
+                                       purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
+                                     knit_root_dir = fs::path_wd(),
+                                     quiet = TRUE,
+                                     envir = env)
+          )
+        }
+      }
+    }
+  )
+}
+```
+
+## `knitr_table_format`
+
+```{r}
+#' Determine current knitr table format
+#'
+#' Determines the current knitr table format based on the \R option
+#' [`knitr.table.format`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats) which can either be set directly to a valid format string or
+#' to a function returning one of these strings conditionally.
+#'
+#' This is basically a convenience wrapper to be able to access the current `knitr.table.format` in a hassle-free way, i.e. it provides the conditional logic to
+#' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
+#'
+#' @param default The knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
+#'   `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
+#'   
+#' See [knitr::kable()]'s `format` argument for details.
+#'
+#' @return A character scalar.
+#' @family rmd_knitr
+#' @export
+knitr_table_format <- function(default = c("pipe",
+                                           "simple",
+                                           "html",
+                                           "latex",
+                                           "rst")) {
+  
+  allowed_formats <- eval(formals()$default)
+  
+  opt <- getOption("knitr.table.format")
+  result <- opt %||% rlang::arg_match(default)
+  
+  if (is.function(result)) result <- result()
+  
+  if (!(result %in% allowed_formats)) {
+    
+    cli::cli_abort(paste0("R option {.field knitr.table.format} must evaluate to one of ",
+                          prose_ls(x = paste0("{.val ", allowed_formats, "}"),
+                                   last_separator = " or "),
+                          ", but is {.code {deparse1(opt)}}",
+                          dplyr::if_else(is.function(opt),
+                                         " which evaluates to {.val {result}}",
+                                         ""),
+                          "."))
+  }
+  
+  result
+}
+```
+
+## Output formats
+
+These are [custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output
+formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
+
+### `gitlab_document`
+
+TODO:
+
+-   Find out why param [`df_print`](https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing) has no effect (seems to always fall back to
+    `"default"`; the same happens for `rmarkdown::github_document()`). Is this a bug?\`
+
+    Setting `df_print = "kable"` should actually produce a [pipe table](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-formats)...
+
+-   Finish the damn tocr package and switch to it for TOC generation instead of Pandoc's built-in but very limited `--table-of-contents` option!
+
+-   As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://github.com/jgm/pandoc/issues/3977), switching to that will be the next step.
+
+```{r}
+#' Convert to GitLab Flavored Markdown
+#'
+#' Format for converting from R Markdown to [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
+#'
+#' This is the GitLab equivalent to the [`github_document`][rmarkdown::github_document()] R Markdown
+#' [output format](https://bookdown.org/yihui/rmarkdown/output-formats.html). It basically ensures Pandoc is called with a custom set of options optimized for 
+#' maximum compatibility with [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
+#'
+#' ## Caveats regarding GitLab-Flavored-Markdown-specific features
+#'
+#' GitLab Flavored Markdown extends the [CommonMark](https://spec.commonmark.org/current/) Markdown specification with a bunch of
+#' [special features](https://gitlab.com/help/user/markdown.md#gfm-extends-standard-markdown). To be able to properly make use of them, observe the following
+#' points:
+#'
+#' - For [inline diffs](https://gitlab.com/help/user/markdown.md#inline-diff), only use curly braces (`{}`), not square brackets (`[]`). The latter will be
+#'   escaped by Pandoc during conversion and thus not recognized by GitLab as starting/ending an inline diff.
+#'
+#' - You have to set `smart_punctuation = FALSE` in order to leave certain
+#'   [special GitLab references](https://gitlab.com/help/user/markdown.md#special-gitlab-references) (like commit range comparisons) untouched for GitLab to
+#'   interpret them correctly.
+#'
+#'   All the special GitLab references for snippets and labels that start with a tilde (`~`) or a dollar sign (`$`) won't work because these characters will be
+#'   escaped by Pandoc during conversion.
+#'
+#' - The `[[_TOC_]]` tag to let GitLab [generate a table of contents](https://gitlab.com/help/user/markdown.md#table-of-contents) won't work because it will be
+#'   escaped by Pandoc during conversion. You can let Pandoc generate the TOC instead by setting `toc = TRUE`.
+#'
+#' - [Multiline blockquotes](https://gitlab.com/help/user/markdown.md#multiline-blockquote) won't work because the fence delimiters `>>>` will be escaped by
+#'   Pandoc during conversion.
+#'
+#' @param smart_punctuation Whether to enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts straight quotes to
+#'   curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
+#'   `Mr.`.
+#' @param parse_emoji_markup Whether to enable [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji markup (e.g.
+#'   `:smile:`) as Unicode emoticons.
+#' @param toc Include a table of contents (TOC) [automatically generated by Pandoc](https://pandoc.org/MANUAL.html#option--toc). Note that the TOC will be
+#'   placed _before_ the README's body, meaning also _before_ the first Markdown header.
+#' @param add_footnotes_hr Whether to add a trailing horizontal rule (`---`) to the final Markdown file if it doesn't already end in one and contains footnotes
+#'   (currently only checks for Pandoc's [reference-style footnotes](https://pandoc.org/MANUAL.html#footnotes) and not inline footnotes). This improves
+#'   readability when the file is rendered on `GitLab.com`.
+#' @param autolink_bare_uris Enable the [`autolink_bare_uris` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-autolink_bare_uris) which
+#'   makes all absolute URIs into links, even when not surrounded by pointy braces `<...>`.
+#' @param tex_math_single_backslash Enable the
+#'   [`tex_math_single_backslash` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash) which causes anything between
+#'   `\(` and `\)` to be interpreted as inline TeX math, and anything between `\[` and `\]` to be interpreted as display TeX math. Note: a drawback of this
+#'   extension is that it precludes escaping `(` and `[`.
+#' @inheritParams rmarkdown::output_format
+#' @inheritParams rmarkdown::md_document
+#'
+#' @return R Markdown output format intended to be fed to [rmarkdown::render()].
+#' @family rmd_knitr
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' tmp_file <- fs::file_temp()
+#' download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd",
+#'               destfile = tmp_file,
+#'               quiet = TRUE)
+#'
+#' rmarkdown::render(input = tmp_file,
+#'                   output_format = pal::gitlab_document(),
+#'                   quiet = TRUE) |>
+#'   brio::read_lines() |>
+#'   length()}
+gitlab_document <- function(smart_punctuation = TRUE,
+                            parse_emoji_markup = FALSE,
+                            df_print = "kable",
+                            toc = FALSE,
+                            toc_depth = 6L,
+                            fig_width = 7L,
+                            fig_height = 5L,
+                            dev = "png",
+                            preserve_yaml = FALSE,
+                            add_footnotes_hr = TRUE,
+                            autolink_bare_uris = FALSE,
+                            tex_math_single_backslash = FALSE) {
+  assert_pkg("rmarkdown")
+  
+  # `post_process` fn to ensure MD ends in trailing horizontal rule
+  if (checkmate::assert_flag(add_footnotes_hr)) {
+    
+    ensure_trailing_md_hr <- function(metadata,
+                                      input_file,
+                                      output_file,
+                                      clean,
+                                      verbose) {
+      assert_pkg("brio")
+      
+      md <-
+        checkmate::assert_file(output_file,
+                               access = "w") %>%
+        brio::read_file()
+      
+      # check if file contains footnotes
+      if (stringr::str_detect(string = md,
+                              pattern = "(\\n\\[\\^[\\w-]+\\]:.*)")) {
+        
+        # check if there's already a trailing horizontal rule
+        if (!stringr::str_detect(string = md,
+                                 pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)")) {
+          
+          md %>%
+            stringr::str_replace(pattern = "((\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
+                                 replacement = "\n---\n\\1") %>%
+            brio::write_file(path = output_file)
+        }
+        
+      }
+      
+      output_file
+    }
+  } else {
+    ensure_trailing_md_hr <- NULL
+  }
+  
+  # create rmd output format
+  rmarkdown::output_format(
+    knitr = rmarkdown::knitr_options_html(fig_width = fig_width,
+                                          fig_height = fig_height,
+                                          fig_retina = NULL,
+                                          keep_md = FALSE,
+                                          dev = dev),
+    pandoc = rmarkdown::pandoc_options(to =
+                                         c("markdown",
+                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)],
+                                           "-smart",
+                                           "-simple_tables",
+                                           "-multiline_tables",
+                                           "-grid_tables",
+                                           "-fenced_code_attributes",
+                                           "-inline_code_attributes",
+                                           "-raw_attribute",
+                                           "-pandoc_title_block",
+                                           "-yaml_metadata_block"[!checkmate::assert_flag(preserve_yaml)]) %>%
+                                         paste0(collapse = ""),
+                                       from =
+                                         c("markdown",
+                                           "+autolink_bare_uris"[checkmate::assert_flag(autolink_bare_uris)],
+                                           "+tex_math_single_backslash"[checkmate::assert_flag(tex_math_single_backslash)],
+                                           "-smart"[!checkmate::assert_flag(smart_punctuation)]) %>%
+                                         paste0(collapse = ""),
+                                       args = c("--columns=9999",
+                                                "--standalone",
+                                                "--table-of-contents"[checkmate::assert_flag(toc)],
+                                                paste0("--toc-depth=", checkmate::assert_int(toc_depth,
+                                                                                             lower = 1L,
+                                                                                             upper = 6L))[checkmate::assert_flag(toc)])),
+    df_print = df_print,
+    pre_knit = NULL,
+    post_knit = NULL,
+    pre_processor = NULL,
+    intermediates_generator = NULL,
+    post_processor = ensure_trailing_md_hr,
+    on_exit = NULL,
+    base_format = NULL
+  )
+}
+```
+
+# GitHub
+
+Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's v4 GraphQL API](https://docs.github.com/en/graphql).
 
 NOTES:
 
@@ -2738,7 +2378,7 @@ NOTES:
     type](https://docs.github.com/en/graphql/reference/objects#repository) says it would accept "a Git revision expression suitable for rev-parse", but more
     specifically only seems to support a `<rev>:<path>` specification and not [`<sha1>` etc.](https://git-scm.com/docs/git-rev-parse#_specifying_revisions)
 
-### Read in a text file from a GitHub repository
+## `gh_text_file`
 
 Inspiration: <https://gist.github.com/Integralist/9482061#gistcomment-2750049>
 
@@ -2795,7 +2435,7 @@ gh_text_file <- function(path,
 }
 ```
 
-### Read in text files from a GitHub repository
+## `gh_text_files`
 
 Inspiration: <https://gist.github.com/MichaelCurrin/6777b91e6374cdb5662b64b8249070ea>
 
@@ -2821,7 +2461,8 @@ Inspiration: <https://gist.github.com/MichaelCurrin/6777b91e6374cdb5662b64b82490
 #' @examples
 #' pal::gh_text_files(path = "tests",
 #'                    owner = "salim-b",
-#'                    name = "pal")
+#'                    name = "pal") |>
+#'   str()
 #' 
 #' # you have to opt-in into directory recursion
 #' pal::gh_text_files(path = "tests",
@@ -2851,7 +2492,7 @@ gh_text_files <- function(path,
 }
 ```
 
-### List files and directories in a GitHub repository
+## `gh_dir_ls`
 
 ```{r}
 #' List files and directories in a GitHub repository
@@ -2965,9 +2606,167 @@ gh_dir_ls <- function(path = "",
 }
 ```
 
-## readr
+# System interaction
 
-### Create column specification using regular expression matching
+## `check_cli`
+
+```{r}
+#' Check if CLI tool is available on the system
+#'
+#' Checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem
+#' path.
+#'
+#' @param cmd The system command to invoke the CLI tool. A character scalar.
+#' @param get_cmd_path Return the filesystem path to the CLI tool. If `FALSE` (the default), a boolean is returned indicating if the CLI tool is found on the
+#'   system or not.
+#' @param force_which If set to `TRUE`, [Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
+#'   availability of `cmd` on Unix-like systems. On Windows, `Sys.which()` is used in any case. `command -v` is
+#'   [generally recommended for bourne-like shells](https://unix.stackexchange.com/q/85249/201803) and therefore is the default on Linux, macOS and other
+#'   [Unixes](https://en.wikipedia.org/wiki/Unix-like).
+#'
+#' @return A logical scalar if `get_cmd_path = FALSE`, otherwise the filesystem [path][fs::path] to the `cmd` executable.
+#' @family sys
+#' @export
+#'
+#' @examples
+#' pal::check_cli("Rscript")
+#'
+#' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
+#' pal::check_cli(cmd, get_cmd_path = TRUE)
+check_cli <- function(cmd,
+                      get_cmd_path = FALSE,
+                      force_which = FALSE) {
+  
+  checkmate::assert_string(cmd)
+  checkmate::assert_flag(get_cmd_path)
+  checkmate::assert_flag(force_which)
+  
+  if (force_which | !xfun::is_unix()) {
+    
+    Sys.which(names = cmd) %>%
+      as.character() %>%
+      purrr::when(. == "" ~ character(0L),
+                  ~ .) %>%
+      purrr::when(get_cmd_path ~ fs::path(.),
+                  length(.) == 0L ~ FALSE,
+                  ~ TRUE)
+    
+  } else {
+    
+    # define "defused" warning/error handler
+    defuse <- function(e) if (get_cmd_path) character(0L) else FALSE
+    
+    rlang::with_handlers(system2(command = "command",
+                                 args = c("-v",
+                                          cmd),
+                                 stdout = get_cmd_path,
+                                 stderr = get_cmd_path),
+                         warning = defuse,
+                         error = defuse) %>%
+      purrr::when(get_cmd_path ~ fs::path(.),
+                  isFALSE(.) ~ .,
+                  ~ TRUE)
+  }
+}
+```
+
+## `path_script`
+
+This function is inspired by an [answer from Stack Overflow user Jerry T](https://stackoverflow.com/a/36777602/7196903).
+
+```{r}
+#' Determine file path of executing script
+#'
+#' Tries to determine the path to the R/Rmd script that this function is called from.
+#'
+#' @return The file path to the executing script.
+#' @family sys
+#' @export
+path_script <- function() {
+  
+  assert_pkg("rprojroot")
+  assert_pkg("rstudioapi")
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  needle <- "--file="
+  match <- grep(x = cmd_args,
+                pattern = needle)
+  
+  # Rscript
+  if (length(match) > 0L) {
+    
+    return(normalizePath(sub(needle, "", cmd_args[match])))
+  }
+  
+  # `source()`d via R console
+  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
+    
+    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
+    
+    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
+  } else if (!is.null(rprojroot::thisfile())) {
+    
+    return(rprojroot::thisfile())
+    
+    # RStudio document
+  } else {
+    
+    path <- rstudioapi::getActiveDocumentContext()[["path"]]
+    
+    if (path != "") {
+      return(normalizePath(path))
+    }
+  }
+  
+  cli::cli_abort("Couldn't determine script path.")
+}
+```
+
+## !`run_cli`
+
+TODO!
+
+```{r}
+run_cli <- function(cmd,
+                    ...) {
+  
+  
+}
+```
+
+# Miscellaneous
+
+## `capture_print`
+
+```{r}
+#' Capture printed console output as string
+#'
+#' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as an atomic character vector
+#' (i.e. a string), otherwise as a character vector of output lines.
+#'
+#' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
+#' (e.g. as output by the `print()` methods of tidyverse packages) are not captured (i.e. lost).
+#'
+#' @param x The \R object of which the output of `print()` is to be captured.
+#' @param collapse An optional string for concatenating the results. If `NULL`, a character vector of print lines is returned.
+#'
+#' @return A character vector if `collapse = NULL`, otherwise a character scalar.
+#' @export
+#'
+#' @examples
+#' mtcars |> pal::capture_print()
+#' mtcars |> pal::capture_print(collapse = "\n") |> cat()
+capture_print <- function(x,
+                          collapse = NULL) {
+  
+  utils::capture.output(print(x),
+                        file = NULL,
+                        type = "output",
+                        split = FALSE) %>%
+    paste0(collapse = collapse)
+}
+```
+
+## `cols_regex`
 
 TODO:
 
@@ -2982,12 +2781,12 @@ TODO:
     [rejected](https://github.com/tidyverse/readr/pull/1112#issuecomment-691294787).
 
 ```{r}
-#' Create column specification using regular expression matching
+#' Create [readr][readr::readr-package] column specification using regular expression matching
 #'
 #' Allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
 #'
 #' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by `col_*()`, or their
-#'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]).   `r pkgsnip::roxy_label("dyn_dots_support")`
+#'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]). `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
 #' @param .col_names The column names which should be matched by `...`.
 #'
@@ -3064,84 +2863,289 @@ cols_regex <- function(...,
 }
 ```
 
-## roxygen2
+## `cli_process_expr`
 
-### Get an object's roxygen2 tag value
+TODO:
+
+-   Introduce a param for flexible condition "morphing" (e.g. errors as warnings)
+
+    The class of the condition has to be changed for this before feeding it to `rlang::cnd_signal`.
+
+-   Propose this function upstream!
 
 ```{r}
-#' Get an object's roxygen2 tag value
+#' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication
 #'
-#' Parses `text` for [roxygen2 blocks][roxygen2::roxy_block()] and extracts the value(s) belonging to the `tag_name`s documenting `obj_name`.
+#' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
 #'
-#' @param text The \R source code to extract the object's roxygen2 tag value from. A character vector.
-#' @param obj_name The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.
-#' @param tag_name The name of the [roxygen2 tag](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value from. A character scalar.
-#' @param param_name The parameter name to extract the value from. Only relevant if `tag_name = "param"`. A character scalar.
+#' @param expr An expression to be evaluated.
+#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
+#' @inheritParams cli::cli_process_start
 #'
-#' @return A character scalar if `tag_name = "param"` and `param_name != NULL`, otherwise a list.
+#' @return The result of the evaluated `expr`, invisibly.
 #' @export
 #'
 #' @examples
-#' text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
-#'                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
+#' \donttest{
+#' pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
 #'
-#' pal::roxy_tag_value(text = text,
-#'                     obj_name = "as_function",
-#'                     param_name = "x")
-roxy_tag_value <- function(text,
-                           obj_name,
-                           tag_name = "param",
-                           param_name = NULL) {
+#' \dontrun{
+#' # "russian roulette"
+#' msg <- "Spinning the cylinder \U0001F91E … "
+#' pal::cli_process_expr(msg = msg,
+#'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+#'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                       expr = {
+#'                         if (interactive()) Sys.sleep(1)
+#'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+#'                       })}
+cli_process_expr <- function(expr,
+                             msg,
+                             msg_done = paste(msg, "... done"),
+                             msg_failed = paste(msg, "... failed"),
+                             msg_class = "alert-info",
+                             done_class = "alert-success",
+                             failed_class = "alert-danger",
+                             env = parent.frame()) {
+  checkmate::assert_string(msg,
+                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
+                           min.chars = 1L)
+  checkmate::assert_string(msg_done)
+  checkmate::assert_string(msg_failed)
+  checkmate::assert_string(msg_class)
+  checkmate::assert_string(done_class)
+  checkmate::assert_string(failed_class)
+  checkmate::assert_environment(env)
   
-  assert_pkg("roxygen2")
-  roxy_blocks <- roxygen2::parse_text(text = text)
+  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function won't reach execution because we throw the error
+  #       using `rlang::cnd_signal(.x)` first.
+  status_bar_container_id <- cli::cli_process_start(msg = msg,
+                                                    msg_done = msg_done,
+                                                    msg_failed = msg_failed,
+                                                    msg_class = msg_class,
+                                                    done_class = done_class,
+                                                    failed_class = failed_class,
+                                                    .envir = env)
   
-  i_obj <-
-    roxy_blocks %>%
-    purrr::map_depth(.depth = 1L,
-                     .f = purrr::pluck,
-                     "object", "topic") %>%
-    purrr::compact() %>%
-    purrr::flatten_chr() %>%
-    magrittr::equals(obj_name) %>%
-    which()
+  result <- rlang::with_handlers(.expr = rlang::eval_tidy(expr = {{ expr }},
+                                                          env = env),
+                                 error = ~ {
+                                   cli::cli_process_failed(status_bar_container_id)
+                                   rlang::cnd_signal(.x)
+                                 })
   
-  i_tag <-
-    roxy_blocks[[i_obj]]$tags %>%
-    purrr::map_depth(.depth = 1L,
-                     .f = purrr::pluck,
-                     "tag") %>%
-    purrr::compact() %>%
-    purrr::flatten_chr() %>%
-    magrittr::equals(tag_name) %>%
-    which()
+  cli::cli_process_done(status_bar_container_id)
   
-  tag_values <-
-    i_tag %>%
-    purrr::map(~ roxy_blocks[[i_obj]]$tags[[.x]]) %>%
-    purrr::map_depth(.depth = 1L,
-                     .f = purrr::pluck,
-                     "val") %>%
-    purrr::compact()
+  invisible(result)
+}
+```
+
+## `is_http_success`
+
+A shorter way to define a very similar function would be:
+
+``` {.r}
+is_http_success <- purrr::possibly(~ !httr::http_error(.x),
+                                   otherwise = FALSE)
+```
+
+TODO: Figure out if it's really sensible to handle/catch interrupts.
+
+```{r}
+#' Test if an HTTP request is successful
+#'
+#' @description
+#' Convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
+#'
+#' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD`](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) request could
+#'   be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), or
+#'
+#' - `FALSE` in any other case.
+#'
+#' @details
+#' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
+#' based on [curl](https://jeroen.cran.dev/curl/).
+#'
+#' @param url The HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
+#' @param retries The maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar >= `0`. The retries are performed using
+#'   exponential backoff and jitter, see [httr::RETRY()] for details.
+#' @param quiet Suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant if `retries > 0`.
+#'
+#' @return A logical scalar.
+#' @export
+#'
+#' @examples
+#' pal::is_http_success("goo.gl")
+#' pal::is_http_success("https://google.com/")
+#' pal::is_http_success("https://google.not/")
+#' pal::is_http_success("https://google.not/",
+#'                      retries = 2,
+#'                      quiet = FALSE)
+is_http_success <- function(url,
+                            retries = 0L,
+                            quiet = TRUE) {
+  assert_pkg("httr")
+  checkmate::assert_string(url)
+  checkmate::assert_count(retries)
+  checkmate::assert_flag(quiet)
   
-  if (tag_name == "param" & !is.null(param_name)) {
-    
-    i_param <-
-      tag_values %>%
-      purrr::map_depth(.depth = 1L,
-                       .f = purrr::pluck,
-                       "name") %>%
-      purrr::compact() %>%
-      purrr::flatten_chr() %>%
-      magrittr::equals(checkmate::assert_string(param_name)) %>%
-      which()
-    
-    result <- tag_values[[i_param]]$description
-    
-  } else {
-    result <- tag_values
+  rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
+                                                     url = url,
+                                                     times = retries + 1L,
+                                                     quiet = quiet)),
+                       error = ~ FALSE,
+                       interrupt = ~ cli::cli_abort("Terminated by the user"))
+}
+```
+
+## `order_by`
+
+```{r}
+#' Order a vector by another vector
+#'
+#' @param x The vector to be ordered.
+#' @param by The reference vector which `x` will be ordered by.
+#'
+#' @return A permutation of `x`.
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' # generate 100 random letters
+#' random_letters <-
+#'   letters %>%
+#'   magrittr::extract(sample.int(n = 26L,
+#'                                size = 100L,
+#'                                replace = TRUE)) %T>%
+#'   print()
+#'
+#' # sort the random letters alphabetically
+#' random_letters %>% pal::order_by(by = letters)
+order_by <- function(x,
+                     by) {
+  
+  x[order(match(x = x, table = by))]
+}
+```
+
+## `prose_ls_fn_param`
+
+TODO:
+
+-   Write tests for non-character default vals.
+-   Wrap `eval(expr = default_vals, envir = env)` in try-catch if necessary (test!).
+
+```{r}
+#' List a function's default parameter values in prose-style
+#'
+#' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
+#'
+#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
+#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
+#'
+#' ```r
+#' #' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
+#' some_fn <- function(some_param = c("a", "b", "c")) {
+#'   some_param <- rlang::arg_match(some_param)
+#'   ...
+#' }
+#' ```
+#'
+#' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
+#' `` `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% pal::as_md_list()` `` in the example above.
+#'
+#' # Caveats
+#'
+#' - This function does not work for [Primitives][base::.Primitive].
+#' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
+#'   this function.
+#'
+#' @param param The parameter name. A character scalar.
+#' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
+#' @param env The [environment][base::environment] `fn` is defined in. See [formals()] for details.
+#' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
+#' @param wrap The string (usually a single character) in which `param`s default values are to be wrapped.
+#' @param separator The separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param last_separator The separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
+#'
+#' @return A character vector. Of length 1 if `as_scalar = TRUE`.
+#' @export
+#'
+#' @examples
+#' pal::prose_ls_fn_param(param = ".name_repair",
+#'                        fn = tibble::as_tibble) |>
+#' pal::cat_lines()
+#'
+#' pal::prose_ls_fn_param(param = ".name_repair",
+#'                        fn = tibble::as_tibble,
+#'                        as_scalar = FALSE) |>
+#' pal::cat_lines()
+prose_ls_fn_param <- function(param,
+                              fn = sys.function(sys.parent()),
+                              env = parent.frame(),
+                              as_scalar = TRUE,
+                              wrap = "`",
+                              separator = ",",
+                              last_separator = " or ") {
+  
+  checkmate::assert_string(param)
+  checkmate::assert_flag(as_scalar)
+  
+  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
+  if (is.character(fn)) {
+    fn %<>% get(mode = "function",
+                envir = env)
   }
   
-  result
+  if (is.primitive(fn)) cli::cli_abort("Listing parameters of R Primitives is not supported. Sorry.")
+  
+  default_vals <- formals(fun = fn,
+                          envir = env)
+  
+  if (param %in% names(default_vals)) {
+    default_vals <- default_vals[[param]]
+  } else {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    cli::cli_abort("The function {.fn {fn_name}}` does not have a parameter named {.arg {param}}.")
+  }
+  
+  if (missing(default_vals)) {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    cli::cli_abort("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value.")
+  }
+  
+  # evaluate default param if it results in a character vector
+  if (is.language(default_vals)) {
+    
+    evaluated_default_vals <- rlang::with_handlers(.expr = eval(expr = default_vals,
+                                                                envir = env),
+                                                   error = ~ NULL)
+    
+    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
+  }
+  
+  if (is.character(default_vals)) {
+    default_vals %<>% wrap_chr()
+  } else {
+    default_vals %<>% deparse1(backtick = FALSE,
+                               control = c("keepNA",
+                                           "keepInteger",
+                                           "niceNames",
+                                           "showAttributes",
+                                           "warnIncomplete"))
+  }
+  
+  if (as_scalar) {
+    default_vals %<>% prose_ls(wrap = wrap,
+                               separator = separator,
+                               last_separator = last_separator)
+  } else {
+    default_vals %<>% wrap_chr(wrap = wrap)
+  }
+  
+  default_vals
 }
 ```

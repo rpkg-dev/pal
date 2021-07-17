@@ -1,5 +1,6 @@
 development:
   mode: auto
+
 template:
   opengraph:
     twitter:
@@ -15,4 +16,57 @@ template:
       index_name: pal
     mathjax: false
     selfhost_assets: true
+
 url: https://rpkg.dev/pal
+
+reference:
+- title: "Statistical computing / numbers"
+- contents:
+  - has_concept("stat")
+
+- title: "Data frames / Tibbles"
+- contents:
+  - has_concept("tibble")
+
+- title: "Lists"
+- contents:
+  - has_concept("list")
+
+- title: "Strings"
+- contents:
+  - has_concept("string")
+
+- title: "Dots"
+  desc: "Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another bit safer."
+- contents:
+  - has_concept("dots")
+
+- title: "R packages"
+- contents:
+  - has_concept("rpkgs")
+
+- title: "(Pandoc) Markdown"
+- contents:
+  - has_concept("md")
+
+- title: "R Markdown / knitr"
+- contents:
+  - has_concept("rmd_knitr")
+
+- title: "GitHub"
+  desc: "Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's v4 GraphQL API](https://docs.github.com/en/graphql)."
+- contents:
+  - has_concept("gh")
+
+- title: "System interaction"
+- contents:
+  - has_concept("sys")
+
+- title: "Miscellaneous"
+- contents:
+  - capture_print
+  - cols_regex
+  - cli_process_expr
+  - is_http_success
+  - order_by
+  - prose_ls_fn_param

@@ -30,3 +30,9 @@ to a function returning one of these strings conditionally.
 This is basically a convenience wrapper to be able to access the current \code{knitr.table.format} in a hassle-free way, i.e. it provides the conditional logic to
 account for the possibility that \code{knitr.table.format} is set to a function rather than a format string.
 }
+\seealso{
+Other R Markdown and knitr functions:
+\code{\link{build_readme}()},
+\code{\link{gitlab_document}()}
+}
+\concept{rmd_knitr}

@@ -37,6 +37,3 @@ pal::is_http_success("https://google.not/",
                      retries = 2,
                      quiet = FALSE)
 }
-\seealso{
-\code{\link[RCurl:url.exists]{RCurl::url.exists()}}
-}

@@ -38,7 +38,8 @@ Note that nothing is returned in case of a \href{https://en.wikipedia.org/wiki/B
 \examples{
 pal::gh_text_files(path = "tests",
                    owner = "salim-b",
-                   name = "pal")
+                   name = "pal") |>
+  str()
 
 # you have to opt-in into directory recursion
 pal::gh_text_files(path = "tests",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal-GEN.R
 \name{cli_process_expr}
 \alias{cli_process_expr}
-\title{Evaluate an expression with cli process indication}
+\title{Evaluate an expression with \href{https://cli.r-lib.org/}{cli} process indication}
 \usage{
 cli_process_expr(
   expr,

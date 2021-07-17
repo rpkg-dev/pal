@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9062</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9063</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@ parameter names. In case of an invalid or <code>.forbidden</code> argument, an i
   .additional <span class='op'>=</span> <span class='cn'>NULL</span>,
   .forbidden <span class='op'>=</span> <span class='cn'>NULL</span>,
   .empty_ok <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  .action <span class='op'>=</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='va'><a href='https://rlang.r-lib.org/reference/abort.html'>abort</a></span>
+  .action <span class='op'>=</span> <span class='fu'>cli</span><span class='fu'>::</span><span class='va'><a href='https://cli.r-lib.org/reference/cli_abort.html'>cli_abort</a></span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,8 +180,8 @@ parameter names. In case of an invalid or <code>.forbidden</code> argument, an i
     </tr>
     <tr>
       <th>.action</th>
-      <td><p>The action to take when the check fails. A function expecting an error message string as first argument. For example
-<code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::abort</a></code>, <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::warn</a></code>, <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::inform</a></code> or <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::signal</a></code>.</p></td>
+      <td><p>The action to take when the check fails. A function expecting a condition message string as first argument. For example <code><a href='https://cli.r-lib.org/reference/cli_abort.html'>cli::cli_abort()</a></code>,
+<code><a href='https://cli.r-lib.org/reference/cli_abort.html'>cli::cli_warn()</a></code>, <code><a href='https://cli.r-lib.org/reference/cli_abort.html'>cli::cli_inform()</a></code> or <code><a href='https://rlang.r-lib.org/reference/abort.html'>rlang::signal()</a></code>.</p></td>
     </tr>
     </table>
 
