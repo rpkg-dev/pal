@@ -1515,7 +1515,7 @@ is_pkg_cran <- function(pkg,
   assert_pkg("pkgsearch")
   
   checkmate::assert_string(pkg) %>%
-    pkgsearch::pkg_search(size = 1L) %>%
+    pkgsearch::pkg_search() %>%
     purrr::when(is.null(min_version) ~ .,
                 ~ dplyr::filter(.data = .,
                                 version >= as.package_version(min_version))) %$%
