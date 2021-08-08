@@ -330,10 +330,16 @@ is_equal_df <- function(x,
                         return_waldo_compare = FALSE) {
   
   assert_pkg("waldo")
+  checkmate::assert_flag(ignore_col_order)
+  checkmate::assert_flag(ignore_row_order)
+  checkmate::assert_flag(ignore_col_types)
+  checkmate::assert_number(tolerance, lower = 0)
+  checkmate::assert_flag(quiet)
+  checkmate::assert_number(max_diffs, lower = 1)
   checkmate::assert_flag(return_waldo_compare)
   
   # convert `x` and `y` to tibble if any modification is required
-  if (checkmate::assert_flag(ignore_col_order) | checkmate::assert_flag(ignore_row_order) | checkmate::assert_flag(ignore_col_types)) {
+  if (ignore_col_order || ignore_row_order || ignore_col_types) {
     
     x %<>% tibble::as_tibble()
     y %<>% tibble::as_tibble()
@@ -375,7 +381,7 @@ is_equal_df <- function(x,
   
   if (length(result)) {
     
-    if (!checkmate::assert_flag(quiet)) {
+    if (!quiet) {
       
       cli::cli_alert_info(text = "`x` differs from `y`:")
       cat("\n")
