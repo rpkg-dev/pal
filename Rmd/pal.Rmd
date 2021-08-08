@@ -861,11 +861,13 @@ as_string <- function(...,
 sentenceify <- function(x,
                         punctuation_mark = ".") {
   
+  checkmate::assert_string(punctuation_mark)
+  
   x %>%
     stringr::str_replace(pattern = "^.",
                          replacement = toupper) %>%
     purrr::map_chr(~ {
-      if (stringr::str_sub(string = .x, start = -1L) == checkmate::assert_string(punctuation_mark)) {
+      if (is.na(.x) || stringr::str_sub(string = .x, start = -1L) == punctuation_mark) {
         .x
       } else {
         paste0(.x, punctuation_mark)
