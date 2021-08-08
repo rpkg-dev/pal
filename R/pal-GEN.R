@@ -531,6 +531,64 @@ rm_list_level <- function(x,
   result
 }
 
+#' Drop list elements by name
+#'
+#' @param x A list.
+#' @param drop The names of the list elements to drop.
+#'
+#' @return A list.
+#' @family list
+#' @export
+#'
+#' @examples
+#' as.list(mtcars) |> pal::list_drop(c("disp", "drat", "qsec"))
+#' 
+#' # works with any R objects that are internally of type list
+#' mtcars |> pal::list_drop(c("disp", "drat", "qsec"))
+list_drop <- function(x,
+                      drop) {
+  
+  if (!is.list(x)) cli::cli_abort("{.arg x} must be of type list.")
+  
+  checkmate::assert_character(drop,
+                              any.missing = FALSE)
+  
+  names_x <- names(x) %||% FALSE
+  
+  if (any(names_x %in% drop)) {
+    x <- x[-which(names_x %in% drop)]
+  }
+  
+  x
+}
+
+#' Keep list elements by name
+#'
+#' Keeps only the list elements whose names match the provided set.
+#'
+#' @param x A list.
+#' @param keep The names of the list elements to keep.
+#'
+#' @return A list.
+#' @family list
+#' @export
+#'
+#' @examples
+#' as.list(mtcars) |> pal::list_keep(c("gear", "carb"))
+#' 
+#' # works with any R objects that are internally of type list
+#' mtcars |> pal::list_keep(c("gear", "carb"))
+list_keep <- function(x,
+                      keep) {
+  
+  if (!is.list(x)) cli::cli_abort("{.arg x} must be of type list.")
+  
+  checkmate::assert_character(keep,
+                              any.missing = FALSE)
+  
+  x[which(names(x) %in% keep)]
+}
+
 #' Assemble an (R) comment string of the desired line width
 #'
 #' Takes a vector of paragraphs, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.

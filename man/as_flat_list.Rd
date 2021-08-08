@@ -59,4 +59,9 @@ pal::as_flat_list(nested_list, keep_attrs = FALSE) \%>\% str()
 # ... or retain `xfun_strict_list`s, too
 pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) \%>\% str()
 }
+\seealso{
+Other list functions:
+\code{\link{list_drop}()},
+\code{\link{list_keep}()}
+}
 \concept{list}
