@@ -412,9 +412,12 @@ is_equal_df <- function(x,
   checkmate::assert_flag(ignore_col_order)
   checkmate::assert_flag(ignore_row_order)
   checkmate::assert_flag(ignore_col_types)
-  checkmate::assert_number(tolerance, lower = 0)
+  checkmate::assert_number(tolerance,
+                           lower = 0,
+                           null.ok = TRUE)
   checkmate::assert_flag(quiet)
-  checkmate::assert_number(max_diffs, lower = 1)
+  checkmate::assert_number(max_diffs,
+                           lower = 1)
   checkmate::assert_flag(return_waldo_compare)
   
   # convert `x` and `y` to tibble if any modification is required
