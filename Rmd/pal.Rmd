@@ -1168,7 +1168,7 @@ TODO:
     report upstream!
 
 ```{r}
-#' Check that all dot parameter names are a valid subset of a function's parameter names.
+#' Check that all dot parameter names are valid
 #'
 #' @description
 #'

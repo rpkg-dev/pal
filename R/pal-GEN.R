@@ -992,7 +992,7 @@ wrap_chr <- function(x,
   paste0(wrap, as_chr(x), wrap)
 }
 
-#' Check that all dot parameter names are a valid subset of a function's parameter names.
+#' Check that all dot parameter names are valid
 #'
 #' @description
 #'

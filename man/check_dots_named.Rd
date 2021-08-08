@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal-GEN.R
 \name{check_dots_named}
 \alias{check_dots_named}
-\title{Check that all dot parameter names are a valid subset of a function's parameter names.}
+\title{Check that all dot parameter names are valid}
 \usage{
 check_dots_named(
   ...,
