@@ -15,7 +15,7 @@ list_drop(x, drop)
 A list.
 }
 \description{
-Drop list elements by name
+Drops all list elements whose names match the provided set.
 }
 \examples{
 as.list(mtcars) |> pal::list_drop(c("disp", "drat", "qsec"))

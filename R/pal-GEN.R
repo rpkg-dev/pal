@@ -539,6 +539,8 @@ rm_list_level <- function(x,
 
 #' Drop list elements by name
 #'
+#' Drops all list elements whose names match the provided set.
+#'
 #' @param x A list.
 #' @param drop The names of the list elements to drop.
 #'
