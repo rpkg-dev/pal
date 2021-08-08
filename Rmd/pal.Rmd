@@ -495,7 +495,7 @@ TODO: Add an example where this fn is useful.
 reduce_df_list <- function(x,
                            strict = TRUE) {
   
-  if (tibble::is_tibble(x) | is.data.frame(x)) {
+  if (is.data.frame(x) || tibble::is_tibble(x)) {
     
     return(x)
     
@@ -574,14 +574,14 @@ as_flat_list <- function(x,
                          keep_attrs = TRUE,
                          attrs_to_drop = "xfun_strict_list") {
   
-  regard_attrs <- checkmate::assert_flag(keep_attrs) & length(setdiff(attributes(x),
-                                                                      checkmate::assert_character(attrs_to_drop,
-                                                                                                  any.missing = FALSE,
-                                                                                                  null.ok = TRUE)))
+  regard_attrs <- checkmate::assert_flag(keep_attrs) && length(setdiff(attributes(x),
+                                                                       checkmate::assert_character(attrs_to_drop,
+                                                                                                   any.missing = FALSE,
+                                                                                                   null.ok = TRUE)))
   depth <- purrr::vec_depth(x)
   
   # wrap `x` in a list if it's not
-  if (regard_attrs | depth < 2L) {
+  if (regard_attrs || depth < 2L) {
     result <- list(x)
     
     # return `x` as-is if it is an unnested list
@@ -618,7 +618,7 @@ rm_list_level <- function(x,
     
     regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop))
     
-    if (!regard_attrs & purrr::vec_depth(x[[i]]) > 1L) {
+    if (!regard_attrs && purrr::vec_depth(x[[i]]) > 1L) {
       result %<>% c(x[[i]])
     } else {
       result %<>% c(list(x[[i]]))
@@ -1857,7 +1857,7 @@ roxy_tag_value <- function(text,
                      "val") %>%
     purrr::compact()
   
-  if (tag_name == "param" & !is.null(param_name)) {
+  if (tag_name == "param" && !is.null(param_name)) {
     
     i_param <-
       tag_values %>%
@@ -2713,7 +2713,7 @@ check_cli <- function(cmd,
   checkmate::assert_flag(get_cmd_path)
   checkmate::assert_flag(force_which)
   
-  if (force_which | !xfun::is_unix()) {
+  if (force_which || !xfun::is_unix()) {
     
     Sys.which(names = cmd) %>%
       as.character() %>%
