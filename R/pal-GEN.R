@@ -1231,7 +1231,8 @@ ls_pkg <- function(pkg,
 #' @param pkg Package name. A character scalar.
 #' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
 #'   [`package_version`][base::package_version()] or something coercible to.
-#' @param message The error message to display in case the package is not installed. If `NULL`, a sensible standard message is generated.
+#' @param message The error message to display in case the package is not installed. Supports cli's [inline markup][cli::inline-markup]. If `NULL`, a sensible
+#'   standard message is generated.
 #' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
 #'   character scalar. Set `install_hint = ""` in order to disable the hint.
 #'
@@ -1251,7 +1252,7 @@ ls_pkg <- function(pkg,
 #' 
 #' pal::assert_pkg("yay",
 #'                 install_hint = paste0("To install the latest development version, run ",
-#'                                       "`remotes::install_gitlab(\"salim_b/r/pkgs/yay\")`."))}
+#'                                       "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))}
 assert_pkg <- function(pkg,
                        min_version = NULL,
                        message = NULL,
@@ -1310,9 +1311,9 @@ assert_pkg <- function(pkg,
     
     cli::cli_abort(paste(message, install_hint))
     
-  } else {
-    invisible(pkg)
   }
+  
+  invisible(pkg)
 }
 
 #' Test if packages are installed
