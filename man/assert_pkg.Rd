@@ -28,9 +28,9 @@ Assert a package is installed
 pal::assert_pkg("pal")
 
 pal::assert_pkg(pkg = "glue",
-                message = paste0("You should really consider to install the awesome `glue` ",
-                                 "package! It's the glue that keeps strings and variables ",
-                                 "together 🤲."))
+                message = paste("You should really consider to install the awesome {.pkg {pkg}}",
+                                "package! It's the glue that keeps strings and variables",
+                                "together 🤲."))
 \dontrun{
 pal::assert_pkg("pal", min_version = 9999.9)
 
