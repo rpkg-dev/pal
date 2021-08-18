@@ -37,3 +37,8 @@ pal::is_http_success("https://google.not/",
                      retries = 2,
                      quiet = FALSE)
 }
+\seealso{
+Other HTTP functions:
+\code{\link{assert_mime_type}()}
+}
+\concept{http}

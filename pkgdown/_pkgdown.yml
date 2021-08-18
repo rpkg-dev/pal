@@ -58,6 +58,11 @@ reference:
 - contents:
   - has_concept("gh")
 
+- title: "HTTP"
+  desc: "Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/) package."
+- contents:
+  - has_concept("http")
+
 - title: "System interaction"
 - contents:
   - has_concept("sys")

@@ -1,6 +1,7 @@
 list(
   rd_family_title = list(dots = "Other dots functions",
                          gh = "Other GitHub functions:",
+                         http = "Other HTTP functions:",
                          list = "Other list functions:",
                          md = "Other (Pandoc) Markdown functions:",
                          rmd_knitr = "Other R Markdown and knitr functions:",
