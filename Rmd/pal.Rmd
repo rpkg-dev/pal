@@ -1456,23 +1456,27 @@ assert_pkg <- function(pkg,
                        message = NULL,
                        install_hint = NULL) {
   
+  checkmate::assert_string(pkg)
+  min_version %<>% as.package_version()
+  checkmate::assert_string(message,
+                           null.ok = TRUE)
+  checkmate::assert_string(install_hint,
+                           null.ok = TRUE)
+  
   # check if required version is available
-  if (!is_pkg_installed(pkg = checkmate::assert_string(pkg),
-                        min_version = checkmate::assert_vector(min_version,
-                                                               len = 1L,
-                                                               any.missing = FALSE,
-                                                               null.ok = TRUE))) {
+  if (!is_pkg_installed(pkg = pkg,
+                        min_version = min_version)) {
     
     # check if pkg is installed at all
-    lacks_min_version <- !is.null(min_version) && is_pkg_installed(pkg = pkg)
+    lacks_min_version <- length(min_version) > 0L && is_pkg_installed(pkg = pkg)
     
     # generate message if necessary
-    if (is.null(checkmate::assert_string(message, null.ok = TRUE))) {
+    if (is.null(message)) {
       
       message <- paste0("Package {.pkg {pkg}",
-                        dplyr::if_else(is.null(min_version),
+                        dplyr::if_else(length(min_version) == 0L,
                                        "",
-                                       " (>= {as.package_version(min_version)})"),
+                                       " (>= {min_version})"),
                         "} is required for this operation but ",
                         dplyr::if_else(lacks_min_version,
                                        paste0("installed version is ",
@@ -1481,16 +1485,16 @@ assert_pkg <- function(pkg,
     }
     
     # generate installation hint if necessary
-    if (is.null(checkmate::assert_string(install_hint, null.ok = TRUE))) {
+    if (is.null(install_hint)) {
       
       assert_pkg("pkgsearch")
       
       cran <- pkgsearch::pkg_search(pkg, size = 1L)
       is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
-      is_cran_min_version <- ifelse(is.null(min_version),
+      is_cran_min_version <- ifelse(length(min_version) == 0L,
                                     is_cran_pkg,
                                     cran %>%
-                                      dplyr::filter(version >= as.package_version(min_version)) %$%
+                                      dplyr::filter(version >= min_version) %$%
                                       package %>%
                                       intersect(pkg) %>%
                                       length() %>%
@@ -1557,25 +1561,25 @@ Part of this function [was originally proposed by Artem Klevtsov on Stack Overfl
 is_pkg_installed <- function(pkg,
                              min_version = NULL) {
   
-  if (is.null(min_version)) {
+  checkmate::assert_character(pkg,
+                              any.missing = FALSE)
+  min_version %<>% as.package_version()
+  
+  if (length(min_version) == 0L) {
     
-    purrr::map_lgl(magrittr::set_names(pkg, pkg),
-                   ~ nzchar(system.file(package = .x)))
+    result <- purrr::map_lgl(magrittr::set_names(pkg, pkg),
+                             ~ nzchar(system.file(package = .x)))
   } else {
     
-    min_version <- rlang::with_handlers(as.package_version(min_version),
-                                        error = ~ list(NULL, .x$message))
-    
-    if (is.null(min_version[[1L]])) {
-      cli::cli_abort("{arg min_version} must be a vector of package versions or something coercible to: ", min_version[[2L]])
-    }
-    
-    is_pkg_installed(pkg = checkmate::assert_character(pkg, any.missing = FALSE)) %>%
+    result <-
+      is_pkg_installed(pkg = pkg) %>%
       list(names(.), min_version) %>%
       purrr::pmap_lgl(~ {
         if (..1) utils::packageVersion(pkg = ..2) >= ..3 else ..1
       })
   }
+  
+  result
 }
 ```
 
@@ -1597,13 +1601,15 @@ is_pkg_installed <- function(pkg,
 is_pkg_cran <- function(pkg,
                         min_version = NULL) {
   
+  checkmate::assert_string(pkg)
+  min_version %<>% as.package_version()
   assert_pkg("pkgsearch")
   
-  checkmate::assert_string(pkg) %>%
+  pkg %>%
     pkgsearch::pkg_search() %>%
-    purrr::when(is.null(min_version) ~ .,
+    purrr::when(length(min_version) == 0L ~ .,
                 ~ dplyr::filter(.data = .,
-                                version >= as.package_version(min_version))) %$%
+                                version >= min_version)) %$%
     package %>%
     intersect(pkg) %>%
     length() %>%
