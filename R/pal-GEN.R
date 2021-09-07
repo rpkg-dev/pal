@@ -999,14 +999,14 @@ wrap_chr <- function(x,
   paste0(wrap, as_chr(x), wrap)
 }
 
-#' Check that all dot parameter names are valid
+#' Check that all named dots arguments are valid
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' Ensures that [dots (...)][base::dots()] are either empty (if `.empty_ok = TRUE`), or all named dot parameter names are a valid subset of a function's
-#' parameter names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
+#' Ensures that [dots][base::dots()] `...` are either empty (if `.empty_ok = TRUE`), or all named elements in dots are a valid subset of `.fn`'s parameter
+#' names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
 #'
 #' @details
 #'
@@ -1021,8 +1021,8 @@ wrap_chr <- function(x,
 #' - **_A misspelled argument will not raise an error. This makes it easy for typos to go unnoticed._**
 #'
 #' @param ... The dots argument to check.
-#' @param .function The function the `...` will be passed on to.
-#' @param .additional Parameter names within `...` that should be treated as valid in addition to `.function`'s actual parameter names. A character vector.
+#' @param .fn The function the `...` will be passed on to.
+#' @param .additional Parameter names within `...` that should be treated as valid in addition to `.fn`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
 #' @param .action The action to take when the check fails. A function expecting a condition message string as first argument. For example [cli::cli_abort()],
@@ -1036,7 +1036,7 @@ wrap_chr <- function(x,
 #' sum_safe <- function(...,
 #'                      na.rm = FALSE) {
 #'   pal::check_dots_named(...,
-#'                         .function = sum)
+#'                         .fn = sum)
 #'   sum(...,
 #'       na.rm = na.rm)
 #' }
@@ -1056,7 +1056,7 @@ wrap_chr <- function(x,
 #'                         simplify = TRUE,
 #'                         USE.NAMES = TRUE) {
 #'   pal::check_dots_named(...,
-#'                         .function = FUN)
+#'                         .fn = FUN)
 #'   sapply(X = X,
 #'          FUN = FUN,
 #'          ...,
@@ -1092,13 +1092,13 @@ wrap_chr <- function(x,
 #'             100,
 #'             5)
 check_dots_named <- function(...,
-                             .function,
+                             .fn,
                              .additional = NULL,
                              .forbidden = NULL,
                              .empty_ok = TRUE,
                              .action = cli::cli_abort) {
   
-  checkmate::assert_function(.function)
+  checkmate::assert_function(.fn)
   checkmate::assert_character(.additional,
                               any.missing = FALSE,
                               null.ok = TRUE)
@@ -1111,7 +1111,7 @@ check_dots_named <- function(...,
   if (...length()) {
     
     # determine original function name the `...` will be passed on to
-    fn_arg_name <- deparse1(substitute(.function))
+    fn_arg_name <- deparse1(substitute(.fn))
     parent_call <- as.list(sys.call(-1L))
     parent_param_names <- methods::formalArgs(sys.function(-1L))
     
@@ -1122,7 +1122,7 @@ check_dots_named <- function(...,
     }
     
     # determine param names of the function the `...` will be passed on to
-    dots_param_names <- methods::formalArgs(.function)
+    dots_param_names <- methods::formalArgs(.fn)
     
     # check named `...` args
     purrr::walk(.x = setdiff(names(c(...)),

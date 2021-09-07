@@ -2,11 +2,11 @@
 % Please edit documentation in R/pal-GEN.R
 \name{check_dots_named}
 \alias{check_dots_named}
-\title{Check that all dot parameter names are valid}
+\title{Check that all named dots arguments are valid}
 \usage{
 check_dots_named(
   ...,
-  .function,
+  .fn,
   .additional = NULL,
   .forbidden = NULL,
   .empty_ok = TRUE,
@@ -16,9 +16,9 @@ check_dots_named(
 \arguments{
 \item{...}{The dots argument to check.}
 
-\item{.function}{The function the \code{...} will be passed on to.}
+\item{.fn}{The function the \code{...} will be passed on to.}
 
-\item{.additional}{Parameter names within \code{...} that should be treated as valid in addition to \code{.function}'s actual parameter names. A character vector.}
+\item{.additional}{Parameter names within \code{...} that should be treated as valid in addition to \code{.fn}'s actual parameter names. A character vector.}
 
 \item{.forbidden}{Parameter names within \code{...} that should be treated as invalid. This has precedence over \code{.additional}. A character vector.}
 
@@ -30,8 +30,8 @@ check_dots_named(
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Ensures that \link[base:dots]{dots (...)} are either empty (if \code{.empty_ok = TRUE}), or all named dot parameter names are a valid subset of a function's
-parameter names. In case of an invalid or \code{.forbidden} argument, an informative message is shown and the defined \code{.action} is taken.
+Ensures that \link[base:dots]{dots} \code{...} are either empty (if \code{.empty_ok = TRUE}), or all named elements in dots are a valid subset of \code{.fn}'s parameter
+names. In case of an invalid or \code{.forbidden} argument, an informative message is shown and the defined \code{.action} is taken.
 }
 \details{
 \code{check_dots_named()} is intended to combat the second one of the two major downsides that using \code{...} usually brings. In chapter 6.6 of the book
@@ -49,7 +49,7 @@ understand what you can do with functions like \code{lapply()} and \code{plot()}
 sum_safe <- function(...,
                      na.rm = FALSE) {
   pal::check_dots_named(...,
-                        .function = sum)
+                        .fn = sum)
   sum(...,
       na.rm = na.rm)
 }
@@ -69,7 +69,7 @@ sapply_safe <- function(X,
                         simplify = TRUE,
                         USE.NAMES = TRUE) {
   pal::check_dots_named(...,
-                        .function = FUN)
+                        .fn = FUN)
   sapply(X = X,
          FUN = FUN,
          ...,

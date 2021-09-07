@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check that all dot parameter names are valid — check_dots_named • pal</title>
+<title>Check that all named dots arguments are valid — check_dots_named • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Check that all dot parameter names are valid — check_dots_named" />
-<meta name="description" content="Ensures that dots (...) are either empty (if .empty_ok = TRUE), or all named dot parameter names are a valid subset of a function's parameter names. In case of an invalid or .forbidden argument, an informative message is shown and the defined .action is taken.">
-<meta property="og:description" content="Ensures that dots (...) are either empty (if .empty_ok = TRUE), or all named dot parameter names are a valid subset of a function's parameter names. In case of an invalid or .forbidden argument, an informative message is shown and the defined .action is taken." />
+<meta property="og:title" content="Check that all named dots arguments are valid — check_dots_named" />
+<meta name="description" content="Ensures that dots ... are either empty (if .empty_ok = TRUE), or all named elements in dots are a valid subset of .fn's parameter names. In case of an invalid or .forbidden argument, an informative message is shown and the defined .action is taken.">
+<meta property="og:description" content="Ensures that dots ... are either empty (if .empty_ok = TRUE), or all named elements in dots are a valid subset of .fn's parameter names. In case of an invalid or .forbidden argument, an informative message is shown and the defined .action is taken." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9065</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9066</span>
       </span>
     </div>
 
@@ -135,20 +135,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check that all dot parameter names are valid</h1>
+    <h1>Check that all named dots arguments are valid</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
     <div class="hidden name"><code>check_dots_named.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>Ensures that <a href='https://rdrr.io/r/base/dots.html'>dots (...)</a> are either empty (if <code>.empty_ok = TRUE</code>), or all named dot parameter names are a valid subset of a function's
-parameter names. In case of an invalid or <code>.forbidden</code> argument, an informative message is shown and the defined <code>.action</code> is taken.</p>
+<p>Ensures that <a href='https://rdrr.io/r/base/dots.html'>dots</a> <code>...</code> are either empty (if <code>.empty_ok = TRUE</code>), or all named elements in dots are a valid subset of <code>.fn</code>'s parameter
+names. In case of an invalid or <code>.forbidden</code> argument, an informative message is shown and the defined <code>.action</code> is taken.</p>
     </div>
 
     <pre class="usage"><span class='fu'>check_dots_named</span><span class='op'>(</span>
   <span class='va'>...</span>,
-  <span class='va'>.function</span>,
+  <span class='va'>.fn</span>,
   .additional <span class='op'>=</span> <span class='cn'>NULL</span>,
   .forbidden <span class='op'>=</span> <span class='cn'>NULL</span>,
   .empty_ok <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -163,12 +163,12 @@ parameter names. In case of an invalid or <code>.forbidden</code> argument, an i
       <td><p>The dots argument to check.</p></td>
     </tr>
     <tr>
-      <th>.function</th>
+      <th>.fn</th>
       <td><p>The function the <code>...</code> will be passed on to.</p></td>
     </tr>
     <tr>
       <th>.additional</th>
-      <td><p>Parameter names within <code>...</code> that should be treated as valid in addition to <code>.function</code>'s actual parameter names. A character vector.</p></td>
+      <td><p>Parameter names within <code>...</code> that should be treated as valid in addition to <code>.fn</code>'s actual parameter names. A character vector.</p></td>
     </tr>
     <tr>
       <th>.forbidden</th>
@@ -201,7 +201,7 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 <span class='va'>sum_safe</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span>,
                      <span class='va'>na.rm</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>check_dots_named</span><span class='op'>(</span><span class='va'>...</span>,
-                        .function <span class='op'>=</span> <span class='va'>sum</span><span class='op'>)</span>
+                        .fn <span class='op'>=</span> <span class='va'>sum</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>...</span>,
       na.rm <span class='op'>=</span> <span class='va'>na.rm</span><span class='op'>)</span>
 <span class='op'>}</span>
@@ -221,7 +221,7 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
                         <span class='va'>simplify</span> <span class='op'>=</span> <span class='cn'>TRUE</span>,
                         <span class='va'>USE.NAMES</span> <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>check_dots_named</span><span class='op'>(</span><span class='va'>...</span>,
-                        .function <span class='op'>=</span> <span class='va'>FUN</span><span class='op'>)</span>
+                        .fn <span class='op'>=</span> <span class='va'>FUN</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='va'>X</span>,
          FUN <span class='op'>=</span> <span class='va'>FUN</span>,
          <span class='va'>...</span>,
