@@ -2227,7 +2227,7 @@ build_readme <- function(input = "README.Rmd",
 #' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
 #'
 #' @param default The knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
-#'   `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
+#' `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
 #'   
 #' See [knitr::kable()]'s `format` argument for details.
 #'

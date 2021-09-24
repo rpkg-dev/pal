@@ -13,7 +13,7 @@ knitr_table_format(default = c("pipe", "simple", "html", "latex", "rst"))
 \item \code{"simple"}
 \item \code{"html"}
 \item \code{"latex"}
-\item \code{"rst"} )`
+\item \code{"rst"}
 }
 
 See \code{\link[knitr:kable]{knitr::kable()}}'s \code{format} argument for details.}
