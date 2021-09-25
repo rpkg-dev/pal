@@ -12,7 +12,8 @@ is_http_success(url, retries = 0L, quiet = TRUE)
 \item{retries}{The maximum number of retries of the \code{HEAD} request in case of an HTTP error. An integer scalar >= \code{0}. The retries are performed using
 exponential backoff and jitter, see \code{\link[httr:RETRY]{httr::RETRY()}} for details.}
 
-\item{quiet}{Suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant if \code{retries > 0}.}
+\item{quiet}{Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant
+if \code{retries > 0}.}
 }
 \value{
 A logical scalar.

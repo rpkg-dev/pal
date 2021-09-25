@@ -26,13 +26,9 @@ pal::is_pkg_cran("dplyr", min_version = 9999.9)
 \seealso{
 Other R package functions:
 \code{\link{assert_pkg}()},
-\code{\link{desc_list}()},
-\code{\link{desc_url_git}()},
-\code{\link{desc_value}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()},
-\code{\link{roxy_tag_value}()}
+\code{\link{ls_pkg}()}
 }
 \concept{rpkgs}

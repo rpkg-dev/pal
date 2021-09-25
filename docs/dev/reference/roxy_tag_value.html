@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get an object's roxygen2 tag value — roxy_tag_value • pal</title>
+<title>Get an object's roxygen2 tag value(s) — roxy_tag_value • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Get an object's roxygen2 tag value — roxy_tag_value" />
-<meta name="description" content="Parses text for roxygen2 blocks and extracts the value(s) belonging to the tag_names documenting obj_name.">
-<meta property="og:description" content="Parses text for roxygen2 blocks and extracts the value(s) belonging to the tag_names documenting obj_name." />
+<meta property="og:title" content="Get an object's roxygen2 tag value(s) — roxy_tag_value" />
+<meta name="description" content="Extracts the value(s) belonging to the tag_names documenting obj_name from a list of roxy_block objects.">
+<meta property="og:description" content="Extracts the value(s) belonging to the tag_names documenting obj_name from a list of roxy_block objects." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9066</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9067</span>
       </span>
     </div>
 
@@ -135,62 +135,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get an object's roxygen2 tag value</h1>
+    <h1>Get an object's roxygen2 tag value(s)</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
     <div class="hidden name"><code>roxy_tag_value.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Parses <code>text</code> for <a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxygen2 blocks</a> and extracts the value(s) belonging to the <code>tag_name</code>s documenting <code>obj_name</code>.</p>
+    <p>Extracts the value(s) belonging to the <code>tag_name</code>s documenting <code>obj_name</code> from a list of <code><a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxy_block</a></code> objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>roxy_tag_value</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>obj_name</span>, tag_name <span class='op'>=</span> <span class='st'>"param"</span>, param_name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>roxy_tag_value</span><span class='op'>(</span><span class='va'>blocks</span>, <span class='va'>obj_name</span>, tag_names <span class='op'>=</span> <span class='st'>"param"</span>, <span class='va'>param_name</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>text</th>
-      <td><p>The <span style="R">R</span> source code to extract the object's roxygen2 tag value from. A character vector.</p></td>
+      <th>blocks</th>
+      <td><p>A list of <code><a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxy_block</a></code> objects as returned by <code><a href='roxy_blocks.html'>roxy_blocks()</a></code>.</p></td>
     </tr>
     <tr>
       <th>obj_name</th>
-      <td><p>The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.</p></td>
+      <td><p>The object name to extract, usually a function name. A character scalar.</p></td>
     </tr>
     <tr>
-      <th>tag_name</th>
-      <td><p>The name of the <a href='https://roxygen2.r-lib.org/articles/rd.html'>roxygen2 tag</a> (without the <code><a href='https://rdrr.io/r/base/slotOp.html'>@</a></code>) to extract the value from. A character scalar.</p></td>
+      <th>tag_names</th>
+      <td><p>The name(s) of the <a href='https://roxygen2.r-lib.org/articles/rd.html'>roxygen2 tags</a> (without the <code><a href='https://rdrr.io/r/base/slotOp.html'>@</a></code>) to extract the value(s) from. A character
+vector.</p></td>
     </tr>
     <tr>
       <th>param_name</th>
-      <td><p>The parameter name to extract the value from. Only relevant if <code>tag_name = "param"</code>. A character scalar.</p></td>
+      <td><p>The parameter name to extract the value from. Only relevant if <code>"param" %in% tag_names</code>. A character scalar.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character scalar if <code>tag_name = "param"</code> and <code>param_name != NULL</code>, otherwise a list.</p>
+    <p>A character vector of the same length as <code>tag_names</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other R package functions:
-<code><a href='assert_pkg.html'>assert_pkg</a>()</code>,
-<code><a href='desc_list.html'>desc_list</a>()</code>,
-<code><a href='desc_url_git.html'>desc_url_git</a>()</code>,
-<code><a href='desc_value.html'>desc_value</a>()</code>,
-<code><a href='is_pkg_cran.html'>is_pkg_cran</a>()</code>,
-<code><a href='is_pkg_dir.html'>is_pkg_dir</a>()</code>,
-<code><a href='is_pkg_installed.html'>is_pkg_installed</a>()</code>,
-<code><a href='is_pkgdown_dir.html'>is_pkgdown_dir</a>()</code>,
-<code><a href='ls_pkg.html'>ls_pkg</a>()</code></p></div>
+    <div class='dont-index'><p>Other package documentation functions:
+<code><a href='roxy_blocks.html'>roxy_blocks</a>()</code>,
+<code><a href='roxy_obj.html'>roxy_obj</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>text</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/r-lib/rlang/"</span>,
-                                 <span class='st'>"db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>blocks</span> <span class='op'>&lt;-</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='roxy_blocks.html'>roxy_blocks</a></span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"dplyr"</span><span class='op'>)</span>
 
-<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_tag_value</span><span class='op'>(</span>text <span class='op'>=</span> <span class='va'>text</span>,
-                    obj_name <span class='op'>=</span> <span class='st'>"as_function"</span>,
-                    param_name <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "A function or formula.\n\n  If a **function**, it is used as is.\n\n  If a **formula**, e.g. `~ .x + 2`, it is converted to a function\n  with up to two arguments: `.x` (single argument) or `.x` and `.y`\n  (two arguments). The `.` placeholder can be used instead of `.x`.\n  This allows you to create very compact anonymous functions (lambdas) with up\n  to two inputs. Functions created from formulas have a special\n  class. Use `is_lambda()` to test for it.\n\n  Lambdas currently do not support [nse-force],\n  due to the way the arguments are handled internally."</div></pre>
+<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_tag_value</span><span class='op'>(</span>blocks <span class='op'>=</span> <span class='va'>blocks</span>,
+                    obj_name <span class='op'>=</span> <span class='st'>"across"</span>,
+                    tag_names <span class='op'>=</span> <span class='st'>"param"</span>,
+                    param_name <span class='op'>=</span> <span class='st'>".fns"</span><span class='op'>)</span> |&gt;
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

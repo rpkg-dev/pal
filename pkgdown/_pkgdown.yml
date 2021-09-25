@@ -44,6 +44,14 @@ reference:
 - title: "R packages"
 - contents:
   - has_concept("rpkgs")
+- subtitle: "Package `DESCRIPTION`"
+  desc: "Extending the [desc](https://github.com/r-lib/desc#readme) package."
+- contents:
+  - has_concept("desc")
+- subtitle: "Package documentation"
+  desc: "Extending the [roxygen2](https://roxygen2.r-lib.org/) package."
+- contents:
+  - has_concept("roxy")
 
 - title: "(Pandoc) Markdown"
 - contents:

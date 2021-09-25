@@ -136,6 +136,12 @@
     <loc>https://rpkg.dev/pal/reference/round_to.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/roxy_blocks.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/roxy_obj.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/roxy_tag_value.html</loc>
   </url>
   <url>
@@ -158,6 +164,9 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/strip_md_footnotes.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/strip_yaml_header.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/wrap_chr.html</loc>

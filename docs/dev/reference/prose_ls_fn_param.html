@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9066</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9067</span>
       </span>
     </div>
 
@@ -192,14 +192,14 @@
     <p>A character vector. Of length 1 if <code>as_scalar = TRUE</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging <a href='https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code'>inline <span style="R">R</span> code evaluation</a> as follows:<div class="sourceCode r"></p><pre><span class='co'>#' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.</span>
+    <p>This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging <a href='https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code'>inline <span style="R">R</span> code evaluation</a> as follows:<div class="sourceCode r"></p><pre><span class='co'>#' @param some_param Some parameter. One of `r prose_ls_fn_param(param = "some_param", fn = "some_fn")`.</span>
 <span class='va'>some_fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>some_param</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='va'>some_param</span> <span class='op'>&lt;-</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/arg_match.html'>arg_match</a></span><span class='op'>(</span><span class='va'>some_param</span><span class='op'>)</span>
   <span class='va'>...</span>
 <span class='op'>}</span>
 </pre><p></div></p>
 <p>Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-<code>`r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %&gt;% pal::as_md_list()`</code> in the example above.</p>
+<code>`r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %&gt;% as_md_list()`</code> in the example above.</p>
     <h2 class="hasAnchor" id="caveats"><a class="anchor" href="#caveats"></a>Caveats</h2>
 
     

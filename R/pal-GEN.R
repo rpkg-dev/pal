@@ -18,7 +18,15 @@ utils::globalVariables(names = c(".",
                                  "package",
                                  "Package",
                                  "repository",
+                                 "rowid",
+                                 "Version",
                                  "where"))
+
+# forbidden dots arguments
+forbidden_dots <- list(roxy_tag_value = c("pkgs",
+                                          "destdir",
+                                          "available",
+                                          "type"))
 
 normalize_tree_path <- function(path) {
   
@@ -1472,7 +1480,7 @@ is_pkgdown_dir <- function(path = ".") {
 #' @inheritParams desc_value
 #'
 #' @return A list.
-#' @family rpkgs
+#' @family desc
 #' @export
 #'
 #' @examples
@@ -1518,7 +1526,7 @@ desc_list <- function(file = ".") {
 #' @inheritParams desc::desc_get_field
 #'
 #' @return A character scalar.
-#' @family rpkgs
+#' @family desc
 #' @export
 #'
 #' @examples
@@ -1545,7 +1553,7 @@ desc_value <- function(key,
 #' @inheritParams desc::desc_get_field
 #'
 #' @return A character scalar.
-#' @family rpkgs
+#' @family desc
 #' @export
 desc_url_git <- function(file = ".") {
   
@@ -1561,81 +1569,225 @@ desc_url_git <- function(file = ".") {
     dplyr::first()
 }
 
-#' Get an object's roxygen2 tag value
+#' Get roxygen2 blocks
 #'
-#' Parses `text` for [roxygen2 blocks][roxygen2::roxy_block()] and extracts the value(s) belonging to the `tag_name`s documenting `obj_name`.
+#' Parses the roxygen2 package documentation of a specific R package or from a single `.R` source code file.
 #'
-#' @param text The \R source code to extract the object's roxygen2 tag value from. A character vector.
-#' @param obj_name The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.
-#' @param tag_name The name of the [roxygen2 tag](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value from. A character scalar.
-#' @param param_name The parameter name to extract the value from. Only relevant if `tag_name = "param"`. A character scalar.
+#' @param pkg,text Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.
+#' @param ... Further arguments passed on to [download.packages()], excluding `r forbidden_dots$roxy_tag_value %>% prose_ls(wrap = "\x60")`. Only relevant
+#'   if `pkg` is provided.
+#' @param quiet Whether or not to suppress status output from internal processing.
 #'
-#' @return A character scalar if `tag_name = "param"` and `param_name != NULL`, otherwise a list.
-#' @family rpkgs
+#' @return A list of [`roxy_block`][roxygen2::roxy_block] objects.
+#' @family roxy
 #' @export
 #'
 #' @examples
+#' # Either provide an R source file as a character vector `text` ...
 #' text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
 #'                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
 #'
-#' pal::roxy_tag_value(text = text,
-#'                     obj_name = "as_function",
-#'                     param_name = "x")
-roxy_tag_value <- function(text,
-                           obj_name,
-                           tag_name = "param",
-                           param_name = NULL) {
+#' pal::roxy_blocks(text = text) |> head(n = 3L)
+#'
+#' # ... or provide a package name
+#' \dontrun{
+#' pal::roxy_blocks(pkg = "rlang",
+#'                  repos = "https://cloud.r-project.org") |>
+#'   head(n = 3L)}
+roxy_blocks <- function(pkg = NULL,
+                        ...,
+                        text = NULL,
+                        quiet = TRUE) {
   
   assert_pkg("roxygen2")
-  roxy_blocks <- roxygen2::parse_text(text = text)
+  checkmate::assert_flag(quiet)
+  checkmate::assert_string(pkg, null.ok = TRUE)
+  checkmate::assert_character(text, null.ok = TRUE)
+  is_pkg_null <- is.null(pkg)
+  is_text_null <- is.null(text)
+  if (is_pkg_null && is_text_null) cli::cli_abort("One of {.arg pkg} and {.arg text} mustn't be {.val NULL}.")
+  if (!is_pkg_null && !is_text_null) cli::cli_abort("Only one of {.arg pkg} and {.arg text} can be provided.")
   
-  i_obj <-
-    roxy_blocks %>%
+  if (is_pkg_null) {
+    
+    assert_pkg("ellipsis")
+    ellipsis::check_dots_empty()
+    
+    blocks <- rlang::with_handlers(roxygen2::parse_text(text = text),
+                                   error = ~ list(FALSE, .x))
+    
+    if (length(blocks) && isFALSE(blocks[[1L]])) {
+      
+      error_msg <- as.character(blocks[[2L]])
+      is_missing_obj <- error_msg %>% stringr::str_detect(" (not found|could not find .+)\\n")
+      
+      cli::cli_abort(ifelse(is_missing_obj,
+                            error_msg %>%
+                              stringr::str_remove(pattern = '^.*: ') %>%
+                              stringr::str_replace(pattern = "could not find function \"(.+?)\"",
+                                                   replacement = "Function {.fun \\1} not found") %>%
+                              stringr::str_replace(pattern = "object '(.+?)'",
+                                                   replacement = "Object {.var \\1}") %>%
+                              stringr::str_replace(pattern = "not found\\n?",
+                                                   replacement = paste0("was not found when parsing {.arg text}. You might need to attach the package you're ",
+                                                                        "trying to extract the roxygen2 tag value from. Or try ",
+                                                                        "{.fn pkg_roxy_tag_value}.")),
+                            "Error parsing {.arg text}: {error_msg}"))
+    }
+  } else {
+    
+    assert_pkg("rappdirs")
+    check_dots_named(...,
+                     .fn = utils::download.packages,
+                     .forbidden = forbidden_dots$roxy_tag_value)
+    
+    # alert if installed version doesn't match downloaded one:
+    pkgs_available <-
+      utils::available.packages(type = "source",
+                                filters = c("R_version",
+                                            "OS_type",
+                                            "subarch",
+                                            "CRAN")) %>%
+      tibble::as_tibble() %>%
+      dplyr::filter(Package == pkg)
+    
+    pkg_version_max_installed <-
+      ls_pkg(pkg = pkg,
+             as_regex = FALSE) %$%
+      Version %>%
+      max()
+    
+    if (pkg_version_max_installed %in% pkgs_available$Version) { 
+      
+      pkgs_available %<>% dplyr::filter(Version == pkg_version_max_installed)
+      
+    } else {
+      
+      cli::cli_alert_warning(paste0("No sources available for download of locally installed version {.val pkg_version_max_installed} of package {.pkg {pkg}}. ",
+                                    "Downloading sources of latest available version {.val {max(pkgs_available[, 'Version'])}} instead. If the following ",
+                                    "roxygen tag parsing fails or produces unexpected results, consider updating package {.pkg {pkg}}."))
+    }
+    
+    pkgs_available %<>%
+      as.matrix() %>%
+      magrittr::set_rownames(.[, 1L])
+    
+    tmp_dir <-
+      rappdirs::user_cache_dir() %>%
+      fs::path(glue::glue("pal-roxy_tag_value-{pkg}")) %>%
+      fs::dir_create() %>%
+      fs::path_real()
+    
+    tmp_archive <- utils::download.packages(pkgs = pkg,
+                                            destdir = tmp_dir,
+                                            available = pkgs_available,
+                                            ... = !!!rlang::list2(...),
+                                            type = "source",
+                                            quiet = quiet)
+    
+    utils::untar(tarfile = tmp_archive[1L, 2L],
+                 exdir = tmp_dir)
+    
+    tmp_pkg <- fs::path(tmp_dir, pkg)
+    blocks <- if (quiet) suppressMessages(roxygen2::parse_package(path = tmp_pkg)) else roxygen2::parse_package(path = tmp_pkg)
+    
+    unlink(x = tmp_dir,
+           recursive = TRUE)
+  }
+  
+  blocks
+}
+
+#' Get roxygen2 block object
+#'
+#' Extracts a single object from a list of [`roxy_block`][roxygen2::roxy_block] objects.
+#'
+#' @param blocks A list of [`roxy_block`][roxygen2::roxy_block] objects as returned by [roxy_blocks()].
+#' @param obj_name The object name to extract, usually a function name. A character scalar.
+#'
+#' @return A [`roxy_block`][roxygen2::roxy_block] object.
+#' @family roxy
+#' @export
+roxy_obj <- function(blocks,
+                     obj_name) {
+  
+  checkmate::assert_list(blocks,
+                         types = "roxy_block",
+                         all.missing = FALSE)
+  obj_names <-
+    blocks %>%
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,
                      "object", "topic") %>%
     purrr::compact() %>%
-    purrr::flatten_chr() %>%
-    magrittr::equals(obj_name) %>%
-    which()
+    purrr::flatten_chr()
   
-  i_tag <-
-    roxy_blocks[[i_obj]]$tags %>%
-    purrr::map_depth(.depth = 1L,
-                     .f = purrr::pluck,
-                     "tag") %>%
-    purrr::compact() %>%
-    purrr::flatten_chr() %>%
-    magrittr::equals(tag_name) %>%
-    which()
+  obj_name <- rlang::arg_match(arg = obj_name,
+                               values = obj_names)
   
-  tag_values <-
-    i_tag %>%
-    purrr::map(~ roxy_blocks[[i_obj]]$tags[[.x]]) %>%
-    purrr::map_depth(.depth = 1L,
-                     .f = purrr::pluck,
-                     "val") %>%
-    purrr::compact()
+  blocks[[which(obj_names == obj_name)]]
+}
+
+#' Get an object's roxygen2 tag value(s)
+#'
+#' Extracts the value(s) belonging to the `tag_name`s documenting `obj_name` from a list of [`roxy_block`][roxygen2::roxy_block] objects.
+#'
+#' @inheritParams roxy_obj
+#' @param tag_names The name(s) of the [roxygen2 tags](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value(s) from. A character
+#'   vector.
+#' @param param_name The parameter name to extract the value from. Only relevant if `"param" %in% tag_names`. A character scalar.
+#'
+#' @return A character vector of the same length as `tag_names`.
+#' @family roxy
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' blocks <- pal::roxy_blocks(pkg = "dplyr")
+#'
+#' pal::roxy_tag_value(blocks = blocks,
+#'                     obj_name = "across",
+#'                     tag_names = "param",
+#'                     param_name = ".fns") |>
+#'   cat()}
+roxy_tag_value <- function(blocks,
+                           obj_name,
+                           tag_names = "param",
+                           param_name) {
   
-  if (tag_name == "param" && !is.null(param_name)) {
+  block <- roxy_obj(blocks = blocks,
+                    obj_name = obj_name)
+  tags <- block$tags
+  
+  tag_names <-
+    checkmate::assert_subset(tag_names,
+                             choices = tags %>% purrr::map_chr(purrr::pluck, "tag"),
+                             empty.ok = FALSE) %>%
+    unique()
+  
+  if ("param" %in% tag_names) {
     
-    i_param <-
-      tag_values %>%
-      purrr::map_depth(.depth = 1L,
-                       .f = purrr::pluck,
-                       "name") %>%
-      purrr::compact() %>%
-      purrr::flatten_chr() %>%
-      magrittr::equals(checkmate::assert_string(param_name)) %>%
+    ix_param <-
+      tags %>%
+      purrr::map_lgl(~ .x$tag == "param") %>%
       which()
     
-    result <- tag_values[[i_param]]$description
+    param_name <- rlang::arg_match(arg = param_name,
+                                   values = tags[ix_param] %>% purrr::map_chr(purrr::pluck,
+                                                                              "val", "name"))
+    i_to_keep <-
+      tags[ix_param] %>%
+      purrr::map_lgl(~ .x$val$name == param_name) %>%
+      which()
     
-  } else {
-    result <- tag_values
+    block$tags %<>% magrittr::extract(-ix_param[-i_to_keep])
   }
   
-  result
+  tag_names %>%
+    purrr::map_chr(~ roxygen2::block_get_tag_value(block = block,
+                                                   tag = .x) %>%
+                     purrr::when(is.list(.) ~ .$description,
+                                 ~ .))
 }
 
 #' Convert a character vector to a Markdown list
@@ -1967,6 +2119,52 @@ knitr_table_format <- function(default = c("pipe",
   }
   
   result
+}
+
+#' Strip YAML header from R Markdown
+#'
+#' Extracts the body from an R Markdown file, stripping a possible [YAML metadata block](https://pandoc.org/MANUAL.html#extension-yaml_metadata_block) at the
+#' beginning of the file.
+#'
+#' Note that for the [R Markdown file format](https://rmarkdown.rstudio.com/), the YAML metadata block must occur at the beginning of the document (and there
+#' can be only one). Additional whitespace characters (incl. newlines) before the YAML metadata block are allowed.
+#'
+#' @param rmd The R Markdown file as a character scalar.
+#' @param eol `r pkgsnip::param_label("eol")`
+#'
+#' @return The body of the R Markdown file as a character vector of lines.
+#' @family rmd_knitr
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "README.Rmd",
+#'                   owner = "salim-b",
+#'                   name = "pal") %T>%
+#'   pal::strip_yaml_header()
+strip_yaml_header <- function(rmd,
+                              eol = c("LF", "CRLF", "CR", "LFCR")) {
+  
+  has_yaml <- grepl(x = rmd,
+                    pattern = "^(\\n\\s*)?---\\s*\\n.*(---|...)\\s*\\n")
+  
+  rmd %<>% stringr::str_split(pattern = "\\n") %>% magrittr::extract2(1L)
+  
+  last_yaml_line_nr <-
+    rmd %>%
+    stringr::str_locate("^---\\s*$") %>%
+    tibble::as_tibble() %>%
+    tibble::rowid_to_column() %>%
+    dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
+    rowid[2L] %>%
+    min(rmd %>%
+          stringr::str_locate("^\\.{3}\\s*$") %>%
+          tibble::as_tibble() %>%
+          tibble::rowid_to_column() %>%
+          dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
+          rowid[1L],
+        na.rm = TRUE)
+  
+  rmd[(last_yaml_line_nr + 1L):length(rmd)]
 }
 
 #' Convert to GitLab Flavored Markdown
@@ -2397,7 +2595,8 @@ assert_mime_type <- function(response,
 #' @param url The HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
 #' @param retries The maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar >= `0`. The retries are performed using
 #'   exponential backoff and jitter, see [httr::RETRY()] for details.
-#' @param quiet Suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant if `retries > 0`.
+#' @param quiet Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant
+#'   if `retries > 0`.
 #'
 #' @return A logical scalar.
 #' @family http
@@ -2743,7 +2942,7 @@ order_by <- function(x,
 #' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
 #'
 #' ```r
-#' #' @param some_param Some parameter. One of `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
+#' #' @param some_param Some parameter. One of `r prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
 #' some_fn <- function(some_param = c("a", "b", "c")) {
 #'   some_param <- rlang::arg_match(some_param)
 #'   ...
@@ -2751,7 +2950,7 @@ order_by <- function(x,
 #' ```
 #'
 #' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-#' `` `r pal::prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% pal::as_md_list()` `` in the example above.
+#' `` `r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% as_md_list()` `` in the example above.
 #'
 #' # Caveats
 #'

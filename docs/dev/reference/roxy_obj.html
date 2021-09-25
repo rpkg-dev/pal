@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Drop list elements by name — list_drop • pal</title>
+<title>Get roxygen2 block object — roxy_obj • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Drop list elements by name — list_drop" />
-<meta name="description" content="Drops all list elements whose names match the provided set.">
-<meta property="og:description" content="Drops all list elements whose names match the provided set." />
+<meta property="og:title" content="Get roxygen2 block object — roxy_obj" />
+<meta name="description" content="Extracts a single object from a list of roxy_block objects.">
+<meta property="og:description" content="Extracts a single object from a list of roxy_block objects." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,105 +135,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Drop list elements by name</h1>
+    <h1>Get roxygen2 block object</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
-    <div class="hidden name"><code>list_drop.Rd</code></div>
+    <div class="hidden name"><code>roxy_obj.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Drops all list elements whose names match the provided set.</p>
+    <p>Extracts a single object from a list of <code><a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxy_block</a></code> objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>list_drop</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>drop</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>roxy_obj</span><span class='op'>(</span><span class='va'>blocks</span>, <span class='va'>obj_name</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A list.</p></td>
+      <th>blocks</th>
+      <td><p>A list of <code><a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxy_block</a></code> objects as returned by <code><a href='roxy_blocks.html'>roxy_blocks()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>drop</th>
-      <td><p>The names of the list elements to drop.</p></td>
+      <th>obj_name</th>
+      <td><p>The object name to extract, usually a function name. A character scalar.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list.</p>
+    <p>A <code><a href='https://roxygen2.r-lib.org/reference/roxy_block.html'>roxy_block</a></code> object.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other list functions:
-<code><a href='as_flat_list.html'>as_flat_list</a>()</code>,
-<code><a href='list_keep.html'>list_keep</a>()</code></p></div>
+    <div class='dont-index'><p>Other package documentation functions:
+<code><a href='roxy_blocks.html'>roxy_blocks</a>()</code>,
+<code><a href='roxy_tag_value.html'>roxy_tag_value</a>()</code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>list_drop</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"disp"</span>, <span class='st'>"drat"</span>, <span class='st'>"qsec"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $mpg
-#&gt;  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
-#&gt; [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
-#&gt; [31] 15.0 21.4
-#&gt; 
-#&gt; $cyl
-#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
-#&gt; 
-#&gt; $hp
-#&gt;  [1] 110 110  93 110 175 105 245  62  95 123 123 180 180 180 205 215 230  66  52
-#&gt; [20]  65  97 150 150 245 175  66  91 113 264 175 335 109
-#&gt; 
-#&gt; $wt
-#&gt;  [1] 2.620 2.875 2.320 3.215 3.440 3.460 3.570 3.190 3.150 3.440 3.440 4.070
-#&gt; [13] 3.730 3.780 5.250 5.424 5.345 2.200 1.615 1.835 2.465 3.520 3.435 3.840
-#&gt; [25] 3.845 1.935 2.140 1.513 3.170 2.770 3.570 2.780
-#&gt; 
-#&gt; $vs
-#&gt;  [1] 0 0 1 1 0 1 0 1 1 1 1 0 0 0 0 0 0 1 1 1 1 0 0 0 0 1 0 1 0 0 0 1
-#&gt; 
-#&gt; $am
-#&gt;  [1] 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1
-#&gt; 
-#&gt; $gear
-#&gt;  [1] 4 4 4 3 3 3 3 4 4 4 4 3 3 3 3 3 3 4 4 4 3 3 3 3 3 4 5 5 5 5 5 4
-#&gt; 
-#&gt; $carb
-#&gt;  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
-#&gt; </div><div class='input'>
-<span class='co'># works with any R objects that are internally of type list</span>
-<span class='va'>mtcars</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>list_drop</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"disp"</span>, <span class='st'>"drat"</span>, <span class='st'>"qsec"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                      mpg cyl  hp    wt vs am gear carb
-#&gt; Mazda RX4           21.0   6 110 2.620  0  1    4    4
-#&gt; Mazda RX4 Wag       21.0   6 110 2.875  0  1    4    4
-#&gt; Datsun 710          22.8   4  93 2.320  1  1    4    1
-#&gt; Hornet 4 Drive      21.4   6 110 3.215  1  0    3    1
-#&gt; Hornet Sportabout   18.7   8 175 3.440  0  0    3    2
-#&gt; Valiant             18.1   6 105 3.460  1  0    3    1
-#&gt; Duster 360          14.3   8 245 3.570  0  0    3    4
-#&gt; Merc 240D           24.4   4  62 3.190  1  0    4    2
-#&gt; Merc 230            22.8   4  95 3.150  1  0    4    2
-#&gt; Merc 280            19.2   6 123 3.440  1  0    4    4
-#&gt; Merc 280C           17.8   6 123 3.440  1  0    4    4
-#&gt; Merc 450SE          16.4   8 180 4.070  0  0    3    3
-#&gt; Merc 450SL          17.3   8 180 3.730  0  0    3    3
-#&gt; Merc 450SLC         15.2   8 180 3.780  0  0    3    3
-#&gt; Cadillac Fleetwood  10.4   8 205 5.250  0  0    3    4
-#&gt; Lincoln Continental 10.4   8 215 5.424  0  0    3    4
-#&gt; Chrysler Imperial   14.7   8 230 5.345  0  0    3    4
-#&gt; Fiat 128            32.4   4  66 2.200  1  1    4    1
-#&gt; Honda Civic         30.4   4  52 1.615  1  1    4    2
-#&gt; Toyota Corolla      33.9   4  65 1.835  1  1    4    1
-#&gt; Toyota Corona       21.5   4  97 2.465  1  0    3    1
-#&gt; Dodge Challenger    15.5   8 150 3.520  0  0    3    2
-#&gt; AMC Javelin         15.2   8 150 3.435  0  0    3    2
-#&gt; Camaro Z28          13.3   8 245 3.840  0  0    3    4
-#&gt; Pontiac Firebird    19.2   8 175 3.845  0  0    3    2
-#&gt; Fiat X1-9           27.3   4  66 1.935  1  1    4    1
-#&gt; Porsche 914-2       26.0   4  91 2.140  0  1    5    2
-#&gt; Lotus Europa        30.4   4 113 1.513  1  1    5    2
-#&gt; Ford Pantera L      15.8   8 264 3.170  0  1    5    4
-#&gt; Ferrari Dino        19.7   6 175 2.770  0  1    5    6
-#&gt; Maserati Bora       15.0   8 335 3.570  0  1    5    8
-#&gt; Volvo 142E          21.4   4 109 2.780  1  1    4    2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

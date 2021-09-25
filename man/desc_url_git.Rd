@@ -22,15 +22,8 @@ Currently, this function recognizes \href{https://gitlab.com/}{GitLab}, \href{ht
 \href{https://codeberg.org/}{Codeberg}, \href{https://pagure.io/}{Pagure}, \href{https://bitbucket.org/}{Bitbucket} and \href{https://sr.ht/}{SourceHut} repository URLs.
 }
 \seealso{
-Other R package functions:
-\code{\link{assert_pkg}()},
+Other package documentation functions:
 \code{\link{desc_list}()},
-\code{\link{desc_value}()},
-\code{\link{is_pkg_cran}()},
-\code{\link{is_pkg_dir}()},
-\code{\link{is_pkg_installed}()},
-\code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()},
-\code{\link{roxy_tag_value}()}
+\code{\link{desc_value}()}
 }
-\concept{rpkgs}
+\concept{desc}

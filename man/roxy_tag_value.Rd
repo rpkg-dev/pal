@@ -2,43 +2,39 @@
 % Please edit documentation in R/pal-GEN.R
 \name{roxy_tag_value}
 \alias{roxy_tag_value}
-\title{Get an object's roxygen2 tag value}
+\title{Get an object's roxygen2 tag value(s)}
 \usage{
-roxy_tag_value(text, obj_name, tag_name = "param", param_name = NULL)
+roxy_tag_value(blocks, obj_name, tag_names = "param", param_name)
 }
 \arguments{
-\item{text}{The \R source code to extract the object's roxygen2 tag value from. A character vector.}
+\item{blocks}{A list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects as returned by \code{\link[=roxy_blocks]{roxy_blocks()}}.}
 
-\item{obj_name}{The object name to which the roxygen2 tag belongs to, usually a function name. A character scalar.}
+\item{obj_name}{The object name to extract, usually a function name. A character scalar.}
 
-\item{tag_name}{The name of the \href{https://roxygen2.r-lib.org/articles/rd.html}{roxygen2 tag} (without the \code{@}) to extract the value from. A character scalar.}
+\item{tag_names}{The name(s) of the \href{https://roxygen2.r-lib.org/articles/rd.html}{roxygen2 tags} (without the \code{@}) to extract the value(s) from. A character
+vector.}
 
-\item{param_name}{The parameter name to extract the value from. Only relevant if \code{tag_name = "param"}. A character scalar.}
+\item{param_name}{The parameter name to extract the value from. Only relevant if \code{"param" \%in\% tag_names}. A character scalar.}
 }
 \value{
-A character scalar if \code{tag_name = "param"} and \code{param_name != NULL}, otherwise a list.
+A character vector of the same length as \code{tag_names}.
 }
 \description{
-Parses \code{text} for \link[roxygen2:roxy_block]{roxygen2 blocks} and extracts the value(s) belonging to the \code{tag_name}s documenting \code{obj_name}.
+Extracts the value(s) belonging to the \code{tag_name}s documenting \code{obj_name} from a list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects.
 }
 \examples{
-text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
-                                 "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
+\dontrun{
+blocks <- pal::roxy_blocks(pkg = "dplyr")
 
-pal::roxy_tag_value(text = text,
-                    obj_name = "as_function",
-                    param_name = "x")
+pal::roxy_tag_value(blocks = blocks,
+                    obj_name = "across",
+                    tag_names = "param",
+                    param_name = ".fns") |>
+  cat()}
 }
 \seealso{
-Other R package functions:
-\code{\link{assert_pkg}()},
-\code{\link{desc_list}()},
-\code{\link{desc_url_git}()},
-\code{\link{desc_value}()},
-\code{\link{is_pkg_cran}()},
-\code{\link{is_pkg_dir}()},
-\code{\link{is_pkg_installed}()},
-\code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()}
+Other package documentation functions:
+\code{\link{roxy_blocks}()},
+\code{\link{roxy_obj}()}
 }
-\concept{rpkgs}
+\concept{roxy}

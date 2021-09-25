@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Drop list elements by name — list_drop • pal</title>
+<title>Strip YAML header from R Markdown — strip_yaml_header • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Drop list elements by name — list_drop" />
-<meta name="description" content="Drops all list elements whose names match the provided set.">
-<meta property="og:description" content="Drops all list elements whose names match the provided set." />
+<meta property="og:title" content="Strip YAML header from R Markdown — strip_yaml_header" />
+<meta name="description" content="Extracts the body from an R Markdown file, stripping a possible YAML metadata block at the beginning of the file.">
+<meta property="og:description" content="Extracts the body from an R Markdown file, stripping a possible YAML metadata block at the beginning of the file." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,105 +135,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Drop list elements by name</h1>
+    <h1>Strip YAML header from R Markdown</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal-GEN.R'><code>R/pal-GEN.R</code></a></small>
-    <div class="hidden name"><code>list_drop.Rd</code></div>
+    <div class="hidden name"><code>strip_yaml_header.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Drops all list elements whose names match the provided set.</p>
+    <p>Extracts the body from an R Markdown file, stripping a possible <a href='https://pandoc.org/MANUAL.html#extension-yaml_metadata_block'>YAML metadata block</a> at the
+beginning of the file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>list_drop</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>drop</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='va'>rmd</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A list.</p></td>
+      <th>rmd</th>
+      <td><p>The R Markdown file as a character scalar.</p></td>
     </tr>
     <tr>
-      <th>drop</th>
-      <td><p>The names of the list elements to drop.</p></td>
+      <th>eol</th>
+      <td><p>End of line (EOL) control character sequence. One of</p><ul>
+<li><p><code>"LF"</code> for the line feed (LF) character (<code>"\n"</code>). The standard on Unix and Unix-like systems (Linux, macOS, *BSD, etc.) and the <strong>default</strong>.</p></li>
+<li><p><code>"CRLF"</code> for the carriage return + line feed (CR+LF) character sequence (<code>"\r\n"</code>). The standard on Microsoft Windows, DOS and some other systems.</p></li>
+<li><p><code>"CR"</code> for the carriage return (CR) character (<code>"\r"</code>). The standard on classic Mac OS and some other antiquated systems.</p></li>
+<li><p><code>"LFCR"</code> for the line feed + carriage return (LF+CR) character sequence (<code>"\n\r"</code>). The standard on RISC OS and some other exotic systems.</p></li>
+</ul></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list.</p>
+    <p>The body of the R Markdown file as a character vector of lines.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Note that for the <a href='https://rmarkdown.rstudio.com/'>R Markdown file format</a>, the YAML metadata block must occur at the beginning of the document (and there
+can be only one). Additional whitespace characters (incl. newlines) before the YAML metadata block are allowed.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other list functions:
-<code><a href='as_flat_list.html'>as_flat_list</a>()</code>,
-<code><a href='list_keep.html'>list_keep</a>()</code></p></div>
+    <div class='dont-index'><p>Other R Markdown and knitr functions:
+<code><a href='build_readme.html'>build_readme</a>()</code>,
+<code><a href='gitlab_document.html'>gitlab_document</a>()</code>,
+<code><a href='knitr_table_format.html'>knitr_table_format</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>list_drop</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"disp"</span>, <span class='st'>"drat"</span>, <span class='st'>"qsec"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $mpg
-#&gt;  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
-#&gt; [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
-#&gt; [31] 15.0 21.4
-#&gt; 
-#&gt; $cyl
-#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
-#&gt; 
-#&gt; $hp
-#&gt;  [1] 110 110  93 110 175 105 245  62  95 123 123 180 180 180 205 215 230  66  52
-#&gt; [20]  65  97 150 150 245 175  66  91 113 264 175 335 109
-#&gt; 
-#&gt; $wt
-#&gt;  [1] 2.620 2.875 2.320 3.215 3.440 3.460 3.570 3.190 3.150 3.440 3.440 4.070
-#&gt; [13] 3.730 3.780 5.250 5.424 5.345 2.200 1.615 1.835 2.465 3.520 3.435 3.840
-#&gt; [25] 3.845 1.935 2.140 1.513 3.170 2.770 3.570 2.780
-#&gt; 
-#&gt; $vs
-#&gt;  [1] 0 0 1 1 0 1 0 1 1 1 1 0 0 0 0 0 0 1 1 1 1 0 0 0 0 1 0 1 0 0 0 1
-#&gt; 
-#&gt; $am
-#&gt;  [1] 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1
-#&gt; 
-#&gt; $gear
-#&gt;  [1] 4 4 4 3 3 3 3 4 4 4 4 3 3 3 3 3 3 4 4 4 3 3 3 3 3 4 5 5 5 5 5 4
-#&gt; 
-#&gt; $carb
-#&gt;  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
-#&gt; </div><div class='input'>
-<span class='co'># works with any R objects that are internally of type list</span>
-<span class='va'>mtcars</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>list_drop</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"disp"</span>, <span class='st'>"drat"</span>, <span class='st'>"qsec"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                      mpg cyl  hp    wt vs am gear carb
-#&gt; Mazda RX4           21.0   6 110 2.620  0  1    4    4
-#&gt; Mazda RX4 Wag       21.0   6 110 2.875  0  1    4    4
-#&gt; Datsun 710          22.8   4  93 2.320  1  1    4    1
-#&gt; Hornet 4 Drive      21.4   6 110 3.215  1  0    3    1
-#&gt; Hornet Sportabout   18.7   8 175 3.440  0  0    3    2
-#&gt; Valiant             18.1   6 105 3.460  1  0    3    1
-#&gt; Duster 360          14.3   8 245 3.570  0  0    3    4
-#&gt; Merc 240D           24.4   4  62 3.190  1  0    4    2
-#&gt; Merc 230            22.8   4  95 3.150  1  0    4    2
-#&gt; Merc 280            19.2   6 123 3.440  1  0    4    4
-#&gt; Merc 280C           17.8   6 123 3.440  1  0    4    4
-#&gt; Merc 450SE          16.4   8 180 4.070  0  0    3    3
-#&gt; Merc 450SL          17.3   8 180 3.730  0  0    3    3
-#&gt; Merc 450SLC         15.2   8 180 3.780  0  0    3    3
-#&gt; Cadillac Fleetwood  10.4   8 205 5.250  0  0    3    4
-#&gt; Lincoln Continental 10.4   8 215 5.424  0  0    3    4
-#&gt; Chrysler Imperial   14.7   8 230 5.345  0  0    3    4
-#&gt; Fiat 128            32.4   4  66 2.200  1  1    4    1
-#&gt; Honda Civic         30.4   4  52 1.615  1  1    4    2
-#&gt; Toyota Corolla      33.9   4  65 1.835  1  1    4    1
-#&gt; Toyota Corona       21.5   4  97 2.465  1  0    3    1
-#&gt; Dodge Challenger    15.5   8 150 3.520  0  0    3    2
-#&gt; AMC Javelin         15.2   8 150 3.435  0  0    3    2
-#&gt; Camaro Z28          13.3   8 245 3.840  0  0    3    4
-#&gt; Pontiac Firebird    19.2   8 175 3.845  0  0    3    2
-#&gt; Fiat X1-9           27.3   4  66 1.935  1  1    4    1
-#&gt; Porsche 914-2       26.0   4  91 2.140  0  1    5    2
-#&gt; Lotus Europa        30.4   4 113 1.513  1  1    5    2
-#&gt; Ford Pantera L      15.8   8 264 3.170  0  1    5    4
-#&gt; Ferrari Dino        19.7   6 175 2.770  0  1    5    6
-#&gt; Maserati Bora       15.0   8 335 3.570  0  1    5    8
-#&gt; Volvo 142E          21.4   4 109 2.780  1  1    4    2</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.Rmd"</span>,
+                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
+                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "---\noutput: pal::gitlab_document\n---\n\n# `r paste0(pal::desc_value(\"Package\"), \": \", pal::desc_value(\"Title\"))` &lt;a href=\"https://rpkg.dev/pal/\"&gt;&lt;img src=\"man/figures/logo.png\" alt=\"Package Logo\" class=\"pkg-logo\" align=\"right\" height=\"180\"/&gt;&lt;/a&gt;\n\n`r pal::desc_value(\"Description\")`[^1]\n\nThis is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.\n\n[^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report\nit](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the avoidance\nof unnecessary duplication.\n\n```{r, pkgdown, eval = !isTRUE(getOption(\"pal.build_readme.is_pkgdown\")), results = \"asis\", echo = FALSE}\npkgsnip::md_snip(name = \"pkgdown_notice\") %&gt;%\n  paste0(\"## Documentation\\n\\n\", .) %&gt;%\n  pal::cat_lines()\n```\n\n## Installation\n\n```{r, install-snippet-dev, child = pkgsnip::snip_path(\"installation-notice_dev-version_gitlab.Rmd\")}\n```\n\n## Development\n\n### R Markdown format\n\n```{r, rmd-pkg-snippet, child = pkgsnip::snip_path(\"rmd-package-notice.Rmd\")}\n```\n\n### Coding style\n\n```{r, coding-style-snippet, child = pkgsnip::snip_path(\"coding-style-notice.Rmd\")}\n```\n\n## See also\n\n-   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.\n"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

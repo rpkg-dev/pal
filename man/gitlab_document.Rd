@@ -113,6 +113,7 @@ rmarkdown::render(input = tmp_file,
 \seealso{
 Other R Markdown and knitr functions:
 \code{\link{build_readme}()},
-\code{\link{knitr_table_format}()}
+\code{\link{knitr_table_format}()},
+\code{\link{strip_yaml_header}()}
 }
 \concept{rmd_knitr}
