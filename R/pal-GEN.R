@@ -1590,7 +1590,7 @@ desc_url_git <- function(file = ".") {
 #'
 #' @param pkg,text Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.
 #' @param ... Further arguments passed on to [download.packages()], excluding `r forbidden_dots$roxy_tag_value %>% prose_ls(wrap = "\x60")`. Only relevant
-#'   if `pkg` is provided.
+#'   if `pkg` is provided. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param quiet Whether or not to suppress status output from internal processing.
 #'
 #' @return A list of [`roxy_block`][roxygen2::roxy_block] objects.
@@ -1983,10 +1983,13 @@ strip_md_footnotes <- function(x) {
 
 #' Parse (R) Markdown as CommonMark XML tree
 #'
-#' Returns the CommonMark parse tree in XML format.
+#' Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format.
 #'
 #' @inheritParams as_line_feed_chr
-#' @param md The (R) Markdown file as a character scalar.
+#' @inheritParams gitlab_document
+#' @inheritParams commonmark::markdown_xml
+#' @param md The (R) Markdown file content as a character scalar.
+#' @param hardbreaks Whether or not to treat newlines as hard line breaks.
 #'
 #' @return An [`xml_node`][xml2::xml_node-class] or [`xml_nodeset`][xml2::xml_nodeset-class] (possibly empty). Results are always de-duplicated.
 #' @family commonmark
@@ -1996,8 +1999,13 @@ strip_md_footnotes <- function(x) {
 #' pal::gh_text_file(path = "Rmd/pal.Rmd",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
-#' pal::md_xml()
+#'   pal::md_xml()
 md_xml <- function(md,
+                   smart_punctuation = TRUE,
+                   hardbreaks = FALSE,
+                   normalize = TRUE,
+                   sourcepos = FALSE,
+                   extensions = TRUE,
                    eol = c("LF", "CRLF", "CR", "LFCR")) {
   
   assert_pkg("commonmark")
@@ -2005,7 +2013,11 @@ md_xml <- function(md,
   
   strip_yaml_header(rmd = md,
                     eol = eol) %>%
-    commonmark::markdown_xml(normalize = TRUE) %>%
+    commonmark::markdown_xml(hardbreaks = hardbreaks,
+                             smart = smart_punctuation,
+                             normalize = normalize,
+                             sourcepos = sourcepos,
+                             extensions = extensions) %>%
     xml2::read_xml() %>%
     xml2::xml_ns_strip() %>%
     xml2::xml_contents()
@@ -2170,15 +2182,15 @@ knitr_table_format <- function(default = c("pipe",
 
 #' Strip YAML header from R Markdown
 #'
-#' Extracts the body from an R Markdown file, stripping a possible [YAML metadata 
-#' block](https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata) at the beginning of the file.
+#' Extracts the body from R Markdown file content, stripping a possible [YAML metadata 
+#' block](https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata) at the beginning.
 #'
 #' Note that for the [R Markdown file format](https://rmarkdown.rstudio.com/), the [YAML metadata 
 #' block](https://pandoc.org/MANUAL.html#extension-yaml_metadata_block) must occur at the beginning of the document (and there can be only one). Additional
 #' whitespace characters (incl. newlines) before the YAML metadata block are allowed.
 #'
 #' @inheritParams as_line_feed_chr
-#' @param rmd The R Markdown file as a character scalar.
+#' @param rmd The R Markdown file content as a character scalar.
 #'
 #' @return The body of the R Markdown file as a character vector of lines.
 #' @family rmd_knitr

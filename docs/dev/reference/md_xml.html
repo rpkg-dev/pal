@@ -58,8 +58,8 @@
   
 
 <meta property="og:title" content="Parse (R) Markdown as CommonMark XML tree — md_xml" />
-<meta name="description" content="Returns the CommonMark parse tree in XML format.">
-<meta property="og:description" content="Returns the CommonMark parse tree in XML format." />
+<meta name="description" content="Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format.">
+<meta property="og:description" content="Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9068</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9069</span>
       </span>
     </div>
 
@@ -141,17 +141,48 @@
     </div>
 
     <div class="ref-description">
-    <p>Returns the CommonMark parse tree in XML format.</p>
+    <p>Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>md_xml</span><span class='op'>(</span><span class='va'>md</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>md_xml</span><span class='op'>(</span>
+  <span class='va'>md</span>,
+  smart_punctuation <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  hardbreaks <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  normalize <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  sourcepos <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  extensions <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>md</th>
-      <td><p>The (R) Markdown file as a character scalar.</p></td>
+      <td><p>The (R) Markdown file content as a character scalar.</p></td>
+    </tr>
+    <tr>
+      <th>smart_punctuation</th>
+      <td><p>Whether to enable <a href='https://pandoc.org/MANUAL.html#extension-smart'>Pandoc's <code>smart</code> extension</a> which converts straight quotes to
+curly quotes, <code>---</code> to an em-dash (—), <code>--</code> to an en-dash (–), and <code>...</code> to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
+<code>Mr.</code>.</p></td>
+    </tr>
+    <tr>
+      <th>hardbreaks</th>
+      <td><p>Whether or not to treat newlines as hard line breaks.</p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>Consolidate adjacent text nodes.</p></td>
+    </tr>
+    <tr>
+      <th>sourcepos</th>
+      <td><p>Include source position attribute in output.</p></td>
+    </tr>
+    <tr>
+      <th>extensions</th>
+      <td><p>Enables Github extensions. Can be <code>TRUE</code> (all) <code>FALSE</code> (none) or a character
+vector with a subset of available <a href='https://rdrr.io/pkg/commonmark/man/extensions.html'>extensions</a>.</p></td>
     </tr>
     <tr>
       <th>eol</th>
@@ -172,8 +203,8 @@
     <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"Rmd/pal.Rmd"</span>,
                   owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
                   name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> |&gt;
-<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>md_xml</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; {xml_nodeset (195)}
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>md_xml</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {xml_nodeset (205)}
 #&gt;  [1] &lt;heading level="1"&gt;\n  &lt;text xml:space="preserve"&gt;INTERNAL&lt;/text&gt;\n&lt;/hea ...
 #&gt;  [2] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Logo&lt;/text&gt;\n&lt;/heading&gt;
 #&gt;  [3] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;The package logo is based on t ...

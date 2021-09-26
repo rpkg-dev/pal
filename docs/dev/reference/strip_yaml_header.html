@@ -58,8 +58,8 @@
   
 
 <meta property="og:title" content="Strip YAML header from R Markdown — strip_yaml_header" />
-<meta name="description" content="Extracts the body from an R Markdown file, stripping a possible YAML metadata block at the beginning of the file.">
-<meta property="og:description" content="Extracts the body from an R Markdown file, stripping a possible YAML metadata block at the beginning of the file." />
+<meta name="description" content="Extracts the body from R Markdown file content, stripping a possible YAML metadata block at the beginning.">
+<meta property="og:description" content="Extracts the body from R Markdown file content, stripping a possible YAML metadata block at the beginning." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9068</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9069</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Extracts the body from an R Markdown file, stripping a possible <a href='https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata'>YAML metadata block</a> at the beginning of the file.</p>
+    <p>Extracts the body from R Markdown file content, stripping a possible <a href='https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata'>YAML metadata block</a> at the beginning.</p>
     </div>
 
     <pre class="usage"><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='va'>rmd</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -151,7 +151,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>rmd</th>
-      <td><p>The R Markdown file as a character scalar.</p></td>
+      <td><p>The R Markdown file content as a character scalar.</p></td>
     </tr>
     <tr>
       <th>eol</th>

@@ -10,7 +10,7 @@ roxy_blocks(pkg = NULL, ..., text = NULL, quiet = TRUE)
 \item{pkg, text}{Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.}
 
 \item{...}{Further arguments passed on to \code{\link[=download.packages]{download.packages()}}, excluding \code{pkgs}, \code{destdir}, \code{available} and \code{type}. Only relevant
-if \code{pkg} is provided.}
+if \code{pkg} is provided\link[rlang:dyn-dots]{Dynamic dots} are supported.)`}
 
 \item{quiet}{Whether or not to suppress status output from internal processing.}
 }

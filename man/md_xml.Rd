@@ -4,10 +4,31 @@
 \alias{md_xml}
 \title{Parse (R) Markdown as CommonMark XML tree}
 \usage{
-md_xml(md, eol = c("LF", "CRLF", "CR", "LFCR"))
+md_xml(
+  md,
+  smart_punctuation = TRUE,
+  hardbreaks = FALSE,
+  normalize = TRUE,
+  sourcepos = FALSE,
+  extensions = TRUE,
+  eol = c("LF", "CRLF", "CR", "LFCR")
+)
 }
 \arguments{
-\item{md}{The (R) Markdown file as a character scalar.}
+\item{md}{The (R) Markdown file content as a character scalar.}
+
+\item{smart_punctuation}{Whether to enable \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts straight quotes to
+curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
+\code{Mr.}.}
+
+\item{hardbreaks}{Whether or not to treat newlines as hard line breaks.}
+
+\item{normalize}{Consolidate adjacent text nodes.}
+
+\item{sourcepos}{Include source position attribute in output.}
+
+\item{extensions}{Enables Github extensions. Can be \code{TRUE} (all) \code{FALSE} (none) or a character
+vector with a subset of available \link[commonmark]{extensions}.}
 
 \item{eol}{End of line (EOL) control character sequence. One of
 \itemize{
@@ -21,12 +42,12 @@ md_xml(md, eol = c("LF", "CRLF", "CR", "LFCR"))
 An \code{\link[xml2:oldclass]{xml_node}} or \code{\link[xml2:oldclass]{xml_nodeset}} (possibly empty). Results are always de-duplicated.
 }
 \description{
-Returns the CommonMark parse tree in XML format.
+Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format.
 }
 \examples{
 pal::gh_text_file(path = "Rmd/pal.Rmd",
                   owner = "salim-b",
                   name = "pal") |>
-pal::md_xml()
+  pal::md_xml()
 }
 \concept{commonmark}
