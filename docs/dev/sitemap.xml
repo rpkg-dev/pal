@@ -13,6 +13,9 @@
     <loc>https://rpkg.dev/pal/reference/as_flat_list.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/as_line_feed_chr.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/as_md_list.html</loc>
   </url>
   <url>
@@ -104,6 +107,9 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/ls_pkg.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/md_xml.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/order_by.html</loc>

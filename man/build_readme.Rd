@@ -37,7 +37,6 @@ This function is also registered as an \href{https://rstudio.github.io/rstudioad
 }
 \seealso{
 Other R Markdown and knitr functions:
-\code{\link{gitlab_document}()},
 \code{\link{knitr_table_format}()},
 \code{\link{strip_yaml_header}()}
 }

@@ -21,14 +21,15 @@ strip_yaml_header(rmd, eol = c("LF", "CRLF", "CR", "LFCR"))
 The body of the R Markdown file as a character vector of lines.
 }
 \description{
-Extracts the body from an R Markdown file, stripping a possible \href{https://pandoc.org/MANUAL.html#extension-yaml_metadata_block}{YAML metadata block} at the
-beginning of the file.
+Extracts the body from an R Markdown file, stripping a possible \href{https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata}{YAML metadata block} at the beginning of the file.
 }
 \details{
-Note that for the \href{https://rmarkdown.rstudio.com/}{R Markdown file format}, the YAML metadata block must occur at the beginning of the document (and there
-can be only one). Additional whitespace characters (incl. newlines) before the YAML metadata block are allowed.
+Note that for the \href{https://rmarkdown.rstudio.com/}{R Markdown file format}, the \href{https://pandoc.org/MANUAL.html#extension-yaml_metadata_block}{YAML metadata block} must occur at the beginning of the document (and there can be only one). Additional
+whitespace characters (incl. newlines) before the YAML metadata block are allowed.
 }
 \examples{
+library(magrittr)
+
 pal::gh_text_file(path = "README.Rmd",
                   owner = "salim-b",
                   name = "pal") \%T>\%
@@ -37,7 +38,6 @@ pal::gh_text_file(path = "README.Rmd",
 \seealso{
 Other R Markdown and knitr functions:
 \code{\link{build_readme}()},
-\code{\link{gitlab_document}()},
 \code{\link{knitr_table_format}()}
 }
 \concept{rmd_knitr}

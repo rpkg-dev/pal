@@ -33,7 +33,6 @@ account for the possibility that \code{knitr.table.format} is set to a function 
 \seealso{
 Other R Markdown and knitr functions:
 \code{\link{build_readme}()},
-\code{\link{gitlab_document}()},
 \code{\link{strip_yaml_header}()}
 }
 \concept{rmd_knitr}

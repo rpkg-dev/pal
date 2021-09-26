@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9067</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9068</span>
       </span>
     </div>
 
@@ -141,8 +141,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Extracts the body from an R Markdown file, stripping a possible <a href='https://pandoc.org/MANUAL.html#extension-yaml_metadata_block'>YAML metadata block</a> at the
-beginning of the file.</p>
+    <p>Extracts the body from an R Markdown file, stripping a possible <a href='https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata'>YAML metadata block</a> at the beginning of the file.</p>
     </div>
 
     <pre class="usage"><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='va'>rmd</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -170,17 +169,18 @@ beginning of the file.</p>
     <p>The body of the R Markdown file as a character vector of lines.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note that for the <a href='https://rmarkdown.rstudio.com/'>R Markdown file format</a>, the YAML metadata block must occur at the beginning of the document (and there
-can be only one). Additional whitespace characters (incl. newlines) before the YAML metadata block are allowed.</p>
+    <p>Note that for the <a href='https://rmarkdown.rstudio.com/'>R Markdown file format</a>, the <a href='https://pandoc.org/MANUAL.html#extension-yaml_metadata_block'>YAML metadata block</a> must occur at the beginning of the document (and there can be only one). Additional
+whitespace characters (incl. newlines) before the YAML metadata block are allowed.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other R Markdown and knitr functions:
 <code><a href='build_readme.html'>build_readme</a>()</code>,
-<code><a href='gitlab_document.html'>gitlab_document</a>()</code>,
 <code><a href='knitr_table_format.html'>knitr_table_format</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.Rmd"</span>,
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
+
+<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.Rmd"</span>,
                   owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
                   name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>
   <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='op'>)</span>

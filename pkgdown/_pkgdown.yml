@@ -56,10 +56,18 @@ reference:
 - title: "(Pandoc) Markdown"
 - contents:
   - has_concept("md")
+- subtitle: "CommonMark parsing"
+  desc: "Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package."
+- contents:
+  - has_concept("commonmark")
 
 - title: "R Markdown / knitr"
 - contents:
   - has_concept("rmd_knitr")
+- subtitle: "Output formats"
+  desc: "[Custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output formats](https://bookdown.org/yihui/rmarkdown/output-formats.html)."
+- contents:
+  - has_concept("rmd_format")
 
 - title: "GitHub"
   desc: "Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's v4 GraphQL API](https://docs.github.com/en/graphql)."

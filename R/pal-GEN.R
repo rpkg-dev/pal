@@ -692,6 +692,21 @@ as_chr <- function(...) {
     purrr::flatten_chr()
 }
 
+#' Convert control character sequence name to actual character sequence
+#'
+#' @param eol `r pkgsnip::param_label("eol")`
+#'
+#' @return A character scalar.
+#' @export
+as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
+  
+  switch(EXPR = rlang::arg_match(eol),
+         LF = "\n",
+         CRLF = "\r\n",
+         CR = "\r",
+         LFCR = "\n\r")
+}
+
 #' Convert to a character scalar (aka string)
 #'
 #' Similar to [`paste0(..., collapse = "")`][paste0()], but _recursively_ converts its inputs to type character.
@@ -1964,6 +1979,38 @@ strip_md_footnotes <- function(x) {
     stringr::str_remove_all(pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
 }
 
+
+
+#' Parse (R) Markdown as CommonMark XML tree
+#'
+#' Returns the CommonMark parse tree in XML format.
+#'
+#' @inheritParams as_line_feed_chr
+#' @param md The (R) Markdown file as a character scalar.
+#'
+#' @return An [`xml_node`][xml2::xml_node-class] or [`xml_nodeset`][xml2::xml_nodeset-class] (possibly empty). Results are always de-duplicated.
+#' @family commonmark
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "Rmd/pal.Rmd",
+#'                   owner = "salim-b",
+#'                   name = "pal") |>
+#' pal::md_xml()
+md_xml <- function(md,
+                   eol = c("LF", "CRLF", "CR", "LFCR")) {
+  
+  assert_pkg("commonmark")
+  assert_pkg("xml2")
+  
+  strip_yaml_header(rmd = md,
+                    eol = eol) %>%
+    commonmark::markdown_xml(normalize = TRUE) %>%
+    xml2::read_xml() %>%
+    xml2::xml_ns_strip() %>%
+    xml2::xml_contents()
+}
+
 #' Build `README.Rmd`
 #'
 #' A simpler, but considerably faster alternative to [devtools::build_readme()] since it doesn't install your package in a temporary library before building the
@@ -2123,20 +2170,23 @@ knitr_table_format <- function(default = c("pipe",
 
 #' Strip YAML header from R Markdown
 #'
-#' Extracts the body from an R Markdown file, stripping a possible [YAML metadata block](https://pandoc.org/MANUAL.html#extension-yaml_metadata_block) at the
-#' beginning of the file.
+#' Extracts the body from an R Markdown file, stripping a possible [YAML metadata 
+#' block](https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata) at the beginning of the file.
 #'
-#' Note that for the [R Markdown file format](https://rmarkdown.rstudio.com/), the YAML metadata block must occur at the beginning of the document (and there
-#' can be only one). Additional whitespace characters (incl. newlines) before the YAML metadata block are allowed.
+#' Note that for the [R Markdown file format](https://rmarkdown.rstudio.com/), the [YAML metadata 
+#' block](https://pandoc.org/MANUAL.html#extension-yaml_metadata_block) must occur at the beginning of the document (and there can be only one). Additional
+#' whitespace characters (incl. newlines) before the YAML metadata block are allowed.
 #'
+#' @inheritParams as_line_feed_chr
 #' @param rmd The R Markdown file as a character scalar.
-#' @param eol `r pkgsnip::param_label("eol")`
 #'
 #' @return The body of the R Markdown file as a character vector of lines.
 #' @family rmd_knitr
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#' 
 #' pal::gh_text_file(path = "README.Rmd",
 #'                   owner = "salim-b",
 #'                   name = "pal") %T>%
@@ -2147,7 +2197,8 @@ strip_yaml_header <- function(rmd,
   has_yaml <- grepl(x = rmd,
                     pattern = "^(\\n\\s*)?---\\s*\\n.*(---|...)\\s*\\n")
   
-  rmd %<>% stringr::str_split(pattern = "\\n") %>% magrittr::extract2(1L)
+  eol %<>% pal::as_line_feed_chr()
+  rmd %<>% stringr::str_split(pattern = eol) %>% magrittr::extract2(1L)
   
   last_yaml_line_nr <-
     rmd %>%
@@ -2217,7 +2268,7 @@ strip_yaml_header <- function(rmd,
 #' @inheritParams rmarkdown::md_document
 #'
 #' @return R Markdown output format intended to be fed to [rmarkdown::render()].
-#' @family rmd_knitr
+#' @family rmd_format
 #' @export
 #'
 #' @examples
@@ -2651,6 +2702,7 @@ check_cli <- function(cmd,
                       get_cmd_path = FALSE,
                       force_which = FALSE) {
   
+  assert_pkg("xfun")
   checkmate::assert_string(cmd)
   checkmate::assert_flag(get_cmd_path)
   checkmate::assert_flag(force_which)

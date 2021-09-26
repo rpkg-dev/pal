@@ -1,10 +1,12 @@
 list(
-  rd_family_title = list(desc = "Other package documentation functions:",
+  rd_family_title = list(commonmark = "Other CommonMark parsing functions:",
+                         desc = "Other package documentation functions:",
                          dots = "Other dots functions:",
                          gh = "Other GitHub functions:",
                          http = "Other HTTP functions:",
                          list = "Other list functions:",
                          md = "Other (Pandoc) Markdown functions:",
+                         rmd_format = "Other R Markdown output formats:",
                          rmd_knitr = "Other R Markdown and knitr functions:",
                          roxy = "Other package documentation functions:",
                          rpkgs = "Other R package functions:",
