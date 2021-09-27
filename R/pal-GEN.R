@@ -2275,6 +2275,8 @@ knitr_table_format <- function(default = c("pipe",
 strip_yaml_header <- function(rmd,
                               eol = c("LF", "CRLF", "CR", "LFCR")) {
   
+  checkmate::assert_string(rmd)
+  
   has_yaml <- grepl(x = rmd,
                     pattern = "^(\\n\\s*)?---\\s*\\n.*(---|...)\\s*\\n")
   
