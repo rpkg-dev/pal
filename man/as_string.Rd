@@ -39,6 +39,7 @@ pal::as_string(input)
 Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_comment_string}()},
+\code{\link{as_line_feed_chr}()},
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},

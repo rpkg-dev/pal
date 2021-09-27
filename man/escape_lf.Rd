@@ -35,6 +35,7 @@ pal::escape_lf(text) \%>\% pal::cat_lines()
 Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_comment_string}()},
+\code{\link{as_line_feed_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},
 \code{\link{dsv_colnames}()},

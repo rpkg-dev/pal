@@ -30,6 +30,7 @@ httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata
 Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_comment_string}()},
+\code{\link{as_line_feed_chr}()},
 \code{\link{as_string}()},
 \code{\link{cat_lines}()},
 \code{\link{escape_lf}()},

@@ -21,3 +21,18 @@ A character scalar.
 \description{
 Convert control character sequence name to actual character sequence
 }
+\seealso{
+Other string functions:
+\code{\link{as_chr}()},
+\code{\link{as_comment_string}()},
+\code{\link{as_string}()},
+\code{\link{cat_lines}()},
+\code{\link{dsv_colnames}()},
+\code{\link{escape_lf}()},
+\code{\link{fuse_regex}()},
+\code{\link{prettify_nr}()},
+\code{\link{prose_ls}()},
+\code{\link{sentenceify}()},
+\code{\link{wrap_chr}()}
+}
+\concept{string}
