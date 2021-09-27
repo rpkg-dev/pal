@@ -727,6 +727,7 @@ as_chr <- function(...) {
 #' @param eol `r pkgsnip::param_label("eol")`
 #'
 #' @return A character scalar.
+#' @family string
 #' @export
 as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
   
