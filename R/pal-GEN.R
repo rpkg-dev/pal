@@ -2040,16 +2040,19 @@ md_xml <- function(md,
   assert_pkg("commonmark")
   assert_pkg("xml2")
   
-  strip_yaml_header(rmd = md,
-                    eol = eol) %>%
+  result <-
+    strip_yaml_header(rmd = md,
+                      eol = eol) %>%
     commonmark::markdown_xml(hardbreaks = hardbreaks,
                              smart = smart_punctuation,
                              normalize = normalize,
                              sourcepos = sourcepos,
                              extensions = extensions) %>%
     xml2::read_xml() %>%
-    xml2::xml_ns_strip() %>%
-    xml2::xml_contents()
+    xml2::xml_ns_strip()
+  
+  # `xml2::xml_ns_strip()` returns its result invisibly, so we make it visible again
+  (result)
 }
 
 #' Determine CommonMark XML subnode indices
