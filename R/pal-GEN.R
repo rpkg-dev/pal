@@ -35,6 +35,36 @@ normalize_tree_path <- function(path) {
     stringr::str_remove(pattern = "^\\.{0,2}(/|$)")
 }
 
+is_heading_node <- function(xml_node) {
+  
+  xml2::xml_name(xml_node) == "heading"
+}
+
+node_heading_lvl <- function(xml_node) {
+  
+  xml_node %>%
+    xml2::xml_attr(attr = "level") %>%
+    as.integer()
+}
+
+subnode_ix <- function(xml_nodes,
+                       i) {
+  i_node <- i
+  i <- i + 1L
+  ix_subnodes <- integer()
+  heading_lvl_node <- node_heading_lvl(xml_nodes[i_node])
+  is_subnode <- is_heading_node(xml_nodes[i_node]) && i <= length(xml_nodes)
+  
+  while (is_subnode) {
+    is_subnode <- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) > heading_lvl_node)
+    ix_subnodes %<>% c(i[is_subnode])
+    i <- i + 1L
+    if (i > length(xml_nodes)) is_subnode <- FALSE
+  }
+  
+  ix_subnodes
+}
+
 #' Generate an integer sequence of specific length (safe)
 #'
 #' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
@@ -1979,11 +2009,9 @@ strip_md_footnotes <- function(x) {
     stringr::str_remove_all(pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
 }
 
-
-
 #' Parse (R) Markdown as CommonMark XML tree
 #'
-#' Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format.
+#' Parses (R) Markdown file content according to the [CommonMark](https://commonmark.org/) specification and returns it as an XML parse tree.
 #'
 #' @inheritParams as_line_feed_chr
 #' @inheritParams gitlab_document
@@ -1991,7 +2019,7 @@ strip_md_footnotes <- function(x) {
 #' @param md The (R) Markdown file content as a character scalar.
 #' @param hardbreaks Whether or not to treat newlines as hard line breaks.
 #'
-#' @return An [`xml_node`][xml2::xml_node-class] or [`xml_nodeset`][xml2::xml_nodeset-class] (possibly empty). Results are always de-duplicated.
+#' @return An [`xml_document`][xml2::xml_document-class].
 #' @family commonmark
 #' @export
 #'
@@ -2021,6 +2049,47 @@ md_xml <- function(md,
     xml2::read_xml() %>%
     xml2::xml_ns_strip() %>%
     xml2::xml_contents()
+}
+
+#' Determine CommonMark XML subnode indices
+#'
+#' Determines the XML children node indices for every XML node at the highest level of `xml` by interpreting [Markdown heading
+#' levels](https://pandoc.org/MANUAL.html#headings) (1–6).
+#'
+#' [commonmark::markdown_xml()] (and so [md_xml()] which builds upon it) **do** parse (R) Markdown file content according to the
+#' **[CommonMark](https://commonmark.org/) specification**, but **do not** return any information about the document's **heading hierarchy**.
+#' `md_xml_subnode_ix()` fills this gap by giving the hierarchy structure in the form of the XML subnode indices for every node at the highest level of `xml`.
+#'
+#' @param xml The CommonMark parse tree. An [`xml_document`][xml2::xml_document-class], [`xml_nodeset`][xml2::xml_nodeset-class] or
+#'   [`xml_node`][xml2::xml_node-class].
+#'
+#' @return A list of integer vectors of the same length as the number of XML nodes at the highest level of `xml`.
+#' @family commonmark
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "Rmd/pal.Rmd",
+#'                   owner = "salim-b",
+#'                   name = "pal") |>
+#'   pal::md_xml() |>
+#'   pal::md_xml_subnode_ix() |>
+#'   head()
+md_xml_subnode_ix <- function(xml) {
+  
+  class_xml <- class(xml)
+  
+  if (!any(c("xml_document", "xml_nodeset", "xml_node") %in% class_xml)) {
+    cli::cli_abort("{.arg xml} must be of class {.val xml_document}, {.val xml_nodeset} or {.val xml_node}, but is {.val {class_xml}}")
+  }
+  
+  xml_names <- xml2::xml_name(xml)
+  
+  if (length(xml_names) == 1L && xml_names == "document") {
+    xml %<>% xml2::xml_contents()
+  }
+  
+  seq_along(xml) %>% purrr::map(~ subnode_ix(xml_nodes = xml,
+                                             i = .x))
 }
 
 #' Build `README.Rmd`

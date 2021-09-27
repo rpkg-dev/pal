@@ -39,15 +39,19 @@ vector with a subset of available \link[commonmark]{extensions}.}
 }}
 }
 \value{
-An \code{\link[xml2:oldclass]{xml_node}} or \code{\link[xml2:oldclass]{xml_nodeset}} (possibly empty). Results are always de-duplicated.
+An \code{\link[xml2:oldclass]{xml_document}}.
 }
 \description{
-Parses (R) Markdown file content and returns it as a CommonMark parse tree in XML format.
+Parses (R) Markdown file content according to the \href{https://commonmark.org/}{CommonMark} specification and returns it as an XML parse tree.
 }
 \examples{
 pal::gh_text_file(path = "Rmd/pal.Rmd",
                   owner = "salim-b",
                   name = "pal") |>
   pal::md_xml()
+}
+\seealso{
+Other CommonMark parsing functions:
+\code{\link{md_xml_subnode_ix}()}
 }
 \concept{commonmark}
