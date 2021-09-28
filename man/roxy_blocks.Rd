@@ -12,7 +12,7 @@ roxy_blocks(pkg = NULL, ..., text = NULL, quiet = TRUE)
 \item{...}{Further arguments passed on to \code{\link[=download.packages]{download.packages()}}, excluding \code{pkgs}, \code{destdir}, \code{available} and \code{type}. Only relevant
 if \code{pkg} is provided\link[rlang:dyn-dots]{Dynamic dots} are supported.)`}
 
-\item{quiet}{Whether or not to suppress status output from internal processing.}
+\item{quiet}{Whether or not to suppress printing status output from internal processing.}
 }
 \value{
 A list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects.

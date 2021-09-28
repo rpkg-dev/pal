@@ -1622,7 +1622,7 @@ desc_url_git <- function(file = ".") {
 #' @param pkg,text Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.
 #' @param ... Further arguments passed on to [download.packages()], excluding `r forbidden_dots$roxy_tag_value %>% prose_ls(wrap = "\x60")`. Only relevant
 #'   if `pkg` is provided. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @param quiet Whether or not to suppress status output from internal processing.
+#' @param quiet `r pkgsnip::param_label("quiet")`
 #'
 #' @return A list of [`roxy_block`][roxygen2::roxy_block] objects.
 #' @family roxy

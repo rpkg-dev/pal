@@ -40,7 +40,7 @@ Suggests:
     pander (>= 0.6.3),
     pkgdown (>= 1.6.1.9000),
     pkgsearch (>= 3.0.3),
-    pkgsnip (>= 0.0.9023),
+    pkgsnip (>= 0.0.9024),
     rappdirs (>= 0.3.3),
     readr (>= 1.4.0),
     rmarkdown (>= 2.1),
