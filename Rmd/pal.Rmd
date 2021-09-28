@@ -1820,8 +1820,7 @@ desc_list <- function(file = ".") {
 
 TODO:
 
--   [ ] Use `desc::desc_get_field()`'s `squish_ws` param as soon as the next stable version containing [\#101](https://github.com/r-lib/desc/pull/101) is
-    released. And rename fn to something like `desc_get_field_safe()`?
+-   [ ] Use `desc::desc_get_field()`'s `squish_ws` param (introduced in v1.4.0). And rename fn to something like `desc_get_field_safe()`?
 
 -   [ ] Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
 
