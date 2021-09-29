@@ -58,3 +58,6 @@ pal::cli_process_expr(msg = msg,
                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
                       })}
 }
+\seealso{
+\code{\link[cli:cli_progress_step]{cli::cli_progress_step()}} which additionally shows the time elapsed within the associated step.
+}
