@@ -2345,6 +2345,25 @@ Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
 
 ### `md_xml`
 
+TODO:
+
+-   [ ] There's already the [tinkr](https://docs.ropensci.org/tinkr/) package providing [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The
+    main advantage of `md_xml()` is that `strip_yaml_header()` is more robust in YAML header detection than [blogdown's
+    `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `to_xml()`.
+
+    Thus it would be ideal to:
+
+    1.  Submit PR introducing `xfun::split_yaml_body()` based on logic in `strip_yaml_header()`; xfun is already imported in blogdown and xaringan.
+
+    2.  Submit PR replacing [`blogdown:::split_yaml_body()`](https://github.com/rstudio/blogdown/blob/main/R/utils.R#L761-L775) with `xfun::split_yaml_body()`.
+
+    3.  Submit PR replacing [`xaringan:::split_yaml_body()`](https://github.com/yihui/xaringan/blob/master/R/utils.R#L34-L43) with `xfun::split_yaml_body()`.
+
+    4.  Submit PR importing xfun and replacing [`tinkr:::split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) with
+        `xfun::split_yaml_body()`.
+
+    5.  Deprecate `md_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
+
 ```{r}
 #' Parse (R) Markdown as CommonMark XML tree
 #'
@@ -2355,6 +2374,7 @@ Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
 #' @inheritParams commonmark::markdown_xml
 #' @param md The (R) Markdown file content as a character scalar.
 #' @param hardbreaks Whether or not to treat newlines as hard line breaks.
+#' @param strip_xml_ns Whether or not to [remove the default XML namespace][xml2::xml_ns_strip] (`d1`) assigned by [commonmark::markdown_xml()].
 #'
 #' @return An [`xml_document`][xml2::xml_document-class].
 #' @family commonmark
@@ -2371,7 +2391,8 @@ md_xml <- function(md,
                    normalize = TRUE,
                    sourcepos = FALSE,
                    extensions = TRUE,
-                   eol = c("LF", "CRLF", "CR", "LFCR")) {
+                   eol = c("LF", "CRLF", "CR", "LFCR"),
+                   strip_xml_ns = TRUE) {
   
   assert_pkg("commonmark")
   assert_pkg("xml2")
@@ -2385,7 +2406,8 @@ md_xml <- function(md,
                              sourcepos = sourcepos,
                              extensions = extensions) %>%
     xml2::read_xml() %>%
-    xml2::xml_ns_strip()
+    purrr::when(strip_xml_ns ~ xml2::xml_ns_strip(.),
+                ~ .)
   
   # `xml2::xml_ns_strip()` returns its result invisibly, so we make it visible again
   (result)
