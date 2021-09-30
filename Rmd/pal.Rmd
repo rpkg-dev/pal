@@ -3354,7 +3354,7 @@ path_script <- function() {
 
 TODO!
 
-```{r}
+```{r, purl = FALSE}
 run_cli <- function(cmd,
                     ...) {
   
