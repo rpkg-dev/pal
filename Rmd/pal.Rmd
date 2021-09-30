@@ -2343,12 +2343,12 @@ strip_md_footnotes <- function(x) {
 
 Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
 
-### `md_xml`
+### `md_to_xml`
 
 TODO:
 
 -   [ ] There's already the [tinkr](https://docs.ropensci.org/tinkr/) package providing [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The
-    main advantage of `md_xml()` is that `strip_yaml_header()` is more robust in YAML header detection than [blogdown's
+    main advantage of `md_to_xml()` is that `strip_yaml_header()` is more robust in YAML header detection than [blogdown's
     `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `to_xml()`.
 
     Thus it would be ideal to:
@@ -2362,7 +2362,7 @@ TODO:
     4.  Submit PR importing xfun and replacing [`tinkr:::split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) with
         `xfun::split_yaml_body()`.
 
-    5.  Deprecate `md_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
+    5.  Deprecate `md_to_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
 
 ```{r}
 #' Parse (R) Markdown as CommonMark XML tree
@@ -2384,15 +2384,15 @@ TODO:
 #' pal::gh_text_file(path = "Rmd/pal.Rmd",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
-#'   pal::md_xml()
-md_xml <- function(md,
-                   smart_punctuation = TRUE,
-                   hardbreaks = FALSE,
-                   normalize = TRUE,
-                   sourcepos = FALSE,
-                   extensions = TRUE,
-                   eol = c("LF", "CRLF", "CR", "LFCR"),
-                   strip_xml_ns = TRUE) {
+#'   pal::md_to_xml()
+md_to_xml <- function(md,
+                      smart_punctuation = TRUE,
+                      hardbreaks = FALSE,
+                      normalize = TRUE,
+                      sourcepos = FALSE,
+                      extensions = TRUE,
+                      eol = c("LF", "CRLF", "CR", "LFCR"),
+                      strip_xml_ns = TRUE) {
   
   assert_pkg("commonmark")
   assert_pkg("xml2")
@@ -2422,7 +2422,7 @@ md_xml <- function(md,
 #' Determines the XML children node indices for every XML node at the highest level of `xml` by interpreting [Markdown heading
 #' levels](https://pandoc.org/MANUAL.html#headings) (1–6).
 #'
-#' [commonmark::markdown_xml()] (and so [md_xml()] which builds upon it) **do** parse (R) Markdown file content according to the
+#' [commonmark::markdown_xml()] (and so [md_to_xml()] which builds upon it) **do** parse (R) Markdown file content according to the
 #' **[CommonMark](https://commonmark.org/) specification**, but **do not** return any information about the document's **heading hierarchy**.
 #' `md_xml_subnode_ix()` fills this gap by giving the hierarchy structure in the form of the XML subnode indices for every node at the highest level of `xml`.
 #'
@@ -2437,7 +2437,7 @@ md_xml <- function(md,
 #' pal::gh_text_file(path = "Rmd/pal.Rmd",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
-#'   pal::md_xml() |>
+#'   pal::md_to_xml() |>
 #'   pal::md_xml_subnode_ix() |>
 #'   head()
 md_xml_subnode_ix <- function(xml) {
@@ -2455,6 +2455,50 @@ md_xml_subnode_ix <- function(xml) {
   
   seq_along(xml) %>% purrr::map(~ subnode_ix(xml_nodes = xml,
                                              i = .x))
+}
+```
+
+### `xml_to_md`
+
+```{r}
+#' Convert from CommonMark XML to (R) Markdown
+#'
+#' @inheritParams md_xml_subnode_ix
+#'
+#' @return A character scalar.
+#' @family commonmark
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "Rmd/pal.Rmd",
+#'                   owner = "salim-b",
+#'                   name = "pal") |>
+#'   pal::md_to_xml() |>
+#'   xml2::xml_contents() |>
+#'   magrittr::extract(23:25) |>
+#'   pal::xml_to_md() |>
+#'   cat()
+xml_to_md <- function(xml) {
+  
+  assert_class_any(xml,
+                   classes = c("xml_document", "xml_nodeset", "xml_node"),
+                   name = "xml")
+  assert_pkg("tinkr")
+  assert_pkg("xml2")
+  assert_pkg("xslt")
+  
+  xml %>%
+    as.character() %>%
+    paste0(collapse = "\n") %>%
+    # trim whitespace in case `xml` was already of type character
+    stringr::str_trim() %>%
+    # add CommonMark XML namespace
+    purrr::when(stringr::str_detect(string = .,
+                                    pattern = "^<document[>\\s]") ~ .,
+                ~ paste0('<document xmlns="', as.character(tinkr::md_ns()), '">', ., '</document>')) %>%
+    xml2::read_xml() %>%
+    # convert XML to CommonMark
+    xslt::xml_xslt(stylesheet = xml2::read_xml(tinkr::stylesheet()))
 }
 ```
 
@@ -3383,7 +3427,7 @@ run_cli <- function(cmd,
 #' pal::gh_text_file(path = "README.md",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
-#'   pal::md_xml() |>
+#'   pal::md_to_xml() |>
 #'   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
 assert_class_any <- function(x,
                              classes,
