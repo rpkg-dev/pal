@@ -2445,6 +2445,7 @@ md_xml_subnode_ix <- function(xml) {
   assert_class_any(xml,
                    classes = c("xml_document", "xml_nodeset", "xml_node"),
                    name = "xml")
+  assert_pkg("xml2")
   
   xml_names <- xml2::xml_name(xml)
   
@@ -2537,6 +2538,7 @@ build_readme <- function(input = "README.Rmd",
           # clean MD file
           # TODO: submit PR to pkgdown doing this?
           assert_pkg("brio")
+          assert_pkg("withr")
           tmp_file <- fs::file_temp(pattern = "index",
                                     ext = "Rmd")
           
