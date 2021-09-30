@@ -1510,7 +1510,7 @@ TODO:
 #' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
 #'   character scalar. Set `install_hint = ""` in order to disable the hint.
 #'
-#' @return `pkg` invisibly.
+#' @return `pkg`, invisibly.
 #' @family rpkgs
 #' @export
 #'
