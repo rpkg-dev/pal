@@ -2442,11 +2442,9 @@ md_xml <- function(md,
 #'   head()
 md_xml_subnode_ix <- function(xml) {
   
-  class_xml <- class(xml)
-  
-  if (!any(c("xml_document", "xml_nodeset", "xml_node") %in% class_xml)) {
-    cli::cli_abort("{.arg xml} must be of class {.val xml_document}, {.val xml_nodeset} or {.val xml_node}, but is {.val {class_xml}}")
-  }
+  assert_class_any(xml,
+                   classes = c("xml_document", "xml_nodeset", "xml_node"),
+                   name = "xml")
   
   xml_names <- xml2::xml_name(xml)
   
@@ -3363,6 +3361,45 @@ run_cli <- function(cmd,
 ```
 
 # Miscellaneous
+
+## `assert_class_any`
+
+```{r}
+#' Assert an object is member of any of the specified classes
+#'
+#' @param x The \R object to test.
+#' @param classes Class names to check for inheritance. A character vector.
+#' @param name Name of the checked object to print in error message in case the assertion fails. A character scalar.
+#'
+#' @return `x`, invisibly.
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "README.md",
+#'                   owner = "salim-b",
+#'                   name = "pal") |>
+#'   pal::md_xml() |>
+#'   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
+assert_class_any <- function(x,
+                             classes,
+                             name = "x") {
+  
+  checkmate::assert_character(classes,
+                              any.missing = FALSE)
+  
+  if (!inherits(x = x,
+                what = classes)) {
+    
+    checkmate::assert_string(name)
+    classes_actual <- class(x)
+    cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
+                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_separator = " or "),
+                          ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
+  }
+  
+  invisible(x)
+}
+```
 
 ## `capture_print`
 

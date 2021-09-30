@@ -85,6 +85,7 @@ reference:
 
 - title: "Miscellaneous"
 - contents:
+  - assert_class_any
   - capture_print
   - cols_regex
   - cli_process_expr
