@@ -2662,21 +2662,25 @@ strip_yaml_header <- function(rmd,
   
   eol %<>% pal::as_line_feed_chr()
   rmd %<>% stringr::str_split(pattern = eol) %>% magrittr::extract2(1L)
+  last_yaml_line_nr <- 0L
   
-  last_yaml_line_nr <-
-    rmd %>%
-    stringr::str_locate("^---\\s*$") %>%
-    tibble::as_tibble() %>%
-    tibble::rowid_to_column() %>%
-    dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
-    rowid[2L] %>%
-    min(rmd %>%
-          stringr::str_locate("^\\.{3}\\s*$") %>%
-          tibble::as_tibble() %>%
-          tibble::rowid_to_column() %>%
-          dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
-          rowid[1L],
-        na.rm = TRUE)
+  if (has_yaml) {
+    
+    last_yaml_line_nr <-
+      rmd %>%
+      stringr::str_locate("^---\\s*$") %>%
+      tibble::as_tibble() %>%
+      tibble::rowid_to_column() %>%
+      dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
+      rowid[2L] %>%
+      min(rmd %>%
+            stringr::str_locate("^\\.{3}\\s*$") %>%
+            tibble::as_tibble() %>%
+            tibble::rowid_to_column() %>%
+            dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
+            rowid[1L],
+          na.rm = TRUE)
+  }
   
   rmd[(last_yaml_line_nr + 1L):length(rmd)]
 }
