@@ -3272,30 +3272,33 @@ check_cli <- function(cmd,
   
   if (force_which || !xfun::is_unix()) {
     
-    Sys.which(names = cmd) %>%
+    result <-
+      Sys.which(names = cmd) %>%
       as.character() %>%
       purrr::when(. == "" ~ character(0L),
                   ~ .) %>%
       purrr::when(get_cmd_path ~ fs::path(.),
                   length(.) == 0L ~ FALSE,
                   ~ TRUE)
-    
   } else {
     
     # define "defused" warning/error handler
     defuse <- function(e) if (get_cmd_path) character(0L) else FALSE
     
-    rlang::with_handlers(system2(command = "command",
-                                 args = c("-v",
-                                          cmd),
-                                 stdout = get_cmd_path,
-                                 stderr = get_cmd_path),
-                         warning = defuse,
-                         error = defuse) %>%
+    result <-
+      rlang::with_handlers(system2(command = "command",
+                                   args = c("-v",
+                                            cmd),
+                                   stdout = get_cmd_path,
+                                   stderr = get_cmd_path),
+                           warning = defuse,
+                           error = defuse) %>%
       purrr::when(get_cmd_path ~ fs::path(.),
                   isFALSE(.) ~ .,
                   ~ TRUE)
   }
+  
+  result
 }
 ```
 
