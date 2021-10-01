@@ -42,7 +42,7 @@ hexSticker::sticker(subplot = "data-raw/logo/help_yellow.png",
 
 Finally, `data-raw/logo/hexsticker.png` was post-processed by the [G'MIC](https://gmic.eu/) filter *Felt Pen* in GIMP to create
 `data-raw/logo/hexsticker_gmic_felt_pen.png` which, however, was discarded. Instead, the final package logo `data-raw/logo/hexsticker_smooth.png` is just
-smoothed using the G'MIC filter *Smooth [Diffusion]* in GIMP.
+smoothed using the G'MIC filter *Smooth \[Diffusion\]* in GIMP.
 
 ## Avoid `R CMD check` notes about undefined global objects used in magrittr pipes
 
@@ -168,7 +168,7 @@ safe_seq_len <- function(n) {
 
 Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
 Thus it is possible to feed `NA_character_` to the two functions below. A new param `typed.missing` has been [introduced in checkmate
-devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon as a new stable release is published!
+devel](https://github.com/mllg/checkmate/pull/199) -> update fns below as soon as a new stable release is published!
 
 ```{r}
 #' Maximum (safe)
@@ -1245,7 +1245,7 @@ bit safer.
 -   Code to suggest proper dots params largely borrowed from
     [`rlang:::stop_arg_match()`](https://github.com/r-lib/rlang/blob/2a269c44aaa3985ce742e0e91a48b2d3c4664f3c/R/arg.R#L79-L110) (MIT-licensed).
 
--   Function has been proposed upstream in [PR \#35](https://github.com/r-lib/ellipsis/pull/35).
+-   Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35).
 
 TODO:
 
@@ -1767,7 +1767,7 @@ TODO:
 
 -   [ ] Figure out why the example below throws the error
 
-    ``` {.error}
+    ``` error
     No root directory found in .../r/pkgs/pal.Rcheck or its parent directories.
     Root criterion: contains a file "DESCRIPTION" with contents matching "^Package: "
     ```
@@ -1824,7 +1824,7 @@ TODO:
 
 -   [ ] Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
 
-    ``` {.r}
+    ``` r
     pal::desc_value("Suggestss", default = cli::cli_abort("No {.field {key}} field set in {.file DESCRIPTION}!")))
     ```
 
@@ -2145,7 +2145,7 @@ roxy_tag_value <- function(blocks,
 
 TODO:
 
--   [ ] Mention usefulness of this fn for roxygen2 doc as soon as [issue \#1112](https://github.com/r-lib/roxygen2/issues/1112) is resolved.
+-   [ ] Mention usefulness of this fn for roxygen2 doc as soon as [issue #1112](https://github.com/r-lib/roxygen2/issues/1112) is resolved.
 
 ```{r}
 #' Convert a character vector to a Markdown list
@@ -2917,7 +2917,7 @@ NOTES:
 
 -   Use the [GitHub GraphQL API Explorer](https://docs.github.com/en/graphql/overview/explorer) to test raw queries like
 
-    ``` {.graphql}
+    ``` graphql
     {
       repository(name: "pal", owner: "salim-b") {
         object(expression: "master:tests") {
@@ -3224,7 +3224,7 @@ assert_mime_type <- function(response,
 
 A shorter way to define a very similar function would be:
 
-``` {.r}
+``` r
 is_http_success <- purrr::possibly(~ !httr::http_error(.x),
                                    otherwise = FALSE)
 ```
@@ -3487,14 +3487,14 @@ capture_print <- function(x,
 
 TODO:
 
--   [ ] Remove cosmetic workaround-whitespaces in `@param ...` doc as soon as [roxygen2 issue \#1112](https://github.com/r-lib/roxygen2/issues/1112) is fixed.
+-   [ ] Remove cosmetic workaround-whitespaces in `@param ...` doc as soon as [roxygen2 issue #1112](https://github.com/r-lib/roxygen2/issues/1112) is fixed.
 
 **Remarks:**
 
 -   The "real" data in the examples stems from
     [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
 
--   Function has been proposed upstream in [PR \#1112](https://github.com/tidyverse/readr/pull/1112) but was
+-   Function has been proposed upstream in [PR #1112](https://github.com/tidyverse/readr/pull/1112) but was
     [rejected](https://github.com/tidyverse/readr/pull/1112#issuecomment-691294787).
 
 ```{r}
