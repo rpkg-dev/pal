@@ -2386,7 +2386,7 @@ TODO:
 #'                   name = "pal") |>
 #'   pal::md_to_xml()
 md_to_xml <- function(md,
-                      smart_punctuation = TRUE,
+                      smart_punctuation = FALSE,
                       hardbreaks = FALSE,
                       normalize = TRUE,
                       sourcepos = FALSE,
