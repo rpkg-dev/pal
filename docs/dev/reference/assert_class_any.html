@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if an HTTP request is successful — is_http_success • pal</title>
+<title>Assert an object is member of any of the specified classes — assert_class_any • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Test if an HTTP request is successful — is_http_success" />
-<meta name="description" content="Convenience wrapper around !httr::http_error() that returns TRUE if the specified url could be resolved and a HEAD request could be successfully completed, or FALSE in any other case.">
-<meta property="og:description" content="Convenience wrapper around !httr::http_error() that returns TRUE if the specified url could be resolved and a HEAD request could be successfully completed, or FALSE in any other case." />
+<meta property="og:title" content="Assert an object is member of any of the specified classes — assert_class_any" />
+<meta name="description" content="Assert an object is member of any of the specified classes">
+<meta property="og:description" content="Assert an object is member of any of the specified classes" />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,63 +135,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if an HTTP request is successful</h1>
+    <h1>Assert an object is member of any of the specified classes</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>is_http_success.Rd</code></div>
+    <div class="hidden name"><code>assert_class_any.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convenience wrapper around <code><a href='https://httr.r-lib.org/reference/http_error.html'>!httr::http_error()</a></code> that returns</p><ul>
-<li><p><code>TRUE</code> if the specified <code>url</code> could be resolved <em>and</em> a <a href='https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods'><code>HEAD</code></a> request could
-be <a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes'>successfully completed</a>, or</p></li>
-<li><p><code>FALSE</code> in any other case.</p></li>
-</ul>
-
+    <p>Assert an object is member of any of the specified classes</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_http_success</span><span class='op'>(</span><span class='va'>url</span>, retries <span class='op'>=</span> <span class='fl'>0L</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>assert_class_any</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>classes</span>, name <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>url</th>
-      <td><p>The HTTP protocol address. The scheme is optional, so both <code>"google.com"</code> and <code>"https://google.com"</code> will work. A character scalar.</p></td>
+      <th>x</th>
+      <td><p>The <span style="R">R</span> object to test.</p></td>
     </tr>
     <tr>
-      <th>retries</th>
-      <td><p>The maximum number of retries of the <code>HEAD</code> request in case of an HTTP error. An integer scalar &gt;= <code>0</code>. The retries are performed using
-exponential backoff and jitter, see <code><a href='https://httr.r-lib.org/reference/RETRY.html'>httr::RETRY()</a></code> for details.</p></td>
+      <th>classes</th>
+      <td><p>Class names to check for inheritance. A character vector.</p></td>
     </tr>
     <tr>
-      <th>quiet</th>
-      <td><p>Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant
-if <code>retries &gt; 0</code>.</p></td>
+      <th>name</th>
+      <td><p>Name of the checked object to print in error message in case the assertion fails. A character scalar.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A logical scalar.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function is similar to <code><a href='https://rdrr.io/pkg/RCurl/man/url.exists.html'>RCurl::url.exists()</a></code>, i.e. it only retrieves the header, no body, but is based on <a href='https://httr.r-lib.org/reference/httr-package.html'>httr</a> which in turn is
-based on <a href='https://jeroen.cran.dev/curl/'>curl</a>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other HTTP functions:
-<code><a href='assert_mime_type.html'>assert_mime_type</a>()</code></p></div>
+    <p><code>x</code>, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_http_success</span><span class='op'>(</span><span class='st'>"goo.gl"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_http_success</span><span class='op'>(</span><span class='st'>"https://google.com/"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_http_success</span><span class='op'>(</span><span class='st'>"https://google.not/"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_http_success</span><span class='op'>(</span><span class='st'>"https://google.not/"</span>,
-                     retries <span class='op'>=</span> <span class='fl'>2</span>,
-                     quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Error in curl::curl_fetch_memory(url, handle = handle): Could not resolve host: google.not</span>
-#&gt; <span class='message'>Request failed [ERROR]. Retrying in 1 seconds...</span></div><div class='output co'>#&gt; <span class='message'>Error in curl::curl_fetch_memory(url, handle = handle): Could not resolve host: google.not</span>
-#&gt; <span class='message'>Request failed [ERROR]. Retrying in 1 seconds...</span></div><div class='output co'>#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.md"</span>,
+                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
+                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> |&gt;
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='md_to_xml.html'>md_to_xml</a></span><span class='op'>(</span><span class='op'>)</span> |&gt;
+  <span class='fu'>assert_class_any</span><span class='op'>(</span>classes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"xml_document"</span>, <span class='st'>"xml_nodeset"</span>, <span class='st'>"xml_node"</span><span class='op'>)</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

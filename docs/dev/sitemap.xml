@@ -22,6 +22,9 @@
     <loc>https://rpkg.dev/pal/reference/as_string.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/assert_class_any.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/assert_mime_type.html</loc>
   </url>
   <url>
@@ -109,7 +112,7 @@
     <loc>https://rpkg.dev/pal/reference/ls_pkg.html</loc>
   </url>
   <url>
-    <loc>https://rpkg.dev/pal/reference/md_xml.html</loc>
+    <loc>https://rpkg.dev/pal/reference/md_to_xml.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/md_xml_subnode_ix.html</loc>
@@ -179,5 +182,8 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/wrap_chr.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/xml_to_md.html</loc>
   </url>
 </urlset>

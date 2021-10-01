@@ -97,7 +97,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9070</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9071</span>
       </span>
     </div>
 
@@ -159,9 +159,9 @@
       <tr>
         
         <td>
-          <p><code><a href="round_to.html">round_to()</a></code> </p>
+          <p><code><a href="safe_seq_len.html">safe_seq_len()</a></code> </p>
         </td>
-        <td><p>Round to any number</p></td>
+        <td><p>Generate an integer sequence of specific length (safe)</p></td>
       </tr><tr>
         
         <td>
@@ -177,9 +177,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="safe_seq_len.html">safe_seq_len()</a></code> </p>
+          <p><code><a href="round_to.html">round_to()</a></code> </p>
         </td>
-        <td><p>Generate an integer sequence of specific length (safe)</p></td>
+        <td><p>Round to any number</p></td>
       </tr><tr>
         
         <td>
@@ -258,15 +258,15 @@
       <tr>
         
         <td>
-          <p><code><a href="as_chr.html">as_chr()</a></code> </p>
-        </td>
-        <td><p>Convert to a character vector</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="as_comment_string.html">as_comment_string()</a></code> </p>
         </td>
         <td><p>Assemble an (R) comment string of the desired line width</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_chr.html">as_chr()</a></code> </p>
+        </td>
+        <td><p>Convert to a character vector</p></td>
       </tr><tr>
         
         <td>
@@ -282,15 +282,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="cat_lines.html">cat_lines()</a></code> </p>
+          <p><code><a href="sentenceify.html">sentenceify()</a></code> </p>
         </td>
-        <td><p>Print <code>x</code> as newline-separated character vector using <code>cat()</code>.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dsv_colnames.html">dsv_colnames()</a></code> </p>
-        </td>
-        <td><p>Get column names of a delimiter-separated string</p></td>
+        <td><p>Convert to sentence case with trailing punctuation mark</p></td>
       </tr><tr>
         
         <td>
@@ -306,9 +300,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="prettify_nr.html">prettify_nr()</a></code> </p>
+          <p><code><a href="dsv_colnames.html">dsv_colnames()</a></code> </p>
         </td>
-        <td><p>Prettify a numeric vector</p></td>
+        <td><p>Get column names of a delimiter-separated string</p></td>
       </tr><tr>
         
         <td>
@@ -318,9 +312,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="sentenceify.html">sentenceify()</a></code> </p>
+          <p><code><a href="prettify_nr.html">prettify_nr()</a></code> </p>
         </td>
-        <td><p>Convert to sentence case with trailing punctuation mark</p></td>
+        <td><p>Prettify a numeric vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cat_lines.html">cat_lines()</a></code> </p>
+        </td>
+        <td><p>Print <code>x</code> as newline-separated character vector using <code>cat()</code>.</p></td>
       </tr><tr>
         
         <td>
@@ -362,9 +362,21 @@
       <tr>
         
         <td>
+          <p><code><a href="ls_pkg.html">ls_pkg()</a></code> </p>
+        </td>
+        <td><p>List a subset of all installed packages</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="assert_pkg.html">assert_pkg()</a></code> </p>
         </td>
         <td><p>Assert a package is installed</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_pkg_installed.html">is_pkg_installed()</a></code> </p>
+        </td>
+        <td><p>Test if packages are installed</p></td>
       </tr><tr>
         
         <td>
@@ -380,27 +392,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="is_pkg_installed.html">is_pkg_installed()</a></code> </p>
-        </td>
-        <td><p>Test if packages are installed</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="is_pkgdown_dir.html">is_pkgdown_dir()</a></code> </p>
         </td>
         <td><p>Test if pkgdown is set up for an R package directory</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ls_pkg.html">ls_pkg()</a></code> </p>
-        </td>
-        <td><p>List a subset of all installed packages</p></td>
       </tr>
     </tbody><tbody>
       
       <tr>
         <th colspan="2">
-          <h3 id="section-package-description-" class="hasAnchor"><a href="#section-package-description-" class="anchor"></a>Package `DESCRIPTION`</h3>
+          <h3 id="section-package-description" class="hasAnchor"><a href="#section-package-description" class="anchor"></a>Package DESCRIPTION</h3>
           <p class="section-desc"><p>Extending the <a href="https://github.com/r-lib/desc#readme" class="external-link">desc</a> package.</p></p>
         </th>
       </tr>
@@ -417,15 +417,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="desc_url_git.html">desc_url_git()</a></code> </p>
-        </td>
-        <td><p>Get the Git repository URL from a <code>DESCRIPTION</code> file</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="desc_value.html">desc_value()</a></code> </p>
         </td>
         <td><p>Get the value from a <code>DESCRIPTION</code> file field, cleaned up and with fallback</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="desc_url_git.html">desc_url_git()</a></code> </p>
+        </td>
+        <td><p>Get the Git repository URL from a <code>DESCRIPTION</code> file</p></td>
       </tr>
     </tbody><tbody>
       
@@ -510,7 +510,7 @@
       <tr>
         
         <td>
-          <p><code><a href="md_xml.html">md_xml()</a></code> </p>
+          <p><code><a href="md_to_xml.html">md_to_xml()</a></code> </p>
         </td>
         <td><p>Parse (R) Markdown as CommonMark XML tree</p></td>
       </tr><tr>
@@ -519,6 +519,12 @@
           <p><code><a href="md_xml_subnode_ix.html">md_xml_subnode_ix()</a></code> </p>
         </td>
         <td><p>Determine CommonMark XML subnode indices</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="xml_to_md.html">xml_to_md()</a></code> </p>
+        </td>
+        <td><p>Convert from CommonMark XML to (R) Markdown</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -574,7 +580,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-github" class="hasAnchor"><a href="#section-github" class="anchor"></a>GitHub</h2>
-          <p class="section-desc"><p>Extending the <a href="https://gh.r-lib.org/" class="external-link">gh</a> package, leveraging <a href="https://docs.github.com/en/graphql" class="external-link">GitHub’s v4 GraphQL API</a>.</p></p>
+          <p class="section-desc"><p>Extending the <a href="https://gh.r-lib.org/" class="external-link">gh</a> package, leveraging <a href="https://docs.github.com/en/graphql" class="external-link">GitHub’s GraphQL API</a>.</p></p>
         </th>
       </tr>
       
@@ -583,12 +589,6 @@
       
       
       <tr>
-        
-        <td>
-          <p><code><a href="gh_dir_ls.html">gh_dir_ls()</a></code> </p>
-        </td>
-        <td><p>List files and directories in a GitHub repository</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="gh_text_file.html">gh_text_file()</a></code> </p>
@@ -600,6 +600,12 @@
           <p><code><a href="gh_text_files.html">gh_text_files()</a></code> </p>
         </td>
         <td><p>Read in text files from a GitHub repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_dir_ls.html">gh_dir_ls()</a></code> </p>
+        </td>
+        <td><p>List files and directories in a GitHub repository</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -666,6 +672,12 @@
       <tr>
         
         <td>
+          <p><code><a href="assert_class_any.html">assert_class_any()</a></code> </p>
+        </td>
+        <td><p>Assert an object is member of any of the specified classes</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="capture_print.html">capture_print()</a></code> </p>
         </td>
         <td><p>Capture printed console output as string</p></td>
@@ -681,12 +693,6 @@
           <p><code><a href="cli_process_expr.html">cli_process_expr()</a></code> </p>
         </td>
         <td><p>Evaluate an expression with <a href='https://cli.r-lib.org/'>cli</a> process indication</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_http_success.html">is_http_success()</a></code> </p>
-        </td>
-        <td><p>Test if an HTTP request is successful</p></td>
       </tr><tr>
         
         <td>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Strip YAML header from R Markdown — strip_yaml_header • pal</title>
+<title>Parse (R) Markdown as CommonMark XML tree — md_to_xml • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Strip YAML header from R Markdown — strip_yaml_header" />
-<meta name="description" content="Extracts the body from R Markdown file content, stripping a possible YAML metadata block at the beginning.">
-<meta property="og:description" content="Extracts the body from R Markdown file content, stripping a possible YAML metadata block at the beginning." />
+<meta property="og:title" content="Parse (R) Markdown as CommonMark XML tree — md_to_xml" />
+<meta name="description" content="Parses (R) Markdown file content according to the CommonMark specification and returns it as an XML parse tree.">
+<meta property="og:description" content="Parses (R) Markdown file content according to the CommonMark specification and returns it as an XML parse tree." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,23 +135,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Strip YAML header from R Markdown</h1>
+    <h1>Parse (R) Markdown as CommonMark XML tree</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>strip_yaml_header.Rd</code></div>
+    <div class="hidden name"><code>md_to_xml.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extracts the body from R Markdown file content, stripping a possible <a href='https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata'>YAML metadata block</a> at the beginning.</p>
+    <p>Parses (R) Markdown file content according to the <a href='https://commonmark.org/'>CommonMark</a> specification and returns it as an XML parse tree.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='va'>rmd</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>md_to_xml</span><span class='op'>(</span>
+  <span class='va'>md</span>,
+  smart_punctuation <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hardbreaks <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  normalize <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  sourcepos <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  extensions <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span>,
+  strip_xml_ns <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>rmd</th>
-      <td><p>The R Markdown file content as a character scalar.</p></td>
+      <th>md</th>
+      <td><p>The (R) Markdown file content as a character scalar.</p></td>
+    </tr>
+    <tr>
+      <th>smart_punctuation</th>
+      <td><p>Whether to enable <a href='https://pandoc.org/MANUAL.html#extension-smart'>Pandoc's <code>smart</code> extension</a> which converts straight quotes to
+curly quotes, <code>---</code> to an em-dash (—), <code>--</code> to an en-dash (–), and <code>...</code> to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
+as <code>Mr.</code>.</p></td>
+    </tr>
+    <tr>
+      <th>hardbreaks</th>
+      <td><p>Whether or not to treat newlines as hard line breaks.</p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>Consolidate adjacent text nodes.</p></td>
+    </tr>
+    <tr>
+      <th>sourcepos</th>
+      <td><p>Include source position attribute in output.</p></td>
+    </tr>
+    <tr>
+      <th>extensions</th>
+      <td><p>Enables Github extensions. Can be <code>TRUE</code> (all) <code>FALSE</code> (none) or a character
+vector with a subset of available <a href='https://rdrr.io/pkg/commonmark/man/extensions.html'>extensions</a>.</p></td>
     </tr>
     <tr>
       <th>eol</th>
@@ -162,29 +194,49 @@
 <li><p><code>"LFCR"</code> for the line feed + carriage return (LF+CR) character sequence (<code>"\n\r"</code>). The standard on RISC OS and some other exotic systems.</p></li>
 </ul></td>
     </tr>
+    <tr>
+      <th>strip_xml_ns</th>
+      <td><p>Whether or not to <a href='http://xml2.r-lib.org/reference/xml_ns_strip.html'>remove the default XML namespace</a> (<code>d1</code>) assigned by <code><a href='https://rdrr.io/pkg/commonmark/man/commonmark.html'>commonmark::markdown_xml()</a></code>.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The body of the R Markdown file as a character vector of lines.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Note that for the <a href='https://rmarkdown.rstudio.com/'>R Markdown file format</a>, the <a href='https://pandoc.org/MANUAL.html#extension-yaml_metadata_block'>YAML metadata block</a> must occur at the beginning of the document (and there can be only one). Additional
-whitespace characters (incl. newlines) before the YAML metadata block are allowed.</p>
+    <p>An <code>xml_document</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other R Markdown and knitr functions:
-<code><a href='build_readme.html'>build_readme</a>()</code>,
-<code><a href='knitr_table_format.html'>knitr_table_format</a>()</code></p></div>
+    <div class='dont-index'><p>Other CommonMark parsing functions:
+<code><a href='md_xml_subnode_ix.html'>md_xml_subnode_ix</a>()</code>,
+<code><a href='xml_to_md.html'>xml_to_md</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
-
-<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.Rmd"</span>,
+    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"Rmd/pal.Rmd"</span>,
                   owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
-                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> <span class='op'>%T&gt;%</span>
-  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "---\noutput: pal::gitlab_document\n---\n\n# `r paste0(pal::desc_value(\"Package\"), \": \", pal::desc_value(\"Title\"))` &lt;a href=\"https://rpkg.dev/pal/\"&gt;&lt;img src=\"man/figures/logo.png\" alt=\"Package Logo\" class=\"pkg-logo\" align=\"right\" height=\"180\"/&gt;&lt;/a&gt;\n\n`r pal::desc_value(\"Description\")`[^1]\n\nThis is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.\n\n[^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report\nit](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the avoidance\nof unnecessary duplication.\n\n```{r, pkgdown, eval = !isTRUE(getOption(\"pal.build_readme.is_pkgdown\")), results = \"asis\", echo = FALSE}\npkgsnip::md_snip(name = \"pkgdown_notice\") %&gt;%\n  paste0(\"## Documentation\\n\\n\", .) %&gt;%\n  pal::cat_lines()\n```\n\n## Installation\n\n```{r, install-snippet-dev, child = pkgsnip::snip_path(\"installation-notice_dev-version_gitlab.Rmd\")}\n```\n\n## Development\n\n### R Markdown format\n\n```{r, rmd-pkg-snippet, child = pkgsnip::snip_path(\"rmd-package-notice.Rmd\")}\n```\n\n### Coding style\n\n```{r, coding-style-snippet, child = pkgsnip::snip_path(\"coding-style-notice.Rmd\")}\n```\n\n## See also\n\n-   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.\n"</div></pre>
+                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> |&gt;
+  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>md_to_xml</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {xml_document}
+#&gt; &lt;document&gt;
+#&gt;  [1] &lt;heading level="1"&gt;\n  &lt;text xml:space="preserve"&gt;INTERNAL&lt;/text&gt;\n&lt;/hea ...
+#&gt;  [2] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Logo&lt;/text&gt;\n&lt;/heading&gt;
+#&gt;  [3] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;The package logo is based on t ...
+#&gt;  [4] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;This was fed to &lt;/text&gt;\n  &lt;li ...
+#&gt;  [5] &lt;code_block info="{r, purl = FALSE}" xml:space="preserve"&gt;hexSticker::st ...
+#&gt;  [6] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Finally, &lt;/text&gt;\n  &lt;code xml: ...
+#&gt;  [7] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Avoid &lt;/text&gt;\n  &lt;code ...
+#&gt;  [8] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Cf. &lt;/text&gt;\n  &lt;link destinati ...
+#&gt;  [9] &lt;code_block info="{r}" xml:space="preserve"&gt;utils::globalVariables(names ...
+#&gt; [10] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Constants&lt;/text&gt;\n&lt;/he ...
+#&gt; [11] &lt;code_block info="{r}" xml:space="preserve"&gt;# forbidden dots arguments\n ...
+#&gt; [12] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Functions&lt;/text&gt;\n&lt;/he ...
+#&gt; [13] &lt;heading level="3"&gt;\n  &lt;code xml:space="preserve"&gt;normalize_tree_path&lt;/c ...
+#&gt; [14] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Normalize a tree path. Useful  ...
+#&gt; [15] &lt;code_block info="{r}" xml:space="preserve"&gt;normalize_tree_path &amp;lt;- fu ...
+#&gt; [16] &lt;heading level="3"&gt;\n  &lt;text xml:space="preserve"&gt;CommonMark parsing hel ...
+#&gt; [17] &lt;heading level="4"&gt;\n  &lt;code xml:space="preserve"&gt;is_heading_node&lt;/code&gt; ...
+#&gt; [18] &lt;code_block info="{r}" xml:space="preserve"&gt;is_heading_node &amp;lt;- functi ...
+#&gt; [19] &lt;heading level="4"&gt;\n  &lt;code xml:space="preserve"&gt;node_heading_lvl&lt;/code ...
+#&gt; [20] &lt;code_block info="{r}" xml:space="preserve"&gt;node_heading_lvl &amp;lt;- funct ...
+#&gt; ...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

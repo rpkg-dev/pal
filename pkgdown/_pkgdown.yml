@@ -1,94 +1,121 @@
 development:
   mode: auto
-
 template:
   opengraph:
     twitter:
       card: summary
-      creator: "@2BSalim"
+      creator: '@2BSalim'
   params:
     analytics:
       goatcounter:
-        endpoint: "https://rpkg-dev.goatcounter.com/count"
+        endpoint: https://rpkg-dev.goatcounter.com/count
     bootswatch: yeti
     docsearch:
       api_key: a9b69dd0f0ef2e8ca0bb654d19a20424
       index_name: pal
-    mathjax: false
-    selfhost_assets: true
-
+    mathjax: no
+    selfhost_assets: yes
 url: https://rpkg.dev/pal
-
 reference:
-- title: "Statistical computing / numbers"
+- title: Statistical computing / numbers
 - contents:
-  - has_concept("stat")
-
-- title: "Data frames / Tibbles"
+  - safe_seq_len
+  - safe_max
+  - safe_min
+  - round_to
+  - stat_mode
+- title: Data frames / Tibbles
 - contents:
-  - has_concept("tibble")
-
-- title: "Lists"
+  - is_equal_df
+  - reduce_df_list
+- title: Lists
 - contents:
-  - has_concept("list")
-
-- title: "Strings"
+  - as_flat_list
+  - list_drop
+  - list_keep
+- title: Strings
 - contents:
-  - has_concept("string")
-
-- title: "Dots"
-  desc: "Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another bit safer."
+  - as_comment_string
+  - as_chr
+  - as_line_feed_chr
+  - as_string
+  - sentenceify
+  - escape_lf
+  - fuse_regex
+  - dsv_colnames
+  - prose_ls
+  - prettify_nr
+  - cat_lines
+  - wrap_chr
+- title: Dots
+  desc: |-
+    Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another
+    bit safer.
+- contents: check_dots_named
+- title: R packages
 - contents:
-  - has_concept("dots")
-
-- title: "R packages"
+  - ls_pkg
+  - assert_pkg
+  - is_pkg_installed
+  - is_pkg_cran
+  - is_pkg_dir
+  - is_pkgdown_dir
+- subtitle: Package DESCRIPTION
+  desc: Extending the [desc](https://github.com/r-lib/desc#readme) package.
 - contents:
-  - has_concept("rpkgs")
-- subtitle: "Package `DESCRIPTION`"
-  desc: "Extending the [desc](https://github.com/r-lib/desc#readme) package."
+  - desc_list
+  - desc_value
+  - desc_url_git
+- subtitle: Package documentation
+  desc: Extending the [roxygen2](https://roxygen2.r-lib.org/) package.
 - contents:
-  - has_concept("desc")
-- subtitle: "Package documentation"
-  desc: "Extending the [roxygen2](https://roxygen2.r-lib.org/) package."
+  - roxy_blocks
+  - roxy_obj
+  - roxy_tag_value
+- title: (Pandoc) Markdown
 - contents:
-  - has_concept("roxy")
-
-- title: "(Pandoc) Markdown"
+  - as_md_list
+  - pipe_table
+  - strip_md
+  - strip_md_footnotes
+- subtitle: CommonMark parsing
+  desc: Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
 - contents:
-  - has_concept("md")
-- subtitle: "CommonMark parsing"
-  desc: "Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package."
+  - md_to_xml
+  - md_xml_subnode_ix
+  - xml_to_md
+- title: R Markdown / knitr
 - contents:
-  - has_concept("commonmark")
-
-- title: "R Markdown / knitr"
+  - build_readme
+  - knitr_table_format
+  - strip_yaml_header
+- subtitle: Output formats
+  desc: |-
+    [Custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output
+    formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
+- contents: gitlab_document
+- title: GitHub
+  desc: Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's GraphQL
+    API](https://docs.github.com/en/graphql).
 - contents:
-  - has_concept("rmd_knitr")
-- subtitle: "Output formats"
-  desc: "[Custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output formats](https://bookdown.org/yihui/rmarkdown/output-formats.html)."
+  - gh_text_file
+  - gh_text_files
+  - gh_dir_ls
+- title: HTTP
+  desc: Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/)
+    package.
 - contents:
-  - has_concept("rmd_format")
-
-- title: "GitHub"
-  desc: "Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's v4 GraphQL API](https://docs.github.com/en/graphql)."
+  - assert_mime_type
+  - is_http_success
+- title: System interaction
 - contents:
-  - has_concept("gh")
-
-- title: "HTTP"
-  desc: "Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/) package."
-- contents:
-  - has_concept("http")
-
-- title: "System interaction"
-- contents:
-  - has_concept("sys")
-
-- title: "Miscellaneous"
+  - check_cli
+  - path_script
+- title: Miscellaneous
 - contents:
   - assert_class_any
   - capture_print
   - cols_regex
   - cli_process_expr
-  - is_http_success
   - order_by
   - prose_ls_fn_param

@@ -1293,7 +1293,7 @@ ls_pkg <- function(pkg,
 #' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
 #'   character scalar. Set `install_hint = ""` in order to disable the hint.
 #'
-#' @return `pkg` invisibly.
+#' @return `pkg`, invisibly.
 #' @family rpkgs
 #' @export
 #'
@@ -2019,6 +2019,7 @@ strip_md_footnotes <- function(x) {
 #' @inheritParams commonmark::markdown_xml
 #' @param md The (R) Markdown file content as a character scalar.
 #' @param hardbreaks Whether or not to treat newlines as hard line breaks.
+#' @param strip_xml_ns Whether or not to [remove the default XML namespace][xml2::xml_ns_strip] (`d1`) assigned by [commonmark::markdown_xml()].
 #'
 #' @return An [`xml_document`][xml2::xml_document-class].
 #' @family commonmark
@@ -2028,14 +2029,15 @@ strip_md_footnotes <- function(x) {
 #' pal::gh_text_file(path = "Rmd/pal.Rmd",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
-#'   pal::md_xml()
-md_xml <- function(md,
-                   smart_punctuation = TRUE,
-                   hardbreaks = FALSE,
-                   normalize = TRUE,
-                   sourcepos = FALSE,
-                   extensions = TRUE,
-                   eol = c("LF", "CRLF", "CR", "LFCR")) {
+#'   pal::md_to_xml()
+md_to_xml <- function(md,
+                      smart_punctuation = FALSE,
+                      hardbreaks = FALSE,
+                      normalize = TRUE,
+                      sourcepos = FALSE,
+                      extensions = TRUE,
+                      eol = c("LF", "CRLF", "CR", "LFCR"),
+                      strip_xml_ns = TRUE) {
   
   assert_pkg("commonmark")
   assert_pkg("xml2")
@@ -2049,7 +2051,8 @@ md_xml <- function(md,
                              sourcepos = sourcepos,
                              extensions = extensions) %>%
     xml2::read_xml() %>%
-    xml2::xml_ns_strip()
+    purrr::when(strip_xml_ns ~ xml2::xml_ns_strip(.),
+                ~ .)
   
   # `xml2::xml_ns_strip()` returns its result invisibly, so we make it visible again
   (result)
@@ -2060,7 +2063,7 @@ md_xml <- function(md,
 #' Determines the XML children node indices for every XML node at the highest level of `xml` by interpreting [Markdown heading
 #' levels](https://pandoc.org/MANUAL.html#headings) (1–6).
 #'
-#' [commonmark::markdown_xml()] (and so [md_xml()] which builds upon it) **do** parse (R) Markdown file content according to the
+#' [commonmark::markdown_xml()] (and so [md_to_xml()] which builds upon it) **do** parse (R) Markdown file content according to the
 #' **[CommonMark](https://commonmark.org/) specification**, but **do not** return any information about the document's **heading hierarchy**.
 #' `md_xml_subnode_ix()` fills this gap by giving the hierarchy structure in the form of the XML subnode indices for every node at the highest level of `xml`.
 #'
@@ -2075,16 +2078,15 @@ md_xml <- function(md,
 #' pal::gh_text_file(path = "Rmd/pal.Rmd",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
-#'   pal::md_xml() |>
+#'   pal::md_to_xml() |>
 #'   pal::md_xml_subnode_ix() |>
 #'   head()
 md_xml_subnode_ix <- function(xml) {
   
-  class_xml <- class(xml)
-  
-  if (!any(c("xml_document", "xml_nodeset", "xml_node") %in% class_xml)) {
-    cli::cli_abort("{.arg xml} must be of class {.val xml_document}, {.val xml_nodeset} or {.val xml_node}, but is {.val {class_xml}}")
-  }
+  assert_class_any(xml,
+                   classes = c("xml_document", "xml_nodeset", "xml_node"),
+                   name = "xml")
+  assert_pkg("xml2")
   
   xml_names <- xml2::xml_name(xml)
   
@@ -2094,6 +2096,46 @@ md_xml_subnode_ix <- function(xml) {
   
   seq_along(xml) %>% purrr::map(~ subnode_ix(xml_nodes = xml,
                                              i = .x))
+}
+
+#' Convert from CommonMark XML to (R) Markdown
+#'
+#' @inheritParams md_xml_subnode_ix
+#'
+#' @return A character scalar.
+#' @family commonmark
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "Rmd/pal.Rmd",
+#'                   owner = "salim-b",
+#'                   name = "pal") |>
+#'   pal::md_to_xml() |>
+#'   xml2::xml_contents() |>
+#'   magrittr::extract(23:25) |>
+#'   pal::xml_to_md() |>
+#'   cat()
+xml_to_md <- function(xml) {
+  
+  assert_class_any(xml,
+                   classes = c("xml_document", "xml_nodeset", "xml_node"),
+                   name = "xml")
+  assert_pkg("tinkr")
+  assert_pkg("xml2")
+  assert_pkg("xslt")
+  
+  xml %>%
+    as.character() %>%
+    paste0(collapse = "\n") %>%
+    # trim whitespace in case `xml` was already of type character
+    stringr::str_trim() %>%
+    # add CommonMark XML namespace
+    purrr::when(stringr::str_detect(string = .,
+                                    pattern = "^<document[>\\s]") ~ .,
+                ~ paste0('<document xmlns="', as.character(tinkr::md_ns()), '">', ., '</document>')) %>%
+    xml2::read_xml() %>%
+    # convert XML to CommonMark
+    xslt::xml_xslt(stylesheet = xml2::read_xml(tinkr::stylesheet()))
 }
 
 #' Build `README.Rmd`
@@ -2171,6 +2213,7 @@ build_readme <- function(input = "README.Rmd",
           # clean MD file
           # TODO: submit PR to pkgdown doing this?
           assert_pkg("brio")
+          assert_pkg("withr")
           tmp_file <- fs::file_temp(pattern = "index",
                                     ext = "Rmd")
           
@@ -2286,21 +2329,25 @@ strip_yaml_header <- function(rmd,
   
   eol %<>% pal::as_line_feed_chr()
   rmd %<>% stringr::str_split(pattern = eol) %>% magrittr::extract2(1L)
+  last_yaml_line_nr <- 0L
   
-  last_yaml_line_nr <-
-    rmd %>%
-    stringr::str_locate("^---\\s*$") %>%
-    tibble::as_tibble() %>%
-    tibble::rowid_to_column() %>%
-    dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
-    rowid[2L] %>%
-    min(rmd %>%
-          stringr::str_locate("^\\.{3}\\s*$") %>%
-          tibble::as_tibble() %>%
-          tibble::rowid_to_column() %>%
-          dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
-          rowid[1L],
-        na.rm = TRUE)
+  if (has_yaml) {
+    
+    last_yaml_line_nr <-
+      rmd %>%
+      stringr::str_locate("^---\\s*$") %>%
+      tibble::as_tibble() %>%
+      tibble::rowid_to_column() %>%
+      dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
+      rowid[2L] %>%
+      min(rmd %>%
+            stringr::str_locate("^\\.{3}\\s*$") %>%
+            tibble::as_tibble() %>%
+            tibble::rowid_to_column() %>%
+            dplyr::filter(!dplyr::if_any(.fns = is.na)) %$%
+            rowid[1L],
+          na.rm = TRUE)
+  }
   
   rmd[(last_yaml_line_nr + 1L):length(rmd)]
 }
@@ -2337,7 +2384,7 @@ strip_yaml_header <- function(rmd,
 #'
 #' @param smart_punctuation Whether to enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts straight quotes to
 #'   curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
-#'   `Mr.`.
+#'   as `Mr.`.
 #' @param parse_emoji_markup Whether to enable [Pandoc's `emoji` extension](https://pandoc.org/MANUAL.html#extension-emoji) which parses emoji markup (e.g.
 #'   `:smile:`) as Unicode emoticons.
 #' @param toc Include a table of contents (TOC) [automatically generated by Pandoc](https://pandoc.org/MANUAL.html#option--toc). Note that the TOC will be
@@ -2466,8 +2513,8 @@ gitlab_document <- function(smart_punctuation = TRUE,
 
 #' Read in a text file from a GitHub repository
 #'
-#' Downloads the text file under the specified path from a GitHub repository via [GitHub's GraphQL API v4](https://docs.github.com/graphql) and returns its
-#' content as a string.
+#' Downloads the text file under the specified path from a GitHub repository via [GitHub's GraphQL API
+#' v4](https://docs.github.com/en/graphql/overview/about-the-graphql-api) and returns its content as a string.
 #'
 #' @details
 #' Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized [GitHub Personal Access Token
@@ -2518,8 +2565,9 @@ gh_text_file <- function(path,
 #' Read in text files from a GitHub repository
 #'
 #' @description
-#' Downloads all text files under the specified path from a GitHub repository via [GitHub's GraphQL API v4](https://docs.github.com/graphql) and returns a named
-#' character vector with the file paths as names and the file contents as values.
+#' Downloads all text files under the specified path from a GitHub repository via [GitHub's GraphQL API
+#' v4](https://docs.github.com/en/graphql/overview/about-the-graphql-api) and returns a named character vector with the file paths as names and the file
+#' contents as values.
 #'
 #' This is a simple convenience function combining [gh_dir_ls()] and [gh_text_file()]. 
 #'
@@ -2569,7 +2617,8 @@ gh_text_files <- function(path,
 #' List files and directories in a GitHub repository
 #'
 #' Lists file and directory names found under
-#' [`rev:path`](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem) in a GitHub repository.
+#' [`rev:path`](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem) in a GitHub repository via
+#' [GitHub's GraphQL API v4](https://docs.github.com/en/graphql/overview/about-the-graphql-api).
 #'
 #' Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized [GitHub Personal Access Token
 #' (PAT)][gh::gh_token].
@@ -2796,30 +2845,33 @@ check_cli <- function(cmd,
   
   if (force_which || !xfun::is_unix()) {
     
-    Sys.which(names = cmd) %>%
+    result <-
+      Sys.which(names = cmd) %>%
       as.character() %>%
       purrr::when(. == "" ~ character(0L),
                   ~ .) %>%
       purrr::when(get_cmd_path ~ fs::path(.),
                   length(.) == 0L ~ FALSE,
                   ~ TRUE)
-    
   } else {
     
     # define "defused" warning/error handler
     defuse <- function(e) if (get_cmd_path) character(0L) else FALSE
     
-    rlang::with_handlers(system2(command = "command",
-                                 args = c("-v",
-                                          cmd),
-                                 stdout = get_cmd_path,
-                                 stderr = get_cmd_path),
-                         warning = defuse,
-                         error = defuse) %>%
+    result <-
+      rlang::with_handlers(system2(command = "command",
+                                   args = c("-v",
+                                            cmd),
+                                   stdout = get_cmd_path,
+                                   stderr = get_cmd_path),
+                           warning = defuse,
+                           error = defuse) %>%
       purrr::when(get_cmd_path ~ fs::path(.),
                   isFALSE(.) ~ .,
                   ~ TRUE)
   }
+  
+  result
 }
 
 #' Determine file path of executing script
@@ -2867,10 +2919,41 @@ path_script <- function() {
   cli::cli_abort("Couldn't determine script path.")
 }
 
-run_cli <- function(cmd,
-                    ...) {
+
+
+#' Assert an object is member of any of the specified classes
+#'
+#' @param x The \R object to test.
+#' @param classes Class names to check for inheritance. A character vector.
+#' @param name Name of the checked object to print in error message in case the assertion fails. A character scalar.
+#'
+#' @return `x`, invisibly.
+#' @export
+#'
+#' @examples
+#' pal::gh_text_file(path = "README.md",
+#'                   owner = "salim-b",
+#'                   name = "pal") |>
+#'   pal::md_to_xml() |>
+#'   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
+assert_class_any <- function(x,
+                             classes,
+                             name = "x") {
   
+  checkmate::assert_character(classes,
+                              any.missing = FALSE)
   
+  if (!inherits(x = x,
+                what = classes)) {
+    
+    checkmate::assert_string(name)
+    classes_actual <- class(x)
+    cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
+                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_separator = " or "),
+                          ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
+  }
+  
+  invisible(x)
 }
 
 #' Capture printed console output as string
@@ -2990,6 +3073,7 @@ cols_regex <- function(...,
 #' @inheritParams cli::cli_process_start
 #'
 #' @return The result of the evaluated `expr`, invisibly.
+#' @seealso [cli::cli_progress_step()] which additionally shows the time elapsed within the associated step.
 #' @export
 #'
 #' @examples
