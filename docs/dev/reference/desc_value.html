@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the value from a DESCRIPTION file field, cleaned up and with fallback — desc_value • pal</title>
+<title>Get the value from a DESCRIPTION file field, cleaned up and with dynamic fallback — desc_value • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,7 +57,7 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Get the value from a DESCRIPTION file field, cleaned up and with fallback — desc_value" />
+<meta property="og:title" content="Get the value from a DESCRIPTION file field, cleaned up and with dynamic fallback — desc_value" />
 <meta name="description" content="Returns the value from a specific DESCRIPTION file field (aka key). Whitespaces at the start and end of the value as well as repeated whitespaces within it are removed.">
 <meta property="og:description" content="Returns the value from a specific DESCRIPTION file field (aka key). Whitespaces at the start and end of the value as well as repeated whitespaces within it are removed." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9071</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9072</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the value from a <code>DESCRIPTION</code> file field, cleaned up and with fallback</h1>
+    <h1>Get the value from a <code>DESCRIPTION</code> file field, cleaned up and with dynamic fallback</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
     <div class="hidden name"><code>desc_value.Rd</code></div>
     </div>
@@ -175,7 +175,8 @@ is part of) is used.</p></td>
     <p>A character scalar.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>By default, the following string is returned if <code>key = "NoRealKey"</code> is not found:</p><pre><span class='st'>"&lt;No `NoRealKey` field set in DESCRIPTION!&gt;"</span>
+    <p>This function is a slightly modified version of <code><a href='https://rdrr.io/pkg/desc/man/desc_get_field.html'>desc::desc_get_field()</a></code> that allows the <code>default</code> parameter to be dependent on the <code>key</code> parameter.</p>
+<p>By default, the following string is returned if <code>key = "NoRealKey"</code> is not found:</p><pre><span class='st'>"&lt;No `NoRealKey` field set in DESCRIPTION!&gt;"</span>
 </pre>
 
 <p>If you rather want to take an action like throwing an error, it's recommended to call <code><a href='https://rdrr.io/pkg/desc/man/desc_get_field.html'>desc::desc_get_field()</a></code> directly.</p>

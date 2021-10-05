@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9071</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9072</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 <h3 class="hasAnchor">
 <a href="#r-markdown-format" class="anchor"></a>R Markdown format</h3>
 <p>This package’s source code is written in the <a href="https://rmarkdown.rstudio.com/" class="external-link">R Markdown</a> file format to facilitate practices commonly referred to as <a href="https://en.wikipedia.org/wiki/Literate_programming" class="external-link"><em>literate programming</em></a>. It allows the actual code to be freely mixed with explanatory and supplementary information in expressive Markdown format instead of having to rely on <a href="https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Comments" class="external-link"><code>#</code> comments</a> only.</p>
-<p>All the <code>-GEN.R</code> suffixed R source code found under <a href="R/"><code>R/</code></a> is generated from the respective R Markdown counterparts under <a href="Rmd/"><code>Rmd/</code></a> using <a href="https://gitlab.com/salim_b/r/pkgs/pkgpurl/" class="external-link"><code>pkgpurl::purl_rmd()</code></a><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Always make changes only to the <code>.Rmd</code> files – never the <code>.R</code> files – and then run <code><a href="https://rdrr.io/pkg/pkgpurl/man/purl_rmd.html" class="external-link">pkgpurl::purl_rmd()</a></code> to regenerate the R source files.</p>
+<p>All the <code>.gen.R</code> suffixed R source code found under <a href="R/"><code>R/</code></a> is generated from the respective R Markdown counterparts under <a href="Rmd/"><code>Rmd/</code></a> using <a href="https://rpkg.dev/pkgpurl/reference/purl_rmd.html" class="external-link"><code>pkgpurl::purl_rmd()</code></a><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Always make changes only to the <code>.Rmd</code> files – never the <code>.R</code> files – and then run <code><a href="https://rdrr.io/pkg/pkgpurl/man/purl_rmd.html" class="external-link">pkgpurl::purl_rmd()</a></code> to regenerate the R source files.</p>
 </div>
 <div id="coding-style" class="section level3">
 <h3 class="hasAnchor">

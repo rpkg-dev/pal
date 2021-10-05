@@ -479,7 +479,7 @@ reduce_df_list <- function(x,
 #'
 #' - removes list names. `unlist()` concatenates nested names (separated by a dot).
 #'
-#' @param x `r pkgsnip::param_label("r_object")`
+#' @param x `r pkgsnip::param_label("r_obj")`
 #' @param keep_attrs Keep [attributes][base::attr()] (and thereby retain list structure of custom objects). A logical scalar.
 #' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
 #'
@@ -1555,10 +1555,12 @@ desc_list <- function(file = ".") {
   result
 }
 
-#' Get the value from a `DESCRIPTION` file field, cleaned up and with fallback
+#' Get the value from a `DESCRIPTION` file field, cleaned up and with dynamic fallback
 #'
 #' Returns the value from a specific `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
 #' it are removed.
+#' 
+#' This function is a slightly modified version of [desc::desc_get_field()] that allows the `default` parameter to be dependent on the `key` parameter.
 #'
 #' By default, the following string is returned if `key = "NoRealKey"` is not found:
 #'
@@ -1585,8 +1587,7 @@ desc_value <- function(key,
   
   desc::desc_get_field(key = key,
                        default = default,
-                       file = file) %>%
-    stringr::str_squish()
+                       file = file)
 }
 
 #' Get the Git repository URL from a `DESCRIPTION` file

@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{desc_value}
 \alias{desc_value}
-\title{Get the value from a \code{DESCRIPTION} file field, cleaned up and with fallback}
+\title{Get the value from a \code{DESCRIPTION} file field, cleaned up and with dynamic fallback}
 \usage{
 desc_value(
   key,
@@ -27,6 +27,8 @@ Returns the value from a specific \code{DESCRIPTION} file field (aka \emph{key})
 it are removed.
 }
 \details{
+This function is a slightly modified version of \code{\link[desc:desc_get_field]{desc::desc_get_field()}} that allows the \code{default} parameter to be dependent on the \code{key} parameter.
+
 By default, the following string is returned if \code{key = "NoRealKey"} is not found:\preformatted{"<No `NoRealKey` field set in DESCRIPTION!>"
 }
 
