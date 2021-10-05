@@ -20,9 +20,18 @@ Returns what \code{\link[base:print]{print(x)}} would output on the console – 
 }
 \details{
 This is a simple convenience wrapper around \code{\link[utils:capture.output]{utils::capture.output()}}. Note that \href{https://en.wikipedia.org/wiki/ANSI_escape_code}{ANSI escape sequences}
-(e.g. as output by the \code{print()} methods of tidyverse packages) are not captured (i.e. lost).
+(e.g. as output by the \code{print()} methods of tidyverse packages) are included in the result. To remove them, use \code{\link[cli:ansi_strip]{cli::ansi_strip()}}.
 }
 \examples{
 mtcars |> pal::capture_print()
 mtcars |> pal::capture_print(collapse = "\n") |> cat()
+
+# to strip ANSI escape sequences, use `cli::ansi_strip()`
+mtcars |> tibble::as_tibble()
+
+mtcars |>
+  tibble::as_tibble() |>
+  pal::capture_print(collapse = "\n") |>
+  cli::ansi_strip() |>
+  cat()
 }

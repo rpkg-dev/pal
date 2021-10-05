@@ -2963,7 +2963,7 @@ assert_class_any <- function(x,
 #' (i.e. a string), otherwise as a character vector of output lines.
 #'
 #' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
-#' (e.g. as output by the `print()` methods of tidyverse packages) are not captured (i.e. lost).
+#' (e.g. as output by the `print()` methods of tidyverse packages) are included in the result. To remove them, use [cli::ansi_strip()].
 #'
 #' @param x The \R object of which the output of `print()` is to be captured.
 #' @param collapse An optional string for concatenating the results. If `NULL`, a character vector of print lines is returned.
@@ -2974,6 +2974,15 @@ assert_class_any <- function(x,
 #' @examples
 #' mtcars |> pal::capture_print()
 #' mtcars |> pal::capture_print(collapse = "\n") |> cat()
+#' 
+#' # to strip ANSI escape sequences, use `cli::ansi_strip()`
+#' mtcars |> tibble::as_tibble()
+#' 
+#' mtcars |>
+#'   tibble::as_tibble() |>
+#'   pal::capture_print(collapse = "\n") |>
+#'   cli::ansi_strip() |>
+#'   cat()
 capture_print <- function(x,
                           collapse = NULL) {
   
