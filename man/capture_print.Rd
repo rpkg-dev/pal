@@ -15,7 +15,7 @@ capture_print(x, collapse = NULL)
 A character vector if \code{collapse = NULL}, otherwise a character scalar.
 }
 \description{
-Returns what \code{\link[base:print]{print(x)}} would output on the console – if \code{collapse} is set to anything other than \code{NULL}, as an atomic character vector
+Returns what \code{\link[base:print]{print(x)}} would output on the console – if \code{collapse} is set to anything other than \code{NULL}, as a character scalar
 (i.e. a string), otherwise as a character vector of output lines.
 }
 \details{

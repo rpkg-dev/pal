@@ -2959,7 +2959,7 @@ assert_class_any <- function(x,
 
 #' Capture printed console output as string
 #'
-#' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as an atomic character vector
+#' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as a character scalar
 #' (i.e. a string), otherwise as a character vector of output lines.
 #'
 #' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
