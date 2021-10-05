@@ -1240,17 +1240,17 @@ bit safer.
 
 ## `check_dots_named`
 
-**Remarks:**
+TODO:
+
+-   The `msg` gets truncated if more cli classes are used (e.g. `"{.fn {fn_name}}"`) so we have to avoid it below. Investigate what exactly is going on and
+    report upstream!
+
+NOTES:
 
 -   Code to suggest proper dots params largely borrowed from
     [`rlang:::stop_arg_match()`](https://github.com/r-lib/rlang/blob/2a269c44aaa3985ce742e0e91a48b2d3c4664f3c/R/arg.R#L79-L110) (MIT-licensed).
 
 -   Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35).
-
-TODO:
-
--   The `msg` gets truncated if more cli classes are used (e.g. `"{.fn {fn_name}}"`) so we have to avoid it below. Investigate what exactly is going on and
-    report upstream!
 
 ```{r}
 #' Check that all named dots arguments are valid
@@ -3490,7 +3490,7 @@ TODO:
 
 -   [ ] Remove cosmetic workaround-whitespaces in `@param ...` doc as soon as [roxygen2 issue #1112](https://github.com/r-lib/roxygen2/issues/1112) is fixed.
 
-**Remarks:**
+NOTES:
 
 -   The "real" data in the examples stems from
     [here](https://opendata.swiss/en/dataset/wahlarchiv-des-kantons-zuerich/resource/893a7b0e-e394-4874-a0af-a99fb39358fd).
