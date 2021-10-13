@@ -2817,6 +2817,108 @@ is_http_success <- function(url,
                        interrupt = ~ cli::cli_abort("Terminated by the user"))
 }
 
+#' [cli](https://cli.r-lib.org/) pluralization helpers for booleans
+#'
+#' Equivalents to [cli::qty()] and [cli::no()] for a logical input.
+#' 
+#' If `cnd` evaluates to `TRUE`, the resulting cli quantity is `1`, otherwise `0`. See cli's [pluralization
+#' rules](https://cli.r-lib.org/articles/pluralization.html#pluralization-markup-1) for details about how these quantities are interpreted.
+#'
+#' @param cnd Condition. A logical scalar.
+#'
+#' @return `0L` or `1L` with the additional class `cli_noprint`.
+#' @export
+#'
+#' @examples
+#' cnd <- runif(1L) < 0.5
+#' 
+#' cli::pluralize(paste0(
+#'   "{pal::cli_qty_lgl(cnd)}I think this function ",
+#'   "{?comes in handy/is not worth a second of my attention}. Having looked at the rest of the ",
+#'   "package, this {?is quite surprising/does not come as a surprise}."
+#' ))
+#' 
+#' cli::pluralize("This function is worth exactly {pal::cli_no_lgl(cnd)} second of my time.")
+cli_qty_lgl <- function(cnd) {
+  
+  structure(as.integer(checkmate::assert_flag(cnd)),
+            class = "cli_noprint")
+}
+
+#' @rdname cli_qty_lgl
+#' @export
+cli_no_lgl <- function(cnd) {
+  
+  structure(as.integer(checkmate::assert_flag(cnd)),
+            class = "cli_no")
+}
+
+#' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication
+#'
+#' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
+#'
+#' @param expr An expression to be evaluated.
+#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
+#' @inheritParams cli::cli_process_start
+#'
+#' @return The result of the evaluated `expr`, invisibly.
+#' @seealso [cli::cli_progress_step()] which additionally shows the time elapsed within the associated step.
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
+#'
+#' \dontrun{
+#' # "russian roulette"
+#' msg <- "Spinning the cylinder \U0001F91E … "
+#' pal::cli_process_expr(msg = msg,
+#'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+#'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                       expr = {
+#'                         if (interactive()) Sys.sleep(1)
+#'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+#'                       })}
+cli_process_expr <- function(expr,
+                             msg,
+                             msg_done = paste(msg, "... done"),
+                             msg_failed = paste(msg, "... failed"),
+                             msg_class = "alert-info",
+                             done_class = "alert-success",
+                             failed_class = "alert-danger",
+                             env = parent.frame()) {
+  checkmate::assert_string(msg,
+                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
+                           min.chars = 1L)
+  checkmate::assert_string(msg_done)
+  checkmate::assert_string(msg_failed)
+  checkmate::assert_string(msg_class)
+  checkmate::assert_string(done_class)
+  checkmate::assert_string(failed_class)
+  checkmate::assert_environment(env)
+  
+  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function won't reach execution because we throw the error
+  #       using `rlang::cnd_signal(.x)` first.
+  status_bar_container_id <- cli::cli_process_start(msg = msg,
+                                                    msg_done = msg_done,
+                                                    msg_failed = msg_failed,
+                                                    msg_class = msg_class,
+                                                    done_class = done_class,
+                                                    failed_class = failed_class,
+                                                    .envir = env)
+  
+  result <- rlang::with_handlers(.expr = rlang::eval_tidy(expr = {{ expr }},
+                                                          env = env),
+                                 error = ~ {
+                                   cli::cli_process_failed(status_bar_container_id)
+                                   rlang::cnd_signal(.x)
+                                 })
+  
+  cli::cli_process_done(status_bar_container_id)
+  
+  invisible(result)
+}
+
 #' Check if CLI tool is available on the system
 #'
 #' Checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem
@@ -3076,72 +3178,6 @@ cols_regex <- function(...,
   
   spec <- c(spec, alist(.default = .default))
   do.call(readr::cols, spec)
-}
-
-#' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication
-#'
-#' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
-#'
-#' @param expr An expression to be evaluated.
-#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
-#' @inheritParams cli::cli_process_start
-#'
-#' @return The result of the evaluated `expr`, invisibly.
-#' @seealso [cli::cli_progress_step()] which additionally shows the time elapsed within the associated step.
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
-#'
-#' \dontrun{
-#' # "russian roulette"
-#' msg <- "Spinning the cylinder \U0001F91E … "
-#' pal::cli_process_expr(msg = msg,
-#'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-#'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                       expr = {
-#'                         if (interactive()) Sys.sleep(1)
-#'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-#'                       })}
-cli_process_expr <- function(expr,
-                             msg,
-                             msg_done = paste(msg, "... done"),
-                             msg_failed = paste(msg, "... failed"),
-                             msg_class = "alert-info",
-                             done_class = "alert-success",
-                             failed_class = "alert-danger",
-                             env = parent.frame()) {
-  checkmate::assert_string(msg,
-                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
-                           min.chars = 1L)
-  checkmate::assert_string(msg_done)
-  checkmate::assert_string(msg_failed)
-  checkmate::assert_string(msg_class)
-  checkmate::assert_string(done_class)
-  checkmate::assert_string(failed_class)
-  checkmate::assert_environment(env)
-  
-  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function won't reach execution because we throw the error
-  #       using `rlang::cnd_signal(.x)` first.
-  status_bar_container_id <- cli::cli_process_start(msg = msg,
-                                                    msg_done = msg_done,
-                                                    msg_failed = msg_failed,
-                                                    msg_class = msg_class,
-                                                    done_class = done_class,
-                                                    failed_class = failed_class,
-                                                    .envir = env)
-  
-  result <- rlang::with_handlers(.expr = rlang::eval_tidy(expr = {{ expr }},
-                                                          env = env),
-                                 error = ~ {
-                                   cli::cli_process_failed(status_bar_container_id)
-                                   rlang::cnd_signal(.x)
-                                 })
-  
-  cli::cli_process_done(status_bar_container_id)
-  
-  invisible(result)
 }
 
 #' Order a vector by another vector

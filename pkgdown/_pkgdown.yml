@@ -107,6 +107,12 @@ reference:
 - contents:
   - assert_mime_type
   - is_http_success
+- title: CLI
+  desc: Extending the [cli](https://cli.r-lib.org/) package.
+- contents:
+  - cli_qty_lgl
+  - cli_no_lgl
+  - cli_process_expr
 - title: System interaction
 - contents:
   - check_cli
@@ -116,6 +122,5 @@ reference:
   - assert_class_any
   - capture_print
   - cols_regex
-  - cli_process_expr
   - order_by
   - prose_ls_fn_param
