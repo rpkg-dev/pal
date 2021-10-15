@@ -668,8 +668,8 @@ as_flat_list <- function(x,
     
     # flatten the two last list levels (keeping attributes if requested)
   } else if (depth < 4L) {
-    result <- x %>% purrr::when(keep_attrs ~ rm_list_level(.,
-                                                           attrs_to_drop = attrs_to_drop),
+    result <- x %>% purrr::when(keep_attrs ~ rm_list_lvl(.,
+                                                         attrs_to_drop = attrs_to_drop),
                                 ~ purrr::flatten(.))
   } else {
     
@@ -679,16 +679,16 @@ as_flat_list <- function(x,
       purrr::map(.f = as_flat_list,
                  keep_attrs = keep_attrs,
                  attrs_to_drop = attrs_to_drop) %>%
-      purrr::when(keep_attrs ~ rm_list_level(.,
-                                             attrs_to_drop = attrs_to_drop),
+      purrr::when(keep_attrs ~ rm_list_lvl(.,
+                                           attrs_to_drop = attrs_to_drop),
                   ~ purrr::flatten(.))
   }
   
   result
 }
 
-rm_list_level <- function(x,
-                          attrs_to_drop = "xfun_strict_list") {
+rm_list_lvl <- function(x,
+                        attrs_to_drop = "xfun_strict_list") {
   
   result <- list()
   
