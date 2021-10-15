@@ -575,6 +575,25 @@ reduce_df_list <- function(x,
 
 ## `as_flat_list`
 
+TODO:
+
+-   Behaviour with named (sub)lists like the following one is counter-intuitive:
+
+    ``` r
+    fokus::raw_q_suppl_election(ballot_date = ballot_date,
+                                lvl = 'cantonal',
+                                canton = canton,
+                                prcd = "proportional",
+                                election_nr = election_nr) %$%
+        party %>%
+        dplyr::first() %>%
+        pal::as_flat_list() %>%
+        str()
+    ```
+
+    When setting `keep_attrs = FALSE` (`names` is an attribute), the list is actually flattened (but parent names lost). Ideal would be to have a param like
+    `concatenate_names = FALSE` which could be used to vary this behaviour.
+
 ```{r}
 #' Convert to a flat list
 #'
