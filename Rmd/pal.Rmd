@@ -2605,6 +2605,7 @@ build_readme <- function(input = "README.Rmd",
       assert_pkg("withr")
       ## we store the temp file next to `input` since otherwise, knitr won't find relative `child` document paths
       ## cf. https://community.rstudio.com/t/why-doesnt-knitrs-root-dir-option-apply-to-relative-child-document-paths/117563
+      ## TODO: as soon as knitr version 1.37 is released that [fixes this](https://github.com/yihui/knitr/pull/2059), require it and use `fs::file_temp()`
       tmp_file <-
         fs::path(parent_dir, "tmp-pal-build_readme") %>%
         fs::path_ext_set(ext = fs::path_ext(input)) %>%
