@@ -9,10 +9,10 @@ wrap_chr(x, wrap = "\\"")
 \arguments{
 \item{x}{A character vector or something coercible to. Will be fed to \code{\link[=as_chr]{as_chr()}} before wrapping.}
 
-\item{wrap}{The string \code{x} is to be wrapped in.}
+\item{wrap}{Character sequence \code{x} is to be wrapped in. A character vector or something coercible to.}
 }
 \value{
-A character vector.
+A character vector of the same length as \code{wrap}.
 }
 \description{
 Wrap character vector in string

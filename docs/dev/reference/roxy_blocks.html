@@ -174,68 +174,69 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <code><a href='roxy_tag_value.html'>roxy_tag_value</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Either provide an R source file as a character vector `text` ...</span>
-<span class='va'>text</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/r-lib/rlang/"</span>,
-                                 <span class='st'>"db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>text <span class='op'>=</span> <span class='va'>text</span><span class='op'>)</span> |&gt; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [[1]]
-#&gt; &lt;roxy_block&gt; [&lt;text&gt;:39]
-#&gt;   $tag
-#&gt;     [line:  1] @title 'Create a function' {parsed}
-#&gt;     [line:  3] @description '...' {parsed}
-#&gt;     [line: 10] @param 'args A named list or pairlist of default argume...' {parsed}
-#&gt;     [line: 14] @param 'body A language object representing the code in...' {parsed}
-#&gt;     [line: 17] @param 'env The parent environment of the function, def...' {parsed}
-#&gt;     [line: 19] @export '' {parsed}
-#&gt;     [line: 20] @examples '...' {parsed}
-#&gt;     [????:???] @usage '&lt;generated&gt;' {parsed}
-#&gt;     [????:???] @.formals '&lt;generated&gt;' {parsed}
-#&gt;     [????:???] @backref '&lt;text&gt;' {parsed}
-#&gt;   $call   new_function &lt;- function(args, body, env = caller_env()) { ...
-#&gt;   $object &lt;function&gt; 
-#&gt;     $topic new_function
-#&gt;     $alias new_function
-#&gt; 
-#&gt; [[2]]
-#&gt; &lt;roxy_block&gt; [&lt;text&gt;:50]
-#&gt;   $tag
-#&gt;     [line:  1] @title 'Name of a primitive function' {parsed}
-#&gt;     [line: 47] @param 'prim A primitive function such as [base::c()].' {parsed}
-#&gt;     [line: 48] @keywords 'internal' {parsed}
-#&gt;     [line: 49] @export '' {parsed}
-#&gt;     [????:???] @usage '&lt;generated&gt;' {parsed}
-#&gt;     [????:???] @.formals '&lt;generated&gt;' {parsed}
-#&gt;     [????:???] @backref '&lt;text&gt;' {parsed}
-#&gt;   $call   prim_name &lt;- function(prim) { ...
-#&gt;   $object &lt;function&gt; 
-#&gt;     $topic prim_name
-#&gt;     $alias prim_name
-#&gt; 
-#&gt; [[3]]
-#&gt; &lt;roxy_block&gt; [&lt;text&gt;:91]
-#&gt;   $tag
-#&gt;     [line:  1] @title 'Extract arguments from a function' {parsed}
-#&gt;     [line:  3] @description '`fn_fmls()` returns a named list of formal argu...' {parsed}
-#&gt;     [line:  9] @details 'Unlike `formals()`, these helpers throw an erro...' {parsed}
-#&gt;     [line: 73] @param 'fn A function. It is lookep up in the calling f...' {parsed}
-#&gt;     [line: 75] @seealso '[call_args()] and [call_args_names()]' {parsed}
-#&gt;     [line: 76] @export '' {parsed}
-#&gt;     [line: 77] @examples '...' {parsed}
-#&gt;     [????:???] @usage '&lt;generated&gt;' {parsed}
-#&gt;     [????:???] @.formals '&lt;generated&gt;' {parsed}
-#&gt;     [????:???] @backref '&lt;text&gt;' {parsed}
-#&gt;   $call   fn_fmls &lt;- function(fn = caller_fn()) { ...
-#&gt;   $object &lt;function&gt; 
-#&gt;     $topic fn_fmls
-#&gt;     $alias fn_fmls
-#&gt; </div><div class='input'>
-<span class='co'># ... or provide a package name</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"rlang"</span>,
-                 repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span> |&gt;
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span><span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Either provide an R source file as a character vector `text` ...</span></span>
+<span class='r-in'><span class='va'>text</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/r-lib/rlang/"</span>,</span>
+<span class='r-in'>                                 <span class='st'>"db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>text <span class='op'>=</span> <span class='va'>text</span><span class='op'>)</span> |&gt; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [&lt;text&gt;:39]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  1] @title 'Create a function' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  3] @description '...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 10] @param 'args A named list or pairlist of default argume...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 14] @param 'body A language object representing the code in...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 17] @param 'env The parent environment of the function, def...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 19] @export '' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 20] @examples '...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '&lt;text&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   new_function &lt;- function(args, body, env = caller_env()) { ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic new_function</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     $alias new_function</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [&lt;text&gt;:50]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  1] @title 'Name of a primitive function' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 47] @param 'prim A primitive function such as [base::c()].' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 48] @keywords 'internal' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 49] @export '' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '&lt;text&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   prim_name &lt;- function(prim) { ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic prim_name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     $alias prim_name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [&lt;text&gt;:91]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  1] @title 'Extract arguments from a function' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  3] @description '`fn_fmls()` returns a named list of formal argu...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  9] @details 'Unlike `formals()`, these helpers throw an erro...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 73] @param 'fn A function. It is lookep up in the calling f...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 75] @seealso '[call_args()] and [call_args_names()]' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 76] @export '' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 77] @examples '...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '&lt;text&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   fn_fmls &lt;- function(fn = caller_fn()) { ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic fn_fmls</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     $alias fn_fmls</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ... or provide a package name</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"rlang"</span>,</span>
+<span class='r-in'>                 repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

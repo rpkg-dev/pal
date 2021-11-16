@@ -16,7 +16,7 @@ md_to_xml(
 )
 }
 \arguments{
-\item{md}{The (R) Markdown file content as a character scalar.}
+\item{md}{(R) Markdown file content as a character scalar.}
 
 \item{smart_punctuation}{Whether to enable \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts straight quotes to
 curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such

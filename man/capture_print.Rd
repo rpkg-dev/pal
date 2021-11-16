@@ -7,9 +7,9 @@
 capture_print(x, collapse = NULL)
 }
 \arguments{
-\item{x}{The \R object of which the output of \code{print()} is to be captured.}
+\item{x}{\R object of which the output of \code{print()} is to be captured.}
 
-\item{collapse}{An optional string for concatenating the results. If \code{NULL}, a character vector of print lines is returned.}
+\item{collapse}{Optional string for concatenating the results. If \code{NULL}, a character vector of print lines is returned.}
 }
 \value{
 A character vector if \code{collapse = NULL}, otherwise a character scalar.

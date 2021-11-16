@@ -162,15 +162,15 @@
     </tr>
     <tr>
       <th>mime_type</th>
-      <td><p>The expected MIME type, e.g. <code>"application/json"</code>. A character scalar.</p></td>
+      <td><p>Expected MIME type, e.g. <code>"application/json"</code>. A character scalar.</p></td>
     </tr>
     <tr>
       <th>msg</th>
-      <td><p>The message to display in case of an error. Supports cli's <a href='https://cli.r-lib.org/reference/inline-markup.html'>inline markup</a>. A character scalar.</p></td>
+      <td><p>Message to display in case of an error. Supports cli's <a href='https://cli.r-lib.org/reference/inline-markup.html'>inline markup</a>. A character scalar.</p></td>
     </tr>
     <tr>
       <th>msg_suffix</th>
-      <td><p>An additional string to append to <code>msg</code>. Supports cli's <a href='https://cli.r-lib.org/reference/inline-markup.html'>inline markup</a>.</p></td>
+      <td><p>Additional string to append to <code>msg</code>. Supports cli's <a href='https://cli.r-lib.org/reference/inline-markup.html'>inline markup</a>.</p></td>
     </tr>
     </table>
 
@@ -183,108 +183,109 @@
 <code><a href='is_http_success.html'>is_http_success</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='st'>"https://api.github.com/users/salim-b"</span><span class='op'>)</span> |&gt;
-  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>assert_mime_type</span><span class='op'>(</span><span class='st'>"application/json"</span><span class='op'>)</span> |&gt;
-  <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $login
-#&gt; [1] "salim-b"
-#&gt; 
-#&gt; $id
-#&gt; [1] 20040931
-#&gt; 
-#&gt; $node_id
-#&gt; [1] "MDQ6VXNlcjIwMDQwOTMx"
-#&gt; 
-#&gt; $avatar_url
-#&gt; [1] "https://avatars.githubusercontent.com/u/20040931?v=4"
-#&gt; 
-#&gt; $gravatar_id
-#&gt; [1] ""
-#&gt; 
-#&gt; $url
-#&gt; [1] "https://api.github.com/users/salim-b"
-#&gt; 
-#&gt; $html_url
-#&gt; [1] "https://github.com/salim-b"
-#&gt; 
-#&gt; $followers_url
-#&gt; [1] "https://api.github.com/users/salim-b/followers"
-#&gt; 
-#&gt; $following_url
-#&gt; [1] "https://api.github.com/users/salim-b/following{/other_user}"
-#&gt; 
-#&gt; $gists_url
-#&gt; [1] "https://api.github.com/users/salim-b/gists{/gist_id}"
-#&gt; 
-#&gt; $starred_url
-#&gt; [1] "https://api.github.com/users/salim-b/starred{/owner}{/repo}"
-#&gt; 
-#&gt; $subscriptions_url
-#&gt; [1] "https://api.github.com/users/salim-b/subscriptions"
-#&gt; 
-#&gt; $organizations_url
-#&gt; [1] "https://api.github.com/users/salim-b/orgs"
-#&gt; 
-#&gt; $repos_url
-#&gt; [1] "https://api.github.com/users/salim-b/repos"
-#&gt; 
-#&gt; $events_url
-#&gt; [1] "https://api.github.com/users/salim-b/events{/privacy}"
-#&gt; 
-#&gt; $received_events_url
-#&gt; [1] "https://api.github.com/users/salim-b/received_events"
-#&gt; 
-#&gt; $type
-#&gt; [1] "User"
-#&gt; 
-#&gt; $site_admin
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $name
-#&gt; [1] "Salim B"
-#&gt; 
-#&gt; $company
-#&gt; NULL
-#&gt; 
-#&gt; $blog
-#&gt; [1] "https://keybase.io/salimb"
-#&gt; 
-#&gt; $location
-#&gt; [1] "Switzerland"
-#&gt; 
-#&gt; $email
-#&gt; NULL
-#&gt; 
-#&gt; $hireable
-#&gt; NULL
-#&gt; 
-#&gt; $bio
-#&gt; NULL
-#&gt; 
-#&gt; $twitter_username
-#&gt; NULL
-#&gt; 
-#&gt; $public_repos
-#&gt; [1] 45
-#&gt; 
-#&gt; $public_gists
-#&gt; [1] 3
-#&gt; 
-#&gt; $followers
-#&gt; [1] 8
-#&gt; 
-#&gt; $following
-#&gt; [1] 0
-#&gt; 
-#&gt; $created_at
-#&gt; [1] "2016-06-20T09:11:58Z"
-#&gt; 
-#&gt; $updated_at
-#&gt; [1] "2021-07-30T18:49:53Z"
-#&gt; </div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='st'>"https://api.github.com/users/salim-b"</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>assert_mime_type</span><span class='op'>(</span><span class='st'>"text/plain"</span><span class='op'>)</span><span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='st'>"https://api.github.com/users/salim-b"</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>assert_mime_type</span><span class='op'>(</span><span class='st'>"application/json"</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $login</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "salim-b"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $id</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 20040931</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node_id</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "MDQ6VXNlcjIwMDQwOTMx"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $avatar_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://avatars.githubusercontent.com/u/20040931?v=4"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $gravatar_id</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $html_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://github.com/salim-b"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $followers_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/followers"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $following_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/following{/other_user}"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $gists_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/gists{/gist_id}"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $starred_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/starred{/owner}{/repo}"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $subscriptions_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/subscriptions"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $organizations_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/orgs"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $repos_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/repos"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $events_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/events{/privacy}"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $received_events_url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://api.github.com/users/salim-b/received_events"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $type</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "User"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $site_admin</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Salim B"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $company</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $blog</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://keybase.io/salimb"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $location</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Switzerland"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $email</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $hireable</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bio</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $twitter_username</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $public_repos</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 43</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $public_gists</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $followers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $following</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $created_at</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2016-06-20T09:11:58Z"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $updated_at</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-07-30T18:49:53Z"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='st'>"https://api.github.com/users/salim-b"</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>assert_mime_type</span><span class='op'>(</span><span class='st'>"text/plain"</span><span class='op'>)</span><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

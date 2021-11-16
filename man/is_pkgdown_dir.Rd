@@ -7,7 +7,7 @@
 is_pkgdown_dir(path = ".")
 }
 \arguments{
-\item{path}{The path of the R package directory to check. A character scalar. Defaults to the current working directory.}
+\item{path}{Path of the R package directory to check. A character scalar. Defaults to the current working directory.}
 }
 \value{
 \code{TRUE} if pkgdown is set up for \code{path}, \code{FALSE} otherwise.

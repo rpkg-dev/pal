@@ -230,7 +230,7 @@ makes all absolute URIs into links, even when not surrounded by pointy braces <c
       <td><p>Enable the
 <a href='https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash'><code>tex_math_single_backslash</code> Pandoc Markdown extension</a> which causes anything between
 <code>\(</code> and <code>\)</code> to be interpreted as inline TeX math, and anything between <code>\[</code> and <code>\]</code> to be interpreted as display TeX math. Note: a drawback of this
-extension is that it precludes escaping <code>(</code> and <code><a href='https://rdrr.io/r/base/Extract.html'>[</a></code>.</p></td>
+extension is that it precludes escaping <code>(</code> and <code>[</code>.</p></td>
     </tr>
     </table>
 
@@ -247,12 +247,12 @@ maximum compatibility with <a href='https://gitlab.com/help/user/markdown.md'>Gi
 <p>GitLab Flavored Markdown extends the <a href='https://spec.commonmark.org/current/'>CommonMark</a> Markdown specification with a bunch of
 <a href='https://gitlab.com/help/user/markdown.md#gfm-extends-standard-markdown'>special features</a>. To be able to properly make use of them, observe the following
 points:</p><ul>
-<li><p>For <a href='https://gitlab.com/help/user/markdown.md#inline-diff'>inline diffs</a>, only use curly braces (<code>{}</code>), not square brackets (<code>[]</code>). The latter will be
+<li><p>For <a href='https://gitlab.com/help/user/markdown.md#inline-diff'>inline diffs</a>, only use curly braces (<code><a href='https://rdrr.io/r/base/Paren.html'>{}</a></code>), not square brackets (<code>[]</code>). The latter will be
 escaped by Pandoc during conversion and thus not recognized by GitLab as starting/ending an inline diff.</p></li>
 <li><p>You have to set <code>smart_punctuation = FALSE</code> in order to leave certain
 <a href='https://gitlab.com/help/user/markdown.md#special-gitlab-references'>special GitLab references</a> (like commit range comparisons) untouched for GitLab to
 interpret them correctly.</p>
-<p>All the special GitLab references for snippets and labels that start with a tilde (<code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code>) or a dollar sign (<code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code>) won't work because these characters will be
+<p>All the special GitLab references for snippets and labels that start with a tilde (<code>~</code>) or a dollar sign (<code>$</code>) won't work because these characters will be
 escaped by Pandoc during conversion.</p></li>
 <li><p>The <code>[[_TOC_]]</code> tag to let GitLab <a href='https://gitlab.com/help/user/markdown.md#table-of-contents'>generate a table of contents</a> won't work because it will be
 escaped by Pandoc during conversion. You can let Pandoc generate the TOC instead by setting <code>toc = TRUE</code>.</p></li>
@@ -263,18 +263,19 @@ Pandoc during conversion.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='va'>tmp_file</span> <span class='op'>&lt;-</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/file_temp.html'>file_temp</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span>url <span class='op'>=</span> <span class='st'>"https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd"</span>,
-              destfile <span class='op'>=</span> <span class='va'>tmp_file</span>,
-              quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,
-                  output_format <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gitlab_document</span><span class='op'>(</span><span class='op'>)</span>,
-                  quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> |&gt;
-  <span class='fu'>brio</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/brio/man/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='op'>)</span> |&gt;
-  <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='op'>)</span><span class='co'># }</span>
-</div><div class='output co'>#&gt; [1] 3822</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='va'>tmp_file</span> <span class='op'>&lt;-</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/file_temp.html'>file_temp</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span>url <span class='op'>=</span> <span class='st'>"https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd"</span>,</span>
+<span class='r-in'>              destfile <span class='op'>=</span> <span class='va'>tmp_file</span>,</span>
+<span class='r-in'>              quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span>input <span class='op'>=</span> <span class='va'>tmp_file</span>,</span>
+<span class='r-in'>                  output_format <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gitlab_document</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'>brio</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/brio/man/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='op'>)</span><span class='co'># }</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3841</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

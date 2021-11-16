@@ -12,7 +12,7 @@ abbreviated character names (as described in the \code{col_types} parameter of \
 
 \item{.default}{Any named columns not matched by any of the regular expressions in \code{...} will be read with this column type.}
 
-\item{.col_names}{The column names which should be matched by \code{...}.}
+\item{.col_names}{Column names which should be matched by \code{...}.}
 }
 \value{
 A \link[readr:cols]{column specification}.

@@ -15,11 +15,11 @@ assert_mime_type(
 \arguments{
 \item{response}{A \link[httr:response]{response object}.}
 
-\item{mime_type}{The expected MIME type, e.g. \code{"application/json"}. A character scalar.}
+\item{mime_type}{Expected MIME type, e.g. \code{"application/json"}. A character scalar.}
 
-\item{msg}{The message to display in case of an error. Supports cli's \link[cli:inline-markup]{inline markup}. A character scalar.}
+\item{msg}{Message to display in case of an error. Supports cli's \link[cli:inline-markup]{inline markup}. A character scalar.}
 
-\item{msg_suffix}{An additional string to append to \code{msg}. Supports cli's \link[cli:inline-markup]{inline markup}.}
+\item{msg_suffix}{Additional string to append to \code{msg}. Supports cli's \link[cli:inline-markup]{inline markup}.}
 }
 \value{
 \code{response}, invisibly.

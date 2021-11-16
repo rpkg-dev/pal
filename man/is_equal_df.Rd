@@ -40,7 +40,7 @@ with differences. Then we check that
 
 \item{quiet}{Whether or not to output detected differences between \code{x} and \code{y} to the console.}
 
-\item{max_diffs}{The maximum number of differences shown. Only relevant if \code{quiet = FALSE} or \code{return_waldo_compare = TRUE}. Set \code{max_diffs = Inf} to see all
+\item{max_diffs}{Maximum number of differences shown. Only relevant if \code{quiet = FALSE} or \code{return_waldo_compare = TRUE}. Set \code{max_diffs = Inf} to see all
 differences.}
 
 \item{return_waldo_compare}{Whether to return a character vector of class \code{\link[waldo:compare]{waldo_compare}} describing the differences between \code{x} and \code{y}

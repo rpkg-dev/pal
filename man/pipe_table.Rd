@@ -16,7 +16,7 @@ pipe_table(
 )
 }
 \arguments{
-\item{x}{The dataframe/tibble/matrix to be converted to a pipe table.}
+\item{x}{Dataframe/tibble/matrix to be converted to a pipe table.}
 
 \item{incl_rownames}{Whether to include row names or not. A logical scalar or \code{NULL}. If \code{NULL}, row names are included if \code{rownames(x)} is neither \code{NULL}
 nor identical to \code{seq_len(nrow(x))}.}

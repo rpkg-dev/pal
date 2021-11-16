@@ -7,7 +7,7 @@
 assert_class_any(x, classes, name = "x")
 }
 \arguments{
-\item{x}{The \R object to test.}
+\item{x}{\R object to test.}
 
 \item{classes}{Class names to check for inheritance. A character vector.}
 

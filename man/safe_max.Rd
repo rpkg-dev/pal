@@ -7,7 +7,7 @@
 safe_max(..., rm_na = TRUE)
 }
 \arguments{
-\item{...}{The numeric objects of which to determine the maximum. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{Numeric objects of which to determine the maximum. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
 \item{rm_na}{Ignore missing values in \code{...}. If missing values are present and \code{rm_na = FALSE}, the result will always be \code{NA}.}
 }

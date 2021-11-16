@@ -12,8 +12,8 @@ assert_pkg(pkg, min_version = NULL, message = NULL, install_hint = NULL)
 \item{min_version}{Minimum required version number of \code{pkg}. Must be either \code{NULL} to ignore version numbers, or a single
 \code{\link[base:numeric_version]{package_version}} or something coercible to.}
 
-\item{message}{The error message to display in case the package is not installed. Supports cli's \link[cli:inline-markup]{inline markup}. If \code{NULL}, a sensible
-standard message is generated.}
+\item{message}{Error message to display in case the package is not installed. Supports cli's \link[cli:inline-markup]{inline markup}. If \code{NULL}, a sensible standard
+message is generated.}
 
 \item{install_hint}{Additional package installation instructions appended to \code{message}. Either \code{NULL} in order to autogenerate the hint, or a
 character scalar. Set \code{install_hint = ""} in order to disable the hint.}
@@ -40,6 +40,8 @@ pal::assert_pkg("yay",
                                       "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))}
 }
 \seealso{
+\code{\link[rlang:is_installed]{rlang::check_installed()}}
+
 Other R package functions:
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},

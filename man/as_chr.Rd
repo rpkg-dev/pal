@@ -7,7 +7,7 @@
 as_chr(...)
 }
 \arguments{
-\item{...}{The \R objects to be converted to a character vector. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{\R objects to be converted to a character vector. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 }
 \value{
 A character vector.

@@ -7,7 +7,7 @@
 xml_to_md(xml)
 }
 \arguments{
-\item{xml}{The CommonMark parse tree. An \code{\link[xml2:oldclass]{xml_document}}, \code{\link[xml2:oldclass]{xml_nodeset}} or
+\item{xml}{CommonMark parse tree. An \code{\link[xml2:oldclass]{xml_document}}, \code{\link[xml2:oldclass]{xml_nodeset}} or
 \code{\link[xml2:oldclass]{xml_node}}.}
 }
 \value{

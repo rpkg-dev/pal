@@ -160,12 +160,12 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The dataframe/tibble/matrix to be converted to a pipe table.</p></td>
+      <td><p>Dataframe/tibble/matrix to be converted to a pipe table.</p></td>
     </tr>
     <tr>
       <th>incl_rownames</th>
-      <td><p>Whether to include row names or not. A logical scalar or <code>NULL</code>. If <code>NULL</code>, row names are included if <code><a href='https://rdrr.io/r/base/colnames.html'>rownames(x)</a></code> is neither <code>NULL</code>
-nor identical to <code><a href='https://rdrr.io/r/base/seq.html'>seq_len(nrow(x))</a></code>.</p></td>
+      <td><p>Whether to include row names or not. A logical scalar or <code>NULL</code>. If <code>NULL</code>, row names are included if <code>rownames(x)</code> is neither <code>NULL</code>
+nor identical to <code>seq_len(nrow(x))</code>.</p></td>
     </tr>
     <tr>
       <th>strong_colnames</th>
@@ -179,7 +179,7 @@ nor identical to <code><a href='https://rdrr.io/r/base/seq.html'>seq_len(nrow(x)
       <th>align</th>
       <td><p>Column alignment. Either <code>NULL</code> for auto-alignment or a character vector consisting of <code>'l'</code> (left), <code>'c'</code> (center) and/or <code>'r'</code> (right). If
 <code>align = NULL</code>, numeric columns are right-aligned, and other columns are left-aligned. If <code>length(align) == 1L</code>, the string will be expanded to a vector
-of individual letters, e.g. <code>'clc'</code> becomes <code><a href='https://rdrr.io/r/base/c.html'>c('c', 'l', 'c')</a></code>.</p></td>
+of individual letters, e.g. <code>'clc'</code> becomes <code>c('c', 'l', 'c')</code>.</p></td>
     </tr>
     <tr>
       <th>label</th>
@@ -190,12 +190,12 @@ use <code>label = NA</code>.</p></td>
     <tr>
       <th>digits</th>
       <td><p>Maximum number of digits for numeric columns, passed to
-<code><a href='https://rdrr.io/r/base/Round.html'>round()</a></code>. This can also be a vector of length <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(x)</a></code>, to set
+<code><a href='https://rdrr.io/r/base/Round.html'>round()</a></code>. This can also be a vector of length <code>ncol(x)</code>, to set
 the number of digits for individual columns.</p></td>
     </tr>
     <tr>
       <th>format_args</th>
-      <td><p>A list of arguments to be passed to <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> to format table values, e.g. <code><a href='https://rdrr.io/r/base/list.html'>list(big.mark = ',')</a></code>.</p></td>
+      <td><p>A list of arguments to be passed to <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code> to format table values, e.g. <code>list(big.mark = ',')</code>.</p></td>
     </tr>
     </table>
 
@@ -206,7 +206,7 @@ the number of digits for individual columns.</p></td>
 
     <p>Missing values (<code>NA</code>) in the table are displayed as <code>NA</code> by
 default. If you want to display them with other characters, you can set the
-option <code>knitr.kable.NA</code>, e.g. <code><a href='https://rdrr.io/r/base/options.html'>options(knitr.kable.NA = '')</a></code> to
+option <code>knitr.kable.NA</code>, e.g. <code>options(knitr.kable.NA = '')</code> to
 hide <code>NA</code> values.</p>
     <h2 class="hasAnchor" id="create-tables-dynamically-in-roxygen-documentation"><a class="anchor" href="#create-tables-dynamically-in-roxygen-documentation"></a>Create tables dynamically in roxygen2 documentation</h2>
 
@@ -233,15 +233,16 @@ hide <code>NA</code> values.</p>
 <code><a href='strip_md.html'>strip_md</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>mtcars</span> |&gt; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>pipe_table</span><span class='op'>(</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; |                      | **mpg**| **cyl**| **disp**| **hp**| **drat**| **wt**| **qsec**| **vs**| **am**| **gear**| **carb**|
-#&gt; |:---------------------|-------:|-------:|--------:|------:|--------:|------:|--------:|------:|------:|--------:|--------:|
-#&gt; |**Mazda RX4**         |    21.0|       6|      160|    110|     3.90|  2.620|    16.46|      0|      1|        4|        4|
-#&gt; |**Mazda RX4 Wag**     |    21.0|       6|      160|    110|     3.90|  2.875|    17.02|      0|      1|        4|        4|
-#&gt; |**Datsun 710**        |    22.8|       4|      108|     93|     3.85|  2.320|    18.61|      1|      1|        4|        1|
-#&gt; |**Hornet 4 Drive**    |    21.4|       6|      258|    110|     3.08|  3.215|    19.44|      1|      0|        3|        1|
-#&gt; |**Hornet Sportabout** |    18.7|       8|      360|    175|     3.15|  3.440|    17.02|      0|      0|        3|        2|
-#&gt; |**Valiant**           |    18.1|       6|      225|    105|     2.76|  3.460|    20.22|      1|      0|        3|        1|</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>mtcars</span> |&gt; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>pipe_table</span><span class='op'>(</span><span class='op'>)</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |                      | **mpg**| **cyl**| **disp**| **hp**| **drat**| **wt**| **qsec**| **vs**| **am**| **gear**| **carb**|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |:---------------------|-------:|-------:|--------:|------:|--------:|------:|--------:|------:|------:|--------:|--------:|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |**Mazda RX4**         |    21.0|       6|      160|    110|     3.90|  2.620|    16.46|      0|      1|        4|        4|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |**Mazda RX4 Wag**     |    21.0|       6|      160|    110|     3.90|  2.875|    17.02|      0|      1|        4|        4|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |**Datsun 710**        |    22.8|       4|      108|     93|     3.85|  2.320|    18.61|      1|      1|        4|        1|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |**Hornet 4 Drive**    |    21.4|       6|      258|    110|     3.08|  3.215|    19.44|      1|      0|        3|        1|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |**Hornet Sportabout** |    18.7|       8|      360|    175|     3.15|  3.440|    17.02|      0|      0|        3|        2|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> |**Valiant**           |    18.1|       6|      225|    105|     2.76|  3.460|    20.22|      1|      0|        3|        1|</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

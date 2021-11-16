@@ -7,7 +7,7 @@
 cat_lines(...)
 }
 \arguments{
-\item{...}{The \R object(s) to print. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{\R object(s) to print. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 }
 \value{
 None (invisible \code{NULL}).

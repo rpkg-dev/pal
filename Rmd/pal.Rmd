@@ -138,7 +138,7 @@ subnode_ix <- function(xml_nodes,
 #'
 #' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
 #'
-#' @param n The desired length of the integer sequence.
+#' @param n Desired length of the integer sequence.
 #'
 #' @return An integer sequence starting from `1L`.
 #' @family stat
@@ -181,7 +181,7 @@ devel](https://github.com/mllg/checkmate/pull/199) -> update fns below as soon a
 #' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
 #' - `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
-#' @param ... The numeric objects of which to determine the maximum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... Numeric objects of which to determine the maximum. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param rm_na Ignore missing values in `...`. If missing values are present and `rm_na = FALSE`, the result will always be `NA`.
 #'
 #' @return A numeric scalar or empty value, of the same type as `...`.
@@ -235,7 +235,7 @@ safe_max <- function(...,
 #' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
 #' - `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
-#' @param ... The numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... Numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @inheritParams safe_max
 #'
 #' @inherit safe_max return
@@ -289,8 +289,8 @@ safe_min <- function(...,
 #' A computationally more efficient alternative would be the unexported `scales:::round_any()` which drives [scales::number()] – with the drawback that it lacks
 #' control of rounding up exact remainders of `accuracy / 2`, i.e. it _always_ rounds _off_.
 #'
-#' @param x A vector of numbers to round.
-#' @param to The number to round `x` to. A numeric scalar.
+#' @param x Vector of numbers to round.
+#' @param to Number to round `x` to. A numeric scalar.
 #' @param round_up Whether to round a remainder of exactly `to / 2` _up_ or not. Set to `FALSE` in order to round _off_.
 #'
 #' @return A numeric vector of the same length as `x`.
@@ -419,7 +419,7 @@ stat_mode <- function(x,
 #' @param ignore_col_types Whether or not to distinguish similar column types. Currently, if set to `TRUE`, this will convert factor to character and integer to
 #'   double before comparison.
 #' @param quiet Whether or not to output detected differences between `x` and `y` to the console.
-#' @param max_diffs The maximum number of differences shown. Only relevant if `quiet = FALSE` or `return_waldo_compare = TRUE`. Set `max_diffs = Inf` to see all
+#' @param max_diffs Maximum number of differences shown. Only relevant if `quiet = FALSE` or `return_waldo_compare = TRUE`. Set `max_diffs = Inf` to see all
 #'   differences.
 #' @param return_waldo_compare Whether to return a character vector of class [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`
 #'   instead of `TRUE` or `FALSE`.
@@ -715,7 +715,7 @@ rm_list_lvl <- function(x,
 #' Drops all list elements whose names match the provided set.
 #'
 #' @param x A list.
-#' @param drop The names of the list elements to drop.
+#' @param drop Names of the list elements to drop.
 #'
 #' @return A list.
 #' @family list
@@ -752,7 +752,7 @@ list_drop <- function(x,
 #' Keeps only the list elements whose names match the provided set.
 #'
 #' @param x A list.
-#' @param keep The names of the list elements to keep.
+#' @param keep Names of the list elements to keep.
 #'
 #' @return A list.
 #' @family list
@@ -834,7 +834,7 @@ as_comment_string <- function(...,
 #'
 #' _Recursively_ applies [as.character()] to its inputs.
 #'
-#' @param ... The \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character vector.
 #' @family string
@@ -896,8 +896,8 @@ as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
 #'
 #' Similar to [`paste0(..., collapse = "")`][paste0()], but _recursively_ converts its inputs to type character.
 #'
-#' @param ... The \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @param sep The separator to delimit `...`. Defaults to none (`""`).
+#' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param sep Separator to delimit `...`. Defaults to none (`""`).
 #'
 #' @return A character scalar.
 #' @family string
@@ -937,8 +937,8 @@ as_string <- function(...,
 #'
 #' Note that this function doesn't alter any characters in `x` other than the first and the last one.
 #'
-#' @param x The input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
-#' @param punctuation_mark The punctuation mark to be appended to `x`. A character scalar.
+#' @param x Input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
+#' @param punctuation_mark Punctuation mark to be appended to `x`. A character scalar.
 #'
 #' @return A character vector.
 #' @family string
@@ -1030,7 +1030,7 @@ TODO:
 #'
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
 #'
-#' @param ... The regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... Regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @return A character scalar.
 #' @seealso The [rex][rex::rex] package which provides an intuitive framework to build complex regular expressions.
@@ -1066,7 +1066,7 @@ fuse_regex <- function(...) {
 #' Returns the column names of a string in a [delimiter-separated-value](https://en.wikipedia.org/wiki/Delimiter-separated_values) format like
 #' [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) or [TSV](https://en.wikipedia.org/wiki/Tab-separated_values).
 #'
-#' @param x The delimiter-separated string. A character scalar.
+#' @param x Delimiter-separated string. A character scalar.
 #' @param delim Single character used to separate fields within `x`.
 #' @param quote Single character used to quote strings within `x`. Set to `NULL` for none.
 #'
@@ -1108,9 +1108,9 @@ TODO: Thoroughly compare this fn to `knitr::combine_words()` and maybe deprecate
 #' Takes a vector or list and concatenates its elements to a single string separated in prose-style.
 #'
 #' @param x A vector or a list.
-#' @param wrap The string (usually a single character) in which `x` is to be wrapped.
-#' @param separator The separator to delimit the elements of `x`.
-#' @param last_separator The separator to delimit the second-last and last element of `x`.
+#' @param wrap String (usually a single character) in which `x` is to be wrapped.
+#' @param separator Separator to delimit the elements of `x`.
+#' @param last_separator Separator to delimit the second-last and last element of `x`.
 #'
 #' @return A character scalar.
 #' @family string
@@ -1151,9 +1151,9 @@ prose_ls <- function(x,
 #' [`format()`][base::format()].
 #'
 #' @param x A numeric vector to prettify.
-#' @param round_to The number to round `x` to. A numeric scalar.
-#' @param big_mark The character used between every 3 digits to separate thousands.
-#' @param decimal_mark The character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
+#' @param round_to Number to round `x` to. A numeric scalar.
+#' @param big_mark Character used between every 3 digits to separate thousands.
+#' @param decimal_mark Character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
 #' @param justify_right Whether to right-justify the results to a common width. See the `trim` parameter of [base::format()] for details.
 #' @param ... Further arguments passed on to [base::format()].
 #' @inheritParams round_to
@@ -1192,7 +1192,7 @@ prettify_nr <- function(x,
 #' 
 #' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
 #'
-#' @param ... The \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @inherit base::cat return
 #' @family string
@@ -1230,9 +1230,9 @@ cat_lines <- function(...) {
 #' Wrap character vector in string
 #'
 #' @param x A character vector or something coercible to. Will be fed to [as_chr()] before wrapping.
-#' @param wrap The string `x` is to be wrapped in.
+#' @param wrap Character sequence `x` is to be wrapped in. A character vector or something coercible to.
 #'
-#' @return A character vector.
+#' @return A character vector of the same length as `wrap`.
 #' @family string
 #' @export
 #'
@@ -1293,12 +1293,12 @@ NOTES:
 #' 
 #' - **_A misspelled argument will not raise an error. This makes it easy for typos to go unnoticed._**
 #'
-#' @param ... The dots argument to check.
-#' @param .fn The function the `...` will be passed on to.
+#' @param ... Dots argument to check.
+#' @param .fn Function the `...` will be passed on to.
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.fn`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action The action to take when the check fails. A function expecting a condition message string as first argument. For example [cli::cli_abort()],
+#' @param .action Action to take when the check fails. A function expecting a condition message string as first argument. For example [cli::cli_abort()],
 #'   [cli::cli_warn()], [cli::cli_inform()] or [rlang::signal()].
 #'
 #' @family dots
@@ -1524,12 +1524,13 @@ TODO:
 #' @param pkg Package name. A character scalar.
 #' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
 #'   [`package_version`][base::package_version()] or something coercible to.
-#' @param message The error message to display in case the package is not installed. `r pkgsnip::param_label("cli_markup_support")` If `NULL`, a sensible
-#'   standard message is generated.
+#' @param message Error message to display in case the package is not installed. `r pkgsnip::param_label("cli_markup_support")` If `NULL`, a sensible standard
+#'   message is generated.
 #' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
 #'   character scalar. Set `install_hint = ""` in order to disable the hint.
 #'
 #' @return `pkg`, invisibly.
+#' @seealso [rlang::check_installed()]
 #' @family rpkgs
 #' @export
 #'
@@ -1720,7 +1721,7 @@ is_pkg_cran <- function(pkg,
 #' Convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that it will only return `TRUE` for the root of a
 #' package directory, not its subdirectories.
 #'
-#' @param path The path of the directory to check. A character scalar. Defaults to the current working directory.
+#' @param path Path of the directory to check. A character scalar. Defaults to the current working directory.
 #'
 #' @return `TRUE` if `path` is the root directory of an \R package, `FALSE` otherwise.
 #' @family rpkgs
@@ -1753,7 +1754,7 @@ TODO:
 #' Convenience wrapper around the [rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the root of a
 #' package directory and the `pkgdown` subdirectory, not other subdirectories.
 #'
-#' @param path The path of the R package directory to check. A character scalar. Defaults to the current working directory.
+#' @param path Path of the R package directory to check. A character scalar. Defaults to the current working directory.
 #'
 #' @return `TRUE` if pkgdown is set up for `path`, `FALSE` otherwise.
 #' @family rpkgs
@@ -2067,7 +2068,7 @@ roxy_blocks <- function(pkg = NULL,
 #' Extracts a single object from a list of [`roxy_block`][roxygen2::roxy_block] objects.
 #'
 #' @param blocks A list of [`roxy_block`][roxygen2::roxy_block] objects as returned by [roxy_blocks()].
-#' @param obj_name The object name to extract, usually a function name. A character scalar.
+#' @param obj_name Object name to extract, usually a function name. A character scalar.
 #'
 #' @return A [`roxy_block`][roxygen2::roxy_block] object.
 #' @family roxy
@@ -2101,9 +2102,9 @@ roxy_obj <- function(blocks,
 #' Extracts the value(s) belonging to the `tag_name`s documenting `obj_name` from a list of [`roxy_block`][roxygen2::roxy_block] objects.
 #'
 #' @inheritParams roxy_obj
-#' @param tag_names The name(s) of the [roxygen2 tags](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value(s) from. A character
+#' @param tag_names Name(s) of the [roxygen2 tags](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value(s) from. A character
 #'   vector.
-#' @param param_name The parameter name to extract the value from. Only relevant if `"param" %in% tag_names`. A character scalar.
+#' @param param_name Parameter name to extract the value from. Only relevant if `"param" %in% tag_names`. A character scalar.
 #'
 #' @return A character vector of the same length as `tag_names`.
 #' @family roxy
@@ -2173,13 +2174,13 @@ TODO:
 #' Convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
 #' list](https://pandoc.org/MANUAL.html#lists).
 #'
-#' @param x The character vector to be converted to a Markdown list.
-#' @param type The Markdown list type. One of
+#' @param x Character vector to be converted to a Markdown list.
+#' @param type Markdown list type. One of
 #'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to `<ul>` in HTML.
 #'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to `<ol>` in HTML.
 #'   - `"ordered_roman"` for a variation of an ordered/numbered list with uppercase roman numerals instead of Arabic numerals as list markers.
 #' @param tight Whether or not to add additional spacing between list items.
-#' @param indent_lvl The level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
+#' @param indent_lvl Level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
 #'   integer scalar.
 #' @param wrap An optional string to wrap the list items in.
 #'
@@ -2237,7 +2238,7 @@ as_md_list <- function(x,
 #'
 #' @inherit knitr::kable details
 #'
-#' @param x The dataframe/tibble/matrix to be converted to a pipe table.
+#' @param x Dataframe/tibble/matrix to be converted to a pipe table.
 #' @param incl_rownames Whether to include row names or not. A logical scalar or `NULL`. If `NULL`, row names are included if `rownames(x)` is neither `NULL`
 #'   nor identical to `seq_len(nrow(x))`.
 #' @param strong_colnames Highlight column names by formatting them `<strong>` (wrapping them in two asterisks).
@@ -2392,7 +2393,7 @@ TODO:
 #' @inheritParams as_line_feed_chr
 #' @inheritParams gitlab_document
 #' @inheritParams commonmark::markdown_xml
-#' @param md The (R) Markdown file content as a character scalar.
+#' @param md (R) Markdown file content as a character scalar.
 #' @param hardbreaks Whether or not to treat newlines as hard line breaks.
 #' @param strip_xml_ns Whether or not to [remove the default XML namespace][xml2::xml_ns_strip] (`d1`) assigned by [commonmark::markdown_xml()].
 #'
@@ -2446,7 +2447,7 @@ md_to_xml <- function(md,
 #' **[CommonMark](https://commonmark.org/) specification**, but **do not** return any information about the document's **heading hierarchy**.
 #' `md_xml_subnode_ix()` fills this gap by giving the hierarchy structure in the form of the XML subnode indices for every node at the highest level of `xml`.
 #'
-#' @param xml The CommonMark parse tree. An [`xml_document`][xml2::xml_document-class], [`xml_nodeset`][xml2::xml_nodeset-class] or
+#' @param xml CommonMark parse tree. An [`xml_document`][xml2::xml_document-class], [`xml_nodeset`][xml2::xml_nodeset-class] or
 #'   [`xml_node`][xml2::xml_node-class].
 #'
 #' @return A list of integer vectors of the same length as the number of XML nodes at the highest level of `xml`.
@@ -2537,8 +2538,8 @@ xml_to_md <- function(xml) {
 #' 
 #' `r pkgsnip::md_snip("rstudio_addin_hint")`
 #'
-#' @param input The path to the R Markdown README file to be built. A character scalar.
-#' @param output The path of the built Markdown README. A character scalar.
+#' @param input Path to the R Markdown README file to be built. A character scalar.
+#' @param output Path to the built Markdown README. A character scalar.
 #' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output` (i.e. in the same parent
 #'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
 #'   be built with the \R option `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
@@ -2658,7 +2659,7 @@ build_readme <- function(input = "README.Rmd",
 #' This is basically a convenience wrapper to be able to access the current `knitr.table.format` in a hassle-free way, i.e. it provides the conditional logic to
 #' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
 #'
-#' @param default The knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
+#' @param default knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
 #' `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
 #'   
 #' See [knitr::kable()]'s `format` argument for details.
@@ -2708,9 +2709,9 @@ knitr_table_format <- function(default = c("pipe",
 #' whitespace characters (incl. newlines) before the YAML metadata block are allowed.
 #'
 #' @inheritParams as_line_feed_chr
-#' @param rmd The R Markdown file content as a character scalar.
+#' @param rmd R Markdown file content as a character scalar.
 #'
-#' @return The body of the R Markdown file as a character vector of lines.
+#' @return Body of the R Markdown file as a character vector of lines.
 #' @family rmd_knitr
 #' @export
 #'
@@ -3092,10 +3093,10 @@ gh_text_files <- function(path,
 #' Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized [GitHub Personal Access Token
 #' (PAT)][gh::gh_token].
 #'
-#' @param path The path from the repository's root to the desired directory. A [path][fs::fs_path] or character scalar.
-#' @param owner The repository owner's GitHub user or organization name. A character scalar.
-#' @param name The repository name. A character scalar.
-#' @param rev The [Git revision expression](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem)
+#' @param path Path from the repository's root to the desired directory. A [path][fs::fs_path] or character scalar.
+#' @param owner Repository owner's GitHub user or organization name. A character scalar.
+#' @param name Repository name. A character scalar.
+#' @param rev [Git revision expression](https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem)
 #'   matching the desired Git tree object, e.g. a branch name or another symbolic reference like `"HEAD@{yesterday}"` or `"HEAD~10"`. A character scalar.
 #' @param recurse Whether or not to recurse into subdirectories of `path`.
 #' @param incl_dirs Whether or not to list directories (and subdirectories if `recurse = TRUE`).
@@ -3210,9 +3211,9 @@ Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](http
 #' [httr::http_type()].
 #'
 #' @param response A [response object][httr::response].
-#' @param mime_type The expected MIME type, e.g. `"application/json"`. A character scalar.
-#' @param msg The message to display in case of an error. `r pkgsnip::param_label("cli_markup_support")` A character scalar.
-#' @param msg_suffix An additional string to append to `msg`. `r pkgsnip::param_label("cli_markup_support")`
+#' @param mime_type Expected MIME type, e.g. `"application/json"`. A character scalar.
+#' @param msg Message to display in case of an error. `r pkgsnip::param_label("cli_markup_support")` A character scalar.
+#' @param msg_suffix Additional string to append to `msg`. `r pkgsnip::param_label("cli_markup_support")`
 #'
 #' @return `response`, invisibly.
 #' @family http
@@ -3271,8 +3272,8 @@ TODO: Figure out if it's really sensible to handle/catch interrupts.
 #' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
 #' based on [curl](https://jeroen.cran.dev/curl/).
 #'
-#' @param url The HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
-#' @param retries The maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar >= `0`. The retries are performed using
+#' @param url HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
+#' @param retries Maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar >= `0`. The retries are performed using
 #'   exponential backoff and jitter, see [httr::RETRY()] for details.
 #' @param quiet Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant
 #'   if `retries > 0`.
@@ -3443,9 +3444,9 @@ cli_process_expr <- function(expr,
 #' Checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem
 #' path.
 #'
-#' @param cmd The system command to invoke the CLI tool. A character scalar.
-#' @param get_cmd_path Return the filesystem path to the CLI tool. If `FALSE` (the default), a boolean is returned indicating if the CLI tool is found on the
-#'   system or not.
+#' @param cmd System command to invoke the CLI tool. A character scalar.
+#' @param get_cmd_path Whether or not to return the filesystem path to the CLI tool. If `FALSE`, a boolean is returned indicating if the CLI tool is found on
+#'   the system or not.
 #' @param force_which If set to `TRUE`, [Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
 #'   availability of `cmd` on Unix-like systems. On Windows, `Sys.which()` is used in any case. `command -v` is
 #'   [generally recommended for bourne-like shells](https://unix.stackexchange.com/q/85249/201803) and therefore is the default on Linux, macOS and other
@@ -3571,7 +3572,7 @@ run_cli <- function(cmd,
 ```{r}
 #' Assert an object is member of any of the specified classes
 #'
-#' @param x The \R object to test.
+#' @param x \R object to test.
 #' @param classes Class names to check for inheritance. A character vector.
 #' @param name Name of the checked object to print in error message in case the assertion fails. A character scalar.
 #'
@@ -3616,8 +3617,8 @@ assert_class_any <- function(x,
 #' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
 #' (e.g. as output by the `print()` methods of tidyverse packages) are included in the result. To remove them, use [cli::ansi_strip()].
 #'
-#' @param x The \R object of which the output of `print()` is to be captured.
-#' @param collapse An optional string for concatenating the results. If `NULL`, a character vector of print lines is returned.
+#' @param x \R object of which the output of `print()` is to be captured.
+#' @param collapse Optional string for concatenating the results. If `NULL`, a character vector of print lines is returned.
 #'
 #' @return A character vector if `collapse = NULL`, otherwise a character scalar.
 #' @export
@@ -3667,7 +3668,7 @@ NOTES:
 #' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by `col_*()`, or their
 #'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]). `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
-#' @param .col_names The column names which should be matched by `...`.
+#' @param .col_names Column names which should be matched by `...`.
 #'
 #' @return A [column specification][readr::cols].
 #' @export
@@ -3747,8 +3748,8 @@ cols_regex <- function(...,
 ```{r}
 #' Order a vector by another vector
 #'
-#' @param x The vector to be ordered.
-#' @param by The reference vector which `x` will be ordered by.
+#' @param x Vector to be ordered.
+#' @param by Reference vector which `x` will be ordered by.
 #'
 #' @return A permutation of `x`.
 #' @export
@@ -3805,13 +3806,13 @@ TODO:
 #' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
 #'   this function.
 #'
-#' @param param The parameter name. A character scalar.
+#' @param param Parameter name. A character scalar.
 #' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
-#' @param env The [environment][base::environment] `fn` is defined in. See [formals()] for details.
+#' @param env [Environment][base::environment] `fn` is defined in. See [formals()] for details.
 #' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
-#' @param wrap The string (usually a single character) in which `param`s default values are to be wrapped.
-#' @param separator The separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
-#' @param last_separator The separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param wrap String (usually a single character) in which `param`s default values are to be wrapped.
+#' @param separator Separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param last_separator Separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
 #'
 #' @return A character vector. Of length 1 if `as_scalar = TRUE`.
 #' @export

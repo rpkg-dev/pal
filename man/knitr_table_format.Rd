@@ -7,7 +7,7 @@
 knitr_table_format(default = c("pipe", "simple", "html", "latex", "rst"))
 }
 \arguments{
-\item{default}{The knitr table format to fall back to when the \R option \code{knitr.table.format} is not set. One of
+\item{default}{knitr table format to fall back to when the \R option \code{knitr.table.format} is not set. One of
 \itemize{
 \item \code{"pipe"}
 \item \code{"simple"}

@@ -160,7 +160,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>md</th>
-      <td><p>The (R) Markdown file content as a character scalar.</p></td>
+      <td><p>(R) Markdown file content as a character scalar.</p></td>
     </tr>
     <tr>
       <th>smart_punctuation</th>
@@ -210,33 +210,34 @@ vector with a subset of available <a href='https://rdrr.io/pkg/commonmark/man/ex
 <code><a href='xml_to_md.html'>xml_to_md</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"Rmd/pal.Rmd"</span>,
-                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,
-                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> |&gt;
-  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>md_to_xml</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; {xml_document}
-#&gt; &lt;document&gt;
-#&gt;  [1] &lt;heading level="1"&gt;\n  &lt;text xml:space="preserve"&gt;INTERNAL&lt;/text&gt;\n&lt;/hea ...
-#&gt;  [2] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Logo&lt;/text&gt;\n&lt;/heading&gt;
-#&gt;  [3] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;The package logo is based on t ...
-#&gt;  [4] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;This was fed to &lt;/text&gt;\n  &lt;li ...
-#&gt;  [5] &lt;code_block info="{r, purl = FALSE}" xml:space="preserve"&gt;hexSticker::st ...
-#&gt;  [6] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Finally, &lt;/text&gt;\n  &lt;code xml: ...
-#&gt;  [7] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Avoid &lt;/text&gt;\n  &lt;code ...
-#&gt;  [8] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Cf. &lt;/text&gt;\n  &lt;link destinati ...
-#&gt;  [9] &lt;code_block info="{r}" xml:space="preserve"&gt;utils::globalVariables(names ...
-#&gt; [10] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Constants&lt;/text&gt;\n&lt;/he ...
-#&gt; [11] &lt;code_block info="{r}" xml:space="preserve"&gt;# forbidden dots arguments\n ...
-#&gt; [12] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Functions&lt;/text&gt;\n&lt;/he ...
-#&gt; [13] &lt;heading level="3"&gt;\n  &lt;code xml:space="preserve"&gt;normalize_tree_path&lt;/c ...
-#&gt; [14] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Normalize a tree path. Useful  ...
-#&gt; [15] &lt;code_block info="{r}" xml:space="preserve"&gt;normalize_tree_path &amp;lt;- fu ...
-#&gt; [16] &lt;heading level="3"&gt;\n  &lt;text xml:space="preserve"&gt;CommonMark parsing hel ...
-#&gt; [17] &lt;heading level="4"&gt;\n  &lt;code xml:space="preserve"&gt;is_heading_node&lt;/code&gt; ...
-#&gt; [18] &lt;code_block info="{r}" xml:space="preserve"&gt;is_heading_node &amp;lt;- functi ...
-#&gt; [19] &lt;heading level="4"&gt;\n  &lt;code xml:space="preserve"&gt;node_heading_lvl&lt;/code ...
-#&gt; [20] &lt;code_block info="{r}" xml:space="preserve"&gt;node_heading_lvl &amp;lt;- funct ...
-#&gt; ...</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"Rmd/pal.Rmd"</span>,</span>
+<span class='r-in'>                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span>
+<span class='r-in'>                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>md_to_xml</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {xml_document}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;document&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] &lt;heading level="1"&gt;\n  &lt;text xml:space="preserve"&gt;INTERNAL&lt;/text&gt;\n&lt;/hea ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Logo&lt;/text&gt;\n&lt;/heading&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;The package logo is based on t ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;This was fed to &lt;/text&gt;\n  &lt;li ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] &lt;code_block info="{r, purl = FALSE}" xml:space="preserve"&gt;hexSticker::st ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Finally, &lt;/text&gt;\n  &lt;code xml: ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Avoid &lt;/text&gt;\n  &lt;code ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Cf. &lt;/text&gt;\n  &lt;link destinati ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] &lt;code_block info="{r}" xml:space="preserve"&gt;utils::globalVariables(names ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Constants&lt;/text&gt;\n&lt;/he ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] &lt;code_block info="{r}" xml:space="preserve"&gt;# forbidden dots arguments\n ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] &lt;heading level="2"&gt;\n  &lt;text xml:space="preserve"&gt;Functions&lt;/text&gt;\n&lt;/he ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] &lt;heading level="3"&gt;\n  &lt;code xml:space="preserve"&gt;normalize_tree_path&lt;/c ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] &lt;paragraph&gt;\n  &lt;text xml:space="preserve"&gt;Normalize a tree path. Useful  ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] &lt;code_block info="{r}" xml:space="preserve"&gt;normalize_tree_path &amp;lt;- fu ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] &lt;heading level="3"&gt;\n  &lt;text xml:space="preserve"&gt;CommonMark parsing hel ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] &lt;heading level="4"&gt;\n  &lt;code xml:space="preserve"&gt;is_heading_node&lt;/code&gt; ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] &lt;code_block info="{r}" xml:space="preserve"&gt;is_heading_node &amp;lt;- functi ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] &lt;heading level="4"&gt;\n  &lt;code xml:space="preserve"&gt;node_heading_lvl&lt;/code ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] &lt;code_block info="{r}" xml:space="preserve"&gt;node_heading_lvl &amp;lt;- funct ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ...</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

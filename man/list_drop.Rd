@@ -9,7 +9,7 @@ list_drop(x, drop)
 \arguments{
 \item{x}{A list.}
 
-\item{drop}{The names of the list elements to drop.}
+\item{drop}{Names of the list elements to drop.}
 }
 \value{
 A list.

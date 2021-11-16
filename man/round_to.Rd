@@ -7,9 +7,9 @@
 round_to(x, to = 0.2, round_up = TRUE)
 }
 \arguments{
-\item{x}{A vector of numbers to round.}
+\item{x}{Vector of numbers to round.}
 
-\item{to}{The number to round \code{x} to. A numeric scalar.}
+\item{to}{Number to round \code{x} to. A numeric scalar.}
 
 \item{round_up}{Whether to round a remainder of exactly \code{to / 2} \emph{up} or not. Set to \code{FALSE} in order to round \emph{off}.}
 }

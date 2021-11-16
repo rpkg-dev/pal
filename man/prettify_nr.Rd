@@ -17,13 +17,13 @@ prettify_nr(
 \arguments{
 \item{x}{A numeric vector to prettify.}
 
-\item{round_to}{The number to round \code{x} to. A numeric scalar.}
+\item{round_to}{Number to round \code{x} to. A numeric scalar.}
 
 \item{round_up}{Whether to round a remainder of exactly \code{to / 2} \emph{up} or not. Set to \code{FALSE} in order to round \emph{off}.}
 
-\item{big_mark}{The character used between every 3 digits to separate thousands.}
+\item{big_mark}{Character used between every 3 digits to separate thousands.}
 
-\item{decimal_mark}{The character used to indicate the numeric decimal point. Only relevant if \code{x} does not solely consist of integers.}
+\item{decimal_mark}{Character used to indicate the numeric decimal point. Only relevant if \code{x} does not solely consist of integers.}
 
 \item{justify_right}{Whether to right-justify the results to a common width. See the \code{trim} parameter of \code{\link[base:format]{base::format()}} for details.}
 

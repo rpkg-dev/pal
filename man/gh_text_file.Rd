@@ -7,13 +7,13 @@
 gh_text_file(path, owner, name, rev = "HEAD")
 }
 \arguments{
-\item{path}{The path from the repository's root to the desired directory. A \link[fs:fs_path]{path} or character scalar.}
+\item{path}{Path from the repository's root to the desired directory. A \link[fs:fs_path]{path} or character scalar.}
 
-\item{owner}{The repository owner's GitHub user or organization name. A character scalar.}
+\item{owner}{Repository owner's GitHub user or organization name. A character scalar.}
 
-\item{name}{The repository name. A character scalar.}
+\item{name}{Repository name. A character scalar.}
 
-\item{rev}{The \href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{Git revision expression}
+\item{rev}{\href{https://git-scm.com/docs/revisions#Documentation/revisions.txt-emltrevgtltpathgtemegemHEADREADMEememmasterREADMEem}{Git revision expression}
 matching the desired Git tree object, e.g. a branch name or another symbolic reference like \code{"HEAD@{yesterday}"} or \code{"HEAD~10"}. A character scalar.}
 }
 \value{

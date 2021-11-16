@@ -7,9 +7,9 @@
 is_http_success(url, retries = 0L, quiet = TRUE)
 }
 \arguments{
-\item{url}{The HTTP protocol address. The scheme is optional, so both \code{"google.com"} and \code{"https://google.com"} will work. A character scalar.}
+\item{url}{HTTP protocol address. The scheme is optional, so both \code{"google.com"} and \code{"https://google.com"} will work. A character scalar.}
 
-\item{retries}{The maximum number of retries of the \code{HEAD} request in case of an HTTP error. An integer scalar >= \code{0}. The retries are performed using
+\item{retries}{Maximum number of retries of the \code{HEAD} request in case of an HTTP error. An integer scalar >= \code{0}. The retries are performed using
 exponential backoff and jitter, see \code{\link[httr:RETRY]{httr::RETRY()}} for details.}
 
 \item{quiet}{Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant

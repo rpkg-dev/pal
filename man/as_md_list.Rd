@@ -13,9 +13,9 @@ as_md_list(
 )
 }
 \arguments{
-\item{x}{The character vector to be converted to a Markdown list.}
+\item{x}{Character vector to be converted to a Markdown list.}
 
-\item{type}{The Markdown list type. One of
+\item{type}{Markdown list type. One of
 \itemize{
 \item \code{"unordered"} for an unordered aka \href{https://pandoc.org/MANUAL.html#bullet-lists}{bullet list}. Corresponds to \verb{<ul>} in HTML.
 \item \code{"ordered"} for an ordered aka \href{https://pandoc.org/MANUAL.html#ordered-lists}{numbered list}. Corresponds to \verb{<ol>} in HTML.
@@ -24,7 +24,7 @@ as_md_list(
 
 \item{tight}{Whether or not to add additional spacing between list items.}
 
-\item{indent_lvl}{The level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
+\item{indent_lvl}{Level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
 integer scalar.}
 
 \item{wrap}{An optional string to wrap the list items in.}

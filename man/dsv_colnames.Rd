@@ -7,7 +7,7 @@
 dsv_colnames(x, delim = ",", quote = "\\"")
 }
 \arguments{
-\item{x}{The delimiter-separated string. A character scalar.}
+\item{x}{Delimiter-separated string. A character scalar.}
 
 \item{delim}{Single character used to separate fields within \code{x}.}
 

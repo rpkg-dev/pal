@@ -15,19 +15,19 @@ prose_ls_fn_param(
 )
 }
 \arguments{
-\item{param}{The parameter name. A character scalar.}
+\item{param}{Parameter name. A character scalar.}
 
 \item{fn}{A \link[base:function]{function} or a function name (searched for in \code{env}). See \code{\link[=formals]{formals()}} for details.}
 
-\item{env}{The \link[base:environment]{environment} \code{fn} is defined in. See \code{\link[=formals]{formals()}} for details.}
+\item{env}{\link[base:environment]{Environment} \code{fn} is defined in. See \code{\link[=formals]{formals()}} for details.}
 
 \item{as_scalar}{Whether to return the result as a single string concatenated by \code{separator} and \code{last_separator}.}
 
-\item{wrap}{The string (usually a single character) in which \code{param}s default values are to be wrapped.}
+\item{wrap}{String (usually a single character) in which \code{param}s default values are to be wrapped.}
 
-\item{separator}{The separator to delimit \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
+\item{separator}{Separator to delimit \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
 
-\item{last_separator}{The separator to delimit the second-last and last one of \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
+\item{last_separator}{Separator to delimit the second-last and last one of \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
 }
 \value{
 A character vector. Of length 1 if \code{as_scalar = TRUE}.

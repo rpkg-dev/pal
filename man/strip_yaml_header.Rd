@@ -7,7 +7,7 @@
 strip_yaml_header(rmd, eol = c("LF", "CRLF", "CR", "LFCR"))
 }
 \arguments{
-\item{rmd}{The R Markdown file content as a character scalar.}
+\item{rmd}{R Markdown file content as a character scalar.}
 
 \item{eol}{End of line (EOL) control character sequence. One of
 \itemize{
@@ -18,7 +18,7 @@ strip_yaml_header(rmd, eol = c("LF", "CRLF", "CR", "LFCR"))
 }}
 }
 \value{
-The body of the R Markdown file as a character vector of lines.
+Body of the R Markdown file as a character vector of lines.
 }
 \description{
 Extracts the body from R Markdown file content, stripping a possible \href{https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata}{YAML metadata block} at the beginning.

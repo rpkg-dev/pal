@@ -7,9 +7,9 @@
 order_by(x, by)
 }
 \arguments{
-\item{x}{The vector to be ordered.}
+\item{x}{Vector to be ordered.}
 
-\item{by}{The reference vector which \code{x} will be ordered by.}
+\item{by}{Reference vector which \code{x} will be ordered by.}
 }
 \value{
 A permutation of \code{x}.

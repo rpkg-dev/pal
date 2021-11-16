@@ -9,7 +9,7 @@ roxy_obj(blocks, obj_name)
 \arguments{
 \item{blocks}{A list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects as returned by \code{\link[=roxy_blocks]{roxy_blocks()}}.}
 
-\item{obj_name}{The object name to extract, usually a function name. A character scalar.}
+\item{obj_name}{Object name to extract, usually a function name. A character scalar.}
 }
 \value{
 A \code{\link[roxygen2:roxy_block]{roxy_block}} object.

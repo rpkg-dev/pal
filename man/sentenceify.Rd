@@ -7,9 +7,9 @@
 sentenceify(x, punctuation_mark = ".")
 }
 \arguments{
-\item{x}{The input to be converted to \href{https://en.wikipedia.org/wiki/Letter_case#Case_styles}{sentence case}, typically a character vector.}
+\item{x}{Input to be converted to \href{https://en.wikipedia.org/wiki/Letter_case#Case_styles}{sentence case}, typically a character vector.}
 
-\item{punctuation_mark}{The punctuation mark to be appended to \code{x}. A character scalar.}
+\item{punctuation_mark}{Punctuation mark to be appended to \code{x}. A character scalar.}
 }
 \value{
 A character vector.

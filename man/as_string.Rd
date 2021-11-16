@@ -7,9 +7,9 @@
 as_string(..., sep = "")
 }
 \arguments{
-\item{...}{The \R objects to be assembled to a single string. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{\R objects to be assembled to a single string. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
-\item{sep}{The separator to delimit \code{...}. Defaults to none (\code{""}).}
+\item{sep}{Separator to delimit \code{...}. Defaults to none (\code{""}).}
 }
 \value{
 A character scalar.

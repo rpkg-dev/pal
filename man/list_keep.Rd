@@ -9,7 +9,7 @@ list_keep(x, keep)
 \arguments{
 \item{x}{A list.}
 
-\item{keep}{The names of the list elements to keep.}
+\item{keep}{Names of the list elements to keep.}
 }
 \value{
 A list.

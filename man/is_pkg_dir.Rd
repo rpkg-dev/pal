@@ -7,7 +7,7 @@
 is_pkg_dir(path = ".")
 }
 \arguments{
-\item{path}{The path of the directory to check. A character scalar. Defaults to the current working directory.}
+\item{path}{Path of the directory to check. A character scalar. Defaults to the current working directory.}
 }
 \value{
 \code{TRUE} if \code{path} is the root directory of an \R package, \code{FALSE} otherwise.

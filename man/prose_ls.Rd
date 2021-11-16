@@ -9,11 +9,11 @@ prose_ls(x, wrap = "", separator = ", ", last_separator = " and ")
 \arguments{
 \item{x}{A vector or a list.}
 
-\item{wrap}{The string (usually a single character) in which \code{x} is to be wrapped.}
+\item{wrap}{String (usually a single character) in which \code{x} is to be wrapped.}
 
-\item{separator}{The separator to delimit the elements of \code{x}.}
+\item{separator}{Separator to delimit the elements of \code{x}.}
 
-\item{last_separator}{The separator to delimit the second-last and last element of \code{x}.}
+\item{last_separator}{Separator to delimit the second-last and last element of \code{x}.}
 }
 \value{
 A character scalar.

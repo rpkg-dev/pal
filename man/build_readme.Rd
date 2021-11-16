@@ -12,9 +12,9 @@ build_readme(
 )
 }
 \arguments{
-\item{input}{The path to the R Markdown README file to be built. A character scalar.}
+\item{input}{Path to the R Markdown README file to be built. A character scalar.}
 
-\item{output}{The path of the built Markdown README. A character scalar.}
+\item{output}{Path to the built Markdown README. A character scalar.}
 
 \item{build_index_md}{Whether to build a separate \link[pkgdown:pkgdown-package]{pkgdown}-optimized \code{pkgdown/index.md} alongside \code{output} (i.e. in the same parent
 directory). If \code{NULL}, it will only be built if the parent directory of \code{output} \link[=is_pkgdown_dir]{contains a pkgdown configuration file}. Note that it will

@@ -7,7 +7,7 @@
 safe_seq_len(n)
 }
 \arguments{
-\item{n}{The desired length of the integer sequence.}
+\item{n}{Desired length of the integer sequence.}
 }
 \value{
 An integer sequence starting from \code{1L}.

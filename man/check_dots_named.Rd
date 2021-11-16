@@ -14,9 +14,9 @@ check_dots_named(
 )
 }
 \arguments{
-\item{...}{The dots argument to check.}
+\item{...}{Dots argument to check.}
 
-\item{.fn}{The function the \code{...} will be passed on to.}
+\item{.fn}{Function the \code{...} will be passed on to.}
 
 \item{.additional}{Parameter names within \code{...} that should be treated as valid in addition to \code{.fn}'s actual parameter names. A character vector.}
 
@@ -24,7 +24,7 @@ check_dots_named(
 
 \item{.empty_ok}{Set to \code{TRUE} if empty \code{...} should be allowed, or to \code{FALSE} otherwise.}
 
-\item{.action}{The action to take when the check fails. A function expecting a condition message string as first argument. For example \code{\link[cli:cli_abort]{cli::cli_abort()}},
+\item{.action}{Action to take when the check fails. A function expecting a condition message string as first argument. For example \code{\link[cli:cli_abort]{cli::cli_abort()}},
 \code{\link[cli:cli_abort]{cli::cli_warn()}}, \code{\link[cli:cli_abort]{cli::cli_inform()}} or \code{\link[rlang:abort]{rlang::signal()}}.}
 }
 \description{

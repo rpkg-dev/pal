@@ -7,7 +7,7 @@
 fuse_regex(...)
 }
 \arguments{
-\item{...}{The regular expressions. All elements will be converted to type character before fusing. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{Regular expressions. All elements will be converted to type character before fusing. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 }
 \value{
 A character scalar.
