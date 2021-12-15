@@ -44,19 +44,25 @@ The result of the evaluated \code{expr}, invisibly.
 Convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_start()}}, \code{\link[cli:cli_process_start]{cli::cli_process_done()}} and \code{\link[cli:cli_process_start]{cli::cli_process_failed()}}.
 }
 \examples{
-\donttest{
-pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
+if (interactive()) {
+  pal::cli_process_expr(Sys.sleep(3L), "Zzzz")
+}
 
-\dontrun{
-# "russian roulette"
-msg <- "Spinning the cylinder \U0001F91E … "
-pal::cli_process_expr(msg = msg,
-                      msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-                      msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-                      expr = {
-                        if (interactive()) Sys.sleep(1)
-                        if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-                      })}
+russian_roulette <- function() {
+  msg <- "Spinning the cylinder \U0001F91E … "
+  pal::cli_process_expr(msg = msg,
+                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+                       expr = {
+                         if (interactive()) Sys.sleep(1)
+                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+                       })
+}
+
+set.seed(321)
+russian_roulette()
+set.seed(123)
+try(russian_roulette())
 }
 \seealso{
 \code{\link[cli:cli_progress_step]{cli::cli_progress_step()}} which additionally shows the time elapsed within the associated step.

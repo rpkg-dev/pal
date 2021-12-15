@@ -33,8 +33,10 @@ httr::GET("https://api.github.com/users/salim-b") |>
   pal::assert_mime_type("application/json") |>
   httr::content()
 
-\dontrun{
-httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("text/plain")}
+# an informative error is thrown when the assertion is violated
+try(
+  httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("text/plain")
+)
 }
 \seealso{
 Other HTTP functions:

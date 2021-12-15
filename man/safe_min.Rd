@@ -30,7 +30,6 @@ pal::safe_min(1, NA, 2)
 
 # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
 # zero-length inputs
-\dontrun{
 min(NULL)
 min(character())
 min(integer())
@@ -41,8 +40,8 @@ pal::safe_min(integer())
 # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
 min("zero", 1L)
 min("zero", "one")
-pal::safe_min("zero", 1L)
-pal::safe_min("zero", "one")}
+try(pal::safe_min("zero", 1L))
+try(pal::safe_min("zero", "one"))
 }
 \seealso{
 Other statistical computing / numeric functions:

@@ -30,7 +30,6 @@ pal::safe_max(1, NA, 2)
 
 # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
 # zero-length inputs
-\dontrun{
 max(NULL)
 max(character())
 max(integer())
@@ -41,8 +40,8 @@ pal::safe_max(integer())
 # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
 max("zero", 1L)
 max("zero", "one")
-pal::safe_max("zero", 1L)
-pal::safe_max("zero", "one")}
+try(pal::safe_max("zero", 1L))
+try(pal::safe_max("zero", "one"))
 }
 \seealso{
 Other statistical computing / numeric functions:

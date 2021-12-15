@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9073</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9074</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@
 <li><p><code>NA</code>s in the input (<code>...</code>) are ignored <em>by default</em> (<code>rm_na = TRUE</code>).</p></li>
 <li><p>If the input is of length zero, the output will also be of length zero (of the same type as the input).</p></li>
 <li><p>It is ensured that all inputs are either numeric, of length zero or <code>NA</code>. There is <em>no</em> case where the return value will be <code>Inf</code>.</p></li>
-<li><p><a href='https://rlang.r-lib.org/reference/dyn-dots.html'>Dynamic dots</a> are supported.</p></li>
+<li><p>Dynamic dots are supported.</p></li>
 </ul>
 
     </div>
@@ -157,7 +157,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Numeric objects of which to determine the maximum. <a href='https://rlang.r-lib.org/reference/dyn-dots.html'>Dynamic dots</a> are supported.</p></td>
+      <td><p>Numeric objects of which to determine the maximum. Dynamic dots are supported.</p></td>
     </tr>
     <tr>
       <th>rm_na</th>
@@ -185,19 +185,33 @@
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># other than `base::max()`, this function does not return `Inf` or `NA_character_` for</span></span>
 <span class='r-in'><span class='co'># zero-length inputs</span></span>
-<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments to max; returning -Inf</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -Inf</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments, returning NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments to max; returning -Inf</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -Inf</span>
 <span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
 <span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> character(0)</span>
 <span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> integer(0)</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># other than `base::max()`, this function fails for non-numeric, non-zero-length inputs</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='fl'>1L</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "zero"</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='st'>"one"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='fl'>1L</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='st'>"one"</span><span class='op'>)</span><span class='op'>}</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "zero"</span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='fl'>1L</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in purrr::map(., checkmate::assert_numeric, null.ok = TRUE, .var.name = "...") : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Assertion on '...' failed: Must be of type 'numeric' (or 'NULL'), not 'character'.</span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>safe_max</span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='st'>"one"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in purrr::map(., checkmate::assert_numeric, null.ok = TRUE, .var.name = "...") : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Assertion on '...' failed: Must be of type 'numeric' (or 'NULL'), not 'character'.</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

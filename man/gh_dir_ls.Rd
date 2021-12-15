@@ -42,24 +42,24 @@ Lists file and directory names found under
 Works for both public and private repositories, for the latter you just need to set up a sufficiently authorized \link[gh:gh_token]{GitHub Personal Access Token (PAT)}.
 }
 \examples{
-# you can opt-out from directory recursion...
+# you can opt-out from directory recursion
 pal::gh_dir_ls(owner = "salim-b",
                name = "pal",
                recurse = FALSE) |>
   pal::cat_lines()
 
-# ...or list only files...
-pal::gh_dir_ls(path = "tests",
-               owner = "salim-b",
-               name = "pal",
-               incl_files = FALSE) |>
-  pal::cat_lines()
-
-# ...or directories
+# you can list only files in a directory
 pal::gh_dir_ls(path = "tests",
                owner = "salim-b",
                name = "pal",
                incl_dirs = FALSE) |>
+  pal::cat_lines()
+
+# or you can list only directories in a directory
+pal::gh_dir_ls(path = "tests",
+               owner = "salim-b",
+               name = "pal",
+               incl_files = FALSE) |>
   pal::cat_lines()
 }
 \seealso{

@@ -83,9 +83,8 @@ subnode_ix <- function(xml_nodes,
 #' pal::safe_seq_len(integer())
 #' 
 #' # ... while `seq_len()` throws an error
-#' \dontrun{
-#' seq_len(NULL)
-#' seq_len(integer())}
+#' try(seq_len(NULL))
+#' try(seq_len(integer()))
 safe_seq_len <- function(n) {
   
   if (length(n)) {
@@ -118,7 +117,6 @@ safe_seq_len <- function(n) {
 #'
 #' # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
 #' # zero-length inputs
-#' \dontrun{
 #' max(NULL)
 #' max(character())
 #' max(integer())
@@ -129,8 +127,8 @@ safe_seq_len <- function(n) {
 #' # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
 #' max("zero", 1L)
 #' max("zero", "one")
-#' pal::safe_max("zero", 1L)
-#' pal::safe_max("zero", "one")}
+#' try(pal::safe_max("zero", 1L))
+#' try(pal::safe_max("zero", "one"))
 safe_max <- function(...,
                      rm_na = TRUE) {
   
@@ -168,7 +166,6 @@ safe_max <- function(...,
 #'
 #' # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
 #' # zero-length inputs
-#' \dontrun{
 #' min(NULL)
 #' min(character())
 #' min(integer())
@@ -179,8 +176,8 @@ safe_max <- function(...,
 #' # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
 #' min("zero", 1L)
 #' min("zero", "one")
-#' pal::safe_min("zero", 1L)
-#' pal::safe_min("zero", "one")}
+#' try(pal::safe_min("zero", 1L))
+#' try(pal::safe_min("zero", "one"))
 safe_min <- function(...,
                      rm_na = TRUE) {
   
@@ -1099,9 +1096,10 @@ wrap_chr <- function(x,
 #' # in the original function
 #' sum(1, 2, NA, na_rm = TRUE)
 #'
-#' \dontrun{
 #' # whereas our safe version properly errors
-#' sum_safe(1, 2, NA, na_rm = TRUE)}
+#' try(
+#'   sum_safe(1, 2, NA, na_rm = TRUE)
+#' )
 #'
 #' # we can even build an `sapply()` function that fails "intelligently" 
 #' sapply_safe <- function(X,
@@ -1121,24 +1119,27 @@ wrap_chr <- function(x,
 #' # while the original `sapply()` silently ignores misspelled arguments,
 #' sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 #'
-#' \dontrun{
 #' # `sapply_safe()` will throw an informative error message
-#' sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")}
+#' try(
+#'   sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
+#' )
 #'
-#' \dontrun{
 #' # but be aware that `check_dots_named()` might be a bit rash
-#' sum_safe(a = 1, b = 2)}
+#' try(
+#'   sum_safe(a = 1, b = 2)
+#' )
 #'
 #' # while the original function actually has nothing to complain
 #' sum(a = 1, b = 2)
 #'
-#' \dontrun{
 #' # also, it doesn't play nicely with functions that don't expose all of
 #' # their arg names (`to` and `by` in the case of `seq()`)
-#' sapply_safe(X = c(0,50),
-#'             FUN = seq,
-#'             to = 100,
-#'             by = 5)}
+#' try(
+#'   sapply_safe(X = c(0,50),
+#'               FUN = seq,
+#'               to = 100,
+#'               by = 5)
+#' )
 #'
 #' # but providing `to` and `by` *unnamed* is fine of course:
 #' sapply_safe(X = c(0,50),
@@ -1305,12 +1306,15 @@ ls_pkg <- function(pkg,
 #'                 message = paste("You should really consider to install the awesome {.pkg {pkg}}",
 #'                                 "package! It's the glue that keeps strings and variables",
 #'                                 "together 🤲."))
-#' \dontrun{
-#' pal::assert_pkg("pal", min_version = 9999.9)
+#' try(
+#'   pal::assert_pkg("pal", min_version = 9999.9)
+#' )
 #' 
-#' pal::assert_pkg("yay",
-#'                 install_hint = paste0("To install the latest development version, run ",
-#'                                       "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))}
+#' try(
+#'   pal::assert_pkg("yay",
+#'                   install_hint = paste0("To install the latest development version, run ",
+#'                                         "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))
+#' )
 assert_pkg <- function(pkg,
                        min_version = NULL,
                        message = NULL,
@@ -1531,9 +1535,9 @@ is_pkgdown_dir <- function(path = ".") {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' pal::desc_list(file = fs::path_package(package = "pal"))
-#' }
+#' try(
+#'   pal::desc_list(file = fs::path_package(package = "pal"))
+#' )
 desc_list <- function(file = ".") {
   
   fields <- desc::desc_fields(file = file)
@@ -1619,6 +1623,10 @@ desc_url_git <- function(file = ".") {
 
 #' Get roxygen2 blocks
 #'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
 #' Parses the roxygen2 package documentation of a specific R package or from a single `.R` source code file.
 #'
 #' @param pkg,text Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.
@@ -1638,10 +1646,11 @@ desc_url_git <- function(file = ".") {
 #' pal::roxy_blocks(text = text) |> head(n = 3L)
 #'
 #' # ... or provide a package name
-#' \dontrun{
-#' pal::roxy_blocks(pkg = "rlang",
-#'                  repos = "https://cloud.r-project.org") |>
-#'   head(n = 3L)}
+#' try(
+#'   pal::roxy_blocks(pkg = "rlang",
+#'                    repos = "https://cloud.r-project.org") |>
+#'     head(n = 3L)
+#' )
 roxy_blocks <- function(pkg = NULL,
                         ...,
                         text = NULL,
@@ -1781,7 +1790,7 @@ roxy_obj <- function(blocks,
 #' Extracts the value(s) belonging to the `tag_name`s documenting `obj_name` from a list of [`roxy_block`][roxygen2::roxy_block] objects.
 #'
 #' @inheritParams roxy_obj
-#' @param tag_names Name(s) of the [roxygen2 tags](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value(s) from. A character
+#' @param tag_names Name(s) of the [roxygen2 tag(s)](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value(s) from. A character
 #'   vector.
 #' @param param_name Parameter name to extract the value from. Only relevant if `"param" %in% tag_names`. A character scalar.
 #'
@@ -1790,14 +1799,15 @@ roxy_obj <- function(blocks,
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' blocks <- pal::roxy_blocks(pkg = "dplyr")
-#'
-#' pal::roxy_tag_value(blocks = blocks,
-#'                     obj_name = "across",
-#'                     tag_names = "param",
-#'                     param_name = ".fns") |>
-#'   cat()}
+#' if (interactive()) {
+#'   try(
+#'     pal::roxy_blocks(pkg = "viridisLite") |>
+#'       pal::roxy_tag_value(obj_name = "viridis",
+#'                           tag_names = "param",
+#'                           param_name = "alpha") |>
+#'       cat()
+#'   )
+#' }
 roxy_tag_value <- function(blocks,
                            obj_name,
                            tag_names = "param",
@@ -2644,24 +2654,24 @@ gh_text_files <- function(path,
 #' @export
 #'
 #' @examples
-#' # you can opt-out from directory recursion...
+#' # you can opt-out from directory recursion
 #' pal::gh_dir_ls(owner = "salim-b",
 #'                name = "pal",
 #'                recurse = FALSE) |>
 #'   pal::cat_lines()
 #'
-#' # ...or list only files...
-#' pal::gh_dir_ls(path = "tests",
-#'                owner = "salim-b",
-#'                name = "pal",
-#'                incl_files = FALSE) |>
-#'   pal::cat_lines()
-#'
-#' # ...or directories
+#' # you can list only files in a directory
 #' pal::gh_dir_ls(path = "tests",
 #'                owner = "salim-b",
 #'                name = "pal",
 #'                incl_dirs = FALSE) |>
+#'   pal::cat_lines()
+#'
+#' # or you can list only directories in a directory
+#' pal::gh_dir_ls(path = "tests",
+#'                owner = "salim-b",
+#'                name = "pal",
+#'                incl_files = FALSE) |>
 #'   pal::cat_lines()
 gh_dir_ls <- function(path = "",
                       owner,
@@ -2729,7 +2739,7 @@ gh_dir_ls <- function(path = "",
       c(result)
   }
   
-  result %>% sort()
+  sort(result)
 }
 
 #' Assert MIME type
@@ -2751,8 +2761,10 @@ gh_dir_ls <- function(path = "",
 #'   pal::assert_mime_type("application/json") |>
 #'   httr::content()
 #' 
-#' \dontrun{
-#' httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("text/plain")}
+#' # an informative error is thrown when the assertion is violated
+#' try(
+#'   httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("text/plain")
+#' )
 assert_mime_type <- function(response,
                              mime_type,
                              msg = paste0("The response's MIME type is {.val {mime_type_actual}} ",
@@ -2868,19 +2880,25 @@ cli_no_lgl <- function(cnd) {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' pal::cli_process_expr(Sys.sleep(3L), "Zzzz")}
+#' if (interactive()) {
+#'   pal::cli_process_expr(Sys.sleep(3L), "Zzzz")
+#' }
 #'
-#' \dontrun{
-#' # "russian roulette"
-#' msg <- "Spinning the cylinder \U0001F91E … "
-#' pal::cli_process_expr(msg = msg,
-#'                       msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-#'                       msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                       expr = {
-#'                         if (interactive()) Sys.sleep(1)
-#'                         if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-#'                       })}
+#' russian_roulette <- function() {
+#'   msg <- "Spinning the cylinder \U0001F91E … "
+#'   pal::cli_process_expr(msg = msg,
+#'                        msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+#'                        msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                        expr = {
+#'                          if (interactive()) Sys.sleep(1)
+#'                          if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+#'                        })
+#' }
+#' 
+#' set.seed(321)
+#' russian_roulette()
+#' set.seed(123)
+#' try(russian_roulette())
 cli_process_expr <- function(expr,
                              msg,
                              msg_done = paste(msg, "... done"),

@@ -18,6 +18,8 @@ if \code{pkg} is provided\link[rlang:dyn-dots]{Dynamic dots} are supported.)`}
 A list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Parses the roxygen2 package documentation of a specific R package or from a single \code{.R} source code file.
 }
 \examples{
@@ -28,10 +30,11 @@ text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/
 pal::roxy_blocks(text = text) |> head(n = 3L)
 
 # ... or provide a package name
-\dontrun{
-pal::roxy_blocks(pkg = "rlang",
-                 repos = "https://cloud.r-project.org") |>
-  head(n = 3L)}
+try(
+  pal::roxy_blocks(pkg = "rlang",
+                   repos = "https://cloud.r-project.org") |>
+    head(n = 3L)
+)
 }
 \seealso{
 Other package documentation functions:

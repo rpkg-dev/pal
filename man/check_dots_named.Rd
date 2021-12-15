@@ -58,9 +58,10 @@ sum_safe <- function(...,
 # in the original function
 sum(1, 2, NA, na_rm = TRUE)
 
-\dontrun{
 # whereas our safe version properly errors
-sum_safe(1, 2, NA, na_rm = TRUE)}
+try(
+  sum_safe(1, 2, NA, na_rm = TRUE)
+)
 
 # we can even build an `sapply()` function that fails "intelligently" 
 sapply_safe <- function(X,
@@ -80,24 +81,27 @@ sapply_safe <- function(X,
 # while the original `sapply()` silently ignores misspelled arguments,
 sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 
-\dontrun{
 # `sapply_safe()` will throw an informative error message
-sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")}
+try(
+  sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
+)
 
-\dontrun{
 # but be aware that `check_dots_named()` might be a bit rash
-sum_safe(a = 1, b = 2)}
+try(
+  sum_safe(a = 1, b = 2)
+)
 
 # while the original function actually has nothing to complain
 sum(a = 1, b = 2)
 
-\dontrun{
 # also, it doesn't play nicely with functions that don't expose all of
 # their arg names (`to` and `by` in the case of `seq()`)
-sapply_safe(X = c(0,50),
-            FUN = seq,
-            to = 100,
-            by = 5)}
+try(
+  sapply_safe(X = c(0,50),
+              FUN = seq,
+              to = 100,
+              by = 5)
+)
 
 # but providing `to` and `by` *unnamed* is fine of course:
 sapply_safe(X = c(0,50),

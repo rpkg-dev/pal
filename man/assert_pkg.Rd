@@ -32,12 +32,15 @@ pal::assert_pkg(pkg = "glue",
                 message = paste("You should really consider to install the awesome {.pkg {pkg}}",
                                 "package! It's the glue that keeps strings and variables",
                                 "together 🤲."))
-\dontrun{
-pal::assert_pkg("pal", min_version = 9999.9)
+try(
+  pal::assert_pkg("pal", min_version = 9999.9)
+)
 
-pal::assert_pkg("yay",
-                install_hint = paste0("To install the latest development version, run ",
-                                      "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))}
+try(
+  pal::assert_pkg("yay",
+                  install_hint = paste0("To install the latest development version, run ",
+                                        "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))
+)
 }
 \seealso{
 \code{\link[rlang:is_installed]{rlang::check_installed()}}

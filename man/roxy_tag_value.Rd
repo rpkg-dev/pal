@@ -11,7 +11,7 @@ roxy_tag_value(blocks, obj_name, tag_names = "param", param_name)
 
 \item{obj_name}{Object name to extract, usually a function name. A character scalar.}
 
-\item{tag_names}{Name(s) of the \href{https://roxygen2.r-lib.org/articles/rd.html}{roxygen2 tags} (without the \code{@}) to extract the value(s) from. A character
+\item{tag_names}{Name(s) of the \href{https://roxygen2.r-lib.org/articles/rd.html}{roxygen2 tag(s)} (without the \code{@}) to extract the value(s) from. A character
 vector.}
 
 \item{param_name}{Parameter name to extract the value from. Only relevant if \code{"param" \%in\% tag_names}. A character scalar.}
@@ -23,14 +23,15 @@ A character vector of the same length as \code{tag_names}.
 Extracts the value(s) belonging to the \code{tag_name}s documenting \code{obj_name} from a list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects.
 }
 \examples{
-\dontrun{
-blocks <- pal::roxy_blocks(pkg = "dplyr")
-
-pal::roxy_tag_value(blocks = blocks,
-                    obj_name = "across",
-                    tag_names = "param",
-                    param_name = ".fns") |>
-  cat()}
+if (interactive()) {
+  try(
+    pal::roxy_blocks(pkg = "viridisLite") |>
+      pal::roxy_tag_value(obj_name = "viridis",
+                          tag_names = "param",
+                          param_name = "alpha") |>
+      cat()
+  )
+}
 }
 \seealso{
 Other package documentation functions:

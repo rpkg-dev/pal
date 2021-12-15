@@ -23,9 +23,8 @@ pal::safe_seq_len(NULL)
 pal::safe_seq_len(integer())
 
 # ... while `seq_len()` throws an error
-\dontrun{
-seq_len(NULL)
-seq_len(integer())}
+try(seq_len(NULL))
+try(seq_len(integer()))
 }
 \seealso{
 Other statistical computing / numeric functions:
