@@ -2,12 +2,12 @@
 % Please edit documentation in R/pal.gen.R
 \name{cat_lines}
 \alias{cat_lines}
-\title{Print \code{x} as newline-separated character vector using \code{cat()}.}
+\title{Convert to character vector and print newline-separated}
 \usage{
 cat_lines(...)
 }
 \arguments{
-\item{...}{\R object(s) to print. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{\R object(s) to convert to character and print. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 }
 \value{
 None (invisible \code{NULL}).
@@ -35,18 +35,4 @@ to_convert \%>\% cli::cat_line()
 \code{\link[cli:cat_line]{cli::cat_line()}} for a faster alternative that doesn't \emph{recursively} convert its input to type character.
 
 \code{\link[xfun:raw_string]{xfun::raw_string()}} (and \code{\link[xfun:file_string]{xfun::file_string()}}) for an alternative approach to the same use case (but without any conversion to type character at all).
-
-Other string functions:
-\code{\link{as_chr}()},
-\code{\link{as_comment_string}()},
-\code{\link{as_line_feed_chr}()},
-\code{\link{as_string}()},
-\code{\link{dsv_colnames}()},
-\code{\link{escape_lf}()},
-\code{\link{fuse_regex}()},
-\code{\link{prettify_nr}()},
-\code{\link{prose_ls}()},
-\code{\link{sentenceify}()},
-\code{\link{wrap_chr}()}
 }
-\concept{string}

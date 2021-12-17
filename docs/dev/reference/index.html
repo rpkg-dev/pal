@@ -97,7 +97,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9074</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9075</span>
       </span>
     </div>
 
@@ -254,37 +254,22 @@
       
     </tbody><tbody>
       
+      <tr>
+        <th colspan="2">
+          <h3 id="section-vectorized" class="hasAnchor"><a href="#section-vectorized" class="anchor"></a>Vectorized</h3>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+    </tbody><tbody>
+      
       
       <tr>
-        
-        <td>
-          <p><code><a href="as_comment_string.html">as_comment_string()</a></code> </p>
-        </td>
-        <td><p>Assemble an (R) comment string of the desired line width</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="as_chr.html">as_chr()</a></code> </p>
         </td>
         <td><p>Convert to a character vector</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_line_feed_chr.html">as_line_feed_chr()</a></code> </p>
-        </td>
-        <td><p>Convert control character sequence name to actual character sequence</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_string.html">as_string()</a></code> </p>
-        </td>
-        <td><p>Convert to a character scalar (aka string)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sentenceify.html">sentenceify()</a></code> </p>
-        </td>
-        <td><p>Convert to sentence case with trailing punctuation mark</p></td>
       </tr><tr>
         
         <td>
@@ -294,39 +279,108 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="fuse_regex.html">fuse_regex()</a></code> </p>
-        </td>
-        <td><p>Fuse regular expressions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dsv_colnames.html">dsv_colnames()</a></code> </p>
-        </td>
-        <td><p>Get column names of a delimiter-separated string</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="prose_ls.html">prose_ls()</a></code> </p>
-        </td>
-        <td><p>List items concatenated in prose style (..., ... and ...)</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="prettify_nr.html">prettify_nr()</a></code> </p>
         </td>
         <td><p>Prettify a numeric vector</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="cat_lines.html">cat_lines()</a></code> </p>
+          <p><code><a href="sentenceify.html">sentenceify()</a></code> </p>
         </td>
-        <td><p>Print <code>x</code> as newline-separated character vector using <code>cat()</code>.</p></td>
+        <td><p>Convert to sentence case with trailing punctuation mark</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="wrap_chr.html">wrap_chr()</a></code> </p>
         </td>
         <td><p>Wrap character vector in string</p></td>
+      </tr>
+    </tbody><tbody>
+      
+      <tr>
+        <th colspan="2">
+          <h3 id="section-non-vectorized" class="hasAnchor"><a href="#section-non-vectorized" class="anchor"></a>Non-vectorized</h3>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="as_line_feed_chr.html">as_line_feed_chr()</a></code> </p>
+        </td>
+        <td><p>Convert control character sequence name to actual character sequence</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dsv_colnames.html">dsv_colnames()</a></code> </p>
+        </td>
+        <td><p>Get column names of a delimiter-separated string</p></td>
+      </tr>
+    </tbody><tbody>
+      
+      <tr>
+        <th colspan="2">
+          <h3 id="section-collapsed-into-character-scalar" class="hasAnchor"><a href="#section-collapsed-into-character-scalar" class="anchor"></a>Collapsed into character scalar</h3>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="as_string.html">as_string()</a></code> </p>
+        </td>
+        <td><p>Convert to a character scalar (aka string)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_comment_string.html">as_comment_string()</a></code> </p>
+        </td>
+        <td><p>Assemble an (R) comment string of the desired line width</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fuse_regex.html">fuse_regex()</a></code> </p>
+        </td>
+        <td><p>Fuse regular expressions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="prose_ls.html">prose_ls()</a></code> </p>
+        </td>
+        <td><p>List items concatenated in prose style (..., ... and ...)</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-filesystem-paths" class="hasAnchor"><a href="#section-filesystem-paths" class="anchor"></a>Filesystem paths</h2>
+          <p class="section-desc"><p>Functions to work with filesystem paths.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="flatten_path_tree.html">flatten_path_tree()</a></code> </p>
+        </td>
+        <td><p>Flatten path tree</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="draw_path_tree.html">draw_path_tree()</a></code> </p>
+        </td>
+        <td><p>Draw path tree</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -706,6 +760,12 @@
           <p><code><a href="capture_print.html">capture_print()</a></code> </p>
         </td>
         <td><p>Capture printed console output as string</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cat_lines.html">cat_lines()</a></code> </p>
+        </td>
+        <td><p>Convert to character vector and print newline-separated</p></td>
       </tr><tr>
         
         <td>

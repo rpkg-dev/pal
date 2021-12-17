@@ -6,6 +6,7 @@ list(
                          http = "Other HTTP functions:",
                          list = "Other list functions:",
                          md = "Other (Pandoc) Markdown functions:",
+                         path = "Other path functions:",
                          rmd_format = "Other R Markdown output formats:",
                          rmd_knitr = "Other R Markdown and knitr functions:",
                          roxy = "Other package documentation functions:",

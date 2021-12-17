@@ -64,10 +64,16 @@
     <loc>https://rpkg.dev/pal/reference/desc_value.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/draw_path_tree.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/dsv_colnames.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/escape_lf.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/flatten_path_tree.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/fuse_regex.html</loc>

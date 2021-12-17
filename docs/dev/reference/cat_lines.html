@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print x as newline-separated character vector using cat(). — cat_lines • pal</title>
+<title>Convert to character vector and print newline-separated — cat_lines • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,7 +57,7 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Print x as newline-separated character vector using cat(). — cat_lines" />
+<meta property="og:title" content="Convert to character vector and print newline-separated — cat_lines" />
 <meta name="description" content="Convenience wrapper around as_chr() and cat(), mainly intended for interactive use.">
 <meta property="og:description" content="Convenience wrapper around as_chr() and cat(), mainly intended for interactive use." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9074</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9075</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Print <code>x</code> as newline-separated character vector using <code>cat()</code>.</h1>
+    <h1>Convert to character vector and print newline-separated</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
     <div class="hidden name"><code>cat_lines.Rd</code></div>
     </div>
@@ -151,7 +151,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p><span style="R">R</span> object(s) to print. <a href='https://rlang.r-lib.org/reference/dyn-dots.html'>Dynamic dots</a> are supported.</p></td>
+      <td><p><span style="R">R</span> object(s) to convert to character and print. <a href='https://rlang.r-lib.org/reference/dyn-dots.html'>Dynamic dots</a> are supported.</p></td>
     </tr>
     </table>
 
@@ -161,19 +161,7 @@
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://cli.r-lib.org/reference/cat_line.html'>cli::cat_line()</a></code> for a faster alternative that doesn't <em>recursively</em> convert its input to type character.</p>
-<p><code><a href='https://rdrr.io/pkg/xfun/man/raw_string.html'>xfun::raw_string()</a></code> (and <code><a href='https://rdrr.io/pkg/xfun/man/file_string.html'>xfun::file_string()</a></code>) for an alternative approach to the same use case (but without any conversion to type character at all).</p>
-<p>Other string functions:
-<code><a href='as_chr.html'>as_chr</a>()</code>,
-<code><a href='as_comment_string.html'>as_comment_string</a>()</code>,
-<code><a href='as_line_feed_chr.html'>as_line_feed_chr</a>()</code>,
-<code><a href='as_string.html'>as_string</a>()</code>,
-<code><a href='dsv_colnames.html'>dsv_colnames</a>()</code>,
-<code><a href='escape_lf.html'>escape_lf</a>()</code>,
-<code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
-<code><a href='prettify_nr.html'>prettify_nr</a>()</code>,
-<code><a href='prose_ls.html'>prose_ls</a>()</code>,
-<code><a href='sentenceify.html'>sentenceify</a>()</code>,
-<code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
+<p><code><a href='https://rdrr.io/pkg/xfun/man/raw_string.html'>xfun::raw_string()</a></code> (and <code><a href='https://rdrr.io/pkg/xfun/man/file_string.html'>xfun::file_string()</a></code>) for an alternative approach to the same use case (but without any conversion to type character at all).</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span>
@@ -184,7 +172,7 @@
 <span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Package: pal</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Title: Friendly Convenience/Utility Functions</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Version: 0.0.9074</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Version: 0.0.9075</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Authors@R: </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     person(given = "Salim",</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>            family = "Brüggemann",</span>
@@ -219,7 +207,7 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> RoxygenNote: 7.1.2</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Built: R 4.1.2; ; 2021-12-16 15:32:01 UTC; unix</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Built: R 4.1.2; ; 2021-12-17 23:31:36 UTC; unix</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># recursive conversion to type character or not</span></span>
 <span class='r-in'><span class='va'>to_convert</span> <span class='op'>&lt;-</span></span>

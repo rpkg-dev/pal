@@ -635,6 +635,271 @@ list_keep <- function(x,
   x[which(names(x) %in% keep)]
 }
 
+#' Convert to a character vector
+#'
+#' _Recursively_ applies [as.character()] to its inputs.
+#'
+#' @param ... \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @return A character vector.
+#' @family string
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' to_convert <-
+#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
+#'   print()
+#'
+#' as.character(to_convert)
+#' pal::as_chr(!!!to_convert)
+as_chr <- function(...) {
+  
+  rlang::list2(...) %>%
+    purrr::map(~ {
+      
+      if (purrr::vec_depth(.x) == 1L) {
+        
+        as.character(.x)
+        
+      } else {
+        
+        .x %>%
+          purrr::map(as_chr) %>%
+          purrr::flatten_chr()
+      }
+    }) %>%
+    purrr::flatten_chr()
+}
+
+#' Escape line feeds / newlines
+#'
+#' Escapes the [POSIX-standard newline control character `LF`](https://en.wikipedia.org/wiki/Newline) (aka `\n`) which is the standard on Unix/Linux and recent
+#' versions of macOS. Set `escape_cr = TRUE` in order to also escape the carriage return character `CR` (aka `\r`) commonly used on Microsoft Windows.
+#'
+#' @param x A character vector.
+#' @param escape_cr Whether or not to also escape the carriage return character `CR` (aka `\r`). A logical scalar.
+#'
+#' @return A character vector of the same length as `x`.
+#' @family string
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' # read in and print package description as-is
+#' text <-
+#'   fs::path_package(package = "pal",
+#'                    "DESCRIPTION") %>%
+#'   readr::read_file() %T>%
+#'   pal::cat_lines()
+#'
+#' # escape newlines and print again
+#' pal::escape_lf(text) %>% pal::cat_lines()
+escape_lf <- function(x,
+                      escape_cr = FALSE) {
+  
+  checkmate::assert_character(x,
+                              null.ok = TRUE) %>%
+  stringr::str_replace_all(pattern = "\\n",
+                           replacement = "\\\\n") %>%
+    purrr::when(checkmate::assert_flag(escape_cr) ~ stringr::str_replace_all(string = .,
+                                                                             pattern = "\\r",
+                                                                             replacement = "\\\\r"),
+                ~ .)
+}
+
+#' Prettify a numeric vector
+#'
+#' Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
+#' [`format()`][base::format()].
+#'
+#' @param x A numeric vector to prettify.
+#' @param round_to Number to round `x` to. A numeric scalar.
+#' @param big_mark Character used between every 3 digits to separate thousands.
+#' @param decimal_mark Character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
+#' @param justify_right Whether to right-justify the results to a common width. See the `trim` parameter of [base::format()] for details.
+#' @param ... Further arguments passed on to [base::format()].
+#' @inheritParams round_to
+#'
+#' @return A character vector of the same length as `x`.
+#' @family string
+#' @export
+#'
+#' @examples
+#' c(0.11, 11111.11) |> pal::prettify_nr()
+#'
+#' c(0.11, 11111.11) |>
+#'   pal::prettify_nr(justify_right = TRUE) |>
+#'   pal::cat_lines()
+prettify_nr <- function(x,
+                        round_to = 0.1,
+                        round_up = TRUE,
+                        big_mark = "'",
+                        decimal_mark = ".",
+                        justify_right = FALSE,
+                        ...) {
+  round_to(x = x,
+           to = round_to,
+           round_up = round_up) %>%
+    format(big.mark = big_mark,
+           decimal.mark = decimal_mark,
+           trim = !justify_right,
+           ... = ...)
+}
+
+#' Convert to sentence case with trailing punctuation mark
+#'
+#' Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
+#'
+#' Note that this function doesn't alter any characters in `x` other than the first and the last one.
+#'
+#' @param x Input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
+#' @param punctuation_mark Punctuation mark to be appended to `x`. A character scalar.
+#'
+#' @return A character vector.
+#' @family string
+#' @seealso
+#' [stringr::str_to_sentence()] to convert a character vector to all lowercase except for the first character. Note that this also includes lowercasing [proper
+#' nouns](https://en.wikipedia.org/wiki/Proper_and_common_nouns), [abbreviations](https://en.wikipedia.org/wiki/Abbreviation) etc.
+#' 
+#' [snakecase::to_sentence_case()] that builds upon [stringr::str_to_sentence()] but offers additional options to finetune the conversion. Note that
+#' `abbreviations` have to be manually specified in order to be preserved in upper case.
+#' @export
+#'
+#' @examples
+#' pal::sentenceify("no verb, no sentence")
+#'
+#' # punctuation mark won't be duplicated if already existing
+#' pal::sentenceify(c("I've made my point",
+#'                    "good point."))
+sentenceify <- function(x,
+                        punctuation_mark = ".") {
+  
+  checkmate::assert_string(punctuation_mark)
+  
+  x %>%
+    stringr::str_replace(pattern = "^.",
+                         replacement = toupper) %>%
+    purrr::map_chr(~ {
+      if (is.na(.x) || stringr::str_sub(string = .x, start = -1L) == punctuation_mark) {
+        .x
+      } else {
+        paste0(.x, punctuation_mark)
+      }
+    })
+}
+
+#' Wrap character vector in string
+#'
+#' @param x A character vector or something coercible to. Will be fed to [as_chr()] before wrapping.
+#' @param wrap Character sequence `x` is to be wrapped in. A character vector or something coercible to.
+#'
+#' @return A character vector of the same length as `wrap`.
+#' @family string
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' mtcars %>%
+#'   magrittr::set_colnames(pal::wrap_chr(x = colnames(.),
+#'                                        wrap = "`")) %>%
+#'   pal::pipe_table()
+wrap_chr <- function(x,
+                     wrap = "\"") {
+  
+  paste0(wrap, as_chr(x), wrap)
+}
+
+#' Convert control character sequence name to actual character sequence
+#'
+#' @param eol `r pkgsnip::param_label("eol")`
+#'
+#' @return A character scalar.
+#' @family string
+#' @export
+as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
+  
+  switch(EXPR = rlang::arg_match(eol),
+         LF = "\n",
+         CRLF = "\r\n",
+         CR = "\r",
+         LFCR = "\n\r")
+}
+
+#' Get column names of a delimiter-separated string
+#'
+#' Returns the column names of a string in a [delimiter-separated-value](https://en.wikipedia.org/wiki/Delimiter-separated_values) format like
+#' [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) or [TSV](https://en.wikipedia.org/wiki/Tab-separated_values).
+#'
+#' @param x Delimiter-separated string. A character scalar.
+#' @param delim Single character used to separate fields within `x`.
+#' @param quote Single character used to quote strings within `x`. Set to `NULL` for none.
+#'
+#' @return A character vector of column names.
+#' @family string
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") |>
+#'   httr::content(as = "text") |>
+#'   pal::dsv_colnames()}
+dsv_colnames <- function(x,
+                         delim = ",",
+                         quote = "\"") {
+  x %>%
+    regexpr(pattern = "[\r\n]") %>%
+    magrittr::subtract(1L) %>%
+    substr(x = x,
+           start = 1L) %>%
+    stringr::str_split(pattern = checkmate::assert_string(delim,
+                                                          min.chars = 1L,
+                                                          pattern = "^.$")) %>%
+    dplyr::first() %>%
+    stringr::str_remove_all(pattern = glue::glue("^", checkmate::assert_string(quote,
+                                                                                null.ok = TRUE,
+                                                                                pattern = "^.$"),
+                                                 "|{quote}$"))
+}
+
+#' Convert to a character scalar (aka string)
+#'
+#' Similar to [`paste0(..., collapse = "")`][paste0()], but _recursively_ converts its inputs to type character.
+#'
+#' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param sep Separator to delimit `...`. Defaults to none (`""`).
+#'
+#' @return A character scalar.
+#' @family string
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' input <-
+#'   sample.int(n = 5,
+#'              size = 3) %>%
+#'   paste0(", ") %>%
+#'   purrr::map(rep,
+#'              times = 20) %>%
+#'   list(c("This is a glut of ", "meaningless numbers: "), .)
+#'
+#' # while this just converts `input` in a lazy way ...
+#' paste0(input,
+#'        collapse = "")
+#'
+#' # ... this one works harder
+#' pal::as_string(input)
+as_string <- function(...,
+                      sep = "") {
+  
+  as_chr(...) %>% purrr::when(length(.) > 0L ~ paste0(., collapse = sep),
+                              ~ .)
+}
+
 #' Assemble an (R) comment string of the desired line width
 #'
 #' Takes a vector of paragraphs, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.
@@ -681,174 +946,6 @@ as_comment_string <- function(...,
     paste0(collapse = "")
 }
 
-#' Convert to a character vector
-#'
-#' _Recursively_ applies [as.character()] to its inputs.
-#'
-#' @param ... \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
-#'
-#' @return A character vector.
-#' @family string
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' to_convert <-
-#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
-#'   print()
-#'
-#' as.character(to_convert)
-#' pal::as_chr(!!!to_convert)
-as_chr <- function(...) {
-  
-  rlang::list2(...) %>%
-    purrr::map(~ {
-      
-      if (purrr::vec_depth(.x) == 1L) {
-        
-        as.character(.x)
-        
-      } else {
-        
-        .x %>%
-          purrr::map(as_chr) %>%
-          purrr::flatten_chr()
-      }
-    }) %>%
-    purrr::flatten_chr()
-}
-
-#' Convert control character sequence name to actual character sequence
-#'
-#' @param eol `r pkgsnip::param_label("eol")`
-#'
-#' @return A character scalar.
-#' @family string
-#' @export
-as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
-  
-  switch(EXPR = rlang::arg_match(eol),
-         LF = "\n",
-         CRLF = "\r\n",
-         CR = "\r",
-         LFCR = "\n\r")
-}
-
-#' Convert to a character scalar (aka string)
-#'
-#' Similar to [`paste0(..., collapse = "")`][paste0()], but _recursively_ converts its inputs to type character.
-#'
-#' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @param sep Separator to delimit `...`. Defaults to none (`""`).
-#'
-#' @return A character scalar.
-#' @family string
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' input <-
-#'   sample.int(n = 5,
-#'              size = 3) %>%
-#'   paste0(", ") %>%
-#'   purrr::map(rep,
-#'              times = 20) %>%
-#'   list(c("This is a glut of ", "meaningless numbers: "), .)
-#'
-#' # while this just converts `input` in a lazy way ...
-#' paste0(input,
-#'        collapse = "")
-#'
-#' # ... this one works harder
-#' pal::as_string(input)
-as_string <- function(...,
-                      sep = "") {
-  
-  as_chr(...) %>% purrr::when(length(.) > 0L ~ paste0(., collapse = sep),
-                              ~ .)
-}
-
-#' Convert to sentence case with trailing punctuation mark
-#'
-#' Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
-#'
-#' Note that this function doesn't alter any characters in `x` other than the first and the last one.
-#'
-#' @param x Input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
-#' @param punctuation_mark Punctuation mark to be appended to `x`. A character scalar.
-#'
-#' @return A character vector.
-#' @family string
-#' @seealso
-#' [stringr::str_to_sentence()] to convert a character vector to all lowercase except for the first character. Note that this also includes lowercasing [proper
-#' nouns](https://en.wikipedia.org/wiki/Proper_and_common_nouns), [abbreviations](https://en.wikipedia.org/wiki/Abbreviation) etc.
-#' 
-#' [snakecase::to_sentence_case()] that builds upon [stringr::str_to_sentence()] but offers additional options to finetune the conversion. Note that
-#' `abbreviations` have to be manually specified in order to be preserved in upper case.
-#' @export
-#'
-#' @examples
-#' pal::sentenceify("no verb, no sentence")
-#'
-#' # punctuation mark won't be duplicated if already existing
-#' pal::sentenceify(c("I've made my point",
-#'                    "good point."))
-sentenceify <- function(x,
-                        punctuation_mark = ".") {
-  
-  checkmate::assert_string(punctuation_mark)
-  
-  x %>%
-    stringr::str_replace(pattern = "^.",
-                         replacement = toupper) %>%
-    purrr::map_chr(~ {
-      if (is.na(.x) || stringr::str_sub(string = .x, start = -1L) == punctuation_mark) {
-        .x
-      } else {
-        paste0(.x, punctuation_mark)
-      }
-    })
-}
-
-#' Escape line feeds / newlines
-#'
-#' Escapes the [POSIX-standard newline control character `LF`](https://en.wikipedia.org/wiki/Newline) (aka `\n`) which is the standard on Unix/Linux and recent
-#' versions of macOS. Set `escape_cr = TRUE` in order to also escape the carriage return character `CR` (aka `\r`) commonly used on Microsoft Windows.
-#'
-#' @param x A character vector.
-#' @param escape_cr Whether or not to also escape the carriage return character `CR` (aka `\r`). A logical scalar.
-#'
-#' @return A character vector of the same length as `x`.
-#' @family string
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' # read in and print package description as-is
-#' text <-
-#'   fs::path_package(package = "pal",
-#'                    "DESCRIPTION") %>%
-#'   readr::read_file() %T>%
-#'   pal::cat_lines()
-#'
-#' # escape newlines and print again
-#' pal::escape_lf(text) %>% pal::cat_lines()
-escape_lf <- function(x,
-                      escape_cr = FALSE) {
-  
-  checkmate::assert_character(x,
-                              null.ok = TRUE) %>%
-  stringr::str_replace_all(pattern = "\\n",
-                           replacement = "\\\\n") %>%
-    purrr::when(checkmate::assert_flag(escape_cr) ~ stringr::str_replace_all(string = .,
-                                                                             pattern = "\\r",
-                                                                             replacement = "\\\\r"),
-                ~ .)
-}
-
 #' Fuse regular expressions
 #'
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
@@ -878,42 +975,6 @@ fuse_regex <- function(...) {
   }
   
   result
-}
-
-#' Get column names of a delimiter-separated string
-#'
-#' Returns the column names of a string in a [delimiter-separated-value](https://en.wikipedia.org/wiki/Delimiter-separated_values) format like
-#' [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) or [TSV](https://en.wikipedia.org/wiki/Tab-separated_values).
-#'
-#' @param x Delimiter-separated string. A character scalar.
-#' @param delim Single character used to separate fields within `x`.
-#' @param quote Single character used to quote strings within `x`. Set to `NULL` for none.
-#'
-#' @return A character vector of column names.
-#' @family string
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") |>
-#'   httr::content(as = "text") |>
-#'   pal::dsv_colnames()}
-dsv_colnames <- function(x,
-                         delim = ",",
-                         quote = "\"") {
-  x %>%
-    regexpr(pattern = "[\r\n]") %>%
-    magrittr::subtract(1L) %>%
-    substr(x = x,
-           start = 1L) %>%
-    stringr::str_split(pattern = checkmate::assert_string(delim,
-                                                          min.chars = 1L,
-                                                          pattern = "^.$")) %>%
-    dplyr::first() %>%
-    stringr::str_remove_all(pattern = glue::glue("^", checkmate::assert_string(quote,
-                                                                                null.ok = TRUE,
-                                                                                pattern = "^.$"),
-                                                 "|{quote}$"))
 }
 
 #' List items concatenated in prose style (..., ... and ...)
@@ -954,100 +1015,150 @@ prose_ls <- function(x,
   result
 }
 
-#' Prettify a numeric vector
+#' Flatten path tree
 #'
-#' Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
-#' [`format()`][base::format()].
+#' Flattens a hierarchical list of path elements into a character vector of full paths.
 #'
-#' @param x A numeric vector to prettify.
-#' @param round_to Number to round `x` to. A numeric scalar.
-#' @param big_mark Character used between every 3 digits to separate thousands.
-#' @param decimal_mark Character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
-#' @param justify_right Whether to right-justify the results to a common width. See the `trim` parameter of [base::format()] for details.
-#' @param ... Further arguments passed on to [base::format()].
-#' @inheritParams round_to
+#' @param path_tree Directory tree. A nested list of named lists and character vectors.
+#' @param parent_path Optional parent path of `path_tree`. A character scalar.
 #'
-#' @return A character vector of the same length as `x`.
-#' @family string
+#' @return A character vector.
+#' @family path
 #' @export
 #'
 #' @examples
-#' c(0.11, 11111.11) |> pal::prettify_nr()
-#'
-#' c(0.11, 11111.11) |>
-#'   pal::prettify_nr(justify_right = TRUE) |>
+#' list("root_dir" = list("subdir1",
+#'                        "subdir2" = list("file1.ext"),
+#'                        "file2.ext")) |>
+#'   pal::flatten_path_tree() |>
 #'   pal::cat_lines()
-prettify_nr <- function(x,
-                        round_to = 0.1,
-                        round_up = TRUE,
-                        big_mark = "'",
-                        decimal_mark = ".",
-                        justify_right = FALSE,
-                        ...) {
-  round_to(x = x,
-           to = round_to,
-           round_up = round_up) %>%
-    format(big.mark = big_mark,
-           decimal.mark = decimal_mark,
-           trim = !justify_right,
-           ... = ...)
+flatten_path_tree <- function(path_tree,
+                              parent_path = NULL) {
+  
+  if (purrr::vec_depth(path_tree) > 1L) {
+    
+    result <-
+      rlang::names2(path_tree) %>%
+      purrr::map_chr(~ fs::path_join(c(parent_path, .x))) %>%
+      purrr::map2(.x = path_tree,
+                  .f = flatten_path_tree) %>%
+      purrr::flatten_chr() %>%
+      c(parent_path, .)
+    
+  } else {
+    
+    result <- fs::path_join(c(parent_path, path_tree))
+  }
+  
+  fs::path(result)
 }
 
-#' Print `x` as newline-separated character vector using `cat()`.
+#' Draw path tree
+#'
+#' Pretty-prints a character vector of hierarchical paths as a tree. Uses [Unicode box drawing
+#' characters](https://en.wikipedia.org/wiki/Box-drawing_character#Box_Drawing) to draw the nesting structure.
 #' 
-#' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
+#' This function is the equivalent of [fs::dir_tree()] for an artificial/fictional path hierarchy. To print a tree of an actual filesystem path hierarchy, it's
+#' recommended to rely on `fs::dir_tree()` which additionally colorizes the output based on real filesystem information. Apart from that, the algorithm to draw
+#' the tree is the same.
 #'
-#' @param ... \R object(s) to print. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param paths A character vector of paths as returned by [flatten_path_tree()] or [fs::dir_ls()].
+#' @param quiet Whether or not to suppress drawing the directory tree.
 #'
-#' @inherit base::cat return
-#' @family string
-#' @seealso
-#' [cli::cat_line()] for a faster alternative that doesn't _recursively_ convert its input to type character.
-#'
-#' [xfun::raw_string()] (and [xfun::file_string()]) for an alternative approach to the same use case (but without any conversion to type character at all). 
+#' @return `paths`, invisibly.
+#' @family path
 #' @export
 #'
 #' @examples
-#' library(magrittr)
-#'
-#' fs::path_package(package = "pal",
-#'                  "DESCRIPTION") %>%
-#'   readr::read_lines() %>%
-#'   pal::cat_lines()
+#' # using an artificial/fictional path hierarchy
+#' list("root_dir" = list("subdir1",
+#'                        "subdir2" = list("file1.ext"),
+#'                        "file2.ext")) |>
+#'   flatten_path_tree() |>
+#'   pal::draw_path_tree()
 #' 
-#' # recursive conversion to type character or not
-#' to_convert <-
-#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
-#'   print()
+#' # using an actual path hierarchy
+#' fs::path_package("pal") |>
+#'   fs::dir_ls(recurse = TRUE) |>
+#'   pal::draw_path_tree()
 #' 
-#' to_convert %>% pal::cat_lines()
-#' to_convert %>% cli::cat_line()
-cat_lines <- function(...) {
+#' # to get colorized output, use `fs::dir_tree()` instead
+#' fs::path_package("pal") |> fs::dir_tree()
+draw_path_tree <- function(paths,
+                           quiet = FALSE) {
   
-  cat(as_chr(...),
-      sep = "\n")
-}
-
-#' Wrap character vector in string
-#'
-#' @param x A character vector or something coercible to. Will be fed to [as_chr()] before wrapping.
-#' @param wrap Character sequence `x` is to be wrapped in. A character vector or something coercible to.
-#'
-#' @return A character vector of the same length as `wrap`.
-#' @family string
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' mtcars %>%
-#'   magrittr::set_colnames(pal::wrap_chr(x = colnames(.),
-#'                                        wrap = "`")) %>%
-#'   pal::pipe_table()
-wrap_chr <- function(x,
-                     wrap = "\"") {
+  checkmate::assert_character(paths,
+                              any.missing = FALSE,
+                              min.len = 1L)
+  checkmate::assert_flag(quiet)
   
-  paste0(wrap, as_chr(x), wrap)
+  has_leading_root <-
+    paths %>%
+    fs::path_split() %>%
+    purrr::map_chr(purrr::chuck,
+                   1L) %>%
+    magrittr::equals(paths[1L]) %>%
+    all()
+  
+  leaf_paths <- paths
+  # remove dir root to get same result structure as `fs::dir_ls()`
+  if (has_leading_root) leaf_paths %<>% .[-1L]
+  
+  by_dir <- split(leaf_paths, fs::path_dir(leaf_paths))
+  
+  box_chars <- list(h = "\u2500",
+                    v = "\u2502",
+                    l = "\u2514",
+                    j = "\u251c")
+  
+  print_leaf <- function(x,
+                         indent) {
+    leafs <- by_dir[[x]]
+    
+    for (i in seq_along(leafs)) {
+      
+      if (i == length(leafs)) {
+        
+        cat(indent, paste0(box_chars$l, box_chars$h, box_chars$h, " ",
+                           collapse = ""),
+            fs::path_file(leafs[[i]]),
+            "\n",
+            sep = "")
+        
+        print_leaf(x = leafs[[i]],
+                   indent = paste0(indent, "    "))
+        
+      } else {
+        
+        cat(indent,
+            paste0(box_chars$j, box_chars$h, box_chars$h, " ",
+                   collapse = ""),
+            fs::path_file(leafs[[i]]),
+            "\n",
+            sep = "")
+        
+        print_leaf(x = leafs[[i]],
+                   indent = paste0(indent, paste0(box_chars$v, "   ",
+                                                  collapse = "")))
+      }
+    }
+  }
+  
+  if (!quiet) {
+    
+    dir_root <- ifelse(has_leading_root,
+                       paths[1L],
+                       by_dir %>%
+                         names() %>%
+                         magrittr::extract(which.min(nchar(.))))
+    # print dir root
+    cat(dir_root, "\n",
+        sep = "")
+    # print leafs
+    print_leaf(fs::path_expand(dir_root), "")
+  }
+  
+  invisible(paths)
 }
 
 #' Check that all named dots arguments are valid
@@ -3117,6 +3228,40 @@ capture_print <- function(x,
                         type = "output",
                         split = FALSE) %>%
     paste0(collapse = collapse)
+}
+
+#' Convert to character vector and print newline-separated
+#' 
+#' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
+#'
+#' @param ... \R object(s) to convert to character and print. `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @inherit base::cat return
+#' @seealso
+#' [cli::cat_line()] for a faster alternative that doesn't _recursively_ convert its input to type character.
+#'
+#' [xfun::raw_string()] (and [xfun::file_string()]) for an alternative approach to the same use case (but without any conversion to type character at all). 
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' fs::path_package(package = "pal",
+#'                  "DESCRIPTION") %>%
+#'   readr::read_lines() %>%
+#'   pal::cat_lines()
+#' 
+#' # recursive conversion to type character or not
+#' to_convert <-
+#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
+#'   print()
+#' 
+#' to_convert %>% pal::cat_lines()
+#' to_convert %>% cli::cat_line()
+cat_lines <- function(...) {
+  
+  cat(as_chr(...),
+      sep = "\n")
 }
 
 #' Create [readr][readr::readr-package] column specification using regular expression matching

@@ -34,19 +34,28 @@ reference:
   - list_drop
   - list_keep
 - title: Strings
+- subtitle: Vectorized
 - contents:
-  - as_comment_string
   - as_chr
-  - as_line_feed_chr
-  - as_string
-  - sentenceify
   - escape_lf
-  - fuse_regex
-  - dsv_colnames
-  - prose_ls
   - prettify_nr
-  - cat_lines
+  - sentenceify
   - wrap_chr
+- subtitle: Non-vectorized
+- contents:
+  - as_line_feed_chr
+  - dsv_colnames
+- subtitle: Collapsed into character scalar
+- contents:
+  - as_string
+  - as_comment_string
+  - fuse_regex
+  - prose_ls
+- title: Filesystem paths
+  desc: Functions to work with filesystem paths.
+- contents:
+  - flatten_path_tree
+  - draw_path_tree
 - title: Dots
   desc: |-
     Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another
@@ -121,6 +130,7 @@ reference:
 - contents:
   - assert_class_any
   - capture_print
+  - cat_lines
   - cols_regex
   - order_by
   - prose_ls_fn_param
