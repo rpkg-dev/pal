@@ -1979,7 +1979,9 @@ roxy_tag_value <- function(blocks,
 #' @export
 #'
 #' @examples
-#' rownames(mtcars) |> pal::as_md_list() |> cat()
+#' rownames(mtcars) |>
+#'   pal::as_md_list() |>
+#'   cat()
 as_md_list <- function(x,
                        type = c("unordered", "ordered", "ordered_roman"),
                        tight = TRUE,
@@ -2002,6 +2004,38 @@ as_md_list <- function(x,
                              indent.level = indent_lvl,
                              add.line.breaks = FALSE,
                              add.end.of.list = FALSE)
+}
+
+#' List values as a Markdown list
+#'
+#' Generates a Markdown list of the given values formatted as [verbatim](https://pandoc.org/MANUAL.html#verbatim). Character values are additionall wrapped in
+#' double quotes.
+#'
+#' @param ... \R objects to list.
+#'
+#' @return A character scalar.
+#' @family md
+#' @export
+#'
+#' @examples
+#' list(1L, 2.2, "other") |>
+#'   pal::as_md_val_list() |>
+#'   cat()
+#'   
+#' # note that values are flattened before listing them, so this yields the same list
+#' list(list(list(1L, list(2.2)))) |>
+#'   pal::as_md_val_list() |>
+#'   cat()
+as_md_val_list <- function(...) {
+  
+  rlang::list2(...) %>%
+    purrr::flatten() %>%
+    # wrap chr vals in double quotes
+    purrr::map(~ {
+      if (is.character(.x)) wrap_chr(.x) else .x
+    }) %>%
+    wrap_chr("`") %>%
+    as_md_list()
 }
 
 #' Convert dataframe/tibble to Markdown pipe table

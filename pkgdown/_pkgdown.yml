@@ -84,6 +84,7 @@ reference:
 - title: (Pandoc) Markdown
 - contents:
   - as_md_list
+  - as_md_val_list
   - pipe_table
   - strip_md
   - strip_md_footnotes

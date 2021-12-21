@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9075</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9076</span>
       </span>
     </div>
 
@@ -174,39 +174,11 @@
 <span class='r-in'>  <span class='fu'>magrittr</span><span class='fu'>::</span><span class='fu'><a href='https://magrittr.tidyverse.org/reference/aliases.html'>extract</a></span><span class='op'>(</span><span class='fl'>23</span><span class='op'>:</span><span class='fl'>25</span><span class='op'>)</span> |&gt;</span>
 <span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>xml_to_md</span><span class='op'>(</span><span class='op'>)</span> |&gt;</span>
 <span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> # Statistical computing / numbers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> # EXPORTED</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> ## `safe_seq_len`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ## Statistical computing / numbers</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' Generate an integer sequence of specific length (safe)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #'</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #'</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' @param n Desired length of the integer sequence.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #'</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' @return An integer sequence starting from `1L`.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' @family stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' @export</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #'</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' @examples</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' pal::safe_seq_len(5)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #'</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' # this function simply returns a zero-length integer for zero-length inputs ...</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' pal::safe_seq_len(NULL)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' pal::safe_seq_len(integer())</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' # ... while `seq_len()` throws an error</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' try(seq_len(NULL))</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> #' try(seq_len(integer()))</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> safe_seq_len &lt;- function(n) {</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   if (length(n)) {</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     return(seq_len(n))</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   } else return(integer())</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ### `safe_seq_len`</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
