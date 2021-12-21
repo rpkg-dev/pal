@@ -13,7 +13,7 @@ as_md_val_list(...)
 A character scalar.
 }
 \description{
-Generates a Markdown list of the given values formatted as \href{https://pandoc.org/MANUAL.html#verbatim}{verbatim}. Character values are additionall wrapped in
+Generates a Markdown list of the given values formatted as \href{https://pandoc.org/MANUAL.html#verbatim}{verbatim}. Character values are additionally wrapped in
 double quotes.
 }
 \examples{

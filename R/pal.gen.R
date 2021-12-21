@@ -2008,7 +2008,7 @@ as_md_list <- function(x,
 
 #' List values as a Markdown list
 #'
-#' Generates a Markdown list of the given values formatted as [verbatim](https://pandoc.org/MANUAL.html#verbatim). Character values are additionall wrapped in
+#' Generates a Markdown list of the given values formatted as [verbatim](https://pandoc.org/MANUAL.html#verbatim). Character values are additionally wrapped in
 #' double quotes.
 #'
 #' @param ... \R objects to list.
