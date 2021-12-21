@@ -10,8 +10,8 @@ prose_ls_fn_param(
   env = parent.frame(),
   as_scalar = TRUE,
   wrap = "`",
-  separator = ",",
-  last_separator = " or "
+  sep = ",",
+  last_sep = " or "
 )
 }
 \arguments{
@@ -21,13 +21,13 @@ prose_ls_fn_param(
 
 \item{env}{\link[base:environment]{Environment} \code{fn} is defined in. See \code{\link[=formals]{formals()}} for details.}
 
-\item{as_scalar}{Whether to return the result as a single string concatenated by \code{separator} and \code{last_separator}.}
+\item{as_scalar}{Whether to return the result as a single string concatenated by \code{sep} and \code{last_sep}.}
 
 \item{wrap}{String (usually a single character) in which \code{param}s default values are to be wrapped.}
 
-\item{separator}{Separator to delimit \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
+\item{sep}{Separator to delimit \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
 
-\item{last_separator}{Separator to delimit the second-last and last one of \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
+\item{last_sep}{Separator to delimit the second-last and last one of \code{param}s default values. Only relevant if \code{as_scalar = TRUE}.}
 }
 \value{
 A character vector. Of length 1 if \code{as_scalar = TRUE}.

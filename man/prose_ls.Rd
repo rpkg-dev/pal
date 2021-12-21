@@ -4,16 +4,16 @@
 \alias{prose_ls}
 \title{List items concatenated in prose style (..., ... and ...)}
 \usage{
-prose_ls(x, wrap = "", separator = ", ", last_separator = " and ")
+prose_ls(x, wrap = "", sep = ", ", last_sep = " and ")
 }
 \arguments{
 \item{x}{A vector or a list.}
 
 \item{wrap}{String (usually a single character) in which \code{x} is to be wrapped.}
 
-\item{separator}{Separator to delimit the elements of \code{x}.}
+\item{sep}{Separator to delimit the elements of \code{x}.}
 
-\item{last_separator}{Separator to delimit the second-last and last element of \code{x}.}
+\item{last_sep}{Separator to delimit the second-last and last element of \code{x}.}
 }
 \value{
 A character scalar.

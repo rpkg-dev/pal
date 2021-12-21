@@ -13,14 +13,16 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 utils::globalVariables(names = c(".",
-                                 "data",
+                                 # tidyselect fns
                                  "everything",
+                                 "where",
+                                 # other
+                                 "data",
                                  "package",
                                  "Package",
                                  "repository",
                                  "rowid",
-                                 "Version",
-                                 "where"))
+                                 "Version"))
 
 # forbidden dots arguments
 forbidden_dots <- list(roxy_tag_value = c("pkgs",
@@ -983,8 +985,8 @@ fuse_regex <- function(...) {
 #'
 #' @param x A vector or a list.
 #' @param wrap String (usually a single character) in which `x` is to be wrapped.
-#' @param separator Separator to delimit the elements of `x`.
-#' @param last_separator Separator to delimit the second-last and last element of `x`.
+#' @param sep Separator to delimit the elements of `x`.
+#' @param last_sep Separator to delimit the second-last and last element of `x`.
 #'
 #' @return A character scalar.
 #' @family string
@@ -994,8 +996,8 @@ fuse_regex <- function(...) {
 #' pal::prose_ls(1:5)
 prose_ls <- function(x,
                      wrap = "",
-                     separator = ", ",
-                     last_separator = " and ") {
+                     sep = ", ",
+                     last_sep = " and ") {
   
   result <- as_chr(x)
   length_result <- length(result)
@@ -1008,8 +1010,8 @@ prose_ls <- function(x,
     
     result <-
       paste0(result[-length_result],
-             collapse = paste0(checkmate::assert_string(wrap), separator, wrap)) %>%
-      paste0(wrap, ., wrap, checkmate::assert_string(last_separator), wrap, result[length_result], wrap)
+             collapse = paste0(checkmate::assert_string(wrap), sep, wrap)) %>%
+      paste0(wrap, ., wrap, checkmate::assert_string(last_sep), wrap, result[length_result], wrap)
   }
   
   result
@@ -2447,7 +2449,7 @@ knitr_table_format <- function(default = c("pipe",
     
     cli::cli_abort(paste0("R option {.field knitr.table.format} must evaluate to one of ",
                           prose_ls(x = paste0("{.val ", allowed_formats, "}"),
-                                   last_separator = " or "),
+                                   last_sep = " or "),
                           ", but is {.code {deparse1(opt)}}",
                           dplyr::if_else(is.function(opt),
                                          " which evaluates to {.val {result}}",
@@ -3221,7 +3223,7 @@ assert_class_any <- function(x,
     checkmate::assert_string(name)
     classes_actual <- class(x)
     cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
-                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_separator = " or "),
+                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_sep = " or "),
                           ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
   }
   
@@ -3433,10 +3435,10 @@ order_by <- function(x,
 #' @param param Parameter name. A character scalar.
 #' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
 #' @param env [Environment][base::environment] `fn` is defined in. See [formals()] for details.
-#' @param as_scalar Whether to return the result as a single string concatenated by `separator` and `last_separator`.
+#' @param as_scalar Whether to return the result as a single string concatenated by `sep` and `last_sep`.
 #' @param wrap String (usually a single character) in which `param`s default values are to be wrapped.
-#' @param separator Separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
-#' @param last_separator Separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param sep Separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
+#' @param last_sep Separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
 #'
 #' @return A character vector. Of length 1 if `as_scalar = TRUE`.
 #' @export
@@ -3455,8 +3457,8 @@ prose_ls_fn_param <- function(param,
                               env = parent.frame(),
                               as_scalar = TRUE,
                               wrap = "`",
-                              separator = ",",
-                              last_separator = " or ") {
+                              sep = ",",
+                              last_sep = " or ") {
   
   checkmate::assert_string(param)
   checkmate::assert_flag(as_scalar)
@@ -3509,8 +3511,8 @@ prose_ls_fn_param <- function(param,
   
   if (as_scalar) {
     default_vals %<>% prose_ls(wrap = wrap,
-                               separator = separator,
-                               last_separator = last_separator)
+                               sep = sep,
+                               last_sep = last_sep)
   } else {
     default_vals %<>% wrap_chr(wrap = wrap)
   }
