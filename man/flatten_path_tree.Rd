@@ -26,6 +26,7 @@ list("root_dir" = list("subdir1",
 }
 \seealso{
 Other path functions:
-\code{\link{draw_path_tree}()}
+\code{\link{draw_path_tree}()},
+\code{\link{path_mod_time}()}
 }
 \concept{path}

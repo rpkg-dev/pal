@@ -40,6 +40,7 @@ fs::path_package("pal") |> fs::dir_tree()
 }
 \seealso{
 Other path functions:
-\code{\link{flatten_path_tree}()}
+\code{\link{flatten_path_tree}()},
+\code{\link{path_mod_time}()}
 }
 \concept{path}

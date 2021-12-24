@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Flatten path tree — flatten_path_tree • pal</title>
+<title>Get path modification time — path_mod_time • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Flatten path tree — flatten_path_tree" />
-<meta name="description" content="Flattens a hierarchical list of path elements into a character vector of full paths.">
-<meta property="og:description" content="Flattens a hierarchical list of path elements into a character vector of full paths." />
+<meta property="og:title" content="Get path modification time — path_mod_time" />
+<meta name="description" content="Determine a file's or directory's modification time. Other than file.mtime() datetime of modification is always returned in UTC.">
+<meta property="og:description" content="Determine a file's or directory's modification time. Other than file.mtime() datetime of modification is always returned in UTC." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,50 +135,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Flatten path tree</h1>
+    <h1>Get path modification time</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>flatten_path_tree.Rd</code></div>
+    <div class="hidden name"><code>path_mod_time.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Flattens a hierarchical list of path elements into a character vector of full paths.</p>
+    <p>Determine a file's or directory's modification time. Other than <code><a href='https://rdrr.io/r/base/file.info.html'>file.mtime()</a></code> datetime of modification is always returned in
+<a href='https://en.wikipedia.org/wiki/Coordinated_Universal_Time'>UTC</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>flatten_path_tree</span><span class='op'>(</span><span class='va'>path_tree</span>, parent_path <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>path_mod_time</span><span class='op'>(</span><span class='va'>path</span>, follow <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path_tree</th>
-      <td><p>Directory tree. A nested list of named lists and character vectors.</p></td>
+      <th>path</th>
+      <td><p>Path to a file or directory. A character scalar.</p></td>
     </tr>
     <tr>
-      <th>parent_path</th>
-      <td><p>Optional parent path of <code>path_tree</code>. A character scalar.</p></td>
+      <th>follow</th>
+      <td><p>If <code>TRUE</code>, symbolic links will be followed (recursively) and
+the results will be that of the final file rather than the link.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character vector.</p>
+    <p>A <a href='https://rdrr.io/r/base/DateTimeClasses.html'>datetime</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other path functions:
 <code><a href='draw_path_tree.html'>draw_path_tree</a>()</code>,
-<code><a href='path_mod_time.html'>path_mod_time</a>()</code></p></div>
+<code><a href='flatten_path_tree.html'>flatten_path_tree</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"root_dir"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"subdir1"</span>,</span>
-<span class='r-in'>                       <span class='st'>"subdir2"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"file1.ext"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                       <span class='st'>"file2.ext"</span><span class='op'>)</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>flatten_path_tree</span><span class='op'>(</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> root_dir</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> root_dir/subdir1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> root_dir/subdir2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> root_dir/subdir2/file1.ext</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> root_dir/file2.ext</span>
+    <pre class="examples"><span class='r-in'><span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"pal"</span>,</span>
+<span class='r-in'>                 <span class='st'>"DESCRIPTION"</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>path_mod_time</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-12-24 15:59:50 UTC"</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

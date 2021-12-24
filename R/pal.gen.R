@@ -1026,6 +1026,7 @@ prose_ls <- function(x,
 #' @param path Path to a file or directory. A character scalar.
 #'
 #' @return `r pkgsnip::return_label("datetime")`
+#' @family path
 #' @export
 #'
 #' @examples

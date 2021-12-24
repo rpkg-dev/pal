@@ -24,3 +24,9 @@ fs::path_package(package = "pal",
                  "DESCRIPTION") |>
   pal::path_mod_time()
 }
+\seealso{
+Other path functions:
+\code{\link{draw_path_tree}()},
+\code{\link{flatten_path_tree}()}
+}
+\concept{path}
