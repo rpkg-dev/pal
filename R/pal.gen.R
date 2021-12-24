@@ -1017,6 +1017,29 @@ prose_ls <- function(x,
   result
 }
 
+#' Get path modification time
+#'
+#' Determine a file's or directory's modification time. Other than [file.mtime()] datetime of modification is always returned in
+#' [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
+#'
+#' @inheritParams fs::file_info
+#' @param path Path to a file or directory. A character scalar.
+#'
+#' @return `r pkgsnip::return_label("datetime")`
+#' @export
+#'
+#' @examples
+#' fs::path_package(package = "pal",
+#'                  "DESCRIPTION") |>
+#'   pal::path_mod_time()
+path_mod_time <- function(path,
+                          follow = FALSE) {
+  
+  fs::file_info(path = path) %$%
+                modification_time %>%
+                lubridate::as_datetime()
+}
+
 #' Flatten path tree
 #'
 #' Flattens a hierarchical list of path elements into a character vector of full paths.

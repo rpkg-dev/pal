@@ -54,6 +54,7 @@ reference:
 - title: Filesystem paths
   desc: Functions to work with filesystem paths.
 - contents:
+  - path_mod_time
   - flatten_path_tree
   - draw_path_tree
 - title: Dots
