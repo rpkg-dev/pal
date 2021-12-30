@@ -1023,7 +1023,6 @@ prose_ls <- function(x,
 #' [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 #'
 #' @inheritParams fs::file_info
-#' @param path Path to a file or directory. A character scalar.
 #'
 #' @return `r pkgsnip::return_label("datetime")`
 #' @family path
@@ -1036,9 +1035,7 @@ prose_ls <- function(x,
 path_mod_time <- function(path,
                           follow = FALSE) {
   
-  fs::file_info(path = path) %$%
-                modification_time %>%
-                lubridate::as_datetime()
+  lubridate::as_datetime(fs::file_info(path = path, follow = follow)$modification_time)
 }
 
 #' Flatten path tree
@@ -1213,8 +1210,8 @@ draw_path_tree <- function(paths,
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.fn`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action Action to take when the check fails. A function expecting a condition message string as first argument. For example [cli::cli_abort()],
-#'   [cli::cli_warn()], [cli::cli_inform()] or [rlang::signal()].
+#' @param .action Action to take when the check fails. One of
+#' `r pal::as_md_val_list(c("abort", "warn", "inform"))`
 #'
 #' @family dots
 #' @export
@@ -1288,7 +1285,7 @@ check_dots_named <- function(...,
                              .additional = NULL,
                              .forbidden = NULL,
                              .empty_ok = TRUE,
-                             .action = cli::cli_abort) {
+                             .action = c("abort", "warn", "inform")) {
   
   checkmate::assert_function(.fn)
   checkmate::assert_character(.additional,
@@ -1298,7 +1295,7 @@ check_dots_named <- function(...,
                               any.missing = FALSE,
                               null.ok = TRUE)
   checkmate::assert_flag(.empty_ok)
-  checkmate::assert_function(.action)
+  .action <- rlang::arg_match(.action)
   
   if (...length()) {
     
@@ -1317,8 +1314,8 @@ check_dots_named <- function(...,
     dots_param_names <- methods::formalArgs(.fn)
     
     # check named `...` args
-    purrr::walk(.x = setdiff(names(c(...)),
-                             ""),
+    purrr::walk(.x = setdiff(...names(),
+                             NA_character_),
                 .f = check_dot_named,
                 values = dots_param_names,
                 allowed_values = setdiff(union(dots_param_names,
@@ -1328,7 +1325,13 @@ check_dots_named <- function(...,
                 action = .action)
     
   } else if (!.empty_ok) {
-    .action(cli::format_error("{.arg ...} must be provided (!= NULL)."))
+    
+    msg <- "{.arg ...} must be provided (!= NULL)."
+    
+    switch(EXPR = .action,
+           "abort" = cli::cli_abort(msg),
+           "warn" = cli::cli_warn(msg),
+           "inform" = cli::cli_inform(msg))
   }
 }
 
@@ -1350,17 +1353,17 @@ check_dot_named <- function(dot,
     msg <- paste0(dplyr::if_else(is_forbidden,
                                  "Forbidden",
                                  "Invalid"),
-                  " argument provided in `...`: `{dot}`\n\n")
+                  " argument provided in {.arg ...}: {.arg {dot}}")
     
     if (length(allowed_values) > 0L) {
       
-      msg %<>% paste0(dplyr::if_else(is_restricted,
-                                     "Arguments allowed to pass on to ",
-                                     "Valid arguments for "),
-                      "`{fn_name}()` include: ", prose_ls(allowed_values, wrap = "`"), ".")
+      msg %<>% c("i" = paste0(dplyr::if_else(is_restricted,
+                                             "Arguments allowed to pass on to ",
+                                             "Valid arguments for "),
+                              "{.fun {fn_name}} include: ", prose_ls(paste0("{.arg ", allowed_values, "}"))))
     } else {
       
-      msg %<>% paste0("Only unnamed arguments are ", dplyr::if_else(is_restricted, "allowed", "valid"), " for `{fn_name}()`.")
+      msg %<>% c("i" = paste0("Only unnamed arguments are ", dplyr::if_else(is_restricted, "allowed", "valid"), " for {.fun {fn_name}}."))
     }
     
     i_partial <- pmatch(dot, allowed_values)
@@ -1377,10 +1380,13 @@ check_dot_named <- function(dot,
     }
     
     if (!is.null(candidate)) {
-      msg <- paste0(msg, "\n\nDid you mean {.arg {candidate}}?")
+      msg %<>% c(">" = "Did you mean {.arg {candidate}}?")
     }
     
-    action(msg)
+    switch(EXPR = action,
+           "abort" = cli::cli_abort(msg),
+           "warn" = cli::cli_warn(msg),
+           "inform" = cli::cli_inform(msg))
   }
 }
 

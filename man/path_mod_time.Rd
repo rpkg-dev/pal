@@ -7,7 +7,7 @@
 path_mod_time(path, follow = FALSE)
 }
 \arguments{
-\item{path}{Path to a file or directory. A character scalar.}
+\item{path}{A character vector of one or more paths.}
 
 \item{follow}{If \code{TRUE}, symbolic links will be followed (recursively) and
 the results will be that of the final file rather than the link.}
