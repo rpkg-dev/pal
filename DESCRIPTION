@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9078
+Version: 0.0.9079
 Authors@R: 
     person(given = "Salim",
            family = "Brüggemann",
@@ -25,7 +25,7 @@ Imports:
     magrittr (>= 2.0.1),
     methods,
     purrr (>= 0.3.4),
-    rlang (>= 0.4.11),
+    rlang (>= 1.0.0),
     stringr (>= 1.4.0),
     tibble (>= 3.1.4),
     utils
@@ -33,7 +33,6 @@ Suggests:
     brio (>= 1.1.0),
     commonmark (>= 1.7),
     desc (>= 1.4.0),
-    ellipsis (>= 0.3.2),
     gh (>= 1.3.0),
     httr (>= 1.4.1),
     janeaustenr,

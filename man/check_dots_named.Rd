@@ -113,4 +113,7 @@ sapply_safe(X = c(0,50),
             100,
             5)
 }
+\seealso{
+rlang's check dots functions: \code{\link[rlang:check_dots_empty]{rlang::check_dots_empty()}}, \code{\link[rlang:check_dots_used]{rlang::check_dots_used()}} and \code{\link[rlang:check_dots_unnamed]{rlang::check_dots_unnamed()}}
+}
 \concept{dots}

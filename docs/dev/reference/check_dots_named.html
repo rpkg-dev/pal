@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9078</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9079</span>
       </span>
     </div>
 
@@ -198,6 +198,9 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 <li><p><strong><em>A misspelled argument will not raise an error. This makes it easy for typos to go unnoticed.</em></strong></p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>rlang's check dots functions: <code><a href='https://rlang.r-lib.org/reference/check_dots_empty.html'>rlang::check_dots_empty()</a></code>, <code><a href='https://rlang.r-lib.org/reference/check_dots_used.html'>rlang::check_dots_used()</a></code> and <code><a href='https://rlang.r-lib.org/reference/check_dots_unnamed.html'>rlang::check_dots_unnamed()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># We can use `check_dots_named()` to address this second downside:</span></span>
@@ -218,7 +221,8 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span></span>
 <span class='r-in'>  <span class='fu'>sum_safe</span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='cn'>NA</span>, na_rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`na_rm`</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in cli::cli_abort(msg) : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`na_rm`</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Only unnamed arguments are valid for <span style='color: #262626; background-color: #DADADA;'>`sum()`</span>.</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># we can even build an `sapply()` function that fails "intelligently" </span></span>
@@ -245,7 +249,8 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span></span>
 <span class='r-in'>  <span class='fu'>sapply_safe</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='va'>paste</span>, <span class='st'>"hour workdays"</span>, sep <span class='op'>=</span> <span class='st'>"-"</span>, colaspe <span class='op'>=</span> <span class='st'>" "</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`colaspe`</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in cli::cli_abort(msg) : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`colaspe`</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Valid arguments for <span style='color: #262626; background-color: #DADADA;'>`paste()`</span> include: <span style='color: #262626; background-color: #DADADA;'>`...`</span>, <span style='color: #262626; background-color: #DADADA;'>`sep`</span>, <span style='color: #262626; background-color: #DADADA;'>`collapse`</span> and</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #262626; background-color: #DADADA;'>`recycle0`</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> → Did you mean <span style='color: #262626; background-color: #DADADA;'>`collapse`</span>?</span>
@@ -254,7 +259,8 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span></span>
 <span class='r-in'>  <span class='fu'>sum_safe</span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, b <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`a`</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in cli::cli_abort(msg) : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`a`</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Only unnamed arguments are valid for <span style='color: #262626; background-color: #DADADA;'>`sum()`</span>.</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># while the original function actually has nothing to complain</span></span>
@@ -269,7 +275,8 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 <span class='r-in'>              to <span class='op'>=</span> <span class='fl'>100</span>,</span>
 <span class='r-in'>              by <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Error : Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`to`</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in cli::cli_abort(msg) : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Invalid argument provided in <span style='color: #262626; background-color: #DADADA;'>`...`</span>: <span style='color: #262626; background-color: #DADADA;'>`to`</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Valid arguments for <span style='color: #262626; background-color: #DADADA;'>`seq()`</span> include: <span style='color: #262626; background-color: #DADADA;'>`...`</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># but providing `to` and `by` *unnamed* is fine of course:</span></span>
@@ -300,7 +307,7 @@ understand what you can do with functions like <code><a href='https://rdrr.io/r/
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>1.6.1.9000.</p></p>
 </div>
 
       </footer>

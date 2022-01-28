@@ -2,7 +2,7 @@
 # See `README.md#r-markdown-format` for more information on the literate programming approach used applying the R Markdown format.
 
 # pal: Friendly Convenience/Utility Functions
-# Copyright (C) 2021 Salim Brüggemann
+# Copyright (C) 2022 Salim Brüggemann
 # 
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
 # Software Foundation, either version 3 of the License, or any later version.
@@ -1213,6 +1213,7 @@ draw_path_tree <- function(paths,
 #' @param .action Action to take when the check fails. One of
 #' `r pal::as_md_val_list(c("abort", "warn", "inform"))`
 #'
+#' @seealso rlang's check dots functions: [rlang::check_dots_empty()], [rlang::check_dots_used()] and [rlang::check_dots_unnamed()]
 #' @family dots
 #' @export
 #'
@@ -1810,8 +1811,7 @@ roxy_blocks <- function(pkg = NULL,
   
   if (is_pkg_null) {
     
-    assert_pkg("ellipsis")
-    ellipsis::check_dots_empty()
+    rlang::check_dots_empty0(...)
     
     blocks <- rlang::with_handlers(roxygen2::parse_text(text = text),
                                    error = ~ list(FALSE, .x))

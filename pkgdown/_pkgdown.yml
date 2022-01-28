@@ -59,8 +59,8 @@ reference:
   - draw_path_tree
 - title: Dots
   desc: |-
-    Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another
-    bit safer.
+    Extending [rlang's *check dots* functions](https://rlang.r-lib.org/reference/index.html#check-dots), making the use of [R's `...` argument
+    placeholder](https://rdrr.io/r/base/dots.html) yet another bit safer.
 - contents: check_dots_named
 - title: R packages
 - contents:

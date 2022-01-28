@@ -42,7 +42,7 @@ hexSticker::sticker(subplot = "data-raw/logo/help_yellow.png",
 
 Finally, `data-raw/logo/hexsticker.png` was post-processed by the [G'MIC](https://gmic.eu/) filter *Felt Pen* in GIMP to create
 `data-raw/logo/hexsticker_gmic_felt_pen.png` which, however, was discarded. Instead, the final package logo `data-raw/logo/hexsticker_smooth.png` is just
-smoothed using the G'MIC filter *Smooth \[Diffusion\]* in GIMP.
+smoothed using the G'MIC filter *Smooth Diffusion* in GIMP.
 
 ## Avoid `R CMD check` notes about undefined global objects used in magrittr pipes
 
@@ -1412,8 +1412,8 @@ draw_path_tree <- function(paths,
 
 ### DESCRIPTION
 
-Extending the [ellipsis](https://ellipsis.r-lib.org/) package, making the use of [R's `...` argument placeholder](https://rdrr.io/r/base/dots.html) yet another
-bit safer.
+Extending [rlang's *check dots* functions](https://rlang.r-lib.org/reference/index.html#check-dots), making the use of [R's `...` argument
+placeholder](https://rdrr.io/r/base/dots.html) yet another bit safer.
 
 ### `check_dots_named`
 
@@ -1422,12 +1422,15 @@ TODO:
 -   Check for primitive functions using `is.primitive()` and properly handle that case (we can't determine `parent_param_names` for them, so we should probably
     just abort with an informative error). Also mention that in docs and adapt examples.
 
+-   Thoroughly check examples, there seem to be flaws in the fn!
+
 NOTES:
 
 -   Code to suggest proper dots params largely borrowed from
     [`rlang:::stop_arg_match()`](https://github.com/r-lib/rlang/blob/2a269c44aaa3985ce742e0e91a48b2d3c4664f3c/R/arg.R#L79-L110) (MIT-licensed).
 
--   Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35).
+-   Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35), but there has been no reaction. Meanwhile the `check_dots_*`
+    functions have been [integrated into rlang](https://rlang.r-lib.org/reference/index.html#check-dots), maybe propose it there?
 
 ```{r}
 #' Check that all named dots arguments are valid
@@ -1459,6 +1462,7 @@ NOTES:
 #' @param .action Action to take when the check fails. One of
 #' `r pal::as_md_val_list(c("abort", "warn", "inform"))`
 #'
+#' @seealso rlang's check dots functions: [rlang::check_dots_empty()], [rlang::check_dots_used()] and [rlang::check_dots_unnamed()]
 #' @family dots
 #' @export
 #'
@@ -2148,8 +2152,7 @@ roxy_blocks <- function(pkg = NULL,
   
   if (is_pkg_null) {
     
-    assert_pkg("ellipsis")
-    ellipsis::check_dots_empty()
+    rlang::check_dots_empty0(...)
     
     blocks <- rlang::with_handlers(roxygen2::parse_text(text = text),
                                    error = ~ list(FALSE, .x))
