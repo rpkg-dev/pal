@@ -2,10 +2,7 @@ Package: pal
 Title: Friendly Convenience/Utility Functions
 Version: 0.0.9079
 Authors@R: 
-    person(given = "Salim",
-           family = "Brüggemann",
-           role = c("aut", "cre"),
-           email = "salim-b@pm.me",
+    person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5329-5987"))
 Description: A collection of convenience/utility functions complementing
     base R and the tidyverse.
@@ -20,8 +17,8 @@ Imports:
     dplyr (>= 1.0.7),
     fs (>= 1.5.0),
     glue (>= 1.4.2),
-    lubridate (>= 1.8.0),
     lifecycle (>= 1.0.0),
+    lubridate (>= 1.8.0),
     magrittr (>= 2.0.1),
     methods,
     purrr (>= 0.3.4),

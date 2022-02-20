@@ -2591,7 +2591,7 @@ TODO:
 
 -   [ ] There's already the [tinkr](https://docs.ropensci.org/tinkr/) package providing [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The
     main advantage of `md_to_xml()` is that `strip_yaml_header()` is more robust in YAML header detection than [blogdown's
-    `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `to_xml()`.
+    `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `tinkr::to_xml()`.
 
     Thus it would be ideal to:
 
