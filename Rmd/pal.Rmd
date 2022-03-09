@@ -171,7 +171,7 @@ safe_seq_len <- function(n) {
 
 Note that the `checkmate::assert_*()` functions currently [do *not* ensure correct types for `NA` input values](https://github.com/mllg/checkmate/issues/169).
 Thus it is possible to feed `NA_character_` to the two functions below. A new param `typed.missing` has been [introduced in checkmate
-devel](https://github.com/mllg/checkmate/pull/199) -> update fns below as soon as a new stable release is published!
+devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon as a new stable release is published!
 
 ```{r}
 #' Maximum (safe)
@@ -1436,14 +1436,12 @@ NOTES:
 #' Check that all named dots arguments are valid
 #'
 #' @description
-#'
 #' `r lifecycle::badge("experimental")`
 #'
 #' Ensures that [dots][base::dots()] `...` are either empty (if `.empty_ok = TRUE`), or all named elements in dots are a valid subset of `.fn`'s parameter
 #' names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
 #'
 #' @details
-#'
 #' `check_dots_named()` is intended to combat the second one of the two major downsides that using `...` usually brings. In chapter 6.6 of the book
 #' _Advanced R_ it is [phrased](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot) as follows:
 #'

@@ -1187,14 +1187,12 @@ draw_path_tree <- function(paths,
 #' Check that all named dots arguments are valid
 #'
 #' @description
-#'
 #' `r lifecycle::badge("experimental")`
 #'
 #' Ensures that [dots][base::dots()] `...` are either empty (if `.empty_ok = TRUE`), or all named elements in dots are a valid subset of `.fn`'s parameter
 #' names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
 #'
 #' @details
-#'
 #' `check_dots_named()` is intended to combat the second one of the two major downsides that using `...` usually brings. In chapter 6.6 of the book
 #' _Advanced R_ it is [phrased](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot) as follows:
 #'
