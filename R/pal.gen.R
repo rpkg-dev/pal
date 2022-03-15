@@ -1029,7 +1029,7 @@ prose_ls <- function(x,
 #' @export
 #'
 #' @examples
-#' fs::path_package(package = "pal",
+#' fs::path_package(package = "dplyr",
 #'                  "DESCRIPTION") |>
 #'   pal::path_mod_time()
 path_mod_time <- function(path,
@@ -1101,7 +1101,7 @@ flatten_path_tree <- function(path_tree,
 #'   pal::draw_path_tree()
 #' 
 #' # using an actual path hierarchy
-#' fs::path_package("pal") |>
+#' fs::path_package("dplyr") |>
 #'   fs::dir_ls(recurse = TRUE) |>
 #'   pal::draw_path_tree()
 #' 
@@ -1495,7 +1495,7 @@ assert_pkg <- function(pkg,
       
       assert_pkg("pkgsearch")
       
-      cran <- pkgsearch::pkg_search(pkg, size = 1L)
+      cran <- pkgsearch::pkg_search(pkg, size = 10L)
       is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
       is_cran_min_version <- ifelse(length(min_version) == 0L,
                                     is_cran_pkg,
@@ -1507,7 +1507,7 @@ assert_pkg <- function(pkg,
                                       magrittr::is_greater_than(0L))
       
       if (is_cran_min_version) {
-        install_hint <- "To install the latest version, run {.code install.packages(\"{pkg}\")}."
+        install_hint <- paste0("To install the latest version, run {.code install.packages(\"", pkg, "\")}.")
         
       } else {
         install_hint <- paste0("Please first ", dplyr::if_else(lacks_min_version, "update {.pkg {pkg}}", "install it"),
@@ -1677,9 +1677,7 @@ is_pkgdown_dir <- function(path = ".") {
 #' @export
 #'
 #' @examples
-#' try(
-#'   pal::desc_list(file = fs::path_package(package = "pal"))
-#' )
+#' fs::path_package(package = "dplyr") |> pal::desc_list()
 desc_list <- function(file = ".") {
   
   fields <- desc::desc_fields(file = file)

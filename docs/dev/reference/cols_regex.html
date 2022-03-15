@@ -214,7 +214,7 @@ abbreviated character names (as described in the <code>col_types</code> paramete
 <span class='r-in'>                                            .default <span class='op'>=</span> <span class='st'>"i"</span>,</span>
 <span class='r-in'>                                            .col_names <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='dsv_colnames.html'>dsv_colnames</a></span><span class='op'>(</span><span class='va'>raw_data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,043 × 8</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerante…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerant…`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> Adlikon              21 SVP        <span style='text-decoration: underline;'>5</span>241    150        56.5              -<span style='color: #BB0000;'>0.36</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> Adlikon              21 SP          566     16         6.1              -<span style='color: #BB0000;'>2.22</span></span>
@@ -226,7 +226,7 @@ abbreviated character names (as described in the <code>col_types</code> paramete
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> Adlikon              21 EVP         623     18         6.71              1.99</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> Adlikon              21 Piraten       0      0         0                -<span style='color: #BB0000;'>0.43</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> Adlikon              21 IP            1      0         0.01             <span style='color: #BB0000;'>NA</span>   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: Wähleranteil 2015 &lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: `Wähleranteil 2015` &lt;dbl&gt;</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># an alternative way to process the same data using `readr::type_convert()`:</span></span>
 <span class='r-in'><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>raw_data</span>,</span>
@@ -236,7 +236,7 @@ abbreviated character names (as described in the <code>col_types</code> paramete
 <span class='r-in'>                                                  .default <span class='op'>=</span> <span class='st'>"i"</span>,</span>
 <span class='r-in'>                                                  .col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,043 × 8</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerante…</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerant…`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> Adlikon              21 SVP        <span style='text-decoration: underline;'>5</span>241    150        56.5              -<span style='color: #BB0000;'>0.36</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> Adlikon              21 SP          566     16         6.1              -<span style='color: #BB0000;'>2.22</span></span>
@@ -248,7 +248,7 @@ abbreviated character names (as described in the <code>col_types</code> paramete
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> Adlikon              21 EVP         623     18         6.71              1.99</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> Adlikon              21 Piraten       0      0         0                -<span style='color: #BB0000;'>0.43</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> Adlikon              21 IP            1      0         0.01             <span style='color: #BB0000;'>NA</span>   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: Wähleranteil 2015 &lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: `Wähleranteil 2015` &lt;dbl&gt;</span></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -239,8 +239,8 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/attr.R:283] @description mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/call.R:315] @section mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/call.R:473] @return mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/call.R:268] @section mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/call.R:426] @return mismatched braces or quotes</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:1] @title mismatched braces or quotes</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:3] @description mismatched braces or quotes</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:16] @section mismatched braces or quotes</span>
@@ -257,126 +257,13 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** package ‘rlang’ successfully unpacked and MD5 sums checked</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** using staged installation</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** libs</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -std=gnu99 -std=gnu11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-i2PIHO/r-base-4.1.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c capture.c -o capture.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -std=gnu99 -std=gnu11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-i2PIHO/r-base-4.1.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c internal.c -o internal.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> In file included from <span style='font-weight: bold;'>./rlang/rlang.h:44</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>internal/internal.c:1</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>internal.c:1</span>:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/cnd-handlers.c:</span> In function ‘<span style='font-weight: bold;'>rlang_init_cnd_handlers</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/cnd-handlers.c:84:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    84 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(hnd_call);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/dots.c:</span> In function ‘<span style='font-weight: bold;'>rlang_init_dots</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/dots.c:1094:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  1094 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(dots_ignore_empty_values);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/dots.c:1097:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  1097 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(dots_homonyms_values);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> In file included from <span style='font-weight: bold;'>./rlang/rlang.h:44</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>internal/internal.c:1</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>internal.c:1</span>:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/tests.c:</span> In function ‘<span style='font-weight: bold;'>rlang_init_tests</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>internal/tests.c:188:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   188 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(tests_df_names);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/     -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-i2PIHO/r-base-4.1.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang-rcc.cpp -o rlang-rcc.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> In file included from <span style='font-weight: bold;'>./rlang/rlang.h:44</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>./rlang/rlang.hpp:16</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>rlang/cpp/vec.cpp:2</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>rlang/cpp/rlang.cpp:1</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>rlang-rcc.cpp:1</span>:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:21:8:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>‘<span style='font-weight: bold;'>_r_placeholder</span>’ defined but not used [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-variable</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    21 | r_obj* <span style='color: #BB00BB; font-weight: bold;'>_r_placeholder</span> = NULL;</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |        <span style='color: #BB00BB; font-weight: bold;'>^~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -std=gnu99 -std=gnu11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-i2PIHO/r-base-4.1.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang.c -o rlang.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> In file included from <span style='font-weight: bold;'>rlang/rlang.c:7</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>rlang.c:5</span>:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/cnd.c:</span> In function ‘<span style='font-weight: bold;'>r_init_library_cnd</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/cnd.c:137:3:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>‘<span style='font-weight: bold;'>noreturn</span>’ attribute does not apply to types [<span style='color: #BB00BB; font-weight: bold;'>-Wattributes</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   137 |   <span style='color: #BB00BB; font-weight: bold;'>r_stop_internal</span> = (__attribute__((noreturn)) void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>^~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/cnd.c:137:19:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>assignment makes ‘<span style='font-weight: bold;'>__attribute__((noreturn))</span>’ qualified function pointer from unqualified [<span style='color: #BB00BB; font-weight: bold;'>-Wdiscarded-qualifiers</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   137 |   r_stop_internal <span style='color: #BB00BB; font-weight: bold;'>=</span> (__attribute__((noreturn)) void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |                   <span style='color: #BB00BB; font-weight: bold;'>^</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> In file included from <span style='font-weight: bold;'>./rlang/rlang.h:44</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>rlang/rlang.c:1</span>,</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>                  from <span style='font-weight: bold;'>rlang.c:5</span>:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/fn.c:</span> In function ‘<span style='font-weight: bold;'>r_init_library_fn</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/fn.c:31:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    31 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(rlang_formula_formals);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/globals.c:</span> In function ‘<span style='font-weight: bold;'>r_init_library_globals</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/globals.c:38:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    38 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(r_classes.tibble);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/obj.c:</span> In function ‘<span style='font-weight: bold;'>r_init_library_obj</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/obj.c:118:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   118 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(as_label_call);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/stack.c:</span> In function ‘<span style='font-weight: bold;'>r_init_library_stack</span>’:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>./rlang/obj.h:51:40:</span> <span style='color: #BB00BB; font-weight: bold;'>warning: </span>right-hand operand of comma expression has no effect [<span style='color: #BB00BB; font-weight: bold;'>-Wunused-value</span>]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    50 |   <span style='color: #BB00BB; font-weight: bold;'>(R_PreserveObject(_r_placeholder = X),        \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    51 | <span style='color: #BB00BB; font-weight: bold;'>   (_r_preserve_global)(_r_placeholder),         \</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    52 | <span style='color: #BB00BB; font-weight: bold;'>   _r_placeholder)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |    <span style='color: #BB00BB; font-weight: bold;'>~~~~~~~~~~~~~~~</span>                      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>rlang/stack.c:88:3:</span> <span style='color: #00BBBB; font-weight: bold;'>note: </span>in expansion of macro ‘<span style='font-weight: bold;'>r_preserve_global</span>’</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    88 |   <span style='color: #00BBBB; font-weight: bold;'>r_preserve_global</span>(caller_env_call);</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       |   <span style='color: #00BBBB; font-weight: bold;'>^~~~~~~~~~~~~~~~~</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -std=gnu99 -std=gnu11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-i2PIHO/r-base-4.1.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c version.c -o version.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-lENDSu/r-base-4.1.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c capture.c -o capture.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-lENDSu/r-base-4.1.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c internal.c -o internal.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/     -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-lENDSu/r-base-4.1.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang-rcc.cpp -o rlang-rcc.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-lENDSu/r-base-4.1.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang.c -o rlang.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-lENDSu/r-base-4.1.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c version.c -o version.o</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,relro -o rlang.so capture.o internal.o rlang-rcc.o rlang.o version.o -L/usr/lib/R/lib -lR</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> installing to /tmp/RtmpULLQ9Z/devtools_install_3824c6ca3df55/00LOCK-rlang/00new/rlang/libs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> installing to /tmp/RtmpNJBlYh/devtools_install_1524513a85cb6/00LOCK-rlang/00new/rlang/libs</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** checking absolute paths in shared objects and dynamic libraries</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * DONE (rlang)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>

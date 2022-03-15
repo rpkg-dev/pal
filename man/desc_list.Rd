@@ -23,9 +23,7 @@ Returns all fields from a specific \code{DESCRIPTION} file as a named list with 
 }
 }
 \examples{
-try(
-  pal::desc_list(file = fs::path_package(package = "pal"))
-)
+fs::path_package(package = "dplyr") |> pal::desc_list()
 }
 \seealso{
 Other package documentation functions:

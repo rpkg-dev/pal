@@ -187,27 +187,65 @@ the tree is the same.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> └── file2.ext</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># using an actual path hierarchy</span></span>
-<span class='r-in'><span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span><span class='st'>"pal"</span><span class='op'>)</span> |&gt;</span>
+<span class='r-in'><span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span><span class='st'>"dplyr"</span><span class='op'>)</span> |&gt;</span>
 <span class='r-in'>  <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/dir_ls.html'>dir_ls</a></span><span class='op'>(</span>recurse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> |&gt;</span>
 <span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>draw_path_tree</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> /tmp/RtmpIFbgBe/temp_libpath36dcd7feabdd9/pal</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> /usr/lib/R/site-library/dplyr</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── DESCRIPTION</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── INDEX</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── Meta</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── Rd.rds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── data.rds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── features.rds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── hsearch.rds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── links.rds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── nsInfo.rds</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── package.rds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── package.rds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── vignette.rds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── NAMESPACE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ├── NEWS.md</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── R</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── pal</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── pal.rdb</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── pal.rdx</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr.rdb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── dplyr.rdx</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ├── data</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── Rdata.rdb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── Rdata.rds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── Rdata.rdx</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ├── doc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── base.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── base.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── base.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── colwise.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── colwise.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── colwise.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── compatibility.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── compatibility.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── compatibility.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── grouping.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── grouping.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── grouping.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── index.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── programming.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── programming.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── programming.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── rowwise.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── rowwise.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── rowwise.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── two-table.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── two-table.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── two-table.html</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── window-functions.R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── window-functions.Rmd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── window-functions.html</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── help</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── AnIndex</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── aliases.rds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr.rdb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── dplyr.rdx</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── figures</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-archived.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-defunct.svg</span>
@@ -215,22 +253,21 @@ the tree is the same.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-experimental.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-maturing.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-questioning.svg</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-retired.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-soft-deprecated.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-stable.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   ├── lifecycle-superseded.svg</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   │   └── logo.png</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── pal.rdb</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── pal.rdx</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── paths.rds</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── html</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   ├── 00Index.html</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> │   └── R.css</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> └── rstudio</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     └── addins.dcf</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> └── libs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     └── dplyr.so</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># to get colorized output, use `fs::dir_tree()` instead</span></span>
 <span class='r-in'><span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span><span class='st'>"pal"</span><span class='op'>)</span> |&gt; <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB; font-weight: bold;'>/tmp/RtmpIFbgBe/temp_libpath36dcd7feabdd9/pal</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB; font-weight: bold;'>/tmp/Rtmpcmagg5/temp_libpath14fe276f60d2/pal</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── DESCRIPTION</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── INDEX</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ├── <span style='color: #0000BB; font-weight: bold;'>Meta</span></span>

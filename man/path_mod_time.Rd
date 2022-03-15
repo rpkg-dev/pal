@@ -20,7 +20,7 @@ Determine a file's or directory's modification time. Other than \code{\link[=fil
 \href{https://en.wikipedia.org/wiki/Coordinated_Universal_Time}{UTC}.
 }
 \examples{
-fs::path_package(package = "pal",
+fs::path_package(package = "dplyr",
                  "DESCRIPTION") |>
   pal::path_mod_time()
 }

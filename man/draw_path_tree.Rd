@@ -31,7 +31,7 @@ list("root_dir" = list("subdir1",
   pal::draw_path_tree()
 
 # using an actual path hierarchy
-fs::path_package("pal") |>
+fs::path_package("dplyr") |>
   fs::dir_ls(recurse = TRUE) |>
   pal::draw_path_tree()
 
