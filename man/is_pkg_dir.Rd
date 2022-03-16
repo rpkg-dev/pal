@@ -26,6 +26,7 @@ Other R package functions:
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()}
+\code{\link{ls_pkg}()},
+\code{\link{use_pkg}()}
 }
 \concept{rpkgs}

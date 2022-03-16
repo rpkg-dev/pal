@@ -1106,7 +1106,7 @@ flatten_path_tree <- function(path_tree,
 #'   pal::draw_path_tree()
 #' 
 #' # to get colorized output, use `fs::dir_tree()` instead
-#' fs::path_package("pal") |> fs::dir_tree()
+#' fs::path_package("dplyr") |> fs::dir_tree()
 draw_path_tree <- function(paths,
                            quiet = FALSE) {
   
@@ -1660,6 +1660,33 @@ is_pkgdown_dir <- function(path = ".") {
   rprojroot::is_pkgdown_project$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
     any()
+}
+
+#' Depend on another package
+#'
+#' Wrapper around [usethis::use_package()] with different defaults and optional `DESCRIPTION` file [tidying][usethis::use_tidy_description].
+#'
+#' @inheritParams usethis::use_package
+#' @param tidy Whether or not to run [usethis::use_tidy_description()] after adding `package` to dependencies.
+#'
+#' @return `NULL`, invisibly.
+#' @family rpkgs
+#' @export
+use_pkg <- function(package,
+                    type = "Imports",
+                    min_version = TRUE,
+                    tidy = TRUE) {
+  
+  checkmate::assert_flag(tidy)
+  assert_pkg("usethis")
+  
+  usethis::use_package(package = package,
+                       type = type,
+                       min_version = min_version)
+  
+  if (tidy) {
+    usethis::use_tidy_description()
+  }
 }
 
 #' Get all `DESCRIPTION` file fields as cleaned up list

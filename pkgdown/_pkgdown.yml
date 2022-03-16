@@ -70,6 +70,7 @@ reference:
   - is_pkg_cran
   - is_pkg_dir
   - is_pkgdown_dir
+  - use_pkg
 - subtitle: Package DESCRIPTION
   desc: Extending the [desc](https://github.com/r-lib/desc#readme) package.
 - contents:

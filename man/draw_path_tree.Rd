@@ -36,7 +36,7 @@ fs::path_package("dplyr") |>
   pal::draw_path_tree()
 
 # to get colorized output, use `fs::dir_tree()` instead
-fs::path_package("pal") |> fs::dir_tree()
+fs::path_package("dplyr") |> fs::dir_tree()
 }
 \seealso{
 Other path functions:

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if a package is available on CRAN — is_pkg_cran • pal</title>
+<title>Depend on another package — use_pkg • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Test if a package is available on CRAN — is_pkg_cran" />
-<meta name="description" content="Test if a package is available on CRAN">
-<meta property="og:description" content="Test if a package is available on CRAN" />
+<meta property="og:title" content="Depend on another package — use_pkg" />
+<meta name="description" content="Wrapper around usethis::use_package() with different defaults and optional DESCRIPTION file tidying.">
+<meta property="og:description" content="Wrapper around usethis::use_package() with different defaults and optional DESCRIPTION file tidying." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,52 +135,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if a package is available on CRAN</h1>
+    <h1>Depend on another package</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>is_pkg_cran.Rd</code></div>
+    <div class="hidden name"><code>use_pkg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Test if a package is available on CRAN</p>
+    <p>Wrapper around <code><a href='https://usethis.r-lib.org/reference/use_package.html'>usethis::use_package()</a></code> with different defaults and optional <code>DESCRIPTION</code> file <a href='https://usethis.r-lib.org/reference/tidyverse.html'>tidying</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_pkg_cran</span><span class='op'>(</span><span class='va'>pkg</span>, min_version <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>use_pkg</span><span class='op'>(</span><span class='va'>package</span>, type <span class='op'>=</span> <span class='st'>"Imports"</span>, min_version <span class='op'>=</span> <span class='cn'>TRUE</span>, tidy <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pkg</th>
-      <td><p>Package name. A character scalar.</p></td>
+      <th>package</th>
+      <td><p>Name of package to depend on.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Type of dependency: must be one of "Imports", "Depends",
+"Suggests", "Enhances", or "LinkingTo" (or unique abbreviation). Matching
+is case insensitive.</p></td>
     </tr>
     <tr>
       <th>min_version</th>
-      <td><p>Minimum required version number of <code>pkg</code>. Must be either <code>NULL</code> to ignore version numbers, or a single
-<code><a href='https://rdrr.io/r/base/numeric_version.html'>package_version</a></code> or something coercible to.</p></td>
+      <td><p>Optionally, supply a minimum version for the package.
+Set to <code>TRUE</code> to use the currently installed version.</p></td>
+    </tr>
+    <tr>
+      <th>tidy</th>
+      <td><p>Whether or not to run <code><a href='https://usethis.r-lib.org/reference/tidyverse.html'>usethis::use_tidy_description()</a></code> after adding <code>package</code> to dependencies.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A logical scalar.</p>
+    <p><code>NULL</code>, invisibly.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other R package functions:
 <code><a href='assert_pkg.html'>assert_pkg</a>()</code>,
+<code><a href='is_pkg_cran.html'>is_pkg_cran</a>()</code>,
 <code><a href='is_pkg_dir.html'>is_pkg_dir</a>()</code>,
 <code><a href='is_pkg_installed.html'>is_pkg_installed</a>()</code>,
 <code><a href='is_pkgdown_dir.html'>is_pkgdown_dir</a>()</code>,
-<code><a href='ls_pkg.html'>ls_pkg</a>()</code>,
-<code><a href='use_pkg.html'>use_pkg</a>()</code></p></div>
+<code><a href='ls_pkg.html'>ls_pkg</a>()</code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_cran</span><span class='op'>(</span><span class='st'>"foobar"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_cran</span><span class='op'>(</span><span class='st'>"dplyr"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_cran</span><span class='op'>(</span><span class='st'>"dplyr"</span>, min_version <span class='op'>=</span> <span class='fl'>9999.9</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
