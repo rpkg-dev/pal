@@ -17,6 +17,10 @@ if (!("remotes" %in% rownames(installed.packages()))) {
 remotes::install_gitlab(repo = "salim_b/r/pkgs/pal")
 ```
 
+## Usage
+
+The (function) reference is found [here](https:/rpkg.dev/pal/reference).
+
 ## Development
 
 ### R Markdown format
