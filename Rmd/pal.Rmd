@@ -1922,13 +1922,36 @@ is_pkg_dir <- function(path = ".") {
 
 TODO:
 
--   [ ] Remove custom `Remotes:` dep as soon as [this](https://github.com/r-lib/rprojroot/pull/79) is merged and released.
+-   Replace `is_pkgdown_project` with `rprojroot::is_pkgdown_project` as soon as [PR #79](https://github.com/r-lib/rprojroot/pull/79) is merged and released.
+
+-   Once [PR #83](https://github.com/r-lib/rprojroot/pull/83) is also merged, replace this fn with
+
+        is_pkgdown_dir <- function(path = ".", check_parent_dirs = TRUE) {
+
+          checkmate::assert_flag(check_parent_dirs)
+
+          if (check_parent_dirs) {
+
+            result <- rprojroot::has_root(criterion = rprojroot::is_pkgdown_dir,
+                                          path = path)
+          } else {
+
+            result <-
+              rprojroot::is_pkgdown_dir$testfun %>%
+              purrr::map_lgl(~ .x(path = path)) %>%
+              any()
+          }
+
+          result
+        }
+
+    And analogously for `is_pkg_dir()`!
 
 ```{r}
 #' Test if pkgdown is set up for an R package directory
 #'
-#' Convenience wrapper around the [rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the root of a
-#' package directory and the `pkgdown` subdirectory, not other subdirectories.
+#' Convenience wrapper around a [proposed `rprojroot::is_pkgdown_project` root criterion](https://github.com/r-lib/rprojroot/pull/79). Note that it will only
+#' return `TRUE` for the root of a package directory and the `pkgdown` subdirectory, not other subdirectories.
 #'
 #' @param path Path of the R package directory to check. A character scalar. Defaults to the current working directory.
 #'
@@ -1945,10 +1968,17 @@ is_pkgdown_dir <- function(path = ".") {
   checkmate::assert_directory(path,
                               access = "r")
   
-  rprojroot::is_pkgdown_project$testfun %>%
+  is_pkgdown_project$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
     any()
 }
+
+# helpers
+is_pkgdown_project <-
+  rprojroot::has_file("_pkgdown.yml") |
+  rprojroot::has_file("_pkgdown.yaml") |
+  rprojroot::has_file("pkgdown/_pkgdown.yml") |
+  rprojroot::has_file("inst/_pkgdown.yml")
 ```
 
 ### `use_pkg`
@@ -3762,6 +3792,11 @@ check_cli <- function(cmd,
 ### `path_script`
 
 This function is inspired by an [answer from Stack Overflow user Jerry T](https://stackoverflow.com/a/36777602/7196903).
+
+TODO:
+
+-   Deprecate this function in favour of [`whereami::whereami()`](https://yonicd.github.io/whereami/reference/whereami.html) and
+    [`whereami::thisfile`](https://yonicd.github.io/whereami/reference/thisfile.html) which seem to offer exactly this functionality.
 
 ```{r}
 #' Determine file path of executing script
