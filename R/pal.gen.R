@@ -1639,8 +1639,8 @@ is_pkg_dir <- function(path = ".") {
 
 #' Test if pkgdown is set up for an R package directory
 #'
-#' Convenience wrapper around a [proposed `rprojroot::is_pkgdown_project` root criterion](https://github.com/r-lib/rprojroot/pull/79). Note that it will only
-#' return `TRUE` for the root of a package directory and the `pkgdown` subdirectory, not other subdirectories.
+#' Convenience wrapper around the [`rprojroot::is_pkgdown_project` root criterion][rprojroot::is_pkgdown_project]. Note that it will only return `TRUE` for the
+#' root of a package directory and the `pkgdown` subdirectory, not other subdirectories.
 #'
 #' @param path Path of the R package directory to check. A character scalar. Defaults to the current working directory.
 #'
@@ -1657,17 +1657,10 @@ is_pkgdown_dir <- function(path = ".") {
   checkmate::assert_directory(path,
                               access = "r")
   
-  is_pkgdown_project$testfun %>%
+  rprojroot::is_pkgdown_project$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
     any()
 }
-
-# helpers
-is_pkgdown_project <-
-  rprojroot::has_file("_pkgdown.yml") |
-  rprojroot::has_file("_pkgdown.yaml") |
-  rprojroot::has_file("pkgdown/_pkgdown.yml") |
-  rprojroot::has_file("inst/_pkgdown.yml")
 
 #' Depend on another package
 #'

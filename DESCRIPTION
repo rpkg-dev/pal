@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9081
+Version: 0.0.9082
 Authors@R: 
     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5329-5987"))
@@ -42,7 +42,7 @@ Suggests:
     readr (>= 1.4.0),
     rmarkdown (>= 2.1),
     roxygen2 (>= 7.1.2),
-    rprojroot (>= 1.3.2),
+    rprojroot (>= 2.0.3),
     rstudioapi (>= 0.11),
     testthat (>= 3.0.0),
     tinkr (>= 0.0.0.9000),
