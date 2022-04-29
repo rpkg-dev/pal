@@ -1948,7 +1948,7 @@ TODO:
 ```{r}
 #' Test if pkgdown is set up for an R package directory
 #'
-#' Convenience wrapper around the [`rprojroot::is_pkgdown_project` root criterion][rprojroot::is_pkgdown_project]. Note that it will only return `TRUE` for the
+#' Convenience wrapper around the [`rprojroot::is_pkgdown_project`][rprojroot::is_pkgdown_project] root criterion. Note that it will only return `TRUE` for the
 #' root of a package directory and the `pkgdown` subdirectory, not other subdirectories.
 #'
 #' @param path Path of the R package directory to check. A character scalar. Defaults to the current working directory.
