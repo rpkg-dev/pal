@@ -295,7 +295,7 @@ stat_mode <- function(x,
   modes <- frequencies == max(frequencies)
   
   # determine number of modes
-  n_modes <- sum(modes) %>% dplyr::if_else(. == n_u_x, 0L, .)
+  n_modes <- sum(modes) %>% ifelse(. == n_u_x, 0L, .)
   
   type %>% purrr::when(
     # return the number of modes if requested
@@ -704,8 +704,8 @@ escape_lf <- function(x,
   
   checkmate::assert_character(x,
                               null.ok = TRUE) %>%
-  stringr::str_replace_all(pattern = "\\n",
-                           replacement = "\\\\n") %>%
+    stringr::str_replace_all(pattern = "\\n",
+                             replacement = "\\\\n") %>%
     purrr::when(checkmate::assert_flag(escape_cr) ~ stringr::str_replace_all(string = .,
                                                                              pattern = "\\r",
                                                                              replacement = "\\\\r"),
@@ -862,8 +862,8 @@ dsv_colnames <- function(x,
                                                           pattern = "^.$")) %>%
     dplyr::first() %>%
     stringr::str_remove_all(pattern = glue::glue("^", checkmate::assert_string(quote,
-                                                                                null.ok = TRUE,
-                                                                                pattern = "^.$"),
+                                                                               null.ok = TRUE,
+                                                                               pattern = "^.$"),
                                                  "|{quote}$"))
 }
 
@@ -1349,20 +1349,20 @@ check_dot_named <- function(dot,
     is_restricted <- !setequal(values,
                                allowed_values)
     
-    msg <- paste0(dplyr::if_else(is_forbidden,
-                                 "Forbidden",
-                                 "Invalid"),
+    msg <- paste0(ifelse(is_forbidden,
+                         "Forbidden",
+                         "Invalid"),
                   " argument provided in {.arg ...}: {.arg {dot}}")
     
     if (length(allowed_values) > 0L) {
       
-      msg %<>% c("i" = paste0(dplyr::if_else(is_restricted,
-                                             "Arguments allowed to pass on to ",
-                                             "Valid arguments for "),
+      msg %<>% c("i" = paste0(ifelse(is_restricted,
+                                     "Arguments allowed to pass on to ",
+                                     "Valid arguments for "),
                               "{.fun {fn_name}} include: ", prose_ls(paste0("{.arg ", allowed_values, "}"))))
     } else {
       
-      msg %<>% c("i" = paste0("Only unnamed arguments are ", dplyr::if_else(is_restricted, "allowed", "valid"), " for {.fun {fn_name}}."))
+      msg %<>% c("i" = paste0("Only unnamed arguments are ", ifelse(is_restricted, "allowed", "valid"), " for {.fun {fn_name}}."))
     }
     
     i_partial <- pmatch(dot, allowed_values)
@@ -1480,14 +1480,14 @@ assert_pkg <- function(pkg,
     if (is.null(message)) {
       
       message <- paste0("Package {.pkg {pkg}",
-                        dplyr::if_else(length(min_version) == 0L,
-                                       "",
-                                       " (>= {min_version})"),
+                        ifelse(length(min_version) == 0L,
+                               "",
+                               " (>= {min_version})"),
                         "} is required for this operation but ",
-                        dplyr::if_else(lacks_min_version,
-                                       paste0("installed version is ",
-                                              max(as.package_version(ls_pkg(pkg = pkg)$Version)), "."),
-                                       "is not installed."))
+                        ifelse(lacks_min_version,
+                               paste0("installed version is ",
+                                      max(as.package_version(ls_pkg(pkg = pkg)$Version)), "."),
+                               "is not installed."))
     }
     
     # generate installation hint if necessary
@@ -1510,10 +1510,10 @@ assert_pkg <- function(pkg,
         install_hint <- paste0("To install the latest version, run {.code install.packages(\"", pkg, "\")}.")
         
       } else {
-        install_hint <- paste0("Please first ", dplyr::if_else(lacks_min_version, "update {.pkg {pkg}}", "install it"),
+        install_hint <- paste0("Please first ", ifelse(lacks_min_version, "update {.pkg {pkg}}", "install it"),
                                " and then try again. Note that ",
-                               dplyr::if_else(is_cran_pkg, "the required version of {.pkg {pkg}} is not available on CRAN (yet).",
-                                              "{.pkg {pkg}} is not available on CRAN."))
+                               ifelse(is_cran_pkg, "the required version of {.pkg {pkg}} is not available on CRAN (yet).",
+                                      "{.pkg {pkg}} is not available on CRAN."))
       }
     }
     
@@ -2505,9 +2505,9 @@ knitr_table_format <- function(default = c("pipe",
                           prose_ls(x = paste0("{.val ", allowed_formats, "}"),
                                    last_sep = " or "),
                           ", but is {.code {deparse1(opt)}}",
-                          dplyr::if_else(is.function(opt),
-                                         " which evaluates to {.val {result}}",
-                                         ""),
+                          ifelse(is.function(opt),
+                                 " which evaluates to {.val {result}}",
+                                 ""),
                           "."))
   }
   
@@ -2904,9 +2904,9 @@ gh_dir_ls <- function(path = "",
                             }
                           }
                         }',
-    variables = list(name = name,
-                     owner = owner,
-                     expression = glue::glue("{rev}:{path}"))) %>%
+               variables = list(name = name,
+                                owner = owner,
+                                expression = glue::glue("{rev}:{path}"))) %>%
     purrr::pluck("data", "repository", "object", "entries")
   
   dirs <-
