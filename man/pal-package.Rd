@@ -6,7 +6,7 @@
 \alias{pal-package}
 \title{pal: Friendly Convenience/Utility Functions}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 A collection of convenience/utility functions complementing base R and the tidyverse.
 }

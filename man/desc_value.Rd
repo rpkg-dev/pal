@@ -29,8 +29,10 @@ it are removed.
 \details{
 This function is a slightly modified version of \code{\link[desc:desc_get_field]{desc::desc_get_field()}} that allows the \code{default} parameter to be dependent on the \code{key} parameter.
 
-By default, the following string is returned if \code{key = "NoRealKey"} is not found:\preformatted{"<No `NoRealKey` field set in DESCRIPTION!>"
-}
+By default, the following string is returned if \code{key = "NoRealKey"} is not found:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{"<No `NoRealKey` field set in DESCRIPTION!>"
+}\if{html}{\out{</div>}}
 
 If you rather want to take an action like throwing an error, it's recommended to call \code{\link[desc:desc_get_field]{desc::desc_get_field()}} directly.
 }

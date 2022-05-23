@@ -1493,32 +1493,34 @@ assert_pkg <- function(pkg,
     # generate installation hint if necessary
     if (is.null(install_hint)) {
       
-      assert_pkg("pkgsearch")
-      
-      cran <- pkgsearch::pkg_search(pkg, size = 10L)
-      is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
-      is_cran_min_version <- ifelse(length(min_version) == 0L,
-                                    is_cran_pkg,
-                                    cran %>%
-                                      dplyr::filter(version >= min_version) %$%
-                                      package %>%
-                                      intersect(pkg) %>%
-                                      length() %>%
-                                      magrittr::is_greater_than(0L))
-      
-      if (is_cran_min_version) {
-        install_hint <- paste0("To install the latest version, run {.code install.packages(\"", pkg, "\")}.")
+      if (is_pkg_installed(pkg = "pkgsearch")) {
         
+        cran <- pkgsearch::pkg_search(pkg, size = 10L)
+        is_cran_pkg <- length(intersect(cran$package, pkg)) > 0L
+        is_cran_min_version <- ifelse(length(min_version) == 0L,
+                                      is_cran_pkg,
+                                      cran %>%
+                                        dplyr::filter(version >= min_version) %$%
+                                        package %>%
+                                        intersect(pkg) %>%
+                                        length() %>%
+                                        magrittr::is_greater_than(0L))
+        
+        if (is_cran_min_version) {
+          install_hint <- paste0("To install the latest version, run {.code install.packages(\"", pkg, "\")}.")
+          
+        } else {
+          install_hint <- paste0("Please first ", ifelse(lacks_min_version, "update {.pkg {pkg}}", "install it"),
+                                 " and then try again. Note that ",
+                                 ifelse(is_cran_pkg, "the required version of {.pkg {pkg}} is not available on CRAN (yet).",
+                                        "{.pkg {pkg}} is not available on CRAN."))
+        }
       } else {
-        install_hint <- paste0("Please first ", ifelse(lacks_min_version, "update {.pkg {pkg}}", "install it"),
-                               " and then try again. Note that ",
-                               ifelse(is_cran_pkg, "the required version of {.pkg {pkg}} is not available on CRAN (yet).",
-                                      "{.pkg {pkg}} is not available on CRAN."))
+        install_hint <- paste0("Please first ", ifelse(lacks_min_version, "update {.pkg {pkg}}", "install it"), " and then try again.")
       }
     }
     
     cli::cli_abort(paste(message, install_hint))
-    
   }
   
   invisible(pkg)
