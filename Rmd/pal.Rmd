@@ -213,11 +213,15 @@ devel](https://github.com/mllg/checkmate/pull/199) -\> update fns below as soon 
 safe_max <- function(...,
                      rm_na = TRUE) {
   
-  rlang::list2(...) %>%
-    purrr::map(checkmate::assert_numeric,
-               null.ok = TRUE,
-               .var.name = "...") %>%
-    unlist() %>%
+  input <- rlang::list2(...)
+  
+  purrr::map(.x = input,
+             .f = checkmate::assert_numeric,
+             null.ok = TRUE,
+             .var.name = "...")
+  
+  input %>%
+    purrr::reduce(c) %>%
     purrr::when(length(.) == 0L ~ .[0L],
                 all(is.na(.)) && rm_na ~ .[NA],
                 ~ max(., na.rm = rm_na))
@@ -266,11 +270,15 @@ safe_max <- function(...,
 safe_min <- function(...,
                      rm_na = TRUE) {
   
-  rlang::list2(...) %>%
-    purrr::map(checkmate::assert_numeric,
-               null.ok = TRUE,
-               .var.name = "...") %>%
-    unlist() %>%
+  input <- rlang::list2(...)
+  
+  purrr::map(.x = input,
+             .f = checkmate::assert_numeric,
+             null.ok = TRUE,
+             .var.name = "...")
+  
+  input %>%
+    purrr::reduce(c) %>%
     purrr::when(length(.) == 0L ~ .[0L],
                 all(is.na(.)) && rm_na ~ .[NA],
                 ~ min(., na.rm = rm_na))
