@@ -3,6 +3,7 @@ list(
                          desc       = "Other package documentation functions:",
                          dots       = "Other dots functions:",
                          gh         = "Other GitHub functions:",
+                         htmlwidget = "Other HTML widget functions:",
                          http       = "Other HTTP functions:",
                          list       = "Other list functions:",
                          md         = "Other (Pandoc) Markdown functions:",

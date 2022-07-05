@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Extracts the body from R Markdown file content, stripping a possible <a href='https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html#yaml-metadata'>YAML metadata block</a> at the beginning.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='va'>rmd</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='va'>rmd</span>, eol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LF"</span>, <span class='st'>"CRLF"</span>, <span class='st'>"CR"</span>, <span class='st'>"LFCR"</span><span class='op'>)</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,12 +178,12 @@ whitespace characters (incl. newlines) before the YAML metadata block are allowe
 <code><a href='knitr_table_format.html'>knitr_table_format</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.Rmd"</span>,</span>
-<span class='r-in'>                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span>
-<span class='r-in'>                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/tee.html'>%T&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='gh_text_file.html'>gh_text_file</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"README.Rmd"</span>,</span></span>
+<span class='r-in'><span>                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span></span>
+<span class='r-in'><span>                  name <span class='op'>=</span> <span class='st'>"pal"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/tee.html'>%T&gt;%</a></span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>strip_yaml_header</span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "---\noutput: pal::gitlab_document\n---\n\n# `r paste0(pal::desc_value(\"Package\"), \": \", pal::desc_value(\"Title\"))` &lt;a href=\"https://rpkg.dev/pal/\"&gt;&lt;img src=\"man/figures/logo.png\" alt=\"Package Logo\" class=\"pkg-logo\" align=\"right\" height=\"180\"/&gt;&lt;/a&gt;\n\n`r pal::desc_value(\"Description\")`[^1]\n\nThis is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.\n\n```{r, pkgdown, eval = !isTRUE(getOption(\"pal.build_readme.is_pkgdown\")), results = \"asis\", echo = FALSE}\npkgsnip::md_snip(name = \"pkgdown_notice\") %&gt;%\n  paste0(\"## Documentation\\n\\n\", .) %&gt;%\n  pal::cat_lines()\n```\n\n[^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report\n    it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the\n    avoidance of unnecessary duplication.\n\n## Installation\n\n```{r, install-snippet-dev, child = pkgsnip::snip_path(\"installation-notice_dev-version_gitlab.Rmd\")}\n```\n\n```{r, usage, eval = isTRUE(getOption(\"pal.build_readme.is_pkgdown\")), results = \"asis\", echo = FALSE}\npkgsnip::md_snip(name = \"usage_notice\") %&gt;%\n  paste0(\"## Usage\\n\\n\", .) %&gt;%\n  pal::cat_lines()\n```\n\n## Development\n\n### R Markdown format\n\n```{r, rmd-pkg-snippet, child = pkgsnip::snip_path(\"rmd-package-notice.Rmd\")}\n```\n\n### Coding style\n\n```{r, coding-style-snippet, child = pkgsnip::snip_path(\"coding-style-notice.Rmd\")}\n```\n\n## See also\n\n-   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.\n"</span>
 </pre>
   </div>

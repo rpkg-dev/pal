@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Allows to define a regular expression per desired <a href='https://readr.tidyverse.org/reference/cols.html'>column specification object</a> matching the respective column names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cols_regex</span><span class='op'>(</span><span class='va'>...</span>, .default <span class='op'>=</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>.col_names</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>cols_regex</span><span class='op'>(</span><span class='va'>...</span>, .default <span class='op'>=</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>.col_names</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,27 +169,27 @@ abbreviated character names (as described in the <code>col_types</code> paramete
     <p>A <a href='https://readr.tidyverse.org/reference/cols.html'>column specification</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># for some hypothetical CSV data column names like these ...</span></span>
-<span class='r-in'><span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"VAR1_Text"</span>,</span>
-<span class='r-in'>               <span class='st'>"VAR2_Text"</span>,</span>
-<span class='r-in'>               <span class='st'>"VAR3_Text_Other"</span>,</span>
-<span class='r-in'>               <span class='st'>"VAR1_Code_R1"</span>,</span>
-<span class='r-in'>               <span class='st'>"VAR2_Code_R2"</span>,</span>
-<span class='r-in'>               <span class='st'>"HAS_R1_Lag"</span>,</span>
-<span class='r-in'>               <span class='st'>"HAS_R2_Lag"</span>,</span>
-<span class='r-in'>               <span class='st'>"GARBAGEX67"</span>,</span>
-<span class='r-in'>               <span class='st'>"GARBAGEY09"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># ... a column spec could be created concisely as follows:</span></span>
-<span class='r-in'><span class='va'>col_regex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"_Text(_|$)"</span> <span class='op'>=</span> <span class='st'>"c"</span>,</span>
-<span class='r-in'>                  <span class='st'>"_Code(_|$)"</span> <span class='op'>=</span> <span class='st'>"i"</span>,</span>
-<span class='r-in'>                  <span class='st'>"^GARBAGE"</span>  <span class='op'>=</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/col_skip.html'>col_skip</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cols_regex</span><span class='op'>(</span>.col_names <span class='op'>=</span> <span class='va'>col_names</span>,</span>
-<span class='r-in'>                <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>col_regex</span>,</span>
-<span class='r-in'>                .default     <span class='op'>=</span> <span class='st'>"l"</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># for some hypothetical CSV data column names like these ...</span></span></span>
+<span class='r-in'><span><span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"VAR1_Text"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"VAR2_Text"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"VAR3_Text_Other"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"VAR1_Code_R1"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"VAR2_Code_R2"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"HAS_R1_Lag"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"HAS_R2_Lag"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"GARBAGEX67"</span>,</span></span>
+<span class='r-in'><span>               <span class='st'>"GARBAGEY09"</span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># ... a column spec could be created concisely as follows:</span></span></span>
+<span class='r-in'><span><span class='va'>col_regex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"_Text(_|$)"</span> <span class='op'>=</span> <span class='st'>"c"</span>,</span></span>
+<span class='r-in'><span>                  <span class='st'>"_Code(_|$)"</span> <span class='op'>=</span> <span class='st'>"i"</span>,</span></span>
+<span class='r-in'><span>                  <span class='st'>"^GARBAGE"</span>  <span class='op'>=</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/col_skip.html'>col_skip</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cols_regex</span><span class='op'>(</span>.col_names <span class='op'>=</span> <span class='va'>col_names</span>,</span></span>
+<span class='r-in'><span>                <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>col_regex</span>,</span></span>
+<span class='r-in'><span>                .default     <span class='op'>=</span> <span class='st'>"l"</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> cols(</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   .default = col_logical(),</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   VAR1_Text = <span style='color: #BB0000;'>col_character()</span>,</span>
@@ -200,55 +200,52 @@ abbreviated character names (as described in the <code>col_types</code> paramete
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   GARBAGEX67 = col_skip(),</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   GARBAGEY09 = col_skip()</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> )</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># we can parse some real data:</span></span>
-<span class='r-in'><span class='va'>raw_data</span> <span class='op'>&lt;-</span></span>
-<span class='r-in'>  <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"http://www.web.statistik.zh.ch/ogd/data/"</span>,</span>
-<span class='r-in'>                   <span class='st'>"KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span>as <span class='op'>=</span> <span class='st'>"text"</span>,</span>
-<span class='r-in'>                encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>raw_data</span>,</span>
-<span class='r-in'>                col_types <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cols_regex</span><span class='op'>(</span><span class='st'>"^(Gemeindenamen|Partei)$"</span> <span class='op'>=</span> <span class='st'>"c"</span>,</span>
-<span class='r-in'>                                            <span class='st'>"(?i)anteil"</span> <span class='op'>=</span> <span class='st'>"d"</span>,</span>
-<span class='r-in'>                                            .default <span class='op'>=</span> <span class='st'>"i"</span>,</span>
-<span class='r-in'>                                            .col_names <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='dsv_colnames.html'>dsv_colnames</a></span><span class='op'>(</span><span class='va'>raw_data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,043 × 8</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerant…`</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> Adlikon              21 SVP        <span style='text-decoration: underline;'>5</span>241    150        56.5              -<span style='color: #BB0000;'>0.36</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> Adlikon              21 SP          566     16         6.1              -<span style='color: #BB0000;'>2.22</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> Adlikon              21 FDP         869     25         9.36              1.97</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> Adlikon              21 glp         595     17         6.41              2.49</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> Adlikon              21 CVP         123      4         1.33              0.46</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> Adlikon              21 GRÜNE       628     18         6.77              2.93</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> Adlikon              21 BDP         363     10         3.91             -<span style='color: #BB0000;'>2.72</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> Adlikon              21 EVP         623     18         6.71              1.99</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> Adlikon              21 Piraten       0      0         0                -<span style='color: #BB0000;'>0.43</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> Adlikon              21 IP            1      0         0.01             <span style='color: #BB0000;'>NA</span>   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: `Wähleranteil 2015` &lt;dbl&gt;</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># an alternative way to process the same data using `readr::type_convert()`:</span></span>
-<span class='r-in'><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>raw_data</span>,</span>
-<span class='r-in'>                col_types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>.default <span class='op'>=</span> <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/type_convert.html'>type_convert</a></span><span class='op'>(</span>col_types <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cols_regex</span><span class='op'>(</span><span class='st'>"^(Gemeindenamen|Partei)$"</span> <span class='op'>=</span> <span class='st'>"c"</span>,</span>
-<span class='r-in'>                                                  <span class='st'>"(?i)anteil"</span> <span class='op'>=</span> <span class='st'>"d"</span>,</span>
-<span class='r-in'>                                                  .default <span class='op'>=</span> <span class='st'>"i"</span>,</span>
-<span class='r-in'>                                                  .col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,043 × 8</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    Gemeindenamen `BFS-Nr.` Partei  Stimmen Wähler Wähleranteil `+/- (Wählerant…`</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> Adlikon              21 SVP        <span style='text-decoration: underline;'>5</span>241    150        56.5              -<span style='color: #BB0000;'>0.36</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> Adlikon              21 SP          566     16         6.1              -<span style='color: #BB0000;'>2.22</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> Adlikon              21 FDP         869     25         9.36              1.97</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> Adlikon              21 glp         595     17         6.41              2.49</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> Adlikon              21 CVP         123      4         1.33              0.46</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> Adlikon              21 GRÜNE       628     18         6.77              2.93</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> Adlikon              21 BDP         363     10         3.91             -<span style='color: #BB0000;'>2.72</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> Adlikon              21 EVP         623     18         6.71              1.99</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> Adlikon              21 Piraten       0      0         0                -<span style='color: #BB0000;'>0.43</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> Adlikon              21 IP            1      0         0.01             <span style='color: #BB0000;'>NA</span>   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 3,033 more rows, and 1 more variable: `Wähleranteil 2015` &lt;dbl&gt;</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># we can parse some real data:</span></span></span>
+<span class='r-in'><span><span class='va'>raw_data</span> <span class='op'>&lt;-</span></span></span>
+<span class='r-in'><span>  <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"http://www.web.statistik.zh.ch/ogd/data/"</span>,</span></span>
+<span class='r-in'><span>                   <span class='st'>"KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span></span>
+<span class='r-in'><span>  <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span>as <span class='op'>=</span> <span class='st'>"text"</span>,</span></span>
+<span class='r-in'><span>                encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>raw_data</span>,</span></span>
+<span class='r-in'><span>                col_types <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cols_regex</span><span class='op'>(</span><span class='st'>"^(Gemeindenamen|Partei)$"</span> <span class='op'>=</span> <span class='st'>"c"</span>,</span></span>
+<span class='r-in'><span>                                            <span class='st'>"(?i)anteil"</span> <span class='op'>=</span> <span class='st'>"d"</span>,</span></span>
+<span class='r-in'><span>                                            .default <span class='op'>=</span> <span class='st'>"i"</span>,</span></span>
+<span class='r-in'><span>                                            .col_names <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='dsv_colnames.html'>dsv_colnames</a></span><span class='op'>(</span><span class='va'>raw_data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>One or more parsing issues, see `problems()` for details</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   `&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># an alternative way to process the same data using `readr::type_convert()`:</span></span></span>
+<span class='r-in'><span><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>raw_data</span>,</span></span>
+<span class='r-in'><span>                col_types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>.default <span class='op'>=</span> <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span></span>
+<span class='r-in'><span>  <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/type_convert.html'>type_convert</a></span><span class='op'>(</span>col_types <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cols_regex</span><span class='op'>(</span><span class='st'>"^(Gemeindenamen|Partei)$"</span> <span class='op'>=</span> <span class='st'>"c"</span>,</span></span>
+<span class='r-in'><span>                                                  <span class='st'>"(?i)anteil"</span> <span class='op'>=</span> <span class='st'>"d"</span>,</span></span>
+<span class='r-in'><span>                                                  .default <span class='op'>=</span> <span class='st'>"i"</span>,</span></span>
+<span class='r-in'><span>                                                  .col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[0, 1]: expected no trailing characters, but got '&lt;html&gt;&lt;head&gt;'</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[1, 1]: expected no trailing characters, but got '&lt;title&gt;404 Not Found&lt;/title&gt;'</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[2, 1]: expected no trailing characters, but got '&lt;/head&gt;&lt;body&gt;'</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[3, 1]: expected no trailing characters, but got '&lt;h1&gt;Not Found&lt;/h1&gt;'</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[4, 1]: expected no trailing characters, but got '&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;'</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[5, 1]: expected no trailing characters, but got '&lt;/body&gt;&lt;/html&gt;'</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   `&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span>                                                   <span style='color: #BB0000;'>NA</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                                                   <span style='color: #BB0000;'>NA</span></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

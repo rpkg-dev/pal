@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@
 double quotes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,17 +168,17 @@ double quotes.</p>
 <code><a href='strip_md.html'>strip_md</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>2.2</span>, <span class='st'>"other"</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>2.2</span>, <span class='st'>"other"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `1` </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `2.2` </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `"other"` </span>
-<span class='r-in'>  </span>
-<span class='r-in'><span class='co'># note that values are flattened before listing them, so this yields the same list</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>2.2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span>  </span></span>
+<span class='r-in'><span><span class='co'># note that values are flattened before listing them, so this yields the same list</span></span></span>
+<span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>2.2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `1` </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `2.2` </span>
 </pre>

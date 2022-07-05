@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Convenience wrapper around <code><a href='as_chr.html'>as_chr()</a></code> and <code><a href='https://rdrr.io/r/base/cat.html'>cat()</a></code>, mainly intended for interactive use.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cat_lines</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,15 +164,15 @@
 <p><code><a href='https://rdrr.io/pkg/xfun/man/raw_string.html'>xfun::raw_string()</a></code> (and <code><a href='https://rdrr.io/pkg/xfun/man/file_string.html'>xfun::file_string()</a></code>) for an alternative approach to the same use case (but without any conversion to type character at all).</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"pal"</span>,</span>
-<span class='r-in'>                 <span class='st'>"DESCRIPTION"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='https://fs.r-lib.org/reference/path_package.html'>path_package</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"pal"</span>,</span></span>
+<span class='r-in'><span>                 <span class='st'>"DESCRIPTION"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span></span>
+<span class='r-in'><span>  <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Package: pal</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Title: Friendly Convenience/Utility Functions</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Version: 0.0.9083</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Version: 0.0.9084</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Authors@R: </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>            comment = c(ORCID = "0000-0002-5329-5987"))</span>
@@ -187,27 +187,28 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span>         1.8.0), magrittr (&gt;= 2.0.1), methods, purrr (&gt;= 0.3.4), rlang</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>         (&gt;= 1.0.0), stringr (&gt;= 1.4.0), tibble (&gt;= 3.1.4), utils</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Suggests: brio (&gt;= 1.1.0), commonmark (&gt;= 1.7), desc (&gt;= 1.4.0), gh (&gt;=</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>         1.3.0), httr (&gt;= 1.4.1), janeaustenr, knitr (&gt;= 1.37), pander</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>         (&gt;= 0.6.3), pkgdown (&gt;= 1.6.1.9000), pkgsearch (&gt;= 3.0.3),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         1.3.0), htmltools (&gt;= 0.5.2), httr (&gt;= 1.4.1), janeaustenr,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         knitr (&gt;= 1.37), pander (&gt;= 0.6.3), pkgdown (&gt;= 1.6.1.9000),</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>         pkgsnip (&gt;= 0.0.9026), rappdirs (&gt;= 0.3.3), readr (&gt;= 1.4.0),</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>         rmarkdown (&gt;= 2.1), roxygen2 (&gt;= 7.1.2), rprojroot (&gt;= 2.0.3),</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>         rstudioapi (&gt;= 0.11), testthat (&gt;= 3.0.0), tinkr (&gt;=</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>         0.0.0.9000), usethis (&gt;= 2.1.5), waldo (&gt;= 0.2.3), withr (&gt;=</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>         2.4.1), xfun (&gt;= 0.26), xml2 (&gt;= 1.3.2), xslt (&gt;= 1.4.3)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         rstudioapi (&gt;= 0.11), rvest (&gt;= 1.0.2), testthat (&gt;= 3.0.0),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         tinkr (&gt;= 0.0.0.9000), usethis (&gt;= 2.1.5), waldo (&gt;= 0.2.3),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         withr (&gt;= 2.4.1), xfun (&gt;= 0.26), xml2 (&gt;= 1.3.2), xslt (&gt;=</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         1.4.3)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Remotes: github::ropensci/tinkr, gitlab::salim_b/r/pkgs/pkgsnip</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Config/testthat/edition: 3</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Encoding: UTF-8</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> LazyData: true</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Roxygen: list(markdown = TRUE)</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> RoxygenNote: 7.1.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> RoxygenNote: 7.2.0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Built: R 4.2.0; ; 2022-05-12 17:39:54 UTC; unix</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># recursive conversion to type character or not</span></span>
-<span class='r-in'><span class='va'>to_convert</span> <span class='op'>&lt;-</span></span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/tee.html'>%T&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Built: R 4.2.1; ; 2022-07-05 07:30:54 UTC; unix</span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># recursive conversion to type character or not</span></span></span>
+<span class='r-in'><span><span class='va'>to_convert</span> <span class='op'>&lt;-</span></span></span>
+<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/tee.html'>%T&gt;%</a></span></span></span>
+<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       a</span>
@@ -228,15 +229,15 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "day"</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>to_convert</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='va'>to_convert</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>cat_lines</span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 3</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> A</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> wonderful</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> day</span>
-<span class='r-in'><span class='va'>to_convert</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>cli</span><span class='fu'>::</span><span class='fu'><a href='https://cli.r-lib.org/reference/cat_line.html'>cat_line</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span><span class='va'>to_convert</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>cli</span><span class='fu'>::</span><span class='fu'><a href='https://cli.r-lib.org/reference/cat_line.html'>cat_line</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> list(a = 1:3)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> A</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 1</span>

@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Returns <code>TRUE</code> or <code>FALSE</code> for each <code>pkg</code>, depending on whether the <code>pkg</code> is installed on the current system or not, optionally ensuring a <code>min_version</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_pkg_installed</span><span class='op'>(</span><span class='va'>pkg</span>, min_version <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>is_pkg_installed</span><span class='op'>(</span><span class='va'>pkg</span>, min_version <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,23 +181,23 @@ a (named) logical vector of the same length as <code>pkg</code>.</p>
 <code><a href='use_pkg.html'>use_pkg</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span><span class='st'>"tidyverse"</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span><span class='st'>"tidyverse"</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> tidyverse </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     FALSE </span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># it is vectorized ...</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dplyr"</span>, <span class='st'>"tibble"</span>, <span class='st'>"magrittr"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                      min_version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1.0"</span>, <span class='st'>"2.0"</span>, <span class='st'>"99.9.9000"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      TRUE </span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># it is vectorized ...</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dplyr"</span>, <span class='st'>"tibble"</span>, <span class='st'>"magrittr"</span><span class='op'>)</span>,</span></span>
+<span class='r-in'><span>                      min_version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1.0"</span>, <span class='st'>"2.0"</span>, <span class='st'>"99.9.9000"</span><span class='op'>)</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    dplyr   tibble magrittr </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     TRUE     TRUE    FALSE </span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># ... and scalar arguments will be recycled</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"dplyr"</span>,</span>
-<span class='r-in'>                      min_version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"0.5"</span>, <span class='st'>"1.0"</span>, <span class='st'>"99.9.9000"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># ... and scalar arguments will be recycled</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"dplyr"</span>,</span></span>
+<span class='r-in'><span>                      min_version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"0.5"</span>, <span class='st'>"1.0"</span>, <span class='st'>"99.9.9000"</span><span class='op'>)</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE  TRUE FALSE</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dplyr"</span>, <span class='st'>"tibble"</span>, <span class='st'>"magrittr"</span><span class='op'>)</span>,</span>
-<span class='r-in'>                      min_version <span class='op'>=</span> <span class='st'>"1.0"</span><span class='op'>)</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>is_pkg_installed</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dplyr"</span>, <span class='st'>"tibble"</span>, <span class='st'>"magrittr"</span><span class='op'>)</span>,</span></span>
+<span class='r-in'><span>                      min_version <span class='op'>=</span> <span class='st'>"1.0"</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    dplyr   tibble magrittr </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     TRUE     TRUE     TRUE </span>
 </pre>

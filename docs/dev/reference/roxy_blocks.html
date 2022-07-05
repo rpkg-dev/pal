@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@
 <p>Parses the roxygen2 package documentation of a specific R package or from a single <code>.R</code> source code file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>roxy_blocks</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, text <span class='op'>=</span> <span class='cn'>NULL</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>roxy_blocks</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, text <span class='op'>=</span> <span class='cn'>NULL</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,11 +175,11 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <code><a href='roxy_tag_value.html'>roxy_tag_value</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># Either provide an R source file as a character vector `text` ...</span></span>
-<span class='r-in'><span class='va'>text</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/r-lib/rlang/"</span>,</span>
-<span class='r-in'>                                 <span class='st'>"db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>text <span class='op'>=</span> <span class='va'>text</span><span class='op'>)</span> |&gt; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='co'># Either provide an R source file as a character vector `text` ...</span></span></span>
+<span class='r-in'><span><span class='va'>text</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_lines.html'>read_lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/r-lib/rlang/"</span>,</span></span>
+<span class='r-in'><span>                                 <span class='st'>"db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"</span><span class='op'>)</span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>text <span class='op'>=</span> <span class='va'>text</span><span class='op'>)</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [&lt;text&gt;:39]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
@@ -190,9 +190,9 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 17] @param 'env The parent environment of the function, def...' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 19] @export '' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 20] @examples '...' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '&lt;text&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 39] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 39] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 39] @backref '&lt;generated&gt;' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   new_function &lt;- function(args, body, env = caller_env()) { ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic new_function</span>
@@ -201,13 +201,13 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [&lt;text&gt;:50]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  1] @title 'Name of a primitive function' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 46] @title 'Name of a primitive function' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 47] @param 'prim A primitive function such as [base::c()].' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 48] @keywords 'internal' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 49] @export '' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '&lt;text&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 50] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 50] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 50] @backref '&lt;generated&gt;' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   prim_name &lt;- function(prim) { ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic prim_name</span>
@@ -216,60 +216,60 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[3]]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [&lt;text&gt;:91]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  1] @title 'Extract arguments from a function' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  3] @description '`fn_fmls()` returns a named list of formal argu...' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  9] @details 'Unlike `formals()`, these helpers throw an erro...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 62] @title 'Extract arguments from a function' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 64] @description '`fn_fmls()` returns a named list of formal argu...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 70] @details 'Unlike `formals()`, these helpers throw an erro...' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 73] @param 'fn A function. It is lookep up in the calling f...' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 75] @seealso '[call_args()] and [call_args_names()]' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 76] @export '' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 77] @examples '...' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '&lt;text&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 91] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 91] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 91] @backref '&lt;generated&gt;' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   fn_fmls &lt;- function(fn = caller_fn()) { ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic fn_fmls</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $alias fn_fmls</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># ... or provide a package name</span></span>
-<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span></span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"rlang"</span>,</span>
-<span class='r-in'>                   repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span></span>
-<span class='r-in'><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/attr.R:283] @description mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/call.R:268] @section mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/call.R:426] @return mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:1] @title mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:3] @description mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:16] @section mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:95] @description mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:125] @section mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-defuse.R:209] @description mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-inject.R:15] @section mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-inject.R:88] @section mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-inject.R:1] @title mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-inject.R:360] @description mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/nse-inject.R:372] @details mismatched braces or quotes</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[/home/salim/.cache/pal-roxy_tag_value-rlang/rlang/R/parse.R:3] @description mismatched braces or quotes</span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># ... or provide a package name</span></span></span>
+<span class='r-in'><span><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>roxy_blocks</span><span class='op'>(</span>pkg <span class='op'>=</span> <span class='st'>"rlang"</span>,</span></span>
+<span class='r-in'><span>                   repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>    <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span></span></span>
+<span class='r-in'><span><span class='op'>)</span></span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[attr.R:283] @description has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[call.R:268] @section has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[call.R:426] @return has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-defuse.R:1] @title has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-defuse.R:3] @description has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-defuse.R:16] @section has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-defuse.R:95] @description has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-defuse.R:125] @section has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-defuse.R:209] @description has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-inject.R:15] @section has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-inject.R:88] @section has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-inject.R:350] @title has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-inject.R:360] @description has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[nse-inject.R:372] @details has mismatched braces or quotes</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[parse.R:3] @description has mismatched braces or quotes</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * installing *source* package ‘rlang’ ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** package ‘rlang’ successfully unpacked and MD5 sums checked</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** using staged installation</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** libs</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-cpm55R/r-base-4.2.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c capture.c -o capture.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-cpm55R/r-base-4.2.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c internal.c -o internal.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/     -fpic  -g -O2 -ffile-prefix-map=/build/r-base-cpm55R/r-base-4.2.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang-rcc.cpp -o rlang-rcc.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-cpm55R/r-base-4.2.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang.c -o rlang.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-cpm55R/r-base-4.2.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c version.c -o version.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -flto=auto -ffat-lto-objects -flto=auto -Wl,-z,relro -o rlang.so capture.o internal.o rlang-rcc.o rlang.o version.o -L/usr/lib/R/lib -lR</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> installing to /tmp/RtmpUOP5qA/devtools_install_186ea33aa4efe/00LOCK-rlang/00new/rlang/libs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c capture.c -o capture.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c internal.c -o internal.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/     -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang-rcc.cpp -o rlang-rcc.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang.c -o rlang.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c version.c -o version.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,relro -o rlang.so capture.o internal.o rlang-rcc.o rlang.o version.o -L/usr/lib/R/lib -lR</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> installing to /tmp/Rtmpx1jj8S/devtools_install_4222d187ff84d/00LOCK-rlang/00new/rlang/libs</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** checking absolute paths in shared objects and dynamic libraries</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * DONE (rlang)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;roxy_block&gt; [aaa.R:98]</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:  1] @title 'Run expressions on load' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 18] @title 'Run expressions on load' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 20] @description '...' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 38] @param 'expr An expression to run on load.' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 39] @param 'env The environment in which to evaluate `expr`...' {parsed}</span>
@@ -279,9 +279,9 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 64] @section 'Comparison with `.onLoad()`:...' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 72] @examples '...' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 97] @export '' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '/home/salim/.cache/pal-roxy_tag_value-rlang/rla...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 98] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 98] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line: 98] @backref '&lt;generated&gt;' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   on_load &lt;- function(expr, env = parent.frame(), ns = topenv(env)) { ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic on_load</span>
@@ -292,9 +292,9 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $tag</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:110] @rdname 'on_load' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:111] @export '' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '/home/salim/.cache/pal-roxy_tag_value-rlang/rla...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:112] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:112] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:112] @backref '&lt;generated&gt;' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   run_on_load &lt;- function(ns = topenv(parent.frame())) { ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic run_on_load</span>
@@ -306,9 +306,9 @@ if <code>pkg</code> is provided<a href='https://rlang.r-lib.org/reference/dyn-do
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:123] @rdname 'on_load' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:124] @param 'pkg Package to hook expression into.' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:125] @export '' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @usage '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     [????:???] @backref '/home/salim/.cache/pal-roxy_tag_value-rlang/rla...' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:126] @usage '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:126] @.formals '&lt;generated&gt;' {parsed}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [line:126] @backref '&lt;generated&gt;' {parsed}</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $call   on_package_load &lt;- function(pkg, expr, env = parent.frame()) { ...</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   $object &lt;function&gt; </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>     $topic on_package_load</span>

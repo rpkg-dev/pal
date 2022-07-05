@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -146,15 +146,15 @@
 <a href='https://docs.github.com/en/graphql/overview/about-the-graphql-api'>GitHub's GraphQL API v4</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_dir_ls</span><span class='op'>(</span>
-  path <span class='op'>=</span> <span class='st'>""</span>,
-  <span class='va'>owner</span>,
-  <span class='va'>name</span>,
-  rev <span class='op'>=</span> <span class='st'>"HEAD"</span>,
-  recurse <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  incl_dirs <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  incl_files <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>gh_dir_ls</span><span class='op'>(</span></span>
+<span>  path <span class='op'>=</span> <span class='st'>""</span>,</span>
+<span>  <span class='va'>owner</span>,</span>
+<span>  <span class='va'>name</span>,</span>
+<span>  rev <span class='op'>=</span> <span class='st'>"HEAD"</span>,</span>
+<span>  recurse <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span>  incl_dirs <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span>  incl_files <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,11 +203,11 @@ matching the desired Git tree object, e.g. a branch name or another symbolic ref
 <code><a href='gh_text_file.html'>gh_text_file</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># you can opt-out from directory recursion</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_dir_ls</span><span class='op'>(</span>owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span>
-<span class='r-in'>               name <span class='op'>=</span> <span class='st'>"pal"</span>,</span>
-<span class='r-in'>               recurse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='co'># you can opt-out from directory recursion</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_dir_ls</span><span class='op'>(</span>owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span></span>
+<span class='r-in'><span>               name <span class='op'>=</span> <span class='st'>"pal"</span>,</span></span>
+<span class='r-in'><span>               recurse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> .ackrc</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> .gitignore</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> .lintr</span>
@@ -227,22 +227,22 @@ matching the desired Git tree object, e.g. a branch name or another symbolic ref
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Rmd</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> tests</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> TODO.md</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># you can list only files in a directory</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_dir_ls</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"tests"</span>,</span>
-<span class='r-in'>               owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span>
-<span class='r-in'>               name <span class='op'>=</span> <span class='st'>"pal"</span>,</span>
-<span class='r-in'>               incl_dirs <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># you can list only files in a directory</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_dir_ls</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"tests"</span>,</span></span>
+<span class='r-in'><span>               owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span></span>
+<span class='r-in'><span>               name <span class='op'>=</span> <span class='st'>"pal"</span>,</span></span>
+<span class='r-in'><span>               incl_dirs <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> tests/testthat.R</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> tests/testthat/test-pal.R</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># or you can list only directories in a directory</span></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_dir_ls</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"tests"</span>,</span>
-<span class='r-in'>               owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span>
-<span class='r-in'>               name <span class='op'>=</span> <span class='st'>"pal"</span>,</span>
-<span class='r-in'>               incl_files <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='co'># or you can list only directories in a directory</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_dir_ls</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"tests"</span>,</span></span>
+<span class='r-in'><span>               owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span></span>
+<span class='r-in'><span>               name <span class='op'>=</span> <span class='st'>"pal"</span>,</span></span>
+<span class='r-in'><span>               incl_files <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> tests/testthat</span>
 </pre>
   </div>

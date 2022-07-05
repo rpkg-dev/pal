@@ -7,7 +7,7 @@
 assert_pkg(pkg, min_version = NULL, message = NULL, install_hint = NULL)
 }
 \arguments{
-\item{pkg}{Package name. A character scalar.}
+\item{pkg}{Package name (case-sensitive). A character scalar.}
 
 \item{min_version}{Minimum required version number of \code{pkg}. Must be either \code{NULL} to ignore version numbers, or a single
 \code{\link[base:numeric_version]{package_version}} or something coercible to.}

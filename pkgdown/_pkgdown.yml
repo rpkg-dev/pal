@@ -106,6 +106,11 @@ reference:
     [Custom R Markdown output formats](https://bookdown.org/yihui/rmarkdown/new-formats.html) which can be used in addition to the [default output
     formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
 - contents: gitlab_document
+- title: HTML widgets
+  desc: Extending the [htmlwidgets](https://www.htmlwidgets.org/) package.
+- contents:
+  - write_widget
+  - write_widget_deps
 - title: GitHub
   desc: Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's GraphQL
     API](https://docs.github.com/en/graphql).

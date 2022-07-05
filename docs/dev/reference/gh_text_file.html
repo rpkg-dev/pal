@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Downloads the text file under the specified path from a GitHub repository via <a href='https://docs.github.com/en/graphql/overview/about-the-graphql-api'>GitHub's GraphQL API v4</a> and returns its content as a string.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_text_file</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>owner</span>, <span class='va'>name</span>, rev <span class='op'>=</span> <span class='st'>"HEAD"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>gh_text_file</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>owner</span>, <span class='va'>name</span>, rev <span class='op'>=</span> <span class='st'>"HEAD"</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,11 +183,11 @@ matching the desired Git tree object, e.g. a branch name or another symbolic ref
 <code><a href='gh_text_files.html'>gh_text_files</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_text_file</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"pal.Rproj"</span>,</span>
-<span class='r-in'>                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span>
-<span class='r-in'>                  name <span class='op'>=</span> <span class='st'>"pal"</span>,</span>
-<span class='r-in'>                  rev <span class='op'>=</span> <span class='st'>"HEAD~2"</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>gh_text_file</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"pal.Rproj"</span>,</span></span>
+<span class='r-in'><span>                  owner <span class='op'>=</span> <span class='st'>"salim-b"</span>,</span></span>
+<span class='r-in'><span>                  name <span class='op'>=</span> <span class='st'>"pal"</span>,</span></span>
+<span class='r-in'><span>                  rev <span class='op'>=</span> <span class='st'>"HEAD~2"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Version: 1.0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> RestoreWorkspace: No</span>
@@ -208,6 +208,7 @@ matching the desired Git tree object, e.g. a branch name or another symbolic ref
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> BuildType: Package</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> PackageUseDevtools: Yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> PackageCleanBeforeInstall: Yes</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> PackageInstallArgs: --no-multiarch --with-keep.source</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> PackageRoxygenize: rd,collate,namespace</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>

@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Combines a vector or list of regular expressions to a single one (by logical OR).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fuse_regex</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>fuse_regex</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,14 +174,14 @@
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
-<span class='r-in'><span class='co'># perform some (nonsense) Jane Austen text extraction</span></span>
-<span class='r-in'><span class='va'>regex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My dear Jane"</span>,</span>
-<span class='r-in'>           <span class='st'>"make haste, "</span>,</span>
-<span class='r-in'>           <span class='st'>"(?i)\\bevil"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span>string <span class='op'>=</span> <span class='fu'>janeaustenr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/janeaustenr/man/prideprejudice.html'>prideprejudice</a></span>,</span>
-<span class='r-in'>                    pattern <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>fuse_regex</span><span class='op'>(</span><span class='va'>regex</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='co'># \donttest{</span></span></span>
+<span class='r-in'><span><span class='co'># perform some (nonsense) Jane Austen text extraction</span></span></span>
+<span class='r-in'><span><span class='va'>regex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My dear Jane"</span>,</span></span>
+<span class='r-in'><span>           <span class='st'>"make haste, "</span>,</span></span>
+<span class='r-in'><span>           <span class='st'>"(?i)\\bevil"</span><span class='op'>)</span></span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_subset.html'>str_subset</a></span><span class='op'>(</span>string <span class='op'>=</span> <span class='fu'>janeaustenr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/janeaustenr/man/prideprejudice.html'>prideprejudice</a></span>,</span></span>
+<span class='r-in'><span>                    pattern <span class='op'>=</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>fuse_regex</span><span class='op'>(</span><span class='va'>regex</span><span class='op'>)</span><span class='op'>)</span><span class='co'># }</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Jane, make haste and tell us; make haste, my love.\""                     </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "evil--a natural defect, which not even the best education can overcome.\""</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "can have any evil tendency; and I am so far from objecting to dancing"    </span>

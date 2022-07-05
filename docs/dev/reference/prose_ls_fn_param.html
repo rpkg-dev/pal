@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,15 +144,15 @@
     <p>Extracts the default value(s) of a function's definition and returns it in <a href='prose_ls.html'>prose style listing</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prose_ls_fn_param</span><span class='op'>(</span>
-  <span class='va'>param</span>,
-  fn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.function</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.parent</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
-  env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
-  as_scalar <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  wrap <span class='op'>=</span> <span class='st'>"`"</span>,
-  sep <span class='op'>=</span> <span class='st'>","</span>,
-  last_sep <span class='op'>=</span> <span class='st'>" or "</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>prose_ls_fn_param</span><span class='op'>(</span></span>
+<span>  <span class='va'>param</span>,</span>
+<span>  fn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.function</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.parent</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>  env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>  as_scalar <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span>  wrap <span class='op'>=</span> <span class='st'>"`"</span>,</span>
+<span>  sep <span class='op'>=</span> <span class='st'>","</span>,</span>
+<span>  last_sep <span class='op'>=</span> <span class='st'>" or "</span></span>
+<span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,12 +192,12 @@
     <p>A character vector. Of length 1 if <code>as_scalar = TRUE</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging <a href='https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code'>inline <span style="R">R</span> code evaluation</a> as follows:<div class="sourceCode r"></p><pre><span class='co'>#' @param some_param Some parameter. One of `r prose_ls_fn_param(param = "some_param", fn = "some_fn")`.</span>
-<span class='va'>some_fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>some_param</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>some_param</span> <span class='op'>&lt;-</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/arg_match.html'>arg_match</a></span><span class='op'>(</span><span class='va'>some_param</span><span class='op'>)</span>
-  <span class='va'>...</span>
-<span class='op'>}</span>
-</pre><p></div></p>
+    <p>This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging <a href='https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code'>inline <span style="R">R</span> code evaluation</a> as follows:</p>
+<p><div class="sourceCode r"></p><pre><span><span class='co'>#' @param some_param Some parameter. One of `r prose_ls_fn_param(param = "some_param", fn = "some_fn")`.</span></span>
+<span><span class='va'>some_fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>some_param</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>  <span class='va'>some_param</span> <span class='op'>&lt;-</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/arg_match.html'>arg_match</a></span><span class='op'>(</span><span class='va'>some_param</span><span class='op'>)</span></span>
+<span>  <span class='va'>...</span></span>
+<span><span class='op'>}</span></span></pre><p></div></p>
 <p>Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
 <code>`r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %&gt;% as_md_list()`</code> in the example above.</p>
     <h2 class="hasAnchor" id="caveats"><a class="anchor" href="#caveats"></a>Caveats</h2>
@@ -211,15 +211,15 @@ this function.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prose_ls_fn_param</span><span class='op'>(</span>param <span class='op'>=</span> <span class='st'>".name_repair"</span>,</span>
-<span class='r-in'>                       fn <span class='op'>=</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='va'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prose_ls_fn_param</span><span class='op'>(</span>param <span class='op'>=</span> <span class='st'>".name_repair"</span>,</span></span>
+<span class='r-in'><span>                       fn <span class='op'>=</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='va'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> `"check_unique"`,`"unique"`,`"universal"` or `"minimal"`</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prose_ls_fn_param</span><span class='op'>(</span>param <span class='op'>=</span> <span class='st'>".name_repair"</span>,</span>
-<span class='r-in'>                       fn <span class='op'>=</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='va'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>,</span>
-<span class='r-in'>                       as_scalar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> |&gt;</span>
-<span class='r-in'><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>prose_ls_fn_param</span><span class='op'>(</span>param <span class='op'>=</span> <span class='st'>".name_repair"</span>,</span></span>
+<span class='r-in'><span>                       fn <span class='op'>=</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='va'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>,</span></span>
+<span class='r-in'><span>                       as_scalar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'><a href='cat_lines.html'>cat_lines</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> `"check_unique"`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> `"unique"`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> `"universal"`</span>

@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Round a numeric vector to any number, rounded up by default (<code>round_up = TRUE</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>round_to</span><span class='op'>(</span><span class='va'>x</span>, to <span class='op'>=</span> <span class='fl'>0.2</span>, round_up <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span><span class='fu'>round_to</span><span class='op'>(</span><span class='va'>x</span>, to <span class='op'>=</span> <span class='fl'>0.2</span>, round_up <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,11 +180,11 @@ control of rounding up exact remainders of <code>accuracy / 2</code>, i.e. it <e
 <code><a href='stat_mode.html'>stat_mode</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>vals</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.025</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1999</span>, <span class='fl'>0.099999</span>, <span class='fl'>0.49</span>, <span class='fl'>0.55</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span>, <span class='fl'>1</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>vals</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>round_to</span><span class='op'>(</span>to <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span><span class='va'>vals</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.025</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1999</span>, <span class='fl'>0.099999</span>, <span class='fl'>0.49</span>, <span class='fl'>0.55</span>, <span class='fl'>0.5</span>, <span class='fl'>0.9</span>, <span class='fl'>1</span><span class='op'>)</span></span></span>
+<span class='r-in'><span><span class='va'>vals</span> <span class='op'>|&gt;</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>round_to</span><span class='op'>(</span>to <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.05 0.10 0.20 0.10 0.50 0.55 0.50 0.90 1.00</span>
-<span class='r-in'><span class='va'>vals</span> |&gt; <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>round_to</span><span class='op'>(</span>to <span class='op'>=</span> <span class='fl'>0.05</span>,</span>
-<span class='r-in'>                      round_up <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span><span class='va'>vals</span> <span class='op'>|&gt;</span> <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>round_to</span><span class='op'>(</span>to <span class='op'>=</span> <span class='fl'>0.05</span>,</span></span>
+<span class='r-in'><span>                      round_up <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.00 0.10 0.20 0.10 0.50 0.55 0.50 0.90 1.00</span>
 </pre>
   </div>
