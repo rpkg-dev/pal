@@ -165,8 +165,9 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Other than <code><a href='https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html'>htmlwidgets::saveWidget()</a></code>, this function does <em>not</em> write a complete HTML document but only the widget's core tags. Hence it is intended to
-create files which are in turn included in another HTML file, e.g. via a static site generator.</p>
-<p>The HTML widget's dependencies must be written to files separately, e.g. using <code><a href='write_widget_deps.html'>write_widget_deps()</a></code>.</p>
+create files which are in turn included in another HTML file, e.g. via a static site generator. The HTML widget's dependencies must be handled separately,
+e.g. using <code><a href='write_widget_deps.html'>write_widget_deps()</a></code>.</p>
+<p>To directly get the HTML widget's core tags as a character scalar, use <code>as.character(htmltools::tagList(x))</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other HTML widget functions:

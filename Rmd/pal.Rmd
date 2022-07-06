@@ -3241,9 +3241,10 @@ Extending the [htmlwidgets](https://www.htmlwidgets.org/) package.
 #' Writes an HTML widget's main container `<div>` and data `<script>` tags to file.
 #' 
 #' Other than [htmlwidgets::saveWidget()], this function does *not* write a complete HTML document but only the widget's core tags. Hence it is intended to
-#' create files which are in turn included in another HTML file, e.g. via a static site generator.
-#' 
-#' The HTML widget's dependencies must be written to files separately, e.g. using [write_widget_deps()].
+#' create files which are in turn included in another HTML file, e.g. via a static site generator. The HTML widget's dependencies must be handled separately,
+#' e.g. using [write_widget_deps()].
+#'
+#' To directly get the HTML widget's core tags as a character scalar, use `as.character(htmltools::tagList(x))`.
 #'
 #' @param x HTML widget object.
 #' @param path File path to write the HTML widget's core tags to.

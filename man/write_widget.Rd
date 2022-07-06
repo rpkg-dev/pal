@@ -19,9 +19,10 @@ Writes an HTML widget's main container \verb{<div>} and data \verb{<script>} tag
 }
 \details{
 Other than \code{\link[htmlwidgets:saveWidget]{htmlwidgets::saveWidget()}}, this function does \emph{not} write a complete HTML document but only the widget's core tags. Hence it is intended to
-create files which are in turn included in another HTML file, e.g. via a static site generator.
+create files which are in turn included in another HTML file, e.g. via a static site generator. The HTML widget's dependencies must be handled separately,
+e.g. using \code{\link[=write_widget_deps]{write_widget_deps()}}.
 
-The HTML widget's dependencies must be written to files separately, e.g. using \code{\link[=write_widget_deps]{write_widget_deps()}}.
+To directly get the HTML widget's core tags as a character scalar, use \code{as.character(htmltools::tagList(x))}.
 }
 \seealso{
 Other HTML widget functions:
