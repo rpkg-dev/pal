@@ -8,7 +8,7 @@ cols_regex(..., .default = readr::col_character(), .col_names)
 }
 \arguments{
 \item{...}{Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by \verb{col_*()}, or their
-abbreviated character names (as described in the \code{col_types} parameter of \code{\link[readr:read_delim]{readr::read_delim()}})\link[rlang:dyn-dots]{Dynamic dots} are supported.)`}
+abbreviated character names (as described in the \code{col_types} parameter of \code{\link[readr:read_delim]{readr::read_delim()}}). \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
 \item{.default}{Any named columns not matched by any of the regular expressions in \code{...} will be read with this column type.}
 
