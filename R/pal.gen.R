@@ -1690,12 +1690,12 @@ is_pkgdown_dir <- function(path = ".") {
 #'
 #' 1. The \R option `<pkg>.<key>`.
 #' 2. The environment variable `<PKG>_<KEY>`.
-#' 3. The configuration's default value as specified in the package's configuration key metadata (`<pkg>::pkg_config_keys$default_value`). If no default value
-#'    is specified (`NULL`), an error is thrown.
+#' 3. The configuration's default value as specified in the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
+#'    specified (`NULL`), an error is thrown.
 #'
 #' @details
 #' This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
-#' `pkg_config()` to properly work, the configuration metadata must be available in the package's namespace as object `pkg_config_keys`, which must be a
+#' `pkg_config_val()` to properly work, the configuration metadata must be available in the package's namespace as object `pkg_config`, which must be a
 #' [dataframe][data.frame] or [tibble][tibble::tbl_df] with at minimum the columns `key` (of type character holding the configuration key names) and
 #' `default_value` (of type list holding the default configuration values, if any).
 #'
@@ -1704,13 +1704,21 @@ is_pkgdown_dir <- function(path = ".") {
 #'
 #' @return `pkgsnip::return_label("r_obj")`
 #' @export
-pkg_config <- function(key,
-                       pkg) {
+pkg_config_val <- function(key,
+                           pkg) {
   
-  pkg_config_keys <- utils::getFromNamespace(x = "pkg_config_keys",
-                                             ns = pkg)
+  checkmate::assert_string(pkg)
+  pkg_config <- utils::getFromNamespace(x = "pkg_config",
+                                        ns = pkg)
+  checkmate::assert_data_frame(pkg_config,
+                               col.names = "unique")
+  if (!all(c("key", "default_value") %in% colnames(pkg_config))) {
+    obj <- paste0(pkg, "::pkg_config")
+    cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value}.")
+  }
+  
   key <- rlang::arg_match(key,
-                          values = pkg_config_keys$key,
+                          values = pkg_config$key,
                           error_call = rlang::caller_env(n = 2L))
   opt_name <- paste0("c2d.", key)
   env_v_name <- paste0("C2D_", toupper(key))
@@ -1729,7 +1737,7 @@ pkg_config <- function(key,
   if (is.na(result)) {
     
     result <-
-      pkg_config_keys %>%
+      pkg_config %>%
       dplyr::filter(key == !!key) %$%
       default_value %>%
       unlist(recursive = FALSE,

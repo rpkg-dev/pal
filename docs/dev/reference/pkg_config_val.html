@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get package configuration value — pkg_config • pal</title>
+<title>Get package configuration value — pkg_config_val • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Get package configuration value — pkg_config" />
-<meta name="description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins: The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;. The environment variable &amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;. The configuration's default value as specified in the package's configuration key metadata (&amp;lt;pkg&amp;gt;::pkg_config_keys$default_value). If no default value is specified (NULL), an error is thrown.">
-<meta property="og:description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins: The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;. The environment variable &amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;. The configuration's default value as specified in the package's configuration key metadata (&amp;lt;pkg&amp;gt;::pkg_config_keys$default_value). If no default value is specified (NULL), an error is thrown." />
+<meta property="og:title" content="Get package configuration value — pkg_config_val" />
+<meta name="description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins: The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;. The environment variable &amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;. The configuration's default value as specified in the package's configuration metadata (&amp;lt;pkg&amp;gt;::pkg_config$default_value). If no default value is specified (NULL), an error is thrown.">
+<meta property="og:description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins: The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;. The environment variable &amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;. The configuration's default value as specified in the package's configuration metadata (&amp;lt;pkg&amp;gt;::pkg_config$default_value). If no default value is specified (NULL), an error is thrown." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -137,20 +137,20 @@
     <div class="page-header">
     <h1>Get package configuration value</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>pkg_config.Rd</code></div>
+    <div class="hidden name"><code>pkg_config_val.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins:</p><ol>
 <li><p>The <span style="R">R</span> option <code>&lt;pkg&gt;.&lt;key&gt;</code>.</p></li>
 <li><p>The environment variable <code>&lt;PKG&gt;_&lt;KEY&gt;</code>.</p></li>
-<li><p>The configuration's default value as specified in the package's configuration key metadata (<code>&lt;pkg&gt;::pkg_config_keys$default_value</code>). If no default value
-is specified (<code>NULL</code>), an error is thrown.</p></li>
+<li><p>The configuration's default value as specified in the package's configuration metadata (<code>&lt;pkg&gt;::pkg_config$default_value</code>). If no default value is
+specified (<code>NULL</code>), an error is thrown.</p></li>
 </ol>
 
     </div>
 
-    <pre class="usage"><span><span class='fu'>pkg_config</span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pkg</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>pkg_config_val</span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pkg</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,7 +171,7 @@ is specified (<code>NULL</code>), an error is thrown.</p></li>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
-<code>pkg_config()</code> to properly work, the configuration metadata must be available in the package's namespace as object <code>pkg_config_keys</code>, which must be a
+<code>pkg_config_val()</code> to properly work, the configuration metadata must be available in the package's namespace as object <code>pkg_config</code>, which must be a
 <a href='https://rdrr.io/r/base/data.frame.html'>dataframe</a> or <a href='https://tibble.tidyverse.org/reference/tbl_df-class.html'>tibble</a> with at minimum the columns <code>key</code> (of type character holding the configuration key names) and
 <code>default_value</code> (of type list holding the default configuration values, if any).</p>
 
