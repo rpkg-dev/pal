@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List values as a Markdown list — as_md_val_list • pal</title>
+<title>Get package configuration value — pkg_config • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="List values as a Markdown list — as_md_val_list" />
-<meta name="description" content="Generates a Markdown list of the given values formatted as verbatim. Character values are additionally wrapped in double quotes.">
-<meta property="og:description" content="Generates a Markdown list of the given values formatted as verbatim. Character values are additionally wrapped in double quotes." />
+<meta property="og:title" content="Get package configuration value — pkg_config" />
+<meta name="description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins: The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;. The environment variable &amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;. The configuration's default value as specified in the package's configuration key metadata (&amp;lt;pkg&amp;gt;::pkg_config_keys$default_value). If no default value is specified (NULL), an error is thrown.">
+<meta property="og:description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins: The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;. The environment variable &amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;. The configuration's default value as specified in the package's configuration key metadata (&amp;lt;pkg&amp;gt;::pkg_config_keys$default_value). If no default value is specified (NULL), an error is thrown." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,53 +135,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List values as a Markdown list</h1>
+    <h1>Get package configuration value</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>as_md_val_list.Rd</code></div>
+    <div class="hidden name"><code>pkg_config.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a Markdown list of the given values formatted as <a href='https://pandoc.org/MANUAL.html#verbatim'>verbatim</a>. Character values are additionally wrapped in
-double quotes.</p>
+    <p>Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins:</p><ol>
+<li><p>The <span style="R">R</span> option <code>&lt;pkg&gt;.&lt;key&gt;</code>.</p></li>
+<li><p>The environment variable <code>&lt;PKG&gt;_&lt;KEY&gt;</code>.</p></li>
+<li><p>The configuration's default value as specified in the package's configuration key metadata (<code>&lt;pkg&gt;::pkg_config_keys$default_value</code>). If no default value
+is specified (<code>NULL</code>), an error is thrown.</p></li>
+</ol>
+
     </div>
 
-    <pre class="usage"><span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>pkg_config</span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pkg</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p><span style="R">R</span> objects to list.</p></td>
+      <th>key</th>
+      <td><p>Configuration key name. A character scalar.</p></td>
+    </tr>
+    <tr>
+      <th>pkg</th>
+      <td><p>Package name. A character scalar.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character scalar.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p><code>pkgsnip::return_label("r_obj")</code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p>Other (Pandoc) Markdown functions:
-<code><a href='as_md_list.html'>as_md_list</a>()</code>,
-<code><a href='pipe_table.html'>pipe_table</a>()</code>,
-<code><a href='strip_md_footnotes.html'>strip_md_footnotes</a>()</code>,
-<code><a href='strip_md.html'>strip_md</a>()</code></p></div>
+    <p>This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
+<code>pkg_config()</code> to properly work, the configuration metadata must be available in the package's namespace as object <code>pkg_config_keys</code>, which must be a
+<a href='https://rdrr.io/r/base/data.frame.html'>dataframe</a> or <a href='https://tibble.tidyverse.org/reference/tbl_df-class.html'>tibble</a> with at minimum the columns <code>key</code> (of type character holding the configuration key names) and
+<code>default_value</code> (of type list holding the default configuration values, if any).</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>2.2</span>, <span class='st'>"other"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
-<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
-<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> * `1` </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> * `2.2` </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> * `"other"` </span>
-<span class='r-in'><span>  </span></span>
-<span class='r-in'><span><span class='co'># note that values are flattened before listing them, so this yields the same list</span></span></span>
-<span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>2.2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
-<span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
-<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> * `1` </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> * `2.2` </span>
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

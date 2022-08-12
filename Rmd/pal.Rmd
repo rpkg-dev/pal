@@ -55,6 +55,7 @@ utils::globalVariables(names = c(".",
                                  "where",
                                  # other
                                  "data",
+                                 "default_value",
                                  "package",
                                  "Package",
                                  "repository",
@@ -1989,6 +1990,72 @@ is_pkgdown_dir <- function(path = ".") {
   rprojroot::is_pkgdown_project$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
     any()
+}
+```
+
+### `pkg_config`
+
+```{r}
+#' Get package configuration value
+#'
+#' @description
+#' Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins:
+#'
+#' 1. The \R option `<pkg>.<key>`.
+#' 2. The environment variable `<PKG>_<KEY>`.
+#' 3. The configuration's default value as specified in the package's configuration key metadata (`<pkg>::pkg_config_keys$default_value`). If no default value
+#'    is specified (`NULL`), an error is thrown.
+#'
+#' @details
+#' This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
+#' `pkg_config()` to properly work, the configuration metadata must be available in the package's namespace as object `pkg_config_keys`, which must be a
+#' [dataframe][data.frame] or [tibble][tibble::tbl_df] with at minimum the columns `key` (of type character holding the configuration key names) and
+#' `default_value` (of type list holding the default configuration values, if any).
+#'
+#' @param key Configuration key name. A character scalar.
+#' @param pkg Package name. A character scalar.
+#'
+#' @return `pkgsnip::return_label("r_obj")`
+#' @export
+pkg_config <- function(key,
+                       pkg) {
+  
+  pkg_config_keys <- utils::getFromNamespace(x = "pkg_config_keys",
+                                             ns = pkg)
+  key <- rlang::arg_match(key,
+                          values = pkg_config_keys$key,
+                          error_call = rlang::caller_env(n = 2L))
+  opt_name <- paste0("c2d.", key)
+  env_v_name <- paste0("C2D_", toupper(key))
+  
+  # 1st priority: R option
+  result <- getOption(opt_name)
+  
+  # 2nd priority: Environment variable
+  if (is.null(result)) {
+    result <- Sys.getenv(env_v_name,
+                         unset = NA,
+                         names = FALSE)
+  }
+  
+  # 3rd priority: default value
+  if (is.na(result)) {
+    
+    result <-
+      pkg_config_keys %>%
+      dplyr::filter(key == !!key) %$%
+      default_value %>%
+      unlist(recursive = FALSE,
+             use.names = FALSE)
+    
+    # abort if no default value was provided
+    if (is.null(result)) {
+      cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
+                            "environment variable {.envvar {env_v_name}}."))
+    }
+  }
+  
+  result
 }
 ```
 

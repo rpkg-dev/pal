@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9084</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9085</span>
       </span>
     </div>
 
@@ -257,13 +257,13 @@ if <code>pkg</code> is provided. <a href='https://rlang.r-lib.org/reference/dyn-
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** package ‘rlang’ successfully unpacked and MD5 sums checked</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** using staged installation</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** libs</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c capture.c -o capture.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c internal.c -o internal.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/     -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang-rcc.cpp -o rlang-rcc.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang.c -o rlang.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-asoVQd/r-base-4.2.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c version.c -o version.o</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,relro -o rlang.so capture.o internal.o rlang-rcc.o rlang.o version.o -L/usr/lib/R/lib -lR</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> installing to /tmp/RtmpA6W26r/devtools_install_110c650cd096b/00LOCK-rlang/00new/rlang/libs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-wSz8CH/r-base-4.2.1=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c capture.c -o capture.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-wSz8CH/r-base-4.2.1=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c internal.c -o internal.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -I"/usr/share/R/include" -DNDEBUG -I./rlang/     -fpic  -g -O2 -ffile-prefix-map=/build/r-base-wSz8CH/r-base-4.2.1=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang-rcc.cpp -o rlang-rcc.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-wSz8CH/r-base-4.2.1=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c rlang.c -o rlang.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gcc -I"/usr/share/R/include" -DNDEBUG -I./rlang/    -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/build/r-base-wSz8CH/r-base-4.2.1=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c version.c -o version.o</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> g++ -std=gnu++11 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -flto=auto -ffat-lto-objects -flto=auto -Wl,-z,relro -o rlang.so capture.o internal.o rlang-rcc.o rlang.o version.o -L/usr/lib/R/lib -lR</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> installing to /tmp/RtmpZnbrRM/devtools_install_4d1323286ba79/00LOCK-rlang/00new/rlang/libs</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ** checking absolute paths in shared objects and dynamic libraries</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * DONE (rlang)</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
