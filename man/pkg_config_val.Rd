@@ -4,12 +4,15 @@
 \alias{pkg_config_val}
 \title{Get package configuration value}
 \usage{
-pkg_config_val(key, pkg)
+pkg_config_val(key, pkg, default = NULL)
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
 
 \item{pkg}{Package name. A character scalar.}
+
+\item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{<PKG>_<KEY>} are set. If \code{NULL}, the
+default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}
 }
 \value{
 \code{pkgsnip::return_label("r_obj")}

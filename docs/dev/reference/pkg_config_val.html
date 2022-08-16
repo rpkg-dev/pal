@@ -150,7 +150,7 @@ specified (<code>NULL</code>), an error is thrown.</p></li>
 
     </div>
 
-    <pre class="usage"><span><span class='fu'>pkg_config_val</span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pkg</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>pkg_config_val</span><span class='op'>(</span><span class='va'>key</span>, <span class='va'>pkg</span>, default <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,6 +162,11 @@ specified (<code>NULL</code>), an error is thrown.</p></li>
     <tr>
       <th>pkg</th>
       <td><p>Package name. A character scalar.</p></td>
+    </tr>
+    <tr>
+      <th>default</th>
+      <td><p>Default value to fall back to if neither the <span style="R">R</span> option <code>&lt;pkg&gt;.&lt;key&gt;</code> nor the environment variable <code>&lt;PKG&gt;_&lt;KEY&gt;</code> are set. If <code>NULL</code>, the
+default value for <code>key</code> in <code>&lt;pkg&gt;::pkg_config</code> will be used (if defined).</p></td>
     </tr>
     </table>
 
