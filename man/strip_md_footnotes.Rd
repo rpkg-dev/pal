@@ -20,6 +20,7 @@ Removes all Markdown footnotes from a character vector.
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
+\code{\link{as_md_vals}()},
 \code{\link{pipe_table}()},
 \code{\link{strip_md}()}
 }

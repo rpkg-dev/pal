@@ -2156,12 +2156,42 @@ as_md_list <- function(x,
                              add.end.of.list = FALSE)
 }
 
+#' Format values as verbatim Markdown
+#'
+#' Converts the given values to a character vector, formatted as [verbatim Markdown](https://pandoc.org/MANUAL.html#verbatim). Character values are additionally
+#' wrapped in double quotes.
+#'
+#' @param ... \R objects to list.
+#'
+#' @return A character vector.
+#' @family md
+#' @export
+#'
+#' @examples
+#' list(1L, 2.2, "other") |>
+#'   pal::as_md_vals()
+#'   
+#' # note that values are flattened before further processing them, so this yields the same result
+#' list(list(list(1L, list(2.2), list(list("other"))))) |>
+#'   pal::as_md_vals()
+as_md_vals <- function(...) {
+  
+  rlang::list2(...) %>%
+    as_flat_list() %>%
+    # wrap chr vals in double quotes
+    purrr::map(~ {
+      if (is.character(.x)) wrap_chr(.x) else .x
+    }) %>%
+    # make verbatim
+    wrap_chr("`")
+}
+
 #' List values as a Markdown list
 #'
 #' Generates a Markdown list of the given values formatted as [verbatim](https://pandoc.org/MANUAL.html#verbatim). Character values are additionally wrapped in
 #' double quotes.
 #'
-#' @param ... \R objects to list.
+#' @inheritParams as_md_vals
 #'
 #' @return A character scalar.
 #' @family md
@@ -2173,19 +2203,12 @@ as_md_list <- function(x,
 #'   cat()
 #'   
 #' # note that values are flattened before listing them, so this yields the same list
-#' list(list(list(1L, list(2.2)))) |>
+#' list(list(list(1L, list(2.2), list(list("other"))))) |>
 #'   pal::as_md_val_list() |>
 #'   cat()
 as_md_val_list <- function(...) {
   
-  rlang::list2(...) %>%
-    purrr::flatten() %>%
-    # wrap chr vals in double quotes
-    purrr::map(~ {
-      if (is.character(.x)) wrap_chr(.x) else .x
-    }) %>%
-    wrap_chr("`") %>%
-    as_md_list()
+  as_md_list(as_md_vals(...))
 }
 
 #' Convert dataframe/tibble to Markdown pipe table
@@ -2470,12 +2493,18 @@ build_readme <- function(input = "README.Rmd",
                          output = "README.md",
                          build_index_md = NULL,
                          env = parent.frame()) {
-  # add args to env
-  rlang::env_bind(.env = checkmate::assert_environment(env),
-                  input = checkmate::assert_string(input),
-                  output = checkmate::assert_path_for_output(output,
-                                                             overwrite = TRUE),
-                  build_index_md = checkmate::assert_flag(build_index_md, null.ok = TRUE))
+  
+  checkmate::assert_environment(env)
+  checkmate::assert_string(input)
+  checkmate::assert_path_for_output(output,
+                                    overwrite = TRUE)
+  checkmate::assert_flag(build_index_md, null.ok = TRUE)
+  
+  # add args to `env`
+  rlang::env_bind(.env = env,
+                  input = input,
+                  output = output,
+                  build_index_md = build_index_md)
   
   # add `pkg_metadata` to env
   parent_dir <- fs::path_dir(input) %>% fs::path_abs()

@@ -99,7 +99,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pal</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9085</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.0.9086</span>
       </span>
     </div>
 
@@ -163,6 +163,7 @@ double quotes.</p>
 
     <div class='dont-index'><p>Other (Pandoc) Markdown functions:
 <code><a href='as_md_list.html'>as_md_list</a>()</code>,
+<code><a href='as_md_vals.html'>as_md_vals</a>()</code>,
 <code><a href='pipe_table.html'>pipe_table</a>()</code>,
 <code><a href='strip_md_footnotes.html'>strip_md_footnotes</a>()</code>,
 <code><a href='strip_md.html'>strip_md</a>()</code></p></div>
@@ -176,11 +177,12 @@ double quotes.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `"other"` </span>
 <span class='r-in'><span>  </span></span>
 <span class='r-in'><span><span class='co'># note that values are flattened before listing them, so this yields the same list</span></span></span>
-<span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>2.2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
+<span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>2.2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"other"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
 <span class='r-in'><span>  <span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_md_val_list</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span></span>
 <span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `1` </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> * `2.2` </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> * `"other"` </span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

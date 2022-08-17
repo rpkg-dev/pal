@@ -22,13 +22,14 @@ list(1L, 2.2, "other") |>
   cat()
   
 # note that values are flattened before listing them, so this yields the same list
-list(list(list(1L, list(2.2)))) |>
+list(list(list(1L, list(2.2), list(list("other"))))) |>
   pal::as_md_val_list() |>
   cat()
 }
 \seealso{
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
+\code{\link{as_md_vals}()},
 \code{\link{pipe_table}()},
 \code{\link{strip_md_footnotes}()},
 \code{\link{strip_md}()}

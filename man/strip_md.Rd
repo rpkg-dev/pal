@@ -35,6 +35,7 @@ pal::strip_md("[A reference link][refid]\n\n_No ref here..._")
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
+\code{\link{as_md_vals}()},
 \code{\link{pipe_table}()},
 \code{\link{strip_md_footnotes}()}
 }

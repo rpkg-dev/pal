@@ -142,14 +142,18 @@ test_that("`knitr_table_format()` works as supposed", {
 test_that("`README.Rmd` can be built successfully", {
 
   withr::local_file(.file = list("README.Rmd" = readr::write_file(file = "README.Rmd",
-                                                                  x = "---
-output: github_document
----
-
-# hi there
-
-nothing `r 'here.'`"),
-                                 "README.md" = pal::build_readme()))
+                                                                  x = paste("---",
+                                                                            "output:",
+                                                                            "  github_document:",
+                                                                            "    html_preview: false",
+                                                                            "---",
+                                                                            "",
+                                                                            "# hi there",
+                                                                            "",
+                                                                            "nothing `r 'here.'`",
+                                                                            sep = "\n")),
+                                 "README.md" = pal::build_readme()),
+                    .local_envir = rlang::current_env())
 
   expect_match(object = readr::read_file("README.md"),
                regexp = "nothing here\\.")
