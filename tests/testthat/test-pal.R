@@ -152,8 +152,7 @@ test_that("`README.Rmd` can be built successfully", {
                                                                             "",
                                                                             "nothing `r 'here.'`",
                                                                             sep = "\n")),
-                                 "README.md" = pal::build_readme()),
-                    .local_envir = rlang::current_env())
+                                 "README.md" = pal::build_readme()))
 
   expect_match(object = readr::read_file("README.md"),
                regexp = "nothing here\\.")

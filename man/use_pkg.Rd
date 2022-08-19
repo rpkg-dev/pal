@@ -27,10 +27,12 @@ Wrapper around \code{\link[usethis:use_package]{usethis::use_package()}} with di
 \seealso{
 Other R package functions:
 \code{\link{assert_pkg}()},
+\code{\link{has_pkg_config_val}()},
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()}
+\code{\link{ls_pkg}()},
+\code{\link{pkg_config_val}()}
 }
 \concept{rpkgs}

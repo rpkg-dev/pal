@@ -18,7 +18,8 @@ default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if define
 \code{pkgsnip::return_label("r_obj")}
 }
 \description{
-Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins:
+Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
+returned:
 \enumerate{
 \item The \R option \verb{<pkg>.<key>}.
 \item The environment variable \verb{<PKG>_<KEY>}.
@@ -32,3 +33,15 @@ This function is intended to be used by package authors who want to expose their
 \link[=data.frame]{dataframe} or \link[tibble:tbl_df-class]{tibble} with at minimum the columns \code{key} (of type character holding the configuration key names) and
 \code{default_value} (of type list holding the default configuration values, if any).
 }
+\seealso{
+Other R package functions:
+\code{\link{assert_pkg}()},
+\code{\link{has_pkg_config_val}()},
+\code{\link{is_pkg_cran}()},
+\code{\link{is_pkg_dir}()},
+\code{\link{is_pkg_installed}()},
+\code{\link{is_pkgdown_dir}()},
+\code{\link{ls_pkg}()},
+\code{\link{use_pkg}()}
+}
+\concept{rpkgs}

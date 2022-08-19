@@ -1686,7 +1686,8 @@ is_pkgdown_dir <- function(path = ".") {
 #' Get package configuration value
 #'
 #' @description
-#' Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit wins:
+#' Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
+#' returned:
 #'
 #' 1. The \R option `<pkg>.<key>`.
 #' 2. The environment variable `<PKG>_<KEY>`.
@@ -1705,10 +1706,29 @@ is_pkgdown_dir <- function(path = ".") {
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #'
 #' @return `pkgsnip::return_label("r_obj")`
+#' @family rpkgs
 #' @export
 pkg_config_val <- function(key,
                            pkg,
                            default = NULL) {
+  
+  result <- get_pkg_config_val(key = key,
+                               pkg = pkg,
+                               default = default)
+  
+  # abort if no default value was provided
+  if (is.null(result)) {
+    cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
+                          "environment variable {.envvar {env_v_name}}."))
+  }
+  
+  result
+}
+
+# helper fn
+get_pkg_config_val <- function(key,
+                               pkg,
+                               default = NULL) {
   
   checkmate::assert_string(pkg)
   pkg_config <- utils::getFromNamespace(x = "pkg_config",
@@ -1721,8 +1741,7 @@ pkg_config_val <- function(key,
   }
   
   key <- rlang::arg_match(key,
-                          values = pkg_config$key,
-                          error_call = rlang::caller_env(n = 2L))
+                          values = pkg_config$key)
   opt_name <- paste0("c2d.", key)
   env_v_name <- paste0("C2D_", toupper(key))
   
@@ -1746,15 +1765,31 @@ pkg_config_val <- function(key,
         unlist(recursive = FALSE,
                use.names = FALSE)
     }
-    
-    # abort if no default value was provided
-    if (is.null(result)) {
-      cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
-                            "environment variable {.envvar {env_v_name}}."))
-    }
   }
   
   result
+}
+
+#' Test if package configuration value is set
+#'
+#' Tests whether or not a certain package configuration value is set. See [pkg_config_val()] for the underlying concept.
+#'
+#' Note that `has_pkg_config_val()` throws an error if the package configuration *key* doesn't exist.
+#'
+#' @inheritParams pkg_config_val
+#'
+#' @return A logical scalar.
+#' @family rpkgs
+#' @export
+#'
+#' @examples
+#' pal::has_pkg_config_val(key = "gen_pkgdown_ref",
+#'                         pkg = "pkgpurl")
+has_pkg_config_val <- function(key,
+                               pkg) {
+  
+  !is.null(get_pkg_config_val(key = key,
+                              pkg = pkg))
 }
 
 #' Depend on another package

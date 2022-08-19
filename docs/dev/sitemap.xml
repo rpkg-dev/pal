@@ -97,6 +97,9 @@
     <loc>https://rpkg.dev/pal/reference/gitlab_document.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/has_pkg_config_val.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/is_equal_df.html</loc>
   </url>
   <url>
