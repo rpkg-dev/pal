@@ -2802,7 +2802,7 @@ Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
 
 TODO:
 
--   [ ] There's already the [tinkr](https://docs.ropensci.org/tinkr/) package providing [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The
+-   There's already the [tinkr](https://docs.ropensci.org/tinkr/) package providing [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The
     main advantage of `md_to_xml()` is that `strip_yaml_header()` is more robust in YAML header detection than [blogdown's
     `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `tinkr::to_xml()`.
 
@@ -2817,7 +2817,20 @@ TODO:
     4.  Submit PR importing xfun and replacing [`tinkr:::split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) with
         `xfun::split_yaml_body()`.
 
-    5.  Deprecate `md_to_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
+    5.  Deprecate `pal::md_to_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
+
+    Further note that `tinkr::to_xml()` (as well as the unexported and separate `tinkr:::md_to_xml()`) additionally
+
+    -   parse knitr *in-header* chunk options via a call to `tinkr:::parse_rmd()`, something `pal::md_to_xml()` simply omits (but which could be very useful for
+        certain use cases; but would ideally also include *in-body* chunk options! but maybe that functionality will be added in a future version of tinkr...).
+
+    -   replace *certain* typographic single and double quotes with the basic commonmark-compliant ones via a call to . I think it is a pretty bad idea to
+        enable this by default and there should at least be an option to opt out of this behaviour (i.e. introduce an additional boolean param
+        `normalize_quotation_marks` or the like).
+
+    -   do not allow to change the `hardbreaks`, `smart`, `normalize` and `extensions` params of the internal call to `commonmark::markdown_xml()`. At least
+        being able to set `normalize = TRUE` (the default of `pal::md_to_xml()`) seems useful, but currently `commonmark::markdown_xml()`s default of
+        `normalize = FALSE` is used.
 
 ```{r}
 #' Parse (R) Markdown as CommonMark XML tree
