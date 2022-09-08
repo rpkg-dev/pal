@@ -592,11 +592,11 @@ TODO:
 -   Behaviour with named (sub)lists like the following one is counter-intuitive:
 
     ``` r
-    fokus::raw_q_suppl_election(ballot_date = ballot_date,
-                                lvl = 'cantonal',
-                                canton = canton,
-                                prcd = "proportional",
-                                election_nr = election_nr) %$%
+    fokus::raw_qstnr_suppl_election(ballot_date = ballot_date,
+                                    lvl = 'cantonal',
+                                    canton = canton,
+                                    prcd = "proportional",
+                                    election_nr = election_nr) %$%
         party %>%
         dplyr::first() %>%
         pal::as_flat_list() %>%
