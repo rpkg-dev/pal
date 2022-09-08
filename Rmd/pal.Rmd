@@ -2032,7 +2032,7 @@ pkg_config_val <- function(key,
   # abort if no default value was provided
   if (is.null(result)) {
     cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
-                          "environment variable {.envvar {env_v_name}}."))
+                          "environment variable {.envvar {env_var_name}}."))
   }
   
   result
@@ -2056,14 +2056,14 @@ get_pkg_config_val <- function(key,
   key <- rlang::arg_match(key,
                           values = pkg_config$key)
   opt_name <- paste0("c2d.", key)
-  env_v_name <- paste0("C2D_", toupper(key))
+  env_var_name <- paste0("C2D_", toupper(key))
   
   # 1st priority: R option
   result <- getOption(opt_name)
   
   # 2nd priority: Environment variable
   if (is.null(result)) {
-    result <- Sys.getenv(env_v_name,
+    result <- Sys.getenv(env_var_name,
                          unset = NA,
                          names = FALSE)
   }
@@ -2318,7 +2318,7 @@ Extending the [roxygen2](https://roxygen2.r-lib.org/) package.
 #'
 #' # ... or provide a package name
 #' try(
-#'   pal::roxy_blocks(pkg = "rlang",
+#'   pal::roxy_blocks(pkg = "tinkr",
 #'                    repos = "https://cloud.r-project.org") |>
 #'     head(n = 3L)
 #' )

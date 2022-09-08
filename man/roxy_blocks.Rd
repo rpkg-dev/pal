@@ -31,7 +31,7 @@ pal::roxy_blocks(text = text) |> head(n = 3L)
 
 # ... or provide a package name
 try(
-  pal::roxy_blocks(pkg = "rlang",
+  pal::roxy_blocks(pkg = "tinkr",
                    repos = "https://cloud.r-project.org") |>
     head(n = 3L)
 )
