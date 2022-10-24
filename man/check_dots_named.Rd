@@ -58,16 +58,16 @@ sum_safe <- function(...,
       na.rm = na.rm)
 }
 
-# note how the misspelled `na_rm` (instead of `na.rm`) silently gets ignored
-# in the original function
+# Note how the misspelled `na_rm` (instead of `na.rm`) silently gets ignored in the original
+# function,
 sum(1, 2, NA, na_rm = TRUE)
 
-# whereas our safe version properly errors
+# whereas our safe version properly errors:
 try(
   sum_safe(1, 2, NA, na_rm = TRUE)
 )
 
-# we can even build an `sapply()` function that fails "intelligently" 
+# We can even build an `sapply()` function that fails "intelligently":
 sapply_safe <- function(X,
                         FUN,
                         ...,
@@ -82,24 +82,24 @@ sapply_safe <- function(X,
          USE.NAMES = TRUE)
 }
 
-# while the original `sapply()` silently ignores misspelled arguments,
+# While the original `sapply()` silently consumes misspelled named arguments via `...`,
 sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 
-# `sapply_safe()` will throw an informative error message
+# `sapply_safe()` will throw an informative error message:
 try(
   sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 )
 
-# but be aware that `check_dots_named()` might be a bit rash
+# But be aware that `check_dots_named()` might be a bit rash,
 try(
   sum_safe(a = 1, b = 2)
 )
 
-# while the original function actually has nothing to complain
+# while the original function actually has nothing to complain:
 sum(a = 1, b = 2)
 
-# also, it doesn't play nicely with functions that don't expose all of
-# their arg names (`to` and `by` in the case of `seq()`)
+# Furthermore, it doesn't play nicely with generics that don't expose all of the argument names
+# of the method that is eventually invoked (`to` and `by` in the case of `seq()` -> `seq.int()`):
 try(
   sapply_safe(X = c(0,50),
               FUN = seq,
@@ -107,7 +107,13 @@ try(
               by = 5)
 )
 
-# but providing `to` and `by` *unnamed* is fine of course:
+# To work around this, directly supply the proper method (`seq.int`),
+sapply_safe(X = c(0,50),
+            FUN = seq.int,
+            to = 100,
+            by = 5)
+
+# or just provide `to` and `by` *unnamed*:
 sapply_safe(X = c(0,50),
             FUN = seq,
             100,

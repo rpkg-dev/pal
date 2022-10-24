@@ -163,7 +163,7 @@ subnode_ix <- function(xml_nodes,
 #' try(seq_len(integer()))
 safe_seq_len <- function(n) {
   
-  if (length(n)) {
+  if (length(n) > 0L) {
     return(seq_len(n))
     
   } else return(integer())
@@ -529,7 +529,7 @@ is_equal_df <- function(x,
                            y_arg = "y",
                            max_diffs = max_diffs)
   
-  if (length(result)) {
+  if (length(result) > 0L) {
     
     if (!quiet) {
       
@@ -1428,17 +1428,13 @@ placeholder](https://rdrr.io/r/base/dots.html) yet another bit safer.
 
 ### `check_dots_named`
 
-TODO:
-
--   Check for primitive functions using `is.primitive()` and properly handle that case (we can't determine `parent_param_names` for them, so we should probably
-    just abort with an informative error). Also mention that in docs and adapt examples.
-
--   Thoroughly check examples, there seem to be flaws in the fn!
-
 NOTES:
 
 -   Code to suggest proper dots params largely borrowed from
     [`rlang:::stop_arg_match()`](https://github.com/r-lib/rlang/blob/2a269c44aaa3985ce742e0e91a48b2d3c4664f3c/R/arg.R#L79-L110) (MIT-licensed).
+
+-   `methods::formalArgs(args(FN))` is a [workaround to get formal args from both normal fns as well as
+    primitives](https://stackoverflow.com/a/40640542/7196903).
 
 -   Function has been proposed upstream in [PR #35](https://github.com/r-lib/ellipsis/pull/35), but there has been no reaction. Meanwhile the `check_dots_*`
     functions have been [integrated into rlang](https://rlang.r-lib.org/reference/index.html#check-dots), maybe propose it there?
@@ -1485,16 +1481,16 @@ NOTES:
 #'       na.rm = na.rm)
 #' }
 #' 
-#' # note how the misspelled `na_rm` (instead of `na.rm`) silently gets ignored
-#' # in the original function
+#' # Note how the misspelled `na_rm` (instead of `na.rm`) silently gets ignored in the original
+#' # function,
 #' sum(1, 2, NA, na_rm = TRUE)
 #'
-#' # whereas our safe version properly errors
+#' # whereas our safe version properly errors:
 #' try(
 #'   sum_safe(1, 2, NA, na_rm = TRUE)
 #' )
 #'
-#' # we can even build an `sapply()` function that fails "intelligently" 
+#' # We can even build an `sapply()` function that fails "intelligently":
 #' sapply_safe <- function(X,
 #'                         FUN,
 #'                         ...,
@@ -1509,24 +1505,24 @@ NOTES:
 #'          USE.NAMES = TRUE)
 #' }
 #'
-#' # while the original `sapply()` silently ignores misspelled arguments,
+#' # While the original `sapply()` silently consumes misspelled named arguments via `...`,
 #' sapply(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 #'
-#' # `sapply_safe()` will throw an informative error message
+#' # `sapply_safe()` will throw an informative error message:
 #' try(
 #'   sapply_safe(1:5, paste, "hour workdays", sep = "-", colaspe = " ")
 #' )
 #'
-#' # but be aware that `check_dots_named()` might be a bit rash
+#' # But be aware that `check_dots_named()` might be a bit rash,
 #' try(
 #'   sum_safe(a = 1, b = 2)
 #' )
 #'
-#' # while the original function actually has nothing to complain
+#' # while the original function actually has nothing to complain:
 #' sum(a = 1, b = 2)
 #'
-#' # also, it doesn't play nicely with functions that don't expose all of
-#' # their arg names (`to` and `by` in the case of `seq()`)
+#' # Furthermore, it doesn't play nicely with generics that don't expose all of the argument names
+#' # of the method that is eventually invoked (`to` and `by` in the case of `seq()` -> `seq.int()`):
 #' try(
 #'   sapply_safe(X = c(0,50),
 #'               FUN = seq,
@@ -1534,7 +1530,13 @@ NOTES:
 #'               by = 5)
 #' )
 #'
-#' # but providing `to` and `by` *unnamed* is fine of course:
+#' # To work around this, directly supply the proper method (`seq.int`),
+#' sapply_safe(X = c(0,50),
+#'             FUN = seq.int,
+#'             to = 100,
+#'             by = 5)
+#'
+#' # or just provide `to` and `by` *unnamed*:
 #' sapply_safe(X = c(0,50),
 #'             FUN = seq,
 #'             100,
@@ -1556,30 +1558,30 @@ check_dots_named <- function(...,
   checkmate::assert_flag(.empty_ok)
   .action <- rlang::arg_match(.action)
   
-  if (...length()) {
+  if (...length() > 0L) {
     
     # determine original function name the `...` will be passed on to
     fn_arg_name <- deparse1(substitute(.fn))
     parent_call <- as.list(sys.call(-1L))
-    parent_param_names <- methods::formalArgs(sys.function(-1L))
+    parent_arg_names <- methods::formalArgs(args(sys.function(-1L)))
     
-    if (fn_arg_name %in% parent_param_names) {
-      fn_name <- as.character(parent_call[which(parent_param_names == fn_arg_name) + 1L][[1L]])
+    if (fn_arg_name %in% parent_arg_names) {
+      fn_name <- deparse1(parent_call[which(parent_arg_names == fn_arg_name) + 1L][[1L]])
     } else {
       fn_name <- fn_arg_name
     }
     
-    # determine param names of the function the `...` will be passed on to
-    dots_param_names <- methods::formalArgs(.fn)
+    # determine arg names of the function the `...` will be passed on to
+    dots_arg_names <- methods::formalArgs(args(.fn))
     
     # check named `...` args
     purrr::walk(.x = setdiff(...names(),
-                             NA_character_),
+                             ""),
                 .f = check_dot_named,
-                values = dots_param_names,
-                allowed_values = setdiff(union(dots_param_names,
-                                               .additional),
-                                         .forbidden),
+                dots_arg_names = dots_arg_names,
+                allowed_arg_names = setdiff(union(dots_arg_names,
+                                                  .additional),
+                                            .forbidden),
                 fn_name = fn_name,
                 action = .action)
     
@@ -1595,47 +1597,48 @@ check_dots_named <- function(...,
 }
 
 check_dot_named <- function(dot,
-                            values,
-                            allowed_values,
+                            dots_arg_names,
+                            allowed_arg_names,
                             fn_name,
                             action) {
   
   # The following code is largely borrowed from `rlang::arg_match()`
-  i <- match(dot, allowed_values)
+  allowed_arg_names_excl_dots <- setdiff(allowed_arg_names, '...')
+  i <- match(dot, allowed_arg_names)
   
   if (rlang::is_na(i)) {
     
-    is_forbidden <- dot %in% values
-    is_restricted <- !setequal(values,
-                               allowed_values)
+    is_forbidden <- dot %in% dots_arg_names
+    is_restricted <- !setequal(dots_arg_names,
+                               allowed_arg_names)
     
     msg <- paste0(ifelse(is_forbidden,
                          "Forbidden",
                          "Invalid"),
-                  " argument provided in {.arg ...}: {.arg {dot}}")
+                  " named argument provided in {.arg ...}: {.arg {dot}}")
     
-    if (length(allowed_values) > 0L) {
+    if (length(allowed_arg_names_excl_dots) > 0L) {
       
       msg %<>% c("i" = paste0(ifelse(is_restricted,
-                                     "Arguments allowed to pass on to ",
-                                     "Valid arguments for "),
-                              "{.fun {fn_name}} include: ", prose_ls(paste0("{.arg ", allowed_values, "}"))))
+                                     "Named arguments allowed to pass on to ",
+                                     "Valid named arguments for "),
+                              "{.fun {fn_name}} include: {.arg {allowed_arg_names_excl_dots}}"))
     } else {
       
       msg %<>% c("i" = paste0("Only unnamed arguments are ", ifelse(is_restricted, "allowed", "valid"), " for {.fun {fn_name}}."))
     }
     
-    i_partial <- pmatch(dot, allowed_values)
+    i_partial <- pmatch(dot, allowed_arg_names_excl_dots)
     candidate <- NULL
     
     if (!rlang::is_na(i_partial)) {
-      candidate <- allowed_values[[i_partial]]
+      candidate <- allowed_arg_names_excl_dots[[i_partial]]
     }
     
-    i_close <- utils::adist(dot, allowed_values) / nchar(allowed_values)
+    i_close <- utils::adist(dot, allowed_arg_names_excl_dots) / nchar(allowed_arg_names_excl_dots)
     
     if (any(i_close <= 0.5)) {
-      candidate <- allowed_values[[which.min(i_close)]]
+      candidate <- allowed_arg_names_excl_dots[[which.min(i_close)]]
     }
     
     if (!is.null(candidate)) {
@@ -2343,7 +2346,7 @@ roxy_blocks <- function(pkg = NULL,
     blocks <- rlang::with_handlers(roxygen2::parse_text(text = text),
                                    error = ~ list(FALSE, .x))
     
-    if (length(blocks) && isFALSE(blocks[[1L]])) {
+    if (length(blocks) > 0L && isFALSE(blocks[[1L]])) {
       
       error_msg <- as.character(blocks[[2L]])
       is_missing_obj <- error_msg %>% stringr::str_detect(" (not found|could not find .+)\\n")
