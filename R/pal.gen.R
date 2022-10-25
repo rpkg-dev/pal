@@ -3207,7 +3207,7 @@ gh_dir_ls <- function(path = "",
 
 #' Assert MIME type
 #'
-#' Asserts a [response object][httr::response] is of a specific [MIME type](https://en.wikipedia.org/wiki/Media_type). Convenience wrapper around
+#' Asserts that a [response object][httr::response] is of a specific [MIME type](https://en.wikipedia.org/wiki/Media_type). Convenience wrapper around
 #' [httr::http_type()].
 #'
 #' @param response A [response object][httr::response].
@@ -3402,10 +3402,10 @@ cli_process_expr <- function(expr,
   invisible(result)
 }
 
-#' Check if CLI tool is available on the system
+#' Assert CLI tool is available
 #'
-#' Checks if a CLI tool is found on the system's [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem
-#' path.
+#' Asserts that a [command-line interface (CLI)](https://en.wikipedia.org/wiki/Command-line_interface) tool is found on the system's
+#' [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem path.
 #'
 #' @param cmd System command to invoke the CLI tool. A character scalar.
 #' @param get_cmd_path Whether or not to return the filesystem path to the CLI tool. If `FALSE`, a boolean is returned indicating if the CLI tool is found on
@@ -3420,14 +3420,13 @@ cli_process_expr <- function(expr,
 #' @export
 #'
 #' @examples
-#' pal::check_cli("Rscript")
+#' pal::assert_cli("Rscript")
 #'
 #' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
-#' pal::check_cli(cmd, get_cmd_path = TRUE)
-check_cli <- function(cmd,
-                      get_cmd_path = FALSE,
-                      force_which = FALSE) {
-  
+#' pal::assert_cli(cmd, get_cmd_path = TRUE)
+assert_cli <- function(cmd,
+                       get_cmd_path = FALSE,
+                       force_which = FALSE) {
   assert_pkg("xfun")
   checkmate::assert_string(cmd)
   checkmate::assert_flag(get_cmd_path)
@@ -3511,7 +3510,11 @@ path_script <- function() {
 
 
 
-#' Assert an object is member of any of the specified classes
+#' Assert object is member of any class
+#'
+#' Asserts that an object is member of any of the specified classes.
+#'
+#' In contrast to [checkmate::assert_class()], this function returns `TRUE` as long as `x` is at least member of *one* of `classes`.
 #'
 #' @param x \R object to test.
 #' @param classes Class names to check for inheritance. A character vector.

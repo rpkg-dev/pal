@@ -135,7 +135,7 @@ reference:
   - cli_process_expr
 - title: System interaction
 - contents:
-  - check_cli
+  - assert_cli
   - path_script
 - title: Miscellaneous
 - contents:

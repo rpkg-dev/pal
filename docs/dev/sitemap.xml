@@ -31,6 +31,9 @@
     <loc>https://rpkg.dev/pal/reference/assert_class_any.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/assert_cli.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/assert_mime_type.html</loc>
   </url>
   <url>
@@ -44,9 +47,6 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/cat_lines.html</loc>
-  </url>
-  <url>
-    <loc>https://rpkg.dev/pal/reference/check_cli.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/check_dots_named.html</loc>

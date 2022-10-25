@@ -14,6 +14,6 @@ Tries to determine the path to the R/Rmd script that this function is called fro
 }
 \seealso{
 Other system interaction functions:
-\code{\link{check_cli}()}
+\code{\link{assert_cli}()}
 }
 \concept{sys}

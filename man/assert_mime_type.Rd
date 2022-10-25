@@ -25,7 +25,7 @@ assert_mime_type(
 \code{response}, invisibly.
 }
 \description{
-Asserts a \link[httr:response]{response object} is of a specific \href{https://en.wikipedia.org/wiki/Media_type}{MIME type}. Convenience wrapper around
+Asserts that a \link[httr:response]{response object} is of a specific \href{https://en.wikipedia.org/wiki/Media_type}{MIME type}. Convenience wrapper around
 \code{\link[httr:http_type]{httr::http_type()}}.
 }
 \examples{

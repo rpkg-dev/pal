@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{assert_class_any}
 \alias{assert_class_any}
-\title{Assert an object is member of any of the specified classes}
+\title{Assert object is member of any class}
 \usage{
 assert_class_any(x, classes, name = "x")
 }
@@ -17,7 +17,10 @@ assert_class_any(x, classes, name = "x")
 \code{x}, invisibly.
 }
 \description{
-Assert an object is member of any of the specified classes
+Asserts that an object is member of any of the specified classes.
+}
+\details{
+In contrast to \code{\link[checkmate:checkClass]{checkmate::assert_class()}}, this function returns \code{TRUE} as long as \code{x} is at least member of \emph{one} of \code{classes}.
 }
 \examples{
 pal::gh_text_file(path = "README.md",
