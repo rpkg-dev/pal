@@ -33,6 +33,52 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "available",
                                           "type"))
 
+get_pkg_config_val <- function(key,
+                               pkg,
+                               default = NULL) {
+  
+  checkmate::assert_string(pkg)
+  pkg_config <- utils::getFromNamespace(x = "pkg_config",
+                                        ns = pkg)
+  checkmate::assert_data_frame(pkg_config,
+                               col.names = "unique")
+  if (!all(c("key", "default_value") %in% colnames(pkg_config))) {
+    obj <- paste0(pkg, "::pkg_config")
+    cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value}.")
+  }
+  
+  key <- rlang::arg_match(key,
+                          values = pkg_config$key)
+  opt_name <- paste(pkg, key,
+                    sep = ".")
+  env_var_name <- toupper(paste(pkg, key,
+                                sep = "_"))
+  # 1st priority: R option
+  result <- getOption(opt_name)
+  
+  # 2nd priority: Environment variable
+  if (is.null(result)) {
+    
+    result <- Sys.getenv(env_var_name,
+                         unset = NA,
+                         names = FALSE)
+  }
+  
+  # 3rd priority: default value
+  if (is.na(result)) {
+    
+    result <- default %||% {
+      pkg_config %>%
+        dplyr::filter(key == !!key) %$%
+        default_value %>%
+        unlist(recursive = FALSE,
+               use.names = FALSE)
+    }
+  }
+  
+  result
+}
+
 normalize_tree_path <- function(path) {
   
   checkmate::assert_string(path) %>%
@@ -1709,7 +1755,7 @@ is_pkgdown_dir <- function(path = ".") {
 #'
 #' @param key Configuration key name. A character scalar.
 #' @param pkg Package name. A character scalar.
-#' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `<PKG>_<KEY>` are set. If `NULL`, the
+#' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #'
 #' @return `pkgsnip::return_label("r_obj")`
@@ -1727,51 +1773,6 @@ pkg_config_val <- function(key,
   if (is.null(result)) {
     cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
                           "environment variable {.envvar {env_var_name}}."))
-  }
-  
-  result
-}
-
-# helper fn
-get_pkg_config_val <- function(key,
-                               pkg,
-                               default = NULL) {
-  
-  checkmate::assert_string(pkg)
-  pkg_config <- utils::getFromNamespace(x = "pkg_config",
-                                        ns = pkg)
-  checkmate::assert_data_frame(pkg_config,
-                               col.names = "unique")
-  if (!all(c("key", "default_value") %in% colnames(pkg_config))) {
-    obj <- paste0(pkg, "::pkg_config")
-    cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value}.")
-  }
-  
-  key <- rlang::arg_match(key,
-                          values = pkg_config$key)
-  opt_name <- paste0("c2d.", key)
-  env_var_name <- paste0("C2D_", toupper(key))
-  
-  # 1st priority: R option
-  result <- getOption(opt_name)
-  
-  # 2nd priority: Environment variable
-  if (is.null(result)) {
-    result <- Sys.getenv(env_var_name,
-                         unset = NA,
-                         names = FALSE)
-  }
-  
-  # 3rd priority: default value
-  if (is.na(result)) {
-    
-    result <- default %||% {
-      pkg_config %>%
-        dplyr::filter(key == !!key) %$%
-        default_value %>%
-        unlist(recursive = FALSE,
-               use.names = FALSE)
-    }
   }
   
   result
@@ -3292,6 +3293,134 @@ is_http_success <- function(url,
                                                      quiet = quiet)),
                        error = ~ FALSE,
                        interrupt = ~ cli::cli_abort("Terminated by the user"))
+}
+
+#' Read in and parse TOML file as strict list
+#'
+#' Reads in a file in [Tom's Obvious Minimal Language (TOML)](https://toml.io/) format and returns its content as a (nested) [strict list][xfun::strict_list()].
+#'
+#' The file is parsed using [`RcppTOML::parseTOML(escape = FALSE)`][RcppTOML::parseTOML].
+#'
+#' @param path Path to a TOML file. A character scalar.
+#'
+#' @return `r pkgsnip::return_label("strict_list")`
+#' @family toml
+#' @export
+toml_read <- function(path,
+                      verbose = FALSE) {
+  
+  assert_pkg("RcppTOML")
+  assert_pkg("xfun")
+  
+  checkmate::assert_file_exists(path,
+                                access = "r")
+  checkmate::assert_flag(verbose)
+  
+  xfun::as_strict_list(RcppTOML::parseTOML(input = path,
+                                           verbose = verbose,
+                                           escape = FALSE))
+}
+
+#' Validate TOML
+#'
+#' Validates a TOML file or character vector (if `from_file = FALSE`) using the external [Taplo CLI](https://taplo.tamasfe.dev/cli/introduction.html),
+#' optionally against a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)).
+#'
+#' The highest supported JSON Schema specification is [Draft 4](https://json-schema.org/specification-links.html#draft-4). This is a [limitation of
+#' the underlying tool Taplo](https://taplo.tamasfe.dev/configuration/developing-schemas.html).
+#'
+#' Taplo allows to define the schema to be used directly in the TOML file using the [`schema` header 
+#' directive](https://taplo.tamasfe.dev/configuration/directives.html#the-schema-directive). Note that the `schema` argument has precendence unless set to
+#' `NULL` (the default).
+#'
+#' # Why JSON Schema-based validation
+#'
+#' Although there are two noteworthy attempts at introducing a native validation format for TOML, [TOLS](https://github.com/toml-lang/toml/pull/116/) and [TOML
+#' Schema](https://github.com/toml-lang/toml/issues/792), neither of them has been officially adopted yet. As it appears, it could take several more years to
+#' decades until such thing happens, if ever.
+#'
+#' In the meantime, we can use the JSON Schema format as an alternative thanks to an awesome implementation by the [Taplo
+#' CLI](https://taplo.tamasfe.dev/cli/introduction.html), which itself is written in the Rust programming language and [available as a single-binary program for
+#' all common platforms](https://taplo.tamasfe.dev/cli/installation/binary.html).
+#'
+#' @param input If `from_file = FALSE`, the path to a TOML file as a character scalar. Otherwise TOML content as a character vector.
+#' @param from_file Whether `input` is the path to a TOML file or already a character vector of TOML content.
+#' @param schema URL to a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)) file to validate `input`
+#'   against. Can also be a local filesystem path (best specified including the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) `file://`). If
+#'   `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
+#'
+#' @return If the validation is successful, `input` invisibly. Otherwise an error is thrown.
+#' @family toml
+#' @export
+#'
+#' @examples
+#' try(
+#'   pal::toml_validate(input = "key = tru",
+#'                      from_file = FALSE)
+#' )
+toml_validate <- function(input,
+                          from_file = TRUE,
+                          schema = NULL) {
+  
+  checkmate::assert_flag(from_file)
+  checkmate::assert_string(schema,
+                           null.ok = TRUE)
+  if (from_file) {
+    checkmate::assert_file_exists(input,
+                                  access = "r")
+  } else {
+    checkmate::assert_character(input)
+  }
+  
+  if (!assert_cli(cmd = "taplo")) {
+    cli::cli_abort(paste0("The {.strong taplo} executable is required but couldn't be found on system's {.href ",
+                          "[PATH](https://en.wikipedia.org/wiki/PATH_(variable))}. Binaries of the {.href [Taplo ",
+                          "CLI](https://taplo.tamasfe.dev/cli/introduction.html)} are available for all common platforms from here: ",
+                          "{.url https://taplo.tamasfe.dev/cli/installation/binary.html}"))
+  }
+  
+  result <- suppressWarnings(system2(
+    command = "taplo",
+    args = c("lint",
+             "--no-auto-config",
+             "--colors=always",
+             paste0("--schema=", schema)[!is.null(schema)],
+             ifelse(from_file,
+                    input,
+                    "-")),
+    stdout = TRUE,
+    stderr = TRUE,
+    input = if (!from_file) input else NULL,
+    # cf. https://taplo.tamasfe.dev/cli/usage/configuration.html
+    env = "RUST_LOG=error",
+    timeout = 5L)
+  )
+  
+  result_excl_ansi <- cli::ansi_strip(result)
+  
+  if (length(result) > 1L &&
+      stringr::str_detect(string = result_excl_ansi[1L],
+                          pattern = "(?i)error")) {
+    
+    # only retain first Taplo error (later ones can be confusing)
+    i_end <-
+      result_excl_ansi %>%
+      stringr::str_detect(pattern = "^ERROR ") %>%
+      which() %>%
+      dplyr::first() %>%
+      magrittr::subtract(1L) %|%
+      length(result)
+    
+    # we avoid `cli::cli_abort()` for now since it always strips consecutive whitespaces, even non-breaking ones
+    # cf. https://github.com/r-lib/cli/issues/531#issuecomment-1292639286
+    rlang::abort(message = c("TOML validation failed with:",
+                             # turning it into a named vctr avoids the default bullets
+                             " " = "",
+                             result[1:i_end]),
+                 use_cli_format = FALSE)
+  }
+  
+  invisible(input)
 }
 
 #' [cli](https://cli.r-lib.org/) pluralization helpers for booleans

@@ -11,7 +11,7 @@ pkg_config_val(key, pkg, default = NULL)
 
 \item{pkg}{Package name. A character scalar.}
 
-\item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{<PKG>_<KEY>} are set. If \code{NULL}, the
+\item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{<PKG>_<KEY>} is set. If \code{NULL}, the
 default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}
 }
 \value{

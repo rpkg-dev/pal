@@ -127,7 +127,11 @@ reference:
 - contents:
   - assert_mime_type
   - is_http_success
-- title: CLI
+- title: TOML
+- contents:
+  - toml_read
+  - toml_validate
+- title: cli
   desc: Extending the [cli](https://cli.r-lib.org/) package.
 - contents:
   - cli_qty_lgl

@@ -205,6 +205,12 @@
     <loc>https://rpkg.dev/pal/reference/strip_yaml_header.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/toml_read.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/toml_validate.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/use_pkg.html</loc>
   </url>
   <url>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine file path of executing script — path_script • pal</title>
+<title>Read in and parse TOML file as strict list — toml_read • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Determine file path of executing script — path_script" />
-<meta name="description" content="Tries to determine the path to the R/Rmd script that this function is called from.">
-<meta property="og:description" content="Tries to determine the path to the R/Rmd script that this function is called from." />
+<meta property="og:title" content="Read in and parse TOML file as strict list — toml_read" />
+<meta name="description" content="Reads in a file in Tom's Obvious Minimal Language (TOML) format and returns its content as a (nested) strict list.">
+<meta property="og:description" content="Reads in a file in Tom's Obvious Minimal Language (TOML) format and returns its content as a (nested) strict list." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,25 +135,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine file path of executing script</h1>
+    <h1>Read in and parse TOML file as strict list</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>path_script.Rd</code></div>
+    <div class="hidden name"><code>toml_read.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Tries to determine the path to the R/Rmd script that this function is called from.</p>
+    <p>Reads in a file in <a href='https://toml.io/'>Tom's Obvious Minimal Language (TOML)</a> format and returns its content as a (nested) <a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict list</a>.</p>
     </div>
 
-    <pre class="usage"><span><span class='fu'>path_script</span><span class='op'>(</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>toml_read</span><span class='op'>(</span><span class='va'>path</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>Path to a TOML file. A character scalar.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The file path to the executing script.</p>
+    <p>A <a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict list</a>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The file is parsed using <code><a href='https://rdrr.io/pkg/RcppTOML/man/parseTOML.html'>RcppTOML::parseTOML(escape = FALSE)</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other system interaction functions:
-<code><a href='assert_cli.html'>assert_cli</a>()</code></p></div>
+    <div class='dont-index'><p>Other TOML functions:
+<code><a href='toml_validate.html'>toml_validate</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

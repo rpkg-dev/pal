@@ -15,5 +15,6 @@ list(
                          stat       = "Other statistical computing / numeric functions:",
                          string     = "Other string functions:",
                          sys        = "Other system interaction functions:",
-                         tibble     = "Other data frame / tibble functions:")
+                         tibble     = "Other data frame / tibble functions:",
+                         toml       = "Other TOML functions:")
 )
