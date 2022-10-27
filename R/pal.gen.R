@@ -3262,6 +3262,9 @@ assert_mime_type <- function(response,
 #' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
 #' based on [curl](https://jeroen.cran.dev/curl/).
 #'
+#' For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the [pingr](https://github.com/r-lib/pingr#readme)
+#' package.
+#'
 #' @param url HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
 #' @param retries Maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar `>= 0`. The retries are performed using
 #'   exponential backoff and jitter, see [httr::RETRY()] for details.

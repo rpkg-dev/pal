@@ -177,6 +177,8 @@ if <code>retries &gt; 0</code>.</p></td>
 
     <p>This function is similar to <code><a href='https://rdrr.io/pkg/RCurl/man/url.exists.html'>RCurl::url.exists()</a></code>, i.e. it only retrieves the header, no body, but is based on <a href='https://httr.r-lib.org/reference/httr-package.html'>httr</a> which in turn is
 based on <a href='https://jeroen.cran.dev/curl/'>curl</a>.</p>
+<p>For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the <a href='https://github.com/r-lib/pingr#readme'>pingr</a>
+package.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other HTTP functions:

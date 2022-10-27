@@ -3513,6 +3513,9 @@ write_widget_deps <- function(x,
 
 NOTES:
 
+-   Unfortunately, the `gh_*`functions below are [officially out of scope](https://github.com/r-lib/gh/issues/173) for the underlying
+    [gh](https://gh.r-lib.org/) package.
+
 -   Use the [GitHub GraphQL API Explorer](https://docs.github.com/en/graphql/overview/explorer) to test raw queries like
 
     ``` graphql
@@ -3845,6 +3848,9 @@ TODO: Figure out if it's really sensible to handle/catch interrupts.
 #' @details
 #' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
 #' based on [curl](https://jeroen.cran.dev/curl/).
+#'
+#' For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the [pingr](https://github.com/r-lib/pingr#readme)
+#' package.
 #'
 #' @param url HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
 #' @param retries Maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar `>= 0`. The retries are performed using

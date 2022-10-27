@@ -29,6 +29,9 @@ be \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{successfully c
 \details{
 This function is similar to \code{\link[RCurl:url.exists]{RCurl::url.exists()}}, i.e. it only retrieves the header, no body, but is based on \link[httr:httr-package]{httr} which in turn is
 based on \href{https://jeroen.cran.dev/curl/}{curl}.
+
+For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the \href{https://github.com/r-lib/pingr#readme}{pingr}
+package.
 }
 \examples{
 pal::is_http_success("goo.gl")
