@@ -145,7 +145,7 @@
 optionally against a <a href='https://json-schema.org/'>JSON Schema</a> (<a href='https://json-schema.org/specification-links.html#draft-4'>Draft 4</a>).</p>
     </div>
 
-    <pre class="usage"><span><span class='fu'>toml_validate</span><span class='op'>(</span><span class='va'>input</span>, from_file <span class='op'>=</span> <span class='cn'>TRUE</span>, schema <span class='op'>=</span> <span class='cn'>NULL</span>, top_error_only <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>toml_validate</span><span class='op'>(</span><span class='va'>input</span>, from_file <span class='op'>=</span> <span class='cn'>TRUE</span>, schema <span class='op'>=</span> <span class='cn'>NULL</span>, top_errors_only <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,8 +165,9 @@ against. Can also be a local filesystem path (best specified including the <a hr
 <code>NULL</code>, no schema-based validation is performed and <code>input</code> is only checked to be TOML-compliant.</p></td>
     </tr>
     <tr>
-      <th>top_error_only</th>
-      <td><p>Whether to reduce the output to the first error message of TOML CLI's output. If <code>FALSE</code>, TOML CLI's complete error output is shown.</p></td>
+      <th>top_errors_only</th>
+      <td><p>Whether to reduce the output to the top error message of each of TOML CLI's error classes. If <code>FALSE</code>, TOML CLI's complete error
+output is shown.</p></td>
     </tr>
     </table>
 
@@ -194,9 +195,16 @@ decades until such thing happens, if ever.</p>
 <span class='r-in'><span>                     from_file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></span>
 <span class='r-in'><span><span class='op'>)</span></span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Error in pal::toml_validate(input = "key = tru", from_file = FALSE) : </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   The <span style='font-weight: bold;'>taplo</span> executable is required but couldn't be found on system's <a href='https://en.wikipedia.org/wiki/PATH_(variable)'>PATH</a>.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Binaries of the <a href='https://taplo.tamasfe.dev/cli/introduction.html'>Taplo CLI</a> are available for all common platforms from here:</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB; font-style: italic;'>&lt;</span><a href='https://taplo.tamasfe.dev/cli/installation/binary.html'><span style='color: #0000BB; font-style: italic;'>https://taplo.tamasfe.dev/cli/installation/binary.html</span></a><span style='color: #0000BB; font-style: italic;'>&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   TOML validation failed with:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #FF0000; font-weight: bold;'>error</span><span style='font-weight: bold;'>: invalid TOML</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #0000BB;'>┌─</span> -:1:7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #0000BB;'>│</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'>1</span> <span style='color: #0000BB;'>│</span> key = <span style='color: #BB0000;'>tru</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #0000BB;'>│</span>       <span style='color: #BB0000;'>^^^</span> <span style='color: #BB0000;'>expected value</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>ERROR</span> operation failed <span style='font-style: italic;'>error</span><span style='font-weight: 100;'>=</span>syntax errors found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

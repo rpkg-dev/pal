@@ -3897,6 +3897,7 @@ is_http_success <- function(url,
 #'
 #' The file is parsed using [`RcppTOML::parseTOML(escape = FALSE)`][RcppTOML::parseTOML].
 #'
+#' @inheritParams RcppTOML::parseTOML
 #' @param path Path to a TOML file. A character scalar.
 #'
 #' @return `r pkgsnip::return_label("strict_list")`
@@ -4005,7 +4006,8 @@ jsonvalidate::json_validate(
 #' @param schema URL to a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)) file to validate `input`
 #'   against. Can also be a local filesystem path (best specified including the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) `file://`). If
 #'   `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
-#' @param top_error_only Whether to reduce the output to the first error message of TOML CLI's output. If `FALSE`, TOML CLI's complete error output is shown.
+#' @param top_errors_only Whether to reduce the output to the top error message of each of TOML CLI's error classes. If `FALSE`, TOML CLI's complete error
+#'   output is shown.
 #'
 #' @return If the validation is successful, `input` invisibly. Otherwise an error is thrown.
 #' @family toml
@@ -4019,12 +4021,12 @@ jsonvalidate::json_validate(
 toml_validate <- function(input,
                           from_file = TRUE,
                           schema = NULL,
-                          top_error_only = TRUE) {
+                          top_errors_only = TRUE) {
   
   checkmate::assert_flag(from_file)
   checkmate::assert_string(schema,
                            null.ok = TRUE)
-  checkmate::assert_flag(top_error_only)
+  checkmate::assert_flag(top_errors_only)
   
   if (from_file) {
     checkmate::assert_file_exists(input,
@@ -4063,26 +4065,46 @@ toml_validate <- function(input,
       stringr::str_detect(string = result_excl_ansi[1L],
                           pattern = "(?i)error")) {
     
-    # only retain first Taplo error (later ones can be confusing)
-    i_end <-
+    # only retain first Taplo error of each class (later ones are usually unhelpful)
+    ix_error <-
       result_excl_ansi %>%
-      stringr::str_detect(pattern = "^ERROR ") %>%
-      which() %>%
-      dplyr::first() %>%
-      magrittr::subtract(1L)
+      stringr::str_detect(pattern = "^(?i)error:") %>%
+      which()
     
-    if (!top_error_only || is.na(i_end)) {
-      i_end <- length(result)
+    ix_error_begin <-
+      result_excl_ansi %>%
+      stringr::str_detect(pattern = "^(?i)error:") %>%
+      magrittr::and(!duplicated(result_excl_ansi)) %>%
+      which()
+    
+    if (top_errors_only) {
+      
+      ix_final <-
+        ix_error_begin %>%
+        purrr::imap(~ {
+          
+          i_error_current <- which(ix_error == .x)
+          has_next <- i_error_current < length(ix_error)
+          
+          seq(from = .x,
+              to = ifelse(has_next,
+                          ix_error[i_error_current + 1L] - 1L,
+                          length(result)))
+        }) %>%
+        purrr::flatten_int()
+      
+    } else {
+      ix_final <- seq_along(result)
     }
     
     # we avoid `cli::cli_abort()` for now since it always strips consecutive whitespaces, even non-breaking ones
     # cf. https://github.com/r-lib/cli/issues/531#issuecomment-1292639286
     rlang::abort(message = c(ifelse(from_file,
-                                    "Validation of {.file {input}} failed with",
+                                    cli::format_inline("Validation of {.file {input}} failed with"),
                                     "TOML validation failed with:"),
                              # turning it into a named vctr avoids the default bullets
                              " " = "",
-                             result[1:i_end],
+                             result[ix_final],
                              ""),
                  use_cli_format = FALSE)
   }

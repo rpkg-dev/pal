@@ -4,7 +4,7 @@
 \alias{toml_validate}
 \title{Validate TOML}
 \usage{
-toml_validate(input, from_file = TRUE, schema = NULL, top_error_only = TRUE)
+toml_validate(input, from_file = TRUE, schema = NULL, top_errors_only = TRUE)
 }
 \arguments{
 \item{input}{If \code{from_file = FALSE}, the path to a TOML file as a character scalar. Otherwise TOML content as a character vector.}
@@ -15,7 +15,8 @@ toml_validate(input, from_file = TRUE, schema = NULL, top_error_only = TRUE)
 against. Can also be a local filesystem path (best specified including the \href{https://en.wikipedia.org/wiki/File_URI_scheme}{file URI scheme} \verb{file://}). If
 \code{NULL}, no schema-based validation is performed and \code{input} is only checked to be TOML-compliant.}
 
-\item{top_error_only}{Whether to reduce the output to the first error message of TOML CLI's output. If \code{FALSE}, TOML CLI's complete error output is shown.}
+\item{top_errors_only}{Whether to reduce the output to the top error message of each of TOML CLI's error classes. If \code{FALSE}, TOML CLI's complete error
+output is shown.}
 }
 \value{
 If the validation is successful, \code{input} invisibly. Otherwise an error is thrown.

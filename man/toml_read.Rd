@@ -8,6 +8,9 @@ toml_read(path, verbose = FALSE)
 }
 \arguments{
 \item{path}{Path to a TOML file. A character scalar.}
+
+\item{verbose}{A logical switch to turn on (very) verbose operation
+    which can be useful in debugging a parsing issue in a file.}
 }
 \value{
 A \link[xfun:strict_list]{strict list}.
