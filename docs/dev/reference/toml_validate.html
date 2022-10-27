@@ -145,7 +145,7 @@
 optionally against a <a href='https://json-schema.org/'>JSON Schema</a> (<a href='https://json-schema.org/specification-links.html#draft-4'>Draft 4</a>).</p>
     </div>
 
-    <pre class="usage"><span><span class='fu'>toml_validate</span><span class='op'>(</span><span class='va'>input</span>, from_file <span class='op'>=</span> <span class='cn'>TRUE</span>, schema <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>toml_validate</span><span class='op'>(</span><span class='va'>input</span>, from_file <span class='op'>=</span> <span class='cn'>TRUE</span>, schema <span class='op'>=</span> <span class='cn'>NULL</span>, top_error_only <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,6 +163,10 @@ optionally against a <a href='https://json-schema.org/'>JSON Schema</a> (<a href
       <td><p>URL to a <a href='https://json-schema.org/'>JSON Schema</a> (<a href='https://json-schema.org/specification-links.html#draft-4'>Draft 4</a>) file to validate <code>input</code>
 against. Can also be a local filesystem path (best specified including the <a href='https://en.wikipedia.org/wiki/File_URI_scheme'>file URI scheme</a> <code>file://</code>). If
 <code>NULL</code>, no schema-based validation is performed and <code>input</code> is only checked to be TOML-compliant.</p></td>
+    </tr>
+    <tr>
+      <th>top_error_only</th>
+      <td><p>Whether to reduce the output to the first error message of TOML CLI's output. If <code>FALSE</code>, TOML CLI's complete error output is shown.</p></td>
     </tr>
     </table>
 

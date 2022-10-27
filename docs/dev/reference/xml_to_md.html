@@ -176,11 +176,29 @@
 <span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>cannot open compressed file '/home/salim/.cache/pal-roxy_tag_value-tinkr/tinkr/DESCRIPTION', probable reason 'No such file or directory'</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>cannot open compressed file '/home/salim/.cache/pal-roxy_tag_value-tinkr/tinkr/DESCRIPTION', probable reason 'No such file or directory'</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> #### `subnode_ix`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```{r}</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> subnode_ix &lt;- function(xml_nodes,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        i) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   i_node &lt;- i</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   i &lt;- i + 1L</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ix_subnodes &lt;- integer()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   heading_lvl_node &lt;- node_heading_lvl(xml_nodes[i_node])</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   is_subnode &lt;- is_heading_node(xml_nodes[i_node]) &amp;&amp; i &lt;= length(xml_nodes)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   while (is_subnode) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     is_subnode &lt;- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) &gt; heading_lvl_node)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     ix_subnodes %&lt;&gt;% c(i[is_subnode])</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     i &lt;- i + 1L</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (i &gt; length(xml_nodes)) is_subnode &lt;- FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ix_subnodes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ```</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> # EXPORTED</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> ## Statistical computing / numbers</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> ### `safe_seq_len`</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

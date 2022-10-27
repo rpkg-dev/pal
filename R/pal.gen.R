@@ -3348,6 +3348,7 @@ toml_read <- function(path,
 #' @param schema URL to a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)) file to validate `input`
 #'   against. Can also be a local filesystem path (best specified including the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) `file://`). If
 #'   `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
+#' @param top_error_only Whether to reduce the output to the first error message of TOML CLI's output. If `FALSE`, TOML CLI's complete error output is shown.
 #'
 #' @return If the validation is successful, `input` invisibly. Otherwise an error is thrown.
 #' @family toml
@@ -3360,11 +3361,14 @@ toml_read <- function(path,
 #' )
 toml_validate <- function(input,
                           from_file = TRUE,
-                          schema = NULL) {
+                          schema = NULL,
+                          top_error_only = TRUE) {
   
   checkmate::assert_flag(from_file)
   checkmate::assert_string(schema,
                            null.ok = TRUE)
+  checkmate::assert_flag(top_error_only)
+  
   if (from_file) {
     checkmate::assert_file_exists(input,
                                   access = "r")
@@ -3408,15 +3412,21 @@ toml_validate <- function(input,
       stringr::str_detect(pattern = "^ERROR ") %>%
       which() %>%
       dplyr::first() %>%
-      magrittr::subtract(1L) %|%
-      length(result)
+      magrittr::subtract(1L)
+    
+    if (!top_error_only || is.na(i_end)) {
+      i_end <- length(result)
+    }
     
     # we avoid `cli::cli_abort()` for now since it always strips consecutive whitespaces, even non-breaking ones
     # cf. https://github.com/r-lib/cli/issues/531#issuecomment-1292639286
-    rlang::abort(message = c("TOML validation failed with:",
+    rlang::abort(message = c(ifelse(from_file,
+                                    "Validation of {.file {input}} failed with",
+                                    "TOML validation failed with:"),
                              # turning it into a named vctr avoids the default bullets
                              " " = "",
-                             result[1:i_end]),
+                             result[1:i_end],
+                             ""),
                  use_cli_format = FALSE)
   }
   
