@@ -3298,6 +3298,37 @@ is_http_success <- function(url,
                        interrupt = ~ cli::cli_abort("Terminated by the user"))
 }
 
+#' Test if URL
+#'
+#' Tests whether the elements of a character vector are [Uniform Resource Locators](https://de.wikipedia.org/wiki/Uniform_Resource_Locator) (URLs).
+#'
+#' This function is based on [xml2::url_parse()] and simply checks whether the elements in `x` contain both a **scheme** as well as *some* **scheme-specific
+#' part** (excl. ports). No further checks are performed, so it's explicitly not verified that a URL actually conforms to its respective scheme.
+#'
+#' @param x Character vector to test.
+#'
+#' @return A logical vector of the same length as `x`.
+#' @family http
+#' @export
+#'
+#' @examples
+#' pal::is_url(c("/some/path",
+#'               "file:///some/path"))
+is_url <- function(x) {
+  
+  checkmate::assert_character(x,
+                              any.missing = FALSE)
+  assert_pkg("xml2")
+  
+  parsed <- xml2::url_parse(x)
+  has_scheme <- nchar(parsed$scheme) > 0L
+  has_specifics <- purrr::pmap_lgl(parsed,
+                                   # NOTE: we don't consider col `port`
+                                   ~ any(nchar(c(..2, ..4, ..5, ..6, ..7)) > 0L))
+  
+  has_scheme & has_specifics
+}
+
 #' Read in and parse TOML file as strict list
 #'
 #' Reads in a file in [Tom's Obvious Minimal Language (TOML)](https://toml.io/) format and returns its content as a (nested) [strict list][xfun::strict_list()].
@@ -3350,8 +3381,8 @@ toml_read <- function(path,
 #' @param input If `from_file = FALSE`, the path to a TOML file as a character scalar. Otherwise TOML content as a character vector.
 #' @param from_file Whether `input` is the path to a TOML file or already a character vector of TOML content.
 #' @param schema URL to a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)) file to validate `input`
-#'   against. Can also be a local filesystem path (best specified including the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) `file://`). If
-#'   `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
+#'   against. Can also be a local filesystem path specified in the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) (path prefixed with
+#'   `file://`). If `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
 #' @param top_errors_only Whether to reduce the output to the top error message of each of TOML CLI's error classes. If `FALSE`, TOML CLI's complete error
 #'   output is shown.
 #'
@@ -3370,9 +3401,14 @@ toml_validate <- function(input,
                           top_errors_only = TRUE) {
   
   checkmate::assert_flag(from_file)
+  checkmate::assert_flag(top_errors_only)
   checkmate::assert_string(schema,
                            null.ok = TRUE)
-  checkmate::assert_flag(top_errors_only)
+  
+  if (!is.null(schema) && !is_url(schema)) {
+    cli::cli_abort(paste0("{.arg schema} must be a valid URL. To refer to a (local) filesystem path, prepend it with the {.href [`file://` URI ",
+                          "scheme](https://en.wikipedia.org/wiki/File_URI_scheme)}."))
+  }
   
   if (from_file) {
     checkmate::assert_file_exists(input,
@@ -3425,6 +3461,12 @@ toml_validate <- function(input,
     
     if (top_errors_only) {
       
+      i_error_end <-
+        result_excl_ansi %>%
+        stringr::str_detect(pattern = "^ERROR ") %>%
+        which() %>%
+        dplyr::first()
+      
       ix_final <-
         ix_error_begin %>%
         purrr::imap(~ {
@@ -3435,7 +3477,7 @@ toml_validate <- function(input,
           seq(from = .x,
               to = ifelse(has_next,
                           ix_error[i_error_current + 1L] - 1L,
-                          length(result)))
+                          i_error_end - 1L))
         }) %>%
         purrr::flatten_int()
       

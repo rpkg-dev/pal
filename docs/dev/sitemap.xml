@@ -118,6 +118,9 @@
     <loc>https://rpkg.dev/pal/reference/is_pkgdown_dir.html</loc>
   </url>
   <url>
+    <loc>https://rpkg.dev/pal/reference/is_url.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/reference/knitr_table_format.html</loc>
   </url>
   <url>

@@ -161,8 +161,8 @@ optionally against a <a href='https://json-schema.org/'>JSON Schema</a> (<a href
     <tr>
       <th>schema</th>
       <td><p>URL to a <a href='https://json-schema.org/'>JSON Schema</a> (<a href='https://json-schema.org/specification-links.html#draft-4'>Draft 4</a>) file to validate <code>input</code>
-against. Can also be a local filesystem path (best specified including the <a href='https://en.wikipedia.org/wiki/File_URI_scheme'>file URI scheme</a> <code>file://</code>). If
-<code>NULL</code>, no schema-based validation is performed and <code>input</code> is only checked to be TOML-compliant.</p></td>
+against. Can also be a local filesystem path specified in the <a href='https://en.wikipedia.org/wiki/File_URI_scheme'>file URI scheme</a> (path prefixed with
+<code>file://</code>). If <code>NULL</code>, no schema-based validation is performed and <code>input</code> is only checked to be TOML-compliant.</p></td>
     </tr>
     <tr>
       <th>top_errors_only</th>
@@ -203,7 +203,6 @@ decades until such thing happens, if ever.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'>1</span> <span style='color: #0000BB;'>│</span> key = <span style='color: #BB0000;'>tru</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #0000BB;'>│</span>       <span style='color: #BB0000;'>^^^</span> <span style='color: #BB0000;'>expected value</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>ERROR</span> operation failed <span style='font-style: italic;'>error</span><span style='font-weight: 100;'>=</span>syntax errors found</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 </pre>
   </div>

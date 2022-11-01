@@ -127,6 +127,7 @@ reference:
 - contents:
   - assert_mime_type
   - is_http_success
+  - is_url
 - title: TOML
 - contents:
   - toml_read

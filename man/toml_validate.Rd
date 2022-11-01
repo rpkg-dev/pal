@@ -12,8 +12,8 @@ toml_validate(input, from_file = TRUE, schema = NULL, top_errors_only = TRUE)
 \item{from_file}{Whether \code{input} is the path to a TOML file or already a character vector of TOML content.}
 
 \item{schema}{URL to a \href{https://json-schema.org/}{JSON Schema} (\href{https://json-schema.org/specification-links.html#draft-4}{Draft 4}) file to validate \code{input}
-against. Can also be a local filesystem path (best specified including the \href{https://en.wikipedia.org/wiki/File_URI_scheme}{file URI scheme} \verb{file://}). If
-\code{NULL}, no schema-based validation is performed and \code{input} is only checked to be TOML-compliant.}
+against. Can also be a local filesystem path specified in the \href{https://en.wikipedia.org/wiki/File_URI_scheme}{file URI scheme} (path prefixed with
+\verb{file://}). If \code{NULL}, no schema-based validation is performed and \code{input} is only checked to be TOML-compliant.}
 
 \item{top_errors_only}{Whether to reduce the output to the top error message of each of TOML CLI's error classes. If \code{FALSE}, TOML CLI's complete error
 output is shown.}

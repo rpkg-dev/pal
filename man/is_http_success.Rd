@@ -43,6 +43,7 @@ pal::is_http_success("https://google.not/",
 }
 \seealso{
 Other HTTP functions:
-\code{\link{assert_mime_type}()}
+\code{\link{assert_mime_type}()},
+\code{\link{is_url}()}
 }
 \concept{http}
