@@ -4117,7 +4117,7 @@ toml_validate <- function(input,
       magrittr::and(!duplicated(result_excl_ansi)) %>%
       which()
     
-    if (top_errors_only) {
+    if (top_errors_only && length(ix_error) > 0L) {
       
       i_error_end <-
         result_excl_ansi %>%
