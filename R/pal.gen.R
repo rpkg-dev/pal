@@ -817,7 +817,7 @@ prettify_nr <- function(x,
 #' @param x Input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
 #' @param punctuation_mark Punctuation mark to be appended to `x`. A character scalar.
 #'
-#' @return A character vector.
+#' @inherit capitalize_1st return
 #' @family string
 #' @seealso
 #' [stringr::str_to_sentence()] to convert a character vector to all lowercase except for the first character. Note that this also includes lowercasing [proper
@@ -838,9 +838,7 @@ sentenceify <- function(x,
   
   checkmate::assert_string(punctuation_mark)
   
-  x %>%
-    stringr::str_replace(pattern = "^.",
-                         replacement = toupper) %>%
+   capitalize_1st(x) %>%
     purrr::map_chr(~ {
       if (is.na(.x) || stringr::str_sub(string = .x, start = -1L) == punctuation_mark) {
         .x
@@ -848,6 +846,25 @@ sentenceify <- function(x,
         paste0(.x, punctuation_mark)
       }
     })
+}
+
+#' Capitalize first letter
+#'
+#' Converts the input to a character vector, with the first letter of each element uppercased.
+#'
+#' @param x Input of which to capitalize the first letter, typically a character vector.
+#'
+#' @return A character vector of the same length as `x`.
+#' @family string
+#' @export
+#'
+#' @examples
+#' pal::capitalize_1st(c("one", "Two", "THREE"))
+capitalize_1st <- function(x) {
+  
+  stringr::str_replace(string = x,
+                       pattern = "^.",
+                       replacement = toupper)
 }
 
 #' Wrap character vector in string

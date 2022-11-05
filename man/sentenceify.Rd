@@ -12,7 +12,7 @@ sentenceify(x, punctuation_mark = ".")
 \item{punctuation_mark}{Punctuation mark to be appended to \code{x}. A character scalar.}
 }
 \value{
-A character vector.
+A character vector of the same length as \code{x}.
 }
 \description{
 Converts the input to a character vector and ensures it starts with an upper case letter and ends with the specified punctuation mark.
@@ -38,6 +38,7 @@ Other string functions:
 \code{\link{as_comment_string}()},
 \code{\link{as_line_feed_chr}()},
 \code{\link{as_string}()},
+\code{\link{capitalize_1st}()},
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},

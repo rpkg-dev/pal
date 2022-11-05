@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert to a character vector — as_chr • pal</title>
+<title>Capitalize first letter — capitalize_1st • pal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -57,9 +57,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Convert to a character vector — as_chr" />
-<meta name="description" content="Recursively applies as.character() to its inputs.">
-<meta property="og:description" content="Recursively applies as.character() to its inputs." />
+<meta property="og:title" content="Capitalize first letter — capitalize_1st" />
+<meta name="description" content="Converts the input to a character vector, with the first letter of each element uppercased.">
+<meta property="og:description" content="Converts the input to a character vector, with the first letter of each element uppercased." />
 <meta property="og:image" content="https://rpkg.dev/pal/logo.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@2BSalim" />
@@ -135,36 +135,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert to a character vector</h1>
+    <h1>Capitalize first letter</h1>
     <small class="dont-index">Source: <a href='https://gitlab.com/salim_b/r/pkgs/pal/blob/master/R/pal.gen.R'><code>R/pal.gen.R</code></a></small>
-    <div class="hidden name"><code>as_chr.Rd</code></div>
+    <div class="hidden name"><code>capitalize_1st.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><em>Recursively</em> applies <code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code> to its inputs.</p>
+    <p>Converts the input to a character vector, with the first letter of each element uppercased.</p>
     </div>
 
-    <pre class="usage"><span><span class='fu'>as_chr</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></span></pre>
+    <pre class="usage"><span><span class='fu'>capitalize_1st</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p><span style="R">R</span> objects to be converted to a character vector. <a href='https://rlang.r-lib.org/reference/dyn-dots.html'>Dynamic dots</a> are supported.</p></td>
+      <th>x</th>
+      <td><p>Input of which to capitalize the first letter, typically a character vector.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character vector.</p>
+    <p>A character vector of the same length as <code>x</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other string functions:
+<code><a href='as_chr.html'>as_chr</a>()</code>,
 <code><a href='as_comment_string.html'>as_comment_string</a>()</code>,
 <code><a href='as_line_feed_chr.html'>as_line_feed_chr</a>()</code>,
 <code><a href='as_string.html'>as_string</a>()</code>,
-<code><a href='capitalize_1st.html'>capitalize_1st</a>()</code>,
 <code><a href='dsv_colnames.html'>dsv_colnames</a>()</code>,
 <code><a href='escape_lf.html'>escape_lf</a>()</code>,
 <code><a href='fuse_regex.html'>fuse_regex</a>()</code>,
@@ -174,36 +174,8 @@
 <code><a href='wrap_chr.html'>wrap_chr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span></span></span>
-<span class='r-in'><span></span></span>
-<span class='r-in'><span><span class='va'>to_convert</span> <span class='op'>&lt;-</span></span></span>
-<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='st'>"A"</span>, <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='st'>"wonderful"</span><span class='op'>)</span>, <span class='fu'>xfun</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/xfun/man/strict_list.html'>strict_list</a></span><span class='op'>(</span><span class='st'>"day"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/tee.html'>%T&gt;%</a></span></span></span>
-<span class='r-in'><span>  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='op'>)</span></span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 1</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       a</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>     2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>     3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "A"</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [[3]]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] wonderful</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: wonderful</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [[4]]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "day"</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-in'><span></span></span>
-<span class='r-in'><span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>to_convert</span><span class='op'>)</span></span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "list(a = 1:3)" "A"             "1"             "list(\"day\")"</span>
-<span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>as_chr</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>to_convert</span><span class='op'>)</span></span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1"         "2"         "3"         "A"         "wonderful" "day"      </span>
+    <pre class="examples"><span class='r-in'><span><span class='fu'>pal</span><span class='fu'>::</span><span class='fu'>capitalize_1st</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"Two"</span>, <span class='st'>"THREE"</span><span class='op'>)</span><span class='op'>)</span></span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "One"   "Two"   "THREE"</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
