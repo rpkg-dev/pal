@@ -33,7 +33,8 @@ pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} San
 
 # wrap lines at 20 chars
 pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '\%Y')} Santa Clause"),
-                       "No presents without code.", line_width = 20L) |>
+                       "No presents without code.",
+                       line_width = 20L) |>
   cat()
 
 # disable empty comment lines between paragraphs:
@@ -47,7 +48,7 @@ Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_line_feed_chr}()},
 \code{\link{as_string}()},
-\code{\link{capitalize_1st}()},
+\code{\link{capitalize_first}()},
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},

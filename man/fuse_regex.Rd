@@ -33,7 +33,7 @@ Other string functions:
 \code{\link{as_comment_string}()},
 \code{\link{as_line_feed_chr}()},
 \code{\link{as_string}()},
-\code{\link{capitalize_1st}()},
+\code{\link{capitalize_first}()},
 \code{\link{dsv_colnames}()},
 \code{\link{escape_lf}()},
 \code{\link{prettify_nr}()},

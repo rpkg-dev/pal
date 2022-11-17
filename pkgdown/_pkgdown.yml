@@ -40,7 +40,7 @@ reference:
   - escape_lf
   - prettify_nr
   - sentenceify
-  - capitalize_1st
+  - capitalize_first
   - wrap_chr
 - subtitle: Non-vectorized
 - contents:

@@ -817,7 +817,7 @@ prettify_nr <- function(x,
 #' @param x Input to be converted to [sentence case](https://en.wikipedia.org/wiki/Letter_case#Case_styles), typically a character vector.
 #' @param punctuation_mark Punctuation mark to be appended to `x`. A character scalar.
 #'
-#' @inherit capitalize_1st return
+#' @inherit capitalize_first return
 #' @family string
 #' @seealso
 #' [stringr::str_to_sentence()] to convert a character vector to all lowercase except for the first character. Note that this also includes lowercasing [proper
@@ -838,7 +838,7 @@ sentenceify <- function(x,
   
   checkmate::assert_string(punctuation_mark)
   
-   capitalize_1st(x) %>%
+   capitalize_first(x) %>%
     purrr::map_chr(~ {
       if (is.na(.x) || stringr::str_sub(string = .x, start = -1L) == punctuation_mark) {
         .x
@@ -859,8 +859,8 @@ sentenceify <- function(x,
 #' @export
 #'
 #' @examples
-#' pal::capitalize_1st(c("one", "Two", "THREE"))
-capitalize_1st <- function(x) {
+#' pal::capitalize_first(c("one", "Two", "tHREE"))
+capitalize_first <- function(x) {
   
   stringr::str_replace(string = x,
                        pattern = "^.",
@@ -996,7 +996,8 @@ as_string <- function(...,
 #'
 #' # wrap lines at 20 chars
 #' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
-#'                        "No presents without code.", line_width = 20L) |>
+#'                        "No presents without code.",
+#'                        line_width = 20L) |>
 #'   cat()
 #'
 #' # disable empty comment lines between paragraphs:
@@ -3342,7 +3343,6 @@ is_url <- function(x) {
   has_specifics <- purrr::pmap_lgl(parsed,
                                    # NOTE: we don't consider col `port`
                                    ~ any(nchar(c(..2, ..4, ..5, ..6, ..7)) > 0L))
-  
   has_scheme & has_specifics
 }
 
