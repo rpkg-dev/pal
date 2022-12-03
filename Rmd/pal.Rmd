@@ -3113,7 +3113,7 @@ build_readme <- function(input = "README.Rmd",
                                                           md_extensions = c("-autolink_bare_uris",
                                                                             "-tex_math_single_backslash"),
                                                           pandoc_args = "--columns=9999") %>%
-                                   # disable Pandoc's raw attributes in output to have more control over inline HTML
+                                   # overwrite Pandoc output format (i.a. disable Pandoc's raw attributes to have more control over inline HTML)
                                    purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
                                  knit_root_dir = parent_dir,
                                  quiet = TRUE,
