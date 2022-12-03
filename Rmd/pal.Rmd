@@ -3084,20 +3084,15 @@ build_readme <- function(input = "README.Rmd",
         fs::path_abs()
       
       # clean Rmd file
-      # TODO: submit PR to pkgdown doing this?
       assert_pkg("brio")
       assert_pkg("withr")
-      ## we store the temp file next to `input` since otherwise, knitr won't find relative `child` document paths
-      ## cf. https://community.rstudio.com/t/why-doesnt-knitrs-root-dir-option-apply-to-relative-child-document-paths/117563
-      ## TODO: as soon as knitr version 1.37 is released that [fixes this](https://github.com/yihui/knitr/pull/2059), require it and use `fs::file_temp()`
-      tmp_file <-
-        fs::file_temp(pattern = "tmp-pal-build_readme",
-                      tmp_dir = parent_dir,
-                      ext = fs::path_ext(input)) %>%
-        checkmate::assert_path_for_output(.var.name = "tmp_file")
+      
+      tmp_file <- fs::file_temp(pattern = "tmp-pal-build_readme",
+                                ext = fs::path_ext(input))
       
       brio::read_file(input) %>%
         # remove possible trailing horizontal line in Rmd file since pkgdown always adds one below content
+        # TODO: submit PR to pkgdown fixing this?
         stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
                              replacement = "\\2") %>%
         # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)

@@ -34,7 +34,7 @@ Suggests:
     htmltools (>= 0.5.2),
     httr (>= 1.4.1),
     janeaustenr,
-    knitr (>= 1.37),
+    knitr (>= 1.41),
     pander (>= 0.6.3),
     pkgdown (>= 1.6.1.9000),
     pkgsnip (>= 0.0.9026),
