@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://rpkg.dev/pal/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/TODO.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/authors.html</loc>
+  </url>
+  <url>
     <loc>https://rpkg.dev/pal/index.html</loc>
   </url>
   <url>
@@ -43,7 +52,7 @@
     <loc>https://rpkg.dev/pal/reference/build_readme.html</loc>
   </url>
   <url>
-    <loc>https://rpkg.dev/pal/reference/capitalize_1st.html</loc>
+    <loc>https://rpkg.dev/pal/reference/capitalize_first.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/capture_print.html</loc>
@@ -101,6 +110,9 @@
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/has_pkg_config_val.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkg.dev/pal/reference/index.html</loc>
   </url>
   <url>
     <loc>https://rpkg.dev/pal/reference/is_equal_df.html</loc>
