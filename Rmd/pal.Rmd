@@ -3019,7 +3019,7 @@ xml_to_md <- function(xml) {
 #' @param output Path to the built Markdown README. A character scalar.
 #' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output` (i.e. in the same parent
 #'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
-#'   be built with the \R option `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
+#'   be built with the \R option `pal.build_readme.is_pkgdown` set to `TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
 #'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
 #' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
@@ -3844,14 +3844,21 @@ assert_mime_type <- function(response,
 
 ### `is_http_success`
 
-A shorter way to define a very similar function would be:
+NOTES:
 
-``` r
-is_http_success <- purrr::possibly(~ !httr::http_error(.x),
-                                   otherwise = FALSE)
-```
+-   A shorter way to define a very similar function would be:
 
-TODO: Figure out if it's really sensible to handle/catch interrupts.
+    ``` r
+    is_http_success <- purrr::possibly(~ !httr::http_error(.x),
+                                     otherwise = FALSE)
+    ```
+
+-   Handling/catching interrupts allows to abort the check in RStudio via its "stop" button. Mainly useful if `retries > 2`.
+
+-   There are web servers that [disallow HEAD requests](https://security.stackexchange.com/questions/111616/http-head-and-its-security-versus-operational-uses),
+    although it [contradicts the
+    spec](https://security.stackexchange.com/questions/111616/http-head-and-its-security-versus-operational-uses#comment199767_111616). If this should prove to
+    be a problem, we could implement a fallback to a GET request.
 
 ```{r}
 #' Test if an HTTP request is successful
