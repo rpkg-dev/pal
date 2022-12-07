@@ -13,7 +13,7 @@ A collection of convenience/utility functions complementing base R and the tidyv
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pal.rpkg.dev/dev}
+  \item \url{https://pal.rpkg.dev}
   \item \url{https://gitlab.com/salim_b/r/pkgs/pal}
   \item Report bugs at \url{https://gitlab.com/salim_b/r/pkgs/pal/issues}
 }

@@ -7,7 +7,7 @@ Authors@R:
 Description: A collection of convenience/utility functions complementing
     base R and the tidyverse.
 License: AGPL (>= 3)
-URL: https://pal.rpkg.dev/dev, https://gitlab.com/salim_b/r/pkgs/pal
+URL: https://pal.rpkg.dev, https://gitlab.com/salim_b/r/pkgs/pal
 BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues
 Depends: 
     R (>= 4.1)
