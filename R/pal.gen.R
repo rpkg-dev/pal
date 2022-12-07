@@ -286,7 +286,6 @@ round_to <- function(x,
   remainder <- signif(x %% to,
                       # round to a max of 15 significant digits to avoid exceeding floating-point representation limits
                       digits = 15L)
-  
   if (round_up) {
     which_round <- remainder >= (to / 2L)
   } else {
@@ -294,7 +293,6 @@ round_to <- function(x,
   }
   
   result[which_round] <- result[which_round] + 1L
-  
   result * to
 }
 
@@ -341,7 +339,9 @@ stat_mode <- function(x,
                       rm_na = FALSE) {
   x <- unlist(x)
   type <- rlang::arg_match(type)
-  if (checkmate::assert_flag(rm_na)) x <- x[!is.na(x)]
+  checkmate::assert_flag(rm_na)
+  
+  if (rm_na) x <- x[!is.na(x)]
   
   # get unique values
   u_x <- unique(x)
@@ -507,13 +507,15 @@ is_equal_df <- function(x,
 reduce_df_list <- function(x,
                            strict = TRUE) {
   
+  checkmate::assert_flag(strict)
+  
   if (is.data.frame(x) || tibble::is_tibble(x)) {
     
     return(x)
     
   } else if (purrr::vec_depth(x) < 2L) {
     
-    if (checkmate::assert_flag(strict)) {
+    if (strict) {
       cli::cli_abort("At least one element of the list to be reduced is not a data frame / tibble!")
       
     } else return(NULL)
@@ -580,10 +582,13 @@ as_flat_list <- function(x,
                          keep_attrs = TRUE,
                          attrs_to_drop = "xfun_strict_list") {
   
-  regard_attrs <- checkmate::assert_flag(keep_attrs) && length(setdiff(attributes(x),
-                                                                       checkmate::assert_character(attrs_to_drop,
-                                                                                                   any.missing = FALSE,
-                                                                                                   null.ok = TRUE)))
+  checkmate::assert_flag(keep_attrs)
+  checkmate::assert_character(attrs_to_drop,
+                              any.missing = FALSE,
+                              null.ok = TRUE)
+  
+  regard_attrs <- keep_attrs && length(setdiff(attributes(x),
+                                               attrs_to_drop))
   depth <- purrr::vec_depth(x)
   
   # wrap `x` in a list if it's not
@@ -618,9 +623,10 @@ as_flat_list <- function(x,
 rm_list_lvl <- function(x,
                         attrs_to_drop = "xfun_strict_list") {
   
+  checkmate::assert_list(x)
   result <- list()
   
-  for (i in seq_along(checkmate::assert_list(x))) {
+  for (i in seq_along(x)) {
     
     regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop))
     
@@ -760,12 +766,15 @@ escape_lf <- function(x,
                       escape_cr = FALSE) {
   
   checkmate::assert_character(x,
-                              null.ok = TRUE) %>%
+                              null.ok = TRUE)
+  checkmate::assert_flag(escape_cr)
+  
+  x %>%
     stringr::str_replace_all(pattern = "\\n",
                              replacement = "\\\\n") %>%
-    purrr::when(checkmate::assert_flag(escape_cr) ~ stringr::str_replace_all(string = .,
-                                                                             pattern = "\\r",
-                                                                             replacement = "\\\\r"),
+    purrr::when(escape_cr ~ stringr::str_replace_all(string = .,
+                                                     pattern = "\\r",
+                                                     replacement = "\\\\r"),
                 ~ .)
 }
 
@@ -926,19 +935,20 @@ as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
 dsv_colnames <- function(x,
                          delim = ",",
                          quote = "\"") {
+  
+  checkmate::assert_string(delim,
+                           min.chars = 1L,
+                           pattern = "^.$")
+  checkmate::assert_string(quote,
+                           null.ok = TRUE,
+                           pattern = "^.$")
   x %>%
     regexpr(pattern = "[\r\n]") %>%
     magrittr::subtract(1L) %>%
-    substr(x = x,
-           start = 1L) %>%
-    stringr::str_split(pattern = checkmate::assert_string(delim,
-                                                          min.chars = 1L,
-                                                          pattern = "^.$")) %>%
-    dplyr::first() %>%
-    stringr::str_remove_all(pattern = glue::glue("^", checkmate::assert_string(quote,
-                                                                               null.ok = TRUE,
-                                                                               pattern = "^.$"),
-                                                 "|{quote}$"))
+    stringr::str_sub(string = x,
+                     start = 1L) %>%
+    stringr::str_split_1(pattern = delim) %>%
+    stringr::str_remove_all(pattern = glue::glue("^{quote}|{quote}$"))
 }
 
 #' Convert to a character scalar (aka string)
@@ -1009,14 +1019,19 @@ as_comment_string <- function(...,
                               line_width = 160L,
                               comment_prefix = "# ",
                               sep_paragraphs = TRUE) {
+  
+  checkmate::assert_count(line_width)
+  checkmate::assert_string(comment_prefix)
+  checkmate::assert_flag(sep_paragraphs)
+  
   as_chr(...) %>%
-    stringr::str_wrap(width = checkmate::assert_count(line_width) - nchar(checkmate::assert_string(comment_prefix))) %>%
+    stringr::str_wrap(width = line_width - nchar(comment_prefix)) %>%
     stringr::str_split(pattern = "\n") %>%
     purrr::map(~ paste0(comment_prefix, .x) %>%
                  paste0(collapse = "\n")) %>%
     purrr::map2_chr(.f =
                       function(.x, .y, n_lines) {
-                        if (checkmate::assert_flag(sep_paragraphs) && .y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else paste0(.x, "\n")
+                        if (sep_paragraphs && .y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else paste0(.x, "\n")
                       },
                     .y = seq_along(.),
                     n_lines = length(.)) %>%
@@ -1074,19 +1089,23 @@ prose_ls <- function(x,
                      sep = ", ",
                      last_sep = " and ") {
   
+  checkmate::assert_string(wrap)
+  checkmate::assert_string(sep)
+  checkmate::assert_string(last_sep)
+  
   result <- as_chr(x)
   length_result <- length(result)
   
   if (length_result == 1L) {
     
-    result <- paste0(checkmate::assert_string(wrap), result, wrap)
+    result <- paste0(wrap, result, wrap)
     
   } else if (length_result > 1L) {
     
     result <-
       paste0(result[-length_result],
-             collapse = paste0(checkmate::assert_string(wrap), sep, wrap)) %>%
-      paste0(wrap, ., wrap, checkmate::assert_string(last_sep), wrap, result[length_result], wrap)
+             collapse = paste0(wrap, sep, wrap)) %>%
+      paste0(wrap, ., wrap, last_sep, wrap, result[length_result], wrap)
   }
   
   result
@@ -1487,14 +1506,18 @@ ls_pkg <- function(pkg,
                    ignore_case = TRUE,
                    as_regex = FALSE) {
   
+  checkmate::assert_character(pkg,
+                              any.missing = FALSE,
+                              min.chars = 1L)
+  checkmate::assert_flag(ignore_case)
+  checkmate::assert_flag(as_regex)
+  
   regex <-
-    checkmate::assert_character(pkg,
-                                any.missing = FALSE,
-                                min.chars = 1L) %>%
-    purrr::when(checkmate::assert_flag(as_regex) ~ .,
+    pkg %>%
+    purrr::when(as_regex ~ .,
                 ~ paste0("\\Q", ., "\\E")) %>%
     fuse_regex() %>%
-    purrr::when(checkmate::assert_flag(ignore_case) ~ paste0("(?i)", .),
+    purrr::when(ignore_case ~ paste0("(?i)", .),
                 ~ .) %>%
     purrr::when(as_regex ~ .,
                 ~ paste0("^", ., "$"))
@@ -2135,15 +2158,16 @@ roxy_tag_value <- function(blocks,
                            tag_names = "param",
                            param_name) {
   
+  checkmate::assert_subset(tag_names,
+                           choices = purrr::map_chr(tags,
+                                                    purrr::pluck,
+                                                    "tag"),
+                           empty.ok = FALSE)
+  
   block <- roxy_obj(blocks = blocks,
                     obj_name = obj_name)
   tags <- block$tags
-  
-  tag_names <-
-    checkmate::assert_subset(tag_names,
-                             choices = tags %>% purrr::map_chr(purrr::pluck, "tag"),
-                             empty.ok = FALSE) %>%
-    unique()
+  tag_names %<>% unique()
   
   if ("param" %in% tag_names) {
     
@@ -2153,8 +2177,9 @@ roxy_tag_value <- function(blocks,
       which()
     
     param_name <- rlang::arg_match(arg = param_name,
-                                   values = tags[ix_param] %>% purrr::map_chr(purrr::pluck,
-                                                                              "val", "name"))
+                                   values = purrr::map_chr(tags[ix_param],
+                                                           purrr::pluck,
+                                                           "val", "name"))
     i_to_keep <-
       tags[ix_param] %>%
       purrr::map_lgl(~ .x$val$name == param_name) %>%
@@ -2375,14 +2400,19 @@ strip_md <- function(x,
                      strip_footnotes = TRUE) {
   
   assert_pkg("commonmark")
+  checkmate::assert_character(x)
+  checkmate::assert_flag(strip_footnotes)
   
-  checkmate::assert_character(x) %>%
-    purrr::map_chr(~ .x %>% purrr::when(is.na(.) ~ .,
-                                        ~ commonmark::markdown_text(text = .,
-                                                                    extensions = TRUE) %>%
-                                          stringr::str_remove(pattern = "\n$") %>%
-                                          purrr::when(checkmate::assert_flag(strip_footnotes) ~ strip_md_footnotes(.),
-                                                      ~ .)))
+  purrr::map_chr(x,
+                 ~ if (is.na(.x)) {
+                   .x
+                 } else {
+                   commonmark::markdown_text(text = .x,
+                                             extensions = TRUE) %>%
+                     stringr::str_remove(pattern = "\n$") %>%
+                     purrr::when(strip_footnotes ~ strip_md_footnotes(.),
+                                 ~ .)
+                 })
 }
 
 #' Strip Markdown footnotes from character vector
@@ -2543,7 +2573,7 @@ xml_to_md <- function(xml) {
 #' @param output Path to the built Markdown README. A character scalar.
 #' @param build_index_md Whether to build a separate [pkgdown][pkgdown::pkgdown]-optimized `pkgdown/index.md` alongside `output` (i.e. in the same parent
 #'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
-#'   be built with the \R option `pal.build_readme.is_pkgdown = TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
+#'   be built with the \R option `pal.build_readme.is_pkgdown` set to `TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
 #'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
 #' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
 #'
@@ -2722,11 +2752,10 @@ strip_yaml_header <- function(rmd,
   
   checkmate::assert_string(rmd)
   
-  has_yaml <- grepl(x = rmd,
-                    pattern = "^(\\n\\s*)?---\\s*\\n.*(---|...)\\s*\\n")
-  
+  has_yaml <- stringr::str_detect(string = rmd,
+                                  pattern = "^(\\n\\s*)?---\\s*\\n.*(---|...)\\s*\\n")
   eol %<>% pal::as_line_feed_chr()
-  rmd %<>% stringr::str_split(pattern = eol) %>% magrittr::extract2(1L)
+  rmd %<>% stringr::str_split_1(pattern = eol)
   last_yaml_line_nr <- 0L
   
   if (has_yaml) {
@@ -2828,9 +2857,19 @@ gitlab_document <- function(smart_punctuation = TRUE,
                             autolink_bare_uris = FALSE,
                             tex_math_single_backslash = FALSE) {
   assert_pkg("rmarkdown")
+  checkmate::assert_flag(smart_punctuation)
+  checkmate::assert_flag(parse_emoji_markup)
+  checkmate::assert_flag(toc)
+  checkmate::assert_int(toc_depth,
+                        lower = 1L,
+                        upper = 6L)
+  checkmate::assert_flag(preserve_yaml)
+  checkmate::assert_flag(add_footnotes_hr)
+  checkmate::assert_flag(autolink_bare_uris)
+  checkmate::assert_flag(tex_math_single_backslash)
   
   # `post_process` fn to ensure MD ends in trailing horizontal rule
-  if (checkmate::assert_flag(add_footnotes_hr)) {
+  if (add_footnotes_hr) {
     
     ensure_trailing_md_hr <- function(metadata,
                                       input_file,
@@ -2838,11 +2877,10 @@ gitlab_document <- function(smart_punctuation = TRUE,
                                       clean,
                                       verbose) {
       assert_pkg("brio")
+      checkmate::assert_file(output_file,
+                             access = "w")
       
-      md <-
-        checkmate::assert_file(output_file,
-                               access = "w") %>%
-        brio::read_file()
+      md <- brio::read_file(output_file)
       
       # check if file contains footnotes
       if (stringr::str_detect(string = md,
@@ -2875,7 +2913,7 @@ gitlab_document <- function(smart_punctuation = TRUE,
                                           dev = dev),
     pandoc = rmarkdown::pandoc_options(to =
                                          c("markdown",
-                                           "+emoji"[checkmate::assert_flag(parse_emoji_markup)],
+                                           "+emoji"[parse_emoji_markup],
                                            "-smart",
                                            "-simple_tables",
                                            "-multiline_tables",
@@ -2886,20 +2924,18 @@ gitlab_document <- function(smart_punctuation = TRUE,
                                            "-link_attributes",
                                            "-raw_attribute",
                                            "-pandoc_title_block",
-                                           "-yaml_metadata_block"[!checkmate::assert_flag(preserve_yaml)]) %>%
+                                           "-yaml_metadata_block"[!preserve_yaml]) %>%
                                          paste0(collapse = ""),
                                        from =
                                          c("markdown",
-                                           "+autolink_bare_uris"[checkmate::assert_flag(autolink_bare_uris)],
-                                           "+tex_math_single_backslash"[checkmate::assert_flag(tex_math_single_backslash)],
-                                           "-smart"[!checkmate::assert_flag(smart_punctuation)]) %>%
+                                           "+autolink_bare_uris"[autolink_bare_uris],
+                                           "+tex_math_single_backslash"[tex_math_single_backslash],
+                                           "-smart"[!smart_punctuation]) %>%
                                          paste0(collapse = ""),
                                        args = c("--columns=9999",
                                                 "--standalone",
-                                                "--table-of-contents"[checkmate::assert_flag(toc)],
-                                                paste0("--toc-depth=", checkmate::assert_int(toc_depth,
-                                                                                             lower = 1L,
-                                                                                             upper = 6L))[checkmate::assert_flag(toc)])),
+                                                "--table-of-contents"[toc],
+                                                paste0("--toc-depth=", toc_depth)[toc])),
     df_print = df_print,
     pre_knit = NULL,
     post_knit = NULL,
@@ -3538,7 +3574,9 @@ toml_validate <- function(input,
 #' cli::pluralize("This function is worth exactly {pal::cli_no_lgl(cnd)} second of my time.")
 cli_qty_lgl <- function(cnd) {
   
-  structure(as.integer(checkmate::assert_flag(cnd)),
+  checkmate::assert_flag(cnd)
+  
+  structure(as.integer(cnd),
             class = "cli_noprint")
 }
 
@@ -3546,7 +3584,9 @@ cli_qty_lgl <- function(cnd) {
 #' @export
 cli_no_lgl <- function(cnd) {
   
-  structure(as.integer(checkmate::assert_flag(cnd)),
+  checkmate::assert_flag(cnd)
+  
+  structure(as.integer(cnd),
             class = "cli_no")
 }
 

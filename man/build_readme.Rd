@@ -18,7 +18,7 @@ build_readme(
 
 \item{build_index_md}{Whether to build a separate \link[pkgdown:pkgdown-package]{pkgdown}-optimized \code{pkgdown/index.md} alongside \code{output} (i.e. in the same parent
 directory). If \code{NULL}, it will only be built if the parent directory of \code{output} \link[=is_pkgdown_dir]{contains a pkgdown configuration file}. Note that it will
-be built with the \R option \code{pal.build_readme.is_pkgdown = TRUE}, allowing for conditional content inclusion in \code{input} – e.g. via the \href{https://yihui.org/knitr/options/#code-evaluation}{code chunk option} \code{eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))}.}
+be built with the \R option \code{pal.build_readme.is_pkgdown} set to \code{TRUE}, allowing for conditional content inclusion in \code{input} – e.g. via the \href{https://yihui.org/knitr/options/#code-evaluation}{code chunk option} \code{eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))}.}
 
 \item{env}{Environment in which code chunks are to be evaluated, e.g. \code{\link[=parent.frame]{parent.frame()}}, \code{\link[=new.env]{new.env()}}, or \code{\link[=globalenv]{globalenv()}}.}
 }

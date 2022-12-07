@@ -1,3 +1,5 @@
+# TODOs
+
 -   systematically rely on pkg [xfun](https://yihui.name/xfun/) whenever sensible
 
 -   add a [standards-conformant changelog](https://keepachangelog.com/) for v0.1.0 but use pkg [fledge](https://cynkra.github.io/fledge/) to generate it from

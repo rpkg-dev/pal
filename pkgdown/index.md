@@ -1,5 +1,7 @@
 # pal: Friendly Convenience/Utility Functions <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" /></a>
 
+[![CRAN Status](https://r-pkg.org/badges/version/pal)](https://cran.r-project.org/package=pal){.pkgdown-release}
+
 A collection of convenience/utility functions complementing base R and the tidyverse.[^1]
 
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
@@ -19,7 +21,7 @@ remotes::install_gitlab(repo = "salim_b/r/pkgs/pal")
 
 ## Usage
 
-The (function) reference is found [here](https://rpkg.dev/pal/reference).
+The (function) reference is found [here](reference).
 
 ## Development
 

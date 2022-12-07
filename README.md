@@ -1,12 +1,14 @@
 # pal: Friendly Convenience/Utility Functions <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
 
+<a href="https://cran.r-project.org/package=pal" class="pkgdown-release"><img src="https://r-pkg.org/badges/version/pal" alt="CRAN Status" /></a>
+
 A collection of convenience/utility functions complementing base R and the tidyverse.[^1]
 
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
 
 ## Documentation
 
-The documentation of this package is found [here](https://rpkg.dev/pal).
+The documentation of this package is found [here](https://pal.rpkg.dev).
 
 ## Installation
 
