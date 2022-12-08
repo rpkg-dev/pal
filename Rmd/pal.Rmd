@@ -2030,8 +2030,8 @@ is_pkg_cran <- function(pkg,
 is_pkg_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
-  checkmate::assert_directory(path,
-                              access = "r")
+  checkmate::assert_directory_exists(path,
+                                     access = "r")
   
   rprojroot::is_r_package$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
@@ -2084,8 +2084,8 @@ TODO:
 is_pkgdown_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
-  checkmate::assert_directory(path,
-                              access = "r")
+  checkmate::assert_directory_exists(path,
+                                     access = "r")
   
   rprojroot::is_pkgdown_project$testfun %>%
     purrr::map_lgl(~ .x(path = path)) %>%
@@ -3385,8 +3385,8 @@ gitlab_document <- function(smart_punctuation = TRUE,
                                       clean,
                                       verbose) {
       assert_pkg("brio")
-      checkmate::assert_file(output_file,
-                             access = "w")
+      checkmate::assert_file_exists(output_file,
+                                    access = "w")
       
       md <- brio::read_file(output_file)
       
@@ -3523,8 +3523,8 @@ write_widget_deps <- function(x,
   
   checkmate::assert_class(x,
                           classes = "htmlwidget")
-  checkmate::assert_directory(path,
-                              access = "w")
+  checkmate::assert_directory_exists(path,
+                                     access = "w")
   if (!fs::path_has_parent(path = path,
                            parent = path_base)) {
     cli::cli_abort("{.arg path_base} is not a parent of (or equal to) {.arg path}.")
