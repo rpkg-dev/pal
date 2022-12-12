@@ -8,6 +8,8 @@ This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(comp
 
 ## Documentation
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a8eddba3-4c85-4750-a737-e0d74d721f65/deploy-status)](https://app.netlify.com/sites/pal-rpkg-dev/deploys)
+
 The documentation of this package is found [here](https://pal.rpkg.dev).
 
 ## Installation
