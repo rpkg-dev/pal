@@ -102,7 +102,8 @@ Pandoc during conversion.
 tmp_file <- fs::file_temp()
 download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd",
               destfile = tmp_file,
-              quiet = TRUE)
+              quiet = TRUE,
+              mode = "wb")
 
 rmarkdown::render(input = tmp_file,
                   output_format = pal::gitlab_document(),
