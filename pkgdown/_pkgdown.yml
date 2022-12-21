@@ -151,3 +151,4 @@ reference:
   - cols_regex
   - order_by
   - prose_ls_fn_param
+  - when

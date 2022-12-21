@@ -275,9 +275,9 @@ safe_max <- function(...,
   
   input %>%
     purrr::reduce(c) %>%
-    purrr::when(length(.) == 0L ~ .[0L],
-                all(is.na(.)) && rm_na ~ .[NA],
-                ~ max(., na.rm = rm_na))
+    when(length(.) == 0L ~ .[0L],
+         all(is.na(.)) && rm_na ~ .[NA],
+         ~ max(., na.rm = rm_na))
 }
 ```
 
@@ -332,9 +332,9 @@ safe_min <- function(...,
   
   input %>%
     purrr::reduce(c) %>%
-    purrr::when(length(.) == 0L ~ .[0L],
-                all(is.na(.)) && rm_na ~ .[NA],
-                ~ min(., na.rm = rm_na))
+    when(length(.) == 0L ~ .[0L],
+         all(is.na(.)) && rm_na ~ .[NA],
+         ~ min(., na.rm = rm_na))
 }
 ```
 
@@ -451,7 +451,7 @@ stat_mode <- function(x,
   # determine number of modes
   n_modes <- sum(modes) %>% ifelse(. == n_u_x, 0L, .)
   
-  type %>% purrr::when(
+  type %>% when(
     # return the number of modes if requested
     . == "n" ~ n_modes,
     # or return mode(s) if requested and existing
@@ -735,9 +735,8 @@ as_flat_list <- function(x,
     
     # flatten the two last list levels (keeping attributes if requested)
   } else if (depth < 4L) {
-    result <- x %>% purrr::when(keep_attrs ~ rm_list_lvl(.,
-                                                         attrs_to_drop = attrs_to_drop),
-                                ~ purrr::flatten(.))
+    result <- if (keep_attrs) rm_list_lvl(x, attrs_to_drop = attrs_to_drop) else purrr::flatten(x)
+    
   } else {
     
     # recursively feed the elements of `x` to this function and flatten the two last list levels (keeping attributes if requested)
@@ -746,9 +745,9 @@ as_flat_list <- function(x,
       purrr::map(.f = as_flat_list,
                  keep_attrs = keep_attrs,
                  attrs_to_drop = attrs_to_drop) %>%
-      purrr::when(keep_attrs ~ rm_list_lvl(.,
-                                           attrs_to_drop = attrs_to_drop),
-                  ~ purrr::flatten(.))
+      when(keep_attrs ~ rm_list_lvl(.,
+                                    attrs_to_drop = attrs_to_drop),
+           ~ purrr::flatten(.))
   }
   
   result
@@ -923,13 +922,14 @@ escape_lf <- function(x,
                               null.ok = TRUE)
   checkmate::assert_flag(escape_cr)
   
-  x %>%
-    stringr::str_replace_all(pattern = "\\n",
-                             replacement = "\\\\n") %>%
-    purrr::when(escape_cr ~ stringr::str_replace_all(string = .,
-                                                     pattern = "\\r",
-                                                     replacement = "\\\\r"),
-                ~ .)
+  x %<>% stringr::str_replace_all(pattern = "\\n",
+                                  replacement = "\\\\n")
+  if (escape_cr) {
+    x %<>% stringr::str_replace_all(pattern = "\\r",
+                                    replacement = "\\\\r")
+  }
+  
+  x
 }
 ```
 
@@ -1168,8 +1168,13 @@ dsv_colnames <- function(x,
 as_string <- function(...,
                       sep = "") {
   
-  as_chr(...) %>% purrr::when(length(.) > 0L ~ paste0(., collapse = sep),
-                              ~ .)
+  result <- as_chr(...)
+  
+  if (length(result) > 0L) {
+    result %<>% paste0(collapse = sep)
+  }
+  
+  result
 }
 ```
 
@@ -1276,7 +1281,7 @@ fuse_regex <- function(...) {
 
 TODO:
 
--   Deprecate this fn in favor of `stringr::str_flatten_comma()` and/or `knitr::combine_words()`?
+-   Deprecate this fn in favor of `stringr::str_flatten_comma()`, `cli::ansi_collapse()` and/or `knitr::combine_words()`?
 
 ```{r}
 #' List items concatenated in prose style (..., ... and ...)
@@ -1773,15 +1778,21 @@ ls_pkg <- function(pkg,
   checkmate::assert_flag(ignore_case)
   checkmate::assert_flag(as_regex)
   
-  regex <-
-    pkg %>%
-    purrr::when(as_regex ~ .,
-                ~ paste0("\\Q", ., "\\E")) %>%
-    fuse_regex() %>%
-    purrr::when(ignore_case ~ paste0("(?i)", .),
-                ~ .) %>%
-    purrr::when(as_regex ~ .,
-                ~ paste0("^", ., "$"))
+  regex <- pkg
+  
+  if (!as_regex) {
+    regex <- paste0("\\Q", regex, "\\E")
+  }
+  
+  regex %<>% fuse_regex()
+  
+  if (ignore_case) {
+    regex <- paste0("(?i)", regex)
+  }
+  
+  if (!as_regex) {
+    regex <- paste0("^", regex, "$")
+  }
   
   utils::installed.packages() %>%
     tibble::as_tibble() %>%
@@ -2578,11 +2589,11 @@ roxy_tag_value <- function(blocks,
     block$tags %<>% magrittr::extract(-ix_param[-i_to_keep])
   }
   
-  tag_names %>%
-    purrr::map_chr(~ roxygen2::block_get_tag_value(block = block,
-                                                   tag = .x) %>%
-                     purrr::when(is.list(.) ~ .$description,
-                                 ~ .))
+  purrr::map_chr(tag_names,
+                 ~ roxygen2::block_get_tag_value(block = block,
+                                                 tag = .x) %>%
+                   when(is.list(.) ~ .$description,
+                        ~ .))
 }
 ```
 
@@ -2773,12 +2784,12 @@ pipe_table <- function(x,
           row.names = ifelse(is.null(incl_rownames),
                              NA,
                              incl_rownames),
-          col.names = colnames(x) %>% purrr::when(checkmate::assert_flag(strong_colnames) ~ paste0("**", ., "**"),
-                                                  ~ .),
+          col.names = colnames(x) %>% when(checkmate::assert_flag(strong_colnames) ~ paste0("**", ., "**"),
+                                           ~ .),
           label = label,
           format.args = format_args) %>%
-    purrr::when(!is.null(align) ~ c(., alist(align = align)),
-                ~ .)
+    when(!is.null(align) ~ c(., alist(align = align)),
+         ~ .)
   
   do.call(what = knitr::kable,
           args = kable_args)
@@ -2826,8 +2837,8 @@ strip_md <- function(x,
                    commonmark::markdown_text(text = .x,
                                              extensions = TRUE) %>%
                      stringr::str_remove(pattern = "\n$") %>%
-                     purrr::when(strip_footnotes ~ strip_md_footnotes(.),
-                                 ~ .)
+                     when(strip_footnotes ~ strip_md_footnotes(.),
+                          ~ .)
                  })
 }
 ```
@@ -2936,8 +2947,8 @@ md_to_xml <- function(md,
                              sourcepos = sourcepos,
                              extensions = extensions) %>%
     xml2::read_xml() %>%
-    purrr::when(strip_xml_ns ~ xml2::xml_ns_strip(.),
-                ~ .)
+    when(strip_xml_ns ~ xml2::xml_ns_strip(.),
+         ~ .)
   
   # `xml2::xml_ns_strip()` returns its result invisibly, so we make it visible again
   (result)
@@ -3023,9 +3034,9 @@ xml_to_md <- function(xml) {
     # trim whitespace in case `xml` was already of type character
     stringr::str_trim() %>%
     # add CommonMark XML namespace
-    purrr::when(stringr::str_detect(string = .,
-                                    pattern = "^<document[>\\s]") ~ .,
-                ~ paste0('<document xmlns="', as.character(tinkr::md_ns()), '">', ., '</document>')) %>%
+    when(stringr::str_detect(string = .,
+                             pattern = "^<document[>\\s]") ~ .,
+         ~ paste0('<document xmlns="', as.character(tinkr::md_ns()), '">', ., '</document>')) %>%
     xml2::read_xml() %>%
     # convert XML to CommonMark
     xslt::xml_xslt(stylesheet = xml2::read_xml(tinkr::stylesheet()))
@@ -3651,8 +3662,8 @@ gh_text_file <- function(path,
                               owner = owner,
                               expression = glue::glue("{rev}:{path}"))) %>%
     purrr::pluck("data", "repository", "object", "text") %>%
-    purrr::when(is.null(.) ~ character(),
-                ~ .)
+    when(is.null(.) ~ character(),
+         ~ .)
 }
 ```
 
@@ -4401,11 +4412,11 @@ assert_cli <- function(cmd,
     result <-
       Sys.which(names = cmd) %>%
       as.character() %>%
-      purrr::when(. == "" ~ character(0L),
-                  ~ .) %>%
-      purrr::when(get_cmd_path ~ fs::path(.),
-                  length(.) == 0L ~ FALSE,
-                  ~ TRUE)
+      when(. == "" ~ character(0L),
+           ~ .) %>%
+      when(get_cmd_path ~ fs::path(.),
+           length(.) == 0L ~ FALSE,
+           ~ TRUE)
   } else {
     
     # define "defused" warning/error handler
@@ -4419,9 +4430,9 @@ assert_cli <- function(cmd,
                                    stderr = get_cmd_path),
                            warning = defuse,
                            error = defuse) %>%
-      purrr::when(get_cmd_path ~ fs::path(.),
-                  isFALSE(.) ~ .,
-                  ~ TRUE)
+      when(get_cmd_path ~ fs::path(.),
+           isFALSE(.) ~ .,
+           ~ TRUE)
   }
   
   result
@@ -4865,5 +4876,81 @@ prose_ls_fn_param <- function(param,
   }
   
   default_vals
+}
+```
+
+### `when`
+
+```{r}
+#' Generalized `switch()` for pipes
+#'
+#' A flavour of pattern matching (or an if-else abstraction) in which a value `.` is matched against a sequence `...` of condition-action sets. When a valid
+#' match/condition is found, the action is executed and the result of the action is returned.
+#'
+#' Condition-action sets are written as formulas with conditions as left-hand sides (LHS) and actions as right-hand sides (RHS). A formula with only a
+#' right-hand side will be treated as a condition which is always satisfied. For such a default case one can also omit the `~` symbol, but note that its value
+#' will then be evaluated early. Any named argument will be made available in all conditions and actions, which is useful in avoiding repeated temporary
+#' computations or temporary assignments.
+#
+#' Validity of the conditions are tested with [isTRUE()]. In other words conditions resulting in more than one logical will never be valid. Note that the input
+#' value is always treated as a single object, as opposed to the [ifelse()] function.
+#'
+#' This function is copied over from package purrr since it [has been deprecated with the release of purrr
+#' 1.0](https://www.tidyverse.org/blog/2022/12/purrr-1-0-0/#core-purpose-refinements). `pal::when()` can be used as a drop-in replacement for `purrr::when()`.
+#' All credits go to the original authors of `purrr::when()` [as of
+#' 2022-12-21](https://github.com/tidyverse/purrr/blame/54546b6bf938c54da4d232061db2fc91b1d5923c/R/deprec-when.R).
+#'
+#' @param . Value to match against.
+#' @param ... Formulas, each containing a condition as LHS and an action as RHS. Named arguments will define additional values.
+#'   `r pkgsnip::roxy_label("dyn_dots_support")`
+#'
+#' @return The value resulting from the action of the first matched condition, or `NULL` if no matches are found and no default is given.
+#' @export
+#'
+#' @examples
+#' 1:10 %>% pal::when(sum(.) <=  50 ~ sum(.),
+#'                    sum(.) <= 100 ~ sum(.)/2L,
+#'                    ~ 0L)
+when <- function(.,
+                 ...) {
+  
+  dots  <- rlang::list2(...)
+  names <- names(dots)
+  named <- if (is.null(names)) rep(FALSE, length(dots)) else names != ""
+  
+  if (sum(!named) == 0L) {
+    cli::cli_abort("At least one matching condition is needed.")
+  }
+  
+  is_formula <- vapply(dots,
+                       function(dot) identical(class(dot), "formula"),
+                       logical(1L))
+  env <- new.env(parent = parent.frame())
+  env[["."]] <- .
+  
+  if (sum(named) > 0L) {
+    for (i in which(named)) {
+      env[[names[i]]] <- dots[[i]]
+    }
+  }
+  
+  result <- NULL
+  
+  for (i in which(!named)) {
+    
+    if (is_formula[i]) {
+      
+      action <- length(dots[[i]])
+      
+      if (action == 2L || isTRUE(eval(dots[[i]][[2L]], env, env))) {
+        result <- eval(dots[[i]][[action]], env, env)
+        break
+      }
+    } else {
+      result <- dots[[i]]
+    }
+  }
+  
+  result
 }
 ```
