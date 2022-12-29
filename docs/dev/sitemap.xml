@@ -139,12 +139,6 @@
     <loc>https://pal.rpkg.dev/dev/reference/knitr_table_format.html</loc>
   </url>
   <url>
-    <loc>https://pal.rpkg.dev/dev/reference/list_drop.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/list_keep.html</loc>
-  </url>
-  <url>
     <loc>https://pal.rpkg.dev/dev/reference/ls_pkg.html</loc>
   </url>
   <url>
@@ -182,9 +176,6 @@
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/reduce_df_list.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/reexports.html</loc>
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/round_to.html</loc>

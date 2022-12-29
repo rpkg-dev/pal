@@ -20,7 +20,7 @@ removes list names. unlist() concatenates nested names (separated by a dot).
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9091</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9092</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,10 +82,6 @@ removes list names. unlist() concatenates nested names (separated by a dot).
     
 
 <p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a>.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other list functions: <code><a href="list_drop.html">list_drop</a>()</code>, <code><a href="list_keep.html">list_keep</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -192,21 +188,22 @@ removes list names. unlist() concatenates nested names (separated by a dot).
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ : chr "buried deep"</span>
 <span class="r-in"><span><span class="co"># ... but you can drop them and thereby flatten custom objects if needed ...</span></span></span>
 <span class="r-in"><span><span class="fu">pal</span><span class="fu">::</span><span class="fu">as_flat_list</span><span class="op">(</span><span class="va">nested_list</span>, keep_attrs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $     : int 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $     : num 1.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $     : chr "2"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mpg : num [1:2] 21 21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ cyl : num [1:2] 6 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ disp: num [1:2] 160 160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ hp  : num [1:2] 110 110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ drat: num [1:2] 3.9 3.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wt  : num [1:2] 2.62 2.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ qsec: num [1:2] 16.5 17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vs  : num [1:2] 0 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ am  : num [1:2] 1 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gear: num [1:2] 4 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ carb: num [1:2] 4 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> List of 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $    : int 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ a_1: num 1.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ a_2: chr "2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $    : tibble [2 × 11] (S3: tbl_df/tbl/data.frame)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ mpg : num [1:2] 21 21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ cyl : num [1:2] 6 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ disp: num [1:2] 160 160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ hp  : num [1:2] 110 110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ drat: num [1:2] 3.9 3.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ wt  : num [1:2] 2.62 2.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ qsec: num [1:2] 16.5 17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ vs  : num [1:2] 0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ am  : num [1:2] 1 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ gear: num [1:2] 4 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ carb: num [1:2] 4 4</span>
 <span class="r-in"><span><span class="co"># ... or retain `xfun_strict_list`s, too</span></span></span>
 <span class="r-in"><span><span class="fu">pal</span><span class="fu">::</span><span class="fu">as_flat_list</span><span class="op">(</span><span class="va">nested_list_2</span>, attrs_to_drop <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>

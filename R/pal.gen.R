@@ -601,7 +601,7 @@ as_flat_list <- function(x,
     
     # flatten the two last list levels (keeping attributes if requested)
   } else if (depth < 4L) {
-    result <- if (keep_attrs) rm_list_lvl(x, attrs_to_drop = attrs_to_drop) else purrr::flatten(x)
+    result <- if (keep_attrs) rm_list_lvl(x, attrs_to_drop = attrs_to_drop) else purrr::list_flatten(as.list(x))
     
   } else {
     
@@ -613,7 +613,7 @@ as_flat_list <- function(x,
                  attrs_to_drop = attrs_to_drop) %>%
       when(keep_attrs ~ rm_list_lvl(.,
                                     attrs_to_drop = attrs_to_drop),
-           ~ purrr::flatten(.))
+           ~ purrr::list_flatten(.))
   }
   
   result
@@ -637,66 +637,6 @@ rm_list_lvl <- function(x,
   }
   
   result
-}
-
-#' Drop list elements by name
-#'
-#' Drops all list elements whose names match the provided set.
-#'
-#' @param x A list.
-#' @param drop Names of the list elements to drop.
-#'
-#' @return A list.
-#' @family list
-#' @export
-#'
-#' @examples
-#' as.list(mtcars) |> pal::list_drop(c("disp", "drat", "qsec"))
-#' 
-#' # works with any R objects that are internally of type list
-#' mtcars |> pal::list_drop(c("disp", "drat", "qsec"))
-list_drop <- function(x,
-                      drop) {
-  
-  if (!is.list(x)) cli::cli_abort("{.arg x} must be of type list.")
-  
-  checkmate::assert_character(drop,
-                              any.missing = FALSE)
-  
-  names_x <- names(x) %||% FALSE
-  
-  if (any(names_x %in% drop)) {
-    x <- x[-which(names_x %in% drop)]
-  }
-  
-  x
-}
-
-#' Keep list elements by name
-#'
-#' Keeps only the list elements whose names match the provided set.
-#'
-#' @param x A list.
-#' @param keep Names of the list elements to keep.
-#'
-#' @return A list.
-#' @family list
-#' @export
-#'
-#' @examples
-#' as.list(mtcars) |> pal::list_keep(c("gear", "carb"))
-#' 
-#' # works with any R objects that are internally of type list
-#' mtcars |> pal::list_keep(c("gear", "carb"))
-list_keep <- function(x,
-                      keep) {
-  
-  if (!is.list(x)) cli::cli_abort("{.arg x} must be of type list.")
-  
-  checkmate::assert_character(keep,
-                              any.missing = FALSE)
-  
-  x[which(names(x) %in% keep)]
 }
 
 #' Convert to a character vector
@@ -731,10 +671,10 @@ as_chr <- function(...) {
         
         .x %>%
           purrr::map(as_chr) %>%
-          purrr::flatten_chr()
+          purrr::list_c(ptype = character())
       }
     }) %>%
-    purrr::flatten_chr()
+    purrr::list_c(ptype = character())
 }
 
 #' Escape line feeds / newlines
@@ -1164,7 +1104,7 @@ flatten_path_tree <- function(path_tree,
       purrr::map_chr(~ fs::path_join(c(parent_path, .x))) %>%
       purrr::map2(.x = path_tree,
                   .f = flatten_path_tree) %>%
-      purrr::flatten_chr() %>%
+      purrr::list_c(ptype = character()) %>%
       c(parent_path, .)
     
   } else {
@@ -2133,7 +2073,7 @@ roxy_obj <- function(blocks,
                      .f = purrr::pluck,
                      "object", "topic") %>%
     purrr::compact() %>%
-    purrr::flatten_chr()
+    purrr::list_c(ptype = character())
   
   obj_name <- rlang::arg_match(arg = obj_name,
                                values = obj_names)
@@ -3241,7 +3181,7 @@ gh_dir_ls <- function(path = "",
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,
                      "path") %>%
-    purrr::flatten_chr()
+    purrr::list_c(ptype = character())
   
   result <-
     entries %>%
@@ -3249,7 +3189,7 @@ gh_dir_ls <- function(path = "",
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,
                      "path") %>%
-    purrr::flatten_chr()
+    purrr::list_c(ptype = character())
   
   if (recurse && length(dirs)) {
     
@@ -3262,7 +3202,7 @@ gh_dir_ls <- function(path = "",
                  recurse = TRUE,
                  incl_dirs = incl_dirs,
                  incl_files = incl_files) %>%
-      purrr::flatten_chr() %>%
+      purrr::list_c(ptype = character()) %>%
       c(result)
   }
   
@@ -3541,7 +3481,7 @@ toml_validate <- function(input,
                           ix_error[i_error_current + 1L] - 1L,
                           i_error_end - 1L))
         }) %>%
-        purrr::flatten_int()
+        purrr::list_c(ptype = integer())
       
     } else {
       ix_final <- seq_along(result)
@@ -4137,9 +4077,9 @@ prose_ls_fn_param <- function(param,
 #' @export
 #'
 #' @examples
-#' 1:10 %>% pal::when(sum(.) <=  50 ~ sum(.),
-#'                    sum(.) <= 100 ~ sum(.)/2L,
-#'                    ~ 0L)
+#' 1:10 |> pal::when(sum(.) <=  50 ~ sum(.),
+#'                   sum(.) <= 100 ~ sum(.)/2L,
+#'                   ~ 0L)
 when <- function(.,
                  ...) {
   

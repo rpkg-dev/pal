@@ -29,10 +29,7 @@ reference:
   - is_equal_df
   - reduce_df_list
 - title: Lists
-- contents:
-  - as_flat_list
-  - list_drop
-  - list_keep
+- contents: as_flat_list
 - title: Strings
 - subtitle: Vectorized
 - contents:

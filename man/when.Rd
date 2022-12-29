@@ -31,7 +31,7 @@ This function is copied over from package purrr since it \href{https://www.tidyv
 All credits go to the original authors of \code{purrr::when()} \href{https://github.com/tidyverse/purrr/blame/54546b6bf938c54da4d232061db2fc91b1d5923c/R/deprec-when.R}{as of 2022-12-21}.
 }
 \examples{
-1:10 \%>\% pal::when(sum(.) <=  50 ~ sum(.),
-                   sum(.) <= 100 ~ sum(.)/2L,
-                   ~ 0L)
+1:10 |> pal::when(sum(.) <=  50 ~ sum(.),
+                  sum(.) <= 100 ~ sum(.)/2L,
+                  ~ 0L)
 }

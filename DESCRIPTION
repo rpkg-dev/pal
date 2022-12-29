@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9091
+Version: 0.0.9092
 Authors@R: 
     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5329-5987"))
@@ -21,7 +21,7 @@ Imports:
     lubridate (>= 1.8.0),
     magrittr (>= 2.0.1),
     methods,
-    purrr (>= 0.3.4),
+    purrr (>= 1.0.0),
     rlang (>= 1.0.0),
     stringr (>= 1.5.0),
     tibble (>= 3.1.4),
