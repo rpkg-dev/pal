@@ -511,18 +511,27 @@ reduce_df_list <- function(x,
   
   if (is.data.frame(x) || tibble::is_tibble(x)) {
     
-    return(x)
+    result <- x
     
   } else if (purrr::vec_depth(x) < 2L) {
     
     if (strict) {
       cli::cli_abort("At least one element of the list to be reduced is not a data frame / tibble!")
       
-    } else return(NULL)
+    } else {
+      result <- NULL
+    }
     
-  } else purrr::map_dfr(.x = x,
-                        .f = reduce_df_list,
-                        strict = strict)
+  } else {
+    
+    result <-
+      x %>%
+      purrr::map(reduce_df_list,
+                 strict = strict) %>%
+      purrr::list_rbind()
+  }
+  
+  result
 }
 
 #' Convert to a flat list
