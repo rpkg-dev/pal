@@ -513,7 +513,7 @@ reduce_df_list <- function(x,
     
     result <- x
     
-  } else if (purrr::vec_depth(x) < 2L) {
+  } else if (purrr::pluck_depth(x) < 2L) {
     
     if (strict) {
       cli::cli_abort("At least one element of the list to be reduced is not a data frame / tibble!")
@@ -598,7 +598,7 @@ as_flat_list <- function(x,
   
   regard_attrs <- keep_attrs && length(setdiff(attributes(x),
                                                attrs_to_drop))
-  depth <- purrr::vec_depth(x)
+  depth <- purrr::pluck_depth(x)
   
   # wrap `x` in a list if it's not
   if (regard_attrs || depth < 2L) {
@@ -638,7 +638,7 @@ rm_list_lvl <- function(x,
     
     regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop))
     
-    if (!regard_attrs && purrr::vec_depth(x[[i]]) > 1L) {
+    if (!regard_attrs && purrr::pluck_depth(x[[i]]) > 1L) {
       result %<>% c(x[[i]])
     } else {
       result %<>% c(list(x[[i]]))
@@ -672,7 +672,7 @@ as_chr <- function(...) {
   rlang::list2(...) %>%
     purrr::map(~ {
       
-      if (purrr::vec_depth(.x) == 1L) {
+      if (purrr::pluck_depth(.x) == 1L) {
         
         as.character(.x)
         
@@ -1106,7 +1106,7 @@ path_mod_time <- function(path,
 flatten_path_tree <- function(path_tree,
                               parent_path = NULL) {
   
-  if (purrr::vec_depth(path_tree) > 1L) {
+  if (purrr::pluck_depth(path_tree) > 1L) {
     
     result <-
       rlang::names2(path_tree) %>%
