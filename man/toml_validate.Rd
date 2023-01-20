@@ -7,7 +7,7 @@
 toml_validate(input, from_file = TRUE, schema = NULL, top_errors_only = TRUE)
 }
 \arguments{
-\item{input}{If \code{from_file = FALSE}, the path to a TOML file as a character scalar. Otherwise TOML content as a character vector.}
+\item{input}{If \code{from_file = TRUE}, the path to a TOML file as a character scalar. Otherwise, TOML content as a character vector.}
 
 \item{from_file}{Whether \code{input} is the path to a TOML file or already a character vector of TOML content.}
 
@@ -22,8 +22,7 @@ output is shown.}
 If the validation is successful, \code{input} invisibly. Otherwise an error is thrown.
 }
 \description{
-Validates a TOML file or character vector (if \code{from_file = FALSE}) using the external \href{https://taplo.tamasfe.dev/cli/introduction.html}{Taplo CLI},
-optionally against a \href{https://json-schema.org/}{JSON Schema} (\href{https://json-schema.org/specification-links.html#draft-4}{Draft 4}).
+Validates a TOML file or character vector using the external \href{https://taplo.tamasfe.dev/cli/introduction.html}{Taplo CLI}, optionally against a \href{https://json-schema.org/}{JSON Schema} (\href{https://json-schema.org/specification-links.html#draft-4}{Draft 4}).
 }
 \details{
 The highest supported JSON Schema specification is \href{https://json-schema.org/specification-links.html#draft-4}{Draft 4}. This is a \href{https://taplo.tamasfe.dev/configuration/developing-schemas.html}{limitation of the underlying tool Taplo}.

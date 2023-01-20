@@ -4,13 +4,14 @@
 \alias{toml_read}
 \title{Read in and parse TOML file as strict list}
 \usage{
-toml_read(path, verbose = FALSE)
+toml_read(input, from_file = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{path}{Path to a TOML file. A character scalar.}
+\item{input}{If \code{from_file = TRUE}, the path to a TOML file as a character scalar. Otherwise, TOML content as a character vector.}
 
-\item{verbose}{A logical switch to turn on (very) verbose operation
-    which can be useful in debugging a parsing issue in a file.}
+\item{from_file}{Whether \code{input} is the path to a TOML file or already a character vector of TOML content.}
+
+\item{verbose}{[logical] Optional verbosity flag, no current effect}
 }
 \value{
 A \link[xfun:strict_list]{strict list}.

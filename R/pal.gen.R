@@ -2,7 +2,7 @@
 # See `README.md#r-markdown-format` for more information on the literate programming approach used applying the R Markdown format.
 
 # pal: Friendly Convenience/Utility Functions
-# Copyright (C) 2022 Salim Brüggemann
+# Copyright (C) 2023 Salim Brüggemann
 # 
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
 # Software Foundation, either version 3 of the License, or any later version.
@@ -3347,30 +3347,40 @@ is_url <- function(x) {
 #' The file is parsed using [`RcppTOML::parseTOML(escape = FALSE)`][RcppTOML::parseTOML].
 #'
 #' @inheritParams RcppTOML::parseTOML
-#' @param path Path to a TOML file. A character scalar.
+#' @param input If `from_file = TRUE`, the path to a TOML file as a character scalar. Otherwise, TOML content as a character vector.
+#' @param from_file Whether `input` is the path to a TOML file or already a character vector of TOML content.
 #'
 #' @return `r pkgsnip::return_label("strict_list")`
 #' @family toml
 #' @export
-toml_read <- function(path,
+toml_read <- function(input,
+                      from_file = TRUE,
                       verbose = FALSE) {
   
   assert_pkg("RcppTOML")
   assert_pkg("xfun")
-  
-  checkmate::assert_file_exists(path,
-                                access = "r")
+  checkmate::assert_flag(from_file)
   checkmate::assert_flag(verbose)
   
-  xfun::as_strict_list(RcppTOML::parseTOML(input = path,
+  if (from_file) {
+    checkmate::assert_file_exists(input,
+                                  access = "r")
+  } else {
+    checkmate::assert_character(input)
+    # reduce to character scalar since `RcppTOML::parseTOML()` doesn't accept vectors
+    input %<>% paste0(collapse = "\n")
+  }
+  
+  xfun::as_strict_list(RcppTOML::parseTOML(input = input,
                                            verbose = verbose,
+                                           fromFile = from_file,
                                            escape = FALSE))
 }
 
 #' Validate TOML
 #'
-#' Validates a TOML file or character vector (if `from_file = FALSE`) using the external [Taplo CLI](https://taplo.tamasfe.dev/cli/introduction.html),
-#' optionally against a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)).
+#' Validates a TOML file or character vector using the external [Taplo CLI](https://taplo.tamasfe.dev/cli/introduction.html), optionally against a [JSON
+#' Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)).
 #'
 #' The highest supported JSON Schema specification is [Draft 4](https://json-schema.org/specification-links.html#draft-4). This is a [limitation of
 #' the underlying tool Taplo](https://taplo.tamasfe.dev/configuration/developing-schemas.html).
@@ -3389,8 +3399,7 @@ toml_read <- function(path,
 #' CLI](https://taplo.tamasfe.dev/cli/introduction.html), which itself is written in the Rust programming language and [available as a single-binary program for
 #' all common platforms](https://taplo.tamasfe.dev/cli/installation/binary.html).
 #'
-#' @param input If `from_file = FALSE`, the path to a TOML file as a character scalar. Otherwise TOML content as a character vector.
-#' @param from_file Whether `input` is the path to a TOML file or already a character vector of TOML content.
+#' @inheritParams toml_read
 #' @param schema URL to a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)) file to validate `input`
 #'   against. Can also be a local filesystem path specified in the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) (path prefixed with
 #'   `file://`). If `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
