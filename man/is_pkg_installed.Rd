@@ -30,11 +30,11 @@ It is \href{https://stackoverflow.com/questions/9341635/check-for-installed-pack
 \examples{
 pal::is_pkg_installed("tidyverse")
 
-# it is vectorized ...
+# it is vectorized...
 pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
                       min_version = c("1.0", "2.0", "99.9.9000"))
 
-# ... and scalar arguments will be recycled
+# ...and scalar arguments will be recycled
 pal::is_pkg_installed(pkg = "dplyr",
                       min_version = c("0.5", "1.0", "99.9.9000"))
 

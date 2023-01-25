@@ -129,11 +129,11 @@ subnode_ix <- function(xml_nodes,
 #' @examples
 #' pal::safe_seq_len(5)
 #'
-#' # this function simply returns a zero-length integer for zero-length inputs ...
+#' # this function simply returns a zero-length integer for zero-length inputs...
 #' pal::safe_seq_len(NULL)
 #' pal::safe_seq_len(integer())
 #' 
-#' # ... while `seq_len()` throws an error
+#' # ...while `seq_len()` throws an error
 #' try(seq_len(NULL))
 #' try(seq_len(integer()))
 safe_seq_len <- function(n) {
@@ -392,11 +392,11 @@ stat_mode <- function(x,
 #' @examples
 #' scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
 #'
-#' # by default, ordering of rows and columns matters ...
+#' # by default, ordering of rows and columns matters...
 #' pal::is_equal_df(x = mtcars,
 #'                  y = scramble(mtcars))
 #'
-#' # ... but those can be ignored if desired
+#' # ...but those can be ignored if desired
 #' pal::is_equal_df(x = mtcars,
 #'                  y = scramble(mtcars),
 #'                  ignore_col_order = TRUE)
@@ -404,13 +404,13 @@ stat_mode <- function(x,
 #'                  y = scramble(mtcars),
 #'                  ignore_row_order = TRUE)
 #'
-#' # by default, `is_equal_df()` is sensitive to column type differences ...
+#' # by default, `is_equal_df()` is sensitive to column type differences...
 #' df1 <- data.frame(x = "a",
 #'                   stringsAsFactors = FALSE)
 #' df2 <- data.frame(x = factor("a"))
 #' pal::is_equal_df(df1, df2)
 #'
-#' # ... but you can request it to not make a difference between similar types
+#' # ...but you can request it to not make a difference between similar types
 #' pal::is_equal_df(df1, df2,
 #'                  ignore_col_types = TRUE)
 is_equal_df <- function(x,
@@ -559,18 +559,18 @@ reduce_df_list <- function(x,
 #'
 #' nested_list <- list(1:3, list("foo", list("bar"))) %T>% str()
 #' 
-#' # unlike `unlist()` which also removes the last list tier in many cases ...
+#' # unlike `unlist()` which also removes the last list tier in many cases...
 #' unlist("foobar")
 #' unlist(nested_list) %>% str()
-#' # ... this function always returns an (unnested) list
+#' # ...this function always returns an (unnested) list
 #' pal::as_flat_list("foobar") %>% str()
 #' pal::as_flat_list(nested_list) %>% str()
 #' 
 #' nested_list <- list(list(factor("a"), factor("b")), factor("c")) %T>% str()
 #' 
-#' # unlike `unlist()` which combines factors ...
+#' # unlike `unlist()` which combines factors...
 #' unlist(nested_list) %>% str()
-#' # ... this function does not modify the list elements
+#' # ...this function does not modify the list elements
 #' pal::as_flat_list(nested_list) %>% str()
 #' 
 #' nested_list <-
@@ -580,12 +580,12 @@ reduce_df_list <- function(x,
 #' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
 #'
 #' # by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
-#' # not flattened ...
+#' # not flattened...
 #' pal::as_flat_list(nested_list) %>% str()
 #' pal::as_flat_list(nested_list_2) %>% str()
-#' # ... but you can drop them and thereby flatten custom objects if needed ...
+#' # ...but you can drop them and thereby flatten custom objects if needed...
 #' pal::as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
-#' # ... or retain `xfun_strict_list`s, too
+#' # ...or retain `xfun_strict_list`s, too
 #' pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
 as_flat_list <- function(x,
                          keep_attrs = TRUE,
@@ -701,15 +701,15 @@ as_chr <- function(...) {
 #' @examples
 #' library(magrittr)
 #'
-#' # read in and print package description as-is
+#' # read in and print RStudio add-in registration file as-is
 #' text <-
 #'   fs::path_package(package = "pal",
-#'                    "DESCRIPTION") %>%
+#'                    "rstudio", "addins.dcf") |>
 #'   readr::read_file() %T>%
 #'   pal::cat_lines()
 #'
 #' # escape newlines and print again
-#' pal::escape_lf(text) %>% pal::cat_lines()
+#' pal::escape_lf(text) |> pal::cat_lines()
 escape_lf <- function(x,
                       escape_cr = FALSE) {
   
@@ -915,18 +915,17 @@ dsv_colnames <- function(x,
 #' library(magrittr)
 #'
 #' input <-
-#'   sample.int(n = 5,
-#'              size = 3) %>%
-#'   paste0(", ") %>%
+#'   paste0(2:4,
+#'          collapse = ", ") |>
 #'   purrr::map(rep,
 #'              times = 20) %>%
 #'   list(c("This is a glut of ", "meaningless numbers: "), .)
 #'
-#' # while this just converts `input` in a lazy way ...
+#' # while this just converts `input` in a lazy way...
 #' paste0(input,
 #'        collapse = "")
 #'
-#' # ... this one works harder
+#' # ...this one works harder
 #' pal::as_string(input)
 as_string <- function(...,
                       sep = "") {
@@ -1455,7 +1454,10 @@ check_dot_named <- function(dot,
 #' @export
 #'
 #' @examples
-#' pal::ls_pkg(pkg = c("pal", "tibble", "dplyr"))
+#' pal::ls_pkg(pkg = c("methods", "utils"))
+#' 
+#' pal::ls_pkg(pkg = "^ut",
+#'             as_regex = TRUE)
 ls_pkg <- function(pkg,
                    ignore_case = TRUE,
                    as_regex = FALSE) {
@@ -1608,11 +1610,11 @@ assert_pkg <- function(pkg,
 #' @examples
 #' pal::is_pkg_installed("tidyverse")
 #'
-#' # it is vectorized ...
+#' # it is vectorized...
 #' pal::is_pkg_installed(pkg = c("dplyr", "tibble", "magrittr"),
 #'                       min_version = c("1.0", "2.0", "99.9.9000"))
 #'
-#' # ... and scalar arguments will be recycled
+#' # ...and scalar arguments will be recycled
 #' pal::is_pkg_installed(pkg = "dplyr",
 #'                       min_version = c("0.5", "1.0", "99.9.9000"))
 #'
@@ -1700,7 +1702,7 @@ is_pkg_cran <- function(pkg,
 #'
 #' @examples
 #' pal::is_pkg_dir()
-#' pal::is_pkg_dir(fs::path_package("pal"))
+#' pal::is_pkg_dir(fs::path_package("utils"))
 is_pkg_dir <- function(path = ".") {
   
   assert_pkg("rprojroot")
@@ -1945,13 +1947,13 @@ desc_url_git <- function(file = ".") {
 #' @export
 #'
 #' @examples
-#' # Either provide an R source file as a character vector `text` ...
+#' # Either provide an R source file as a character vector `text`...
 #' text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
 #'                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
 #'
 #' pal::roxy_blocks(text = text) |> head(n = 3L)
 #'
-#' # ... or provide a package name
+#' # ...or provide a package name
 #' try(
 #'   pal::roxy_blocks(pkg = "tinkr",
 #'                    repos = "https://cloud.r-project.org") |>
@@ -3233,9 +3235,7 @@ gh_dir_ls <- function(path = "",
 #' @export
 #'
 #' @examples
-#' httr::GET("https://api.github.com/users/salim-b") |>
-#'   pal::assert_mime_type("application/json") |>
-#'   httr::content()
+#' httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("application/json")
 #' 
 #' # an informative error is thrown when the assertion is violated
 #' try(
@@ -3829,20 +3829,20 @@ capture_print <- function(x,
 #' @export
 #'
 #' @examples
-#' library(magrittr)
-#'
 #' fs::path_package(package = "pal",
-#'                  "DESCRIPTION") %>%
-#'   readr::read_lines() %>%
+#'                  "rstudio", "addins.dcf") |>
+#'   readr::read_lines() |>
 #'   pal::cat_lines()
 #' 
-#' # recursive conversion to type character or not
+#' # conversion to type character, recursive vs. non-recursive
+#' library(magrittr)
+#' 
 #' to_convert <-
 #'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
 #'   print()
 #' 
-#' to_convert %>% pal::cat_lines()
-#' to_convert %>% cli::cat_line()
+#' to_convert |> pal::cat_lines()
+#' to_convert |> cli::cat_line()
 cat_lines <- function(...) {
   
   cat(as_chr(...),
@@ -3864,7 +3864,7 @@ cat_lines <- function(...) {
 #' @examples
 #' library(magrittr)
 #'
-#' # for some hypothetical CSV data column names like these ...
+#' # for some hypothetical CSV data column names like these...
 #' col_names <- c("VAR1_Text",
 #'                "VAR2_Text",
 #'                "VAR3_Text_Other",
@@ -3875,7 +3875,7 @@ cat_lines <- function(...) {
 #'                "GARBAGEX67",
 #'                "GARBAGEY09")
 #' 
-#' # ... a column spec could be created concisely as follows:
+#' # ...a column spec could be created concisely as follows:
 #' col_regex <- list("_Text(_|$)" = "c",
 #'                   "_Code(_|$)" = "i",
 #'                   "^GARBAGE"  = readr::col_skip())

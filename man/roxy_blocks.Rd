@@ -23,13 +23,13 @@ A list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects.
 Parses the roxygen2 package documentation of a specific R package or from a single \code{.R} source code file.
 }
 \examples{
-# Either provide an R source file as a character vector `text` ...
+# Either provide an R source file as a character vector `text`...
 text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/",
                                  "db52a58d505b65f58ba922d4752b5b0061f2a98c/R/fn.R"))
 
 pal::roxy_blocks(text = text) |> head(n = 3L)
 
-# ... or provide a package name
+# ...or provide a package name
 try(
   pal::roxy_blocks(pkg = "tinkr",
                    repos = "https://cloud.r-project.org") |>

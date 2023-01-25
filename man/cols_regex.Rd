@@ -23,7 +23,7 @@ Allows to define a regular expression per desired \link[readr:cols]{column speci
 \examples{
 library(magrittr)
 
-# for some hypothetical CSV data column names like these ...
+# for some hypothetical CSV data column names like these...
 col_names <- c("VAR1_Text",
                "VAR2_Text",
                "VAR3_Text_Other",
@@ -34,7 +34,7 @@ col_names <- c("VAR1_Text",
                "GARBAGEX67",
                "GARBAGEY09")
 
-# ... a column spec could be created concisely as follows:
+# ...a column spec could be created concisely as follows:
 col_regex <- list("_Text(_|$)" = "c",
                   "_Code(_|$)" = "i",
                   "^GARBAGE"  = readr::col_skip())

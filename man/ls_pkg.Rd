@@ -20,7 +20,10 @@ A \link[tibble:tbl_df-class]{tibble}.
 List a subset of all installed packages
 }
 \examples{
-pal::ls_pkg(pkg = c("pal", "tibble", "dplyr"))
+pal::ls_pkg(pkg = c("methods", "utils"))
+
+pal::ls_pkg(pkg = "^ut",
+            as_regex = TRUE)
 }
 \seealso{
 Other R package functions:

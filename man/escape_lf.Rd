@@ -21,15 +21,15 @@ versions of macOS. Set \code{escape_cr = TRUE} in order to also escape the carri
 \examples{
 library(magrittr)
 
-# read in and print package description as-is
+# read in and print RStudio add-in registration file as-is
 text <-
   fs::path_package(package = "pal",
-                   "DESCRIPTION") \%>\%
+                   "rstudio", "addins.dcf") |>
   readr::read_file() \%T>\%
   pal::cat_lines()
 
 # escape newlines and print again
-pal::escape_lf(text) \%>\% pal::cat_lines()
+pal::escape_lf(text) |> pal::cat_lines()
 }
 \seealso{
 Other string functions:

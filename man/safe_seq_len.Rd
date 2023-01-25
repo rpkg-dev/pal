@@ -18,11 +18,11 @@ Modified version of \code{\link[base:seq]{seq_len()}} that returns a zero-length
 \examples{
 pal::safe_seq_len(5)
 
-# this function simply returns a zero-length integer for zero-length inputs ...
+# this function simply returns a zero-length integer for zero-length inputs...
 pal::safe_seq_len(NULL)
 pal::safe_seq_len(integer())
 
-# ... while `seq_len()` throws an error
+# ...while `seq_len()` throws an error
 try(seq_len(NULL))
 try(seq_len(integer()))
 }

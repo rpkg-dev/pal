@@ -61,11 +61,11 @@ Under the hood, this function relies on \code{\link[waldo:compare]{waldo::compar
 \examples{
 scramble <- function(x) x[sample(nrow(x)), sample(ncol(x))]
 
-# by default, ordering of rows and columns matters ...
+# by default, ordering of rows and columns matters...
 pal::is_equal_df(x = mtcars,
                  y = scramble(mtcars))
 
-# ... but those can be ignored if desired
+# ...but those can be ignored if desired
 pal::is_equal_df(x = mtcars,
                  y = scramble(mtcars),
                  ignore_col_order = TRUE)
@@ -73,13 +73,13 @@ pal::is_equal_df(x = mtcars,
                  y = scramble(mtcars),
                  ignore_row_order = TRUE)
 
-# by default, `is_equal_df()` is sensitive to column type differences ...
+# by default, `is_equal_df()` is sensitive to column type differences...
 df1 <- data.frame(x = "a",
                   stringsAsFactors = FALSE)
 df2 <- data.frame(x = factor("a"))
 pal::is_equal_df(df1, df2)
 
-# ... but you can request it to not make a difference between similar types
+# ...but you can request it to not make a difference between similar types
 pal::is_equal_df(df1, df2,
                  ignore_col_types = TRUE)
 }

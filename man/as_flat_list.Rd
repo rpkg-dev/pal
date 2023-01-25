@@ -30,18 +30,18 @@ library(magrittr)
 
 nested_list <- list(1:3, list("foo", list("bar"))) \%T>\% str()
 
-# unlike `unlist()` which also removes the last list tier in many cases ...
+# unlike `unlist()` which also removes the last list tier in many cases...
 unlist("foobar")
 unlist(nested_list) \%>\% str()
-# ... this function always returns an (unnested) list
+# ...this function always returns an (unnested) list
 pal::as_flat_list("foobar") \%>\% str()
 pal::as_flat_list(nested_list) \%>\% str()
 
 nested_list <- list(list(factor("a"), factor("b")), factor("c")) \%T>\% str()
 
-# unlike `unlist()` which combines factors ...
+# unlike `unlist()` which combines factors...
 unlist(nested_list) \%>\% str()
-# ... this function does not modify the list elements
+# ...this function does not modify the list elements
 pal::as_flat_list(nested_list) \%>\% str()
 
 nested_list <-
@@ -51,12 +51,12 @@ nested_list <-
 nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) \%T>\% str()
 
 # by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
-# not flattened ...
+# not flattened...
 pal::as_flat_list(nested_list) \%>\% str()
 pal::as_flat_list(nested_list_2) \%>\% str()
-# ... but you can drop them and thereby flatten custom objects if needed ...
+# ...but you can drop them and thereby flatten custom objects if needed...
 pal::as_flat_list(nested_list, keep_attrs = FALSE) \%>\% str()
-# ... or retain `xfun_strict_list`s, too
+# ...or retain `xfun_strict_list`s, too
 pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) \%>\% str()
 }
 \concept{list}

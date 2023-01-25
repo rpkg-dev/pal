@@ -71,48 +71,18 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"pal"</span>,</span></span>
-<span class="r-in"><span>                 <span class="st">"DESCRIPTION"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_lines.html" class="external-link">read_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"pal"</span>,</span></span>
+<span class="r-in"><span>                 <span class="st">"rstudio"</span>, <span class="st">"addins.dcf"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_lines.html" class="external-link">read_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu">cat_lines</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Package: pal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Title: Friendly Convenience/Utility Functions</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Version: 0.0.9092</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Authors@R: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            comment = c(ORCID = "0000-0002-5329-5987"))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Description: A collection of convenience/utility functions complementing</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     base R and the tidyverse.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> License: AGPL (&gt;= 3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> URL: https://pal.rpkg.dev, https://gitlab.com/salim_b/r/pkgs/pal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BugReports: https://gitlab.com/salim_b/r/pkgs/pal/issues</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Depends: R (&gt;= 4.1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Imports: checkmate (&gt;= 2.0.0), cli (&gt;= 3.1.0), dplyr (&gt;= 1.0.7), fs (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         1.5.0), glue (&gt;= 1.4.2), lifecycle (&gt;= 1.0.0), lubridate (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         1.8.0), magrittr (&gt;= 2.0.1), methods, purrr (&gt;= 1.0.0), rlang</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         (&gt;= 1.0.0), stringr (&gt;= 1.5.0), tibble (&gt;= 3.1.4), utils</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Suggests: brio (&gt;= 1.1.0), commonmark (&gt;= 1.7), desc (&gt;= 1.4.0), gh (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         1.3.0), htmltools (&gt;= 0.5.2), httr (&gt;= 1.4.1), janeaustenr,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         knitr (&gt;= 1.41), pander (&gt;= 0.6.3), pkgdown (&gt;= 1.6.1.9000),</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         pkgsnip (&gt;= 0.0.9026), rappdirs (&gt;= 0.3.3), RcppTOML (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         0.1.7), readr (&gt;= 1.4.0), rmarkdown (&gt;= 2.1), roxygen2 (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         7.1.2), rprojroot (&gt;= 2.0.3), rstudioapi (&gt;= 0.11), rvest (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         1.0.2), testthat (&gt;= 3.0.0), tinkr (&gt;= 0.1.0), usethis (&gt;=</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         2.1.5), waldo (&gt;= 0.2.3), withr (&gt;= 2.4.1), xfun (&gt;= 0.26),</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         xml2 (&gt;= 1.3.2), xslt (&gt;= 1.4.3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Remotes: gitlab::salim_b/r/pkgs/pkgsnip</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Config/testthat/edition: 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Encoding: UTF-8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LazyData: true</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Roxygen: list(markdown = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RoxygenNote: 7.2.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Author: Salim Brüggemann [aut, cre] (&lt;https://orcid.org/0000-0002-5329-5987&gt;)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Maintainer: Salim Brüggemann &lt;salim-b@pm.me&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Built: R 4.2.2; ; 2023-01-20 21:41:01 UTC; unix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Name: Build `README.Rmd`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Description: Executes `pal::build_readme()`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Binding: build_readme</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Interactive: false</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># recursive conversion to type character or not</span></span></span>
+<span class="r-in"><span><span class="co"># conversion to type character, recursive vs. non-recursive</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">to_convert</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="st">"A"</span>, <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="st">"wonderful"</span><span class="op">)</span>, <span class="fu">xfun</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xfun/man/strict_list.html" class="external-link">strict_list</a></span><span class="op">(</span><span class="st">"day"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/tee.html" class="external-link">%T&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -137,14 +107,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">to_convert</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">cat_lines</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">to_convert</span> <span class="op">|&gt;</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">cat_lines</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wonderful</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> day</span>
-<span class="r-in"><span><span class="va">to_convert</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cat_line.html" class="external-link">cat_line</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">to_convert</span> <span class="op">|&gt;</span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cat_line.html" class="external-link">cat_line</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list(a = 1:3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1</span>

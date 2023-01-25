@@ -29,9 +29,7 @@ Asserts that a \link[httr:response]{response object} is of a specific \href{http
 \code{\link[httr:http_type]{httr::http_type()}}.
 }
 \examples{
-httr::GET("https://api.github.com/users/salim-b") |>
-  pal::assert_mime_type("application/json") |>
-  httr::content()
+httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("application/json")
 
 # an informative error is thrown when the assertion is violated
 try(

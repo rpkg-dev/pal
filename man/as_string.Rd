@@ -21,18 +21,17 @@ Similar to \code{\link[=paste0]{paste0(..., collapse = "")}}, but \emph{recursiv
 library(magrittr)
 
 input <-
-  sample.int(n = 5,
-             size = 3) \%>\%
-  paste0(", ") \%>\%
+  paste0(2:4,
+         collapse = ", ") |>
   purrr::map(rep,
              times = 20) \%>\%
   list(c("This is a glut of ", "meaningless numbers: "), .)
 
-# while this just converts `input` in a lazy way ...
+# while this just converts `input` in a lazy way...
 paste0(input,
        collapse = "")
 
-# ... this one works harder
+# ...this one works harder
 pal::as_string(input)
 }
 \seealso{

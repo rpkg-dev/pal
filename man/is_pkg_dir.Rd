@@ -18,7 +18,7 @@ package directory, not its subdirectories.
 }
 \examples{
 pal::is_pkg_dir()
-pal::is_pkg_dir(fs::path_package("pal"))
+pal::is_pkg_dir(fs::path_package("utils"))
 }
 \seealso{
 Other R package functions:
