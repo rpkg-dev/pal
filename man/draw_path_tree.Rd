@@ -27,7 +27,7 @@ the tree is the same.
 list("root_dir" = list("subdir1",
                        "subdir2" = list("file1.ext"),
                        "file2.ext")) |>
-  flatten_path_tree() |>
+  pal::flatten_path_tree() |>
   pal::draw_path_tree()
 
 # using an actual path hierarchy
