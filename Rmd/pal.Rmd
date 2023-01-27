@@ -1221,7 +1221,24 @@ fuse_regex <- function(...) {
 
 TODO:
 
--   Deprecate this fn in favor of `stringr::str_flatten_comma()`, `cli::ansi_collapse()` and/or `knitr::combine_words()`?
+-   There are three alternative fns in way more popular pkgs:
+
+    -   `stringr::str_flatten_comma()`
+
+        -   comma is hardcoded, so not a full alternative!
+
+    -   `knitr::combine_words()`
+
+        -   properly supports different `sep`s for length-2 and longer inputs ("oxford comma")!
+
+    -   `cli::ansi_collapse()`
+
+        -   no means to use different `sep`s for length-2 and longer inputs ("oxford comma")!
+        -   apart from that the most powerful/sophisticated fn!
+
+    If the proposal in [r-lib/cli#568](https://github.com/r-lib/cli/issues/568) is gonna be implemented, retire `prose_ls()`.
+
+    Otherwise, base it on `cli::ansi_collapse()` with and additional param `single_sep` for length-2 sep. And rename it to `collapse_chr()` in the same go!
 
 ```{r}
 #' List items concatenated in prose style (..., ... and ...)
