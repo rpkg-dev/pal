@@ -1823,6 +1823,11 @@ pkg_config_val <- function(key,
   
   # abort if no default value was provided
   if (is.null(result)) {
+    
+    opt_name <- paste(pkg, key,
+                      sep = ".")
+    env_var_name <- toupper(paste(pkg, key,
+                                  sep = "_"))
     cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
                           "environment variable {.envvar {env_var_name}}."))
   }
