@@ -68,6 +68,7 @@ reference:
   - is_pkg_cran
   - is_pkg_dir
   - is_pkgdown_dir
+  - exists_in_namespace
   - pkg_config_val
   - has_pkg_config_val
   - use_pkg

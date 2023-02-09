@@ -91,6 +91,9 @@
     <loc>https://pal.rpkg.dev/dev/reference/escape_lf.html</loc>
   </url>
   <url>
+    <loc>https://pal.rpkg.dev/dev/reference/exists_in_namespace.html</loc>
+  </url>
+  <url>
     <loc>https://pal.rpkg.dev/dev/reference/flatten_path_tree.html</loc>
   </url>
   <url>

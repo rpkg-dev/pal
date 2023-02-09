@@ -38,6 +38,11 @@ get_pkg_config_val <- function(key,
                                default = NULL) {
   
   checkmate::assert_string(pkg)
+  if (!exists_in_namespace(x = "pkg_config",
+                           ns = pkg)) {
+    cli::cli_abort(paste0("Package {.pkg {pkg}} has not defined the required package configuration metadata in its namespace (as object {.var pkg_config}). ",
+                          "See the {.emph Details} section of {.help pal::pkg_config_val} for more information."))
+  }
   pkg_config <- utils::getFromNamespace(x = "pkg_config",
                                         ns = pkg)
   checkmate::assert_data_frame(pkg_config,
@@ -141,7 +146,9 @@ safe_seq_len <- function(n) {
   if (length(n) > 0L) {
     return(seq_len(n))
     
-  } else return(integer())
+  } else {
+    return(integer())
+  }
 }
 
 #' Maximum (safe)
@@ -207,8 +214,8 @@ safe_max <- function(...,
 #' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
 #' - `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
-#' @param ... Numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @inheritParams safe_max
+#' @param ... Numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
 #'
 #' @inherit safe_max return
 #' @family stat
@@ -372,6 +379,7 @@ stat_mode <- function(x,
 #'
 #' Under the hood, this function relies on [waldo::compare()].
 #'
+#' @inheritParams waldo::compare
 #' @param x,y Two data frames/tibbles to compare. `y` is treated as the reference object, so messages describe how `x` is different to `y`.
 #' @param ignore_col_order Whether or not to ignore the order of columns.
 #' @param ignore_row_order Whether or not to ignore the order of rows.
@@ -382,7 +390,6 @@ stat_mode <- function(x,
 #'   differences.
 #' @param return_waldo_compare Whether to return a character vector of class [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`
 #'   instead of `TRUE` or `FALSE`.
-#' @inheritParams waldo::compare
 #'
 #' @return If `return_waldo_compare = FALSE`, a logical scalar indicating the result of the comparison. Otherwise a character vector of class
 #'   [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`.
@@ -428,11 +435,11 @@ is_equal_df <- function(x,
   checkmate::assert_flag(ignore_row_order)
   checkmate::assert_flag(ignore_col_types)
   checkmate::assert_number(tolerance,
-                           lower = 0,
+                           lower = 0.0,
                            null.ok = TRUE)
   checkmate::assert_flag(quiet)
   checkmate::assert_number(max_diffs,
-                           lower = 1)
+                           lower = 1.0)
   checkmate::assert_flag(return_waldo_compare)
   
   # convert `x` and `y` to tibble if any modification is required
@@ -732,13 +739,13 @@ escape_lf <- function(x,
 #' Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
 #' [`format()`][base::format()].
 #'
+#' @inheritParams round_to
 #' @param x A numeric vector to prettify.
 #' @param round_to Number to round `x` to. A numeric scalar.
 #' @param big_mark Character used between every 3 digits to separate thousands.
 #' @param decimal_mark Character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
 #' @param justify_right Whether to right-justify the results to a common width. See the `trim` parameter of [base::format()] for details.
 #' @param ... Further arguments passed on to [base::format()].
-#' @inheritParams round_to
 #'
 #' @return A character vector of the same length as `x`.
 #' @family string
@@ -1739,6 +1746,48 @@ is_pkgdown_dir <- function(path = ".") {
     any()
 }
 
+#' Test if object exists in namespace
+#'
+#' Determines whether or not an object exists in a specific [namespace](https://adv-r.hadley.nz/environments.html#namespaces).
+#'
+#' This complements [utils::getFromNamespace()] and uses almost the same code internally.
+#'
+#' @inheritParams utils::getFromNamespace
+#'
+#' @return A logical scalar.
+#' @export
+#'
+#' @examples
+#' if (pal::is_pkg_installed("pkgpurl")) {
+#'   pal::exists_in_namespace("pkg_config", "pkgpurl")
+#' }
+#'
+#' pal::exists_in_namespace("pkg_config", "pal")
+exists_in_namespace <- function(x,
+                                ns,
+                                pos = -1L,
+                                envir = as.environment(pos)) {
+  if (missing(ns)) {
+    
+    nm <- attr(x = envir,
+               which = "name",
+               exact = TRUE)
+    
+    if (is.null(nm) || !startsWith(nm, "package:")) {
+      cli::cli_abort("Specified environment is not a package.")
+    }
+    
+    ns <- asNamespace(substring(nm, 9L))
+    
+  } else {
+    ns <- asNamespace(ns)
+  }
+  
+  exists(x = x,
+         envir = ns,
+         inherits = FALSE)
+}
+
 #' Get package configuration value
 #'
 #' @description
@@ -1883,8 +1932,8 @@ desc_list <- function(file = ".") {
 #'
 #' If you rather want to take an action like throwing an error, it's recommended to call [desc::desc_get_field()] directly.
 #'
-#' @param default Default value to return if `key` is not found.
 #' @inheritParams desc::desc_get_field
+#' @param default Default value to return if `key` is not found.
 #'
 #' @return A character scalar.
 #' @family desc
@@ -2279,6 +2328,7 @@ as_md_val_list <- function(...) {
 #'
 #' @inherit knitr::kable details
 #'
+#' @inheritParams knitr::kable
 #' @param x Dataframe/tibble/matrix to be converted to a pipe table.
 #' @param incl_rownames Whether to include row names or not. A logical scalar or `NULL`. If `NULL`, row names are included if `rownames(x)` is neither `NULL`
 #'   nor identical to `seq_len(nrow(x))`.
@@ -2288,7 +2338,6 @@ as_md_val_list <- function(...) {
 #'   `align = NULL`, numeric columns are right-aligned, and other columns are left-aligned. If `length(align) == 1L`, the string will be expanded to a vector
 #'   of individual letters, e.g. `'clc'` becomes `c('c', 'l', 'c')`.
 #' @param format_args A list of arguments to be passed to [format()] to format table values, e.g. `list(big.mark = ',')`.
-#' @inheritParams knitr::kable
 #'
 #' @return A character vector.
 #' @family md
@@ -2773,6 +2822,8 @@ strip_yaml_header <- function(rmd,
 #' - [Multiline blockquotes](https://gitlab.com/help/user/markdown.md#multiline-blockquote) won't work because the fence delimiters `>>>` will be escaped by
 #'   Pandoc during conversion.
 #'
+#' @inheritParams rmarkdown::output_format
+#' @inheritParams rmarkdown::md_document
 #' @param smart_punctuation Whether to enable [Pandoc's `smart` extension](https://pandoc.org/MANUAL.html#extension-smart) which converts straight quotes to
 #'   curly quotes, `---` to an em-dash (—), `--` to an en-dash (–), and `...` to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
 #'   as `Mr.`.
@@ -2789,8 +2840,6 @@ strip_yaml_header <- function(rmd,
 #'   [`tex_math_single_backslash` Pandoc Markdown extension](https://pandoc.org/MANUAL.html#extension-tex_math_single_backslash) which causes anything between
 #'   `\(` and `\)` to be interpreted as inline TeX math, and anything between `\[` and `\]` to be interpreted as display TeX math. Note: a drawback of this
 #'   extension is that it precludes escaping `(` and `[`.
-#' @inheritParams rmarkdown::output_format
-#' @inheritParams rmarkdown::md_document
 #'
 #' @return R Markdown output format intended to be fed to [rmarkdown::render()].
 #' @family rmd_format
@@ -3068,10 +3117,11 @@ gh_text_file <- function(path,
 #'
 #' This is a simple convenience function combining [gh_dir_ls()] and [gh_text_file()]. 
 #'
+#' @inherit gh_text_file details
+#'
+#' @inheritParams gh_dir_ls
 #' @param recurse Whether or not to also include text files in subfolders of `path`. A logical scalar. Enabling this option may result in many API calls and
 #'   thus produce a significant delay.
-#' @inheritParams gh_dir_ls
-#' @inherit gh_text_file details
 #'
 #' @return A named character vector of length equal to the number of files found under `rev:path` with the file paths as names and the file contents as
 #'   values.
@@ -3190,7 +3240,7 @@ gh_dir_ls <- function(path = "",
   
   dirs <-
     entries %>%
-    purrr::keep(~ .x$type %in% c("tree")) %>%
+    purrr::keep(~ .x$type == "tree") %>%
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,
                      "path") %>%
@@ -3566,9 +3616,9 @@ cli_no_lgl <- function(cnd) {
 #'
 #' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
 #'
+#' @inheritParams cli::cli_process_start
 #' @param expr An expression to be evaluated.
 #' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
-#' @inheritParams cli::cli_process_start
 #'
 #' @return The result of the evaluated `expr`, invisibly.
 #' @seealso [cli::cli_progress_step()] which additionally shows the time elapsed within the associated step.
