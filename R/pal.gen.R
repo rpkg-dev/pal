@@ -33,6 +33,17 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "available",
                                           "type"))
 
+env_var_name <- function(...) {
+  
+  as_string(...,
+            sep = "_") %>%
+    stringr::str_replace_all(pattern = "\\W",
+                             replacement = "_") %>%
+    stringr::str_replace(pattern = "^(\\d)",
+                         replacement = "_\\1") %>%
+    toupper()
+}
+
 get_pkg_config_val <- function(key,
                                pkg,
                                default = NULL) {
@@ -56,12 +67,12 @@ get_pkg_config_val <- function(key,
                           values = pkg_config$key)
   opt_name <- paste(pkg, key,
                     sep = ".")
-  env_var_name <- toupper(paste(pkg, key,
-                                sep = "_"))
+  env_var_name <- env_var_name(pkg, key)
+  
   # 1st priority: R option
   result <- getOption(opt_name)
   
-  # 2nd priority: Environment variable
+  # 2nd priority: environment variable
   if (is.null(result)) {
     
     result <- Sys.getenv(env_var_name,
@@ -1826,8 +1837,8 @@ pkg_config_val <- function(key,
     
     opt_name <- paste(pkg, key,
                       sep = ".")
-    env_var_name <- toupper(paste(pkg, key,
-                                  sep = "_"))
+    env_var_name <- env_var_name(pkg, key)
+    
     cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
                           "environment variable {.envvar {env_var_name}}."))
   }
