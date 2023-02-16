@@ -36,6 +36,7 @@ This function is intended to be used by package authors who want to expose their
 \seealso{
 Other R package functions:
 \code{\link{assert_pkg}()},
+\code{\link{augment_pkg_config}()},
 \code{\link{has_pkg_config_val}()},
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},

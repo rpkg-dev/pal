@@ -63,6 +63,7 @@ reference:
 - title: R packages
 - contents:
   - ls_pkg
+  - use_pkg
   - assert_pkg
   - is_pkg_installed
   - is_pkg_cran
@@ -71,7 +72,7 @@ reference:
   - exists_in_namespace
   - pkg_config_val
   - has_pkg_config_val
-  - use_pkg
+  - augment_pkg_config
 - subtitle: Package DESCRIPTION
   desc: Extending the [desc](https://github.com/r-lib/desc#readme) package.
 - contents:

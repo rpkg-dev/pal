@@ -21,12 +21,15 @@ Tests whether or not a certain package configuration value is set. See \code{\li
 Note that \code{has_pkg_config_val()} throws an error if the package configuration \emph{key} doesn't exist.
 }
 \examples{
-pal::has_pkg_config_val(key = "gen_pkgdown_ref",
-                        pkg = "pkgpurl")
+try(
+  pal::has_pkg_config_val(key = "gen_pkgdown_ref",
+                          pkg = "pkgpurl")
+)
 }
 \seealso{
 Other R package functions:
 \code{\link{assert_pkg}()},
+\code{\link{augment_pkg_config}()},
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},

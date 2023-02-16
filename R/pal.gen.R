@@ -44,9 +44,7 @@ env_var_name <- function(...) {
     toupper()
 }
 
-get_pkg_config_val <- function(key,
-                               pkg,
-                               default = NULL) {
+get_pkg_config <- function(pkg) {
   
   checkmate::assert_string(pkg)
   if (!exists_in_namespace(x = "pkg_config",
@@ -54,6 +52,7 @@ get_pkg_config_val <- function(key,
     cli::cli_abort(paste0("Package {.pkg {pkg}} has not defined the required package configuration metadata in its namespace (as object {.var pkg_config}). ",
                           "See the {.emph Details} section of {.help pal::pkg_config_val} for more information."))
   }
+  
   pkg_config <- utils::getFromNamespace(x = "pkg_config",
                                         ns = pkg)
   checkmate::assert_data_frame(pkg_config,
@@ -63,6 +62,14 @@ get_pkg_config_val <- function(key,
     cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value}.")
   }
   
+  pkg_config
+}
+
+get_pkg_config_val <- function(key,
+                               pkg,
+                               default = NULL) {
+  
+  pkg_config <- get_pkg_config(pkg)
   key <- rlang::arg_match(key,
                           values = pkg_config$key)
   opt_name <- paste(pkg, key,
@@ -1508,6 +1515,33 @@ ls_pkg <- function(pkg,
                                       pattern = regex))
 }
 
+#' Depend on another package
+#'
+#' Wrapper around [usethis::use_package()] with different defaults and optional `DESCRIPTION` file [tidying][usethis::use_tidy_description].
+#'
+#' @inheritParams usethis::use_package
+#' @param tidy Whether or not to run [usethis::use_tidy_description()] after adding `package` to dependencies.
+#'
+#' @return `NULL`, invisibly.
+#' @family rpkgs
+#' @export
+use_pkg <- function(package,
+                    type = "Imports",
+                    min_version = TRUE,
+                    tidy = TRUE) {
+  
+  checkmate::assert_flag(tidy)
+  assert_pkg("usethis")
+  
+  usethis::use_package(package = package,
+                       type = type,
+                       min_version = min_version)
+  
+  if (tidy) {
+    usethis::use_tidy_description()
+  }
+}
+
 #' Assert a package is installed
 #'
 #' Asserts a package is installed on the current system, optionally ensuring a `min_version`. If the package is not installed, an informative error `message` is
@@ -1859,8 +1893,10 @@ pkg_config_val <- function(key,
 #' @export
 #'
 #' @examples
-#' pal::has_pkg_config_val(key = "gen_pkgdown_ref",
-#'                         pkg = "pkgpurl")
+#' try(
+#'   pal::has_pkg_config_val(key = "gen_pkgdown_ref",
+#'                           pkg = "pkgpurl")
+#' )
 has_pkg_config_val <- function(key,
                                pkg) {
   
@@ -1868,31 +1904,27 @@ has_pkg_config_val <- function(key,
                               pkg = pkg))
 }
 
-#' Depend on another package
+#' Augment package configuration
 #'
-#' Wrapper around [usethis::use_package()] with different defaults and optional `DESCRIPTION` file [tidying][usethis::use_tidy_description].
+#' Augments a package's configuration metadata (`<pkg>::pkg_config`) with the columns `r_opts` and `env_var` holding the respective \R option and environment
+#' variable names.
 #'
-#' @inheritParams usethis::use_package
-#' @param tidy Whether or not to run [usethis::use_tidy_description()] after adding `package` to dependencies.
+#' @inheritParams pkg_config_val
 #'
-#' @return `NULL`, invisibly.
+#' @return A [tibble][tibble::tbl_df] with at minimum the columns `key`, `default_value`, `r_opt` and `env_var`.
 #' @family rpkgs
 #' @export
-use_pkg <- function(package,
-                    type = "Imports",
-                    min_version = TRUE,
-                    tidy = TRUE) {
+#'
+#' @examples
+#' try(
+#'   pal::augment_pkg_config(pkg = "pkgpurl")
+#' )
+augment_pkg_config <- function(pkg) {
   
-  checkmate::assert_flag(tidy)
-  assert_pkg("usethis")
-  
-  usethis::use_package(package = package,
-                       type = type,
-                       min_version = min_version)
-  
-  if (tidy) {
-    usethis::use_tidy_description()
-  }
+  get_pkg_config(pkg) |>
+    dplyr::mutate(r_opt = paste(pkg, key,
+                                sep = "."),
+                  env_var = purrr::map_chr(key, \(k) env_var_name(pkg, k)))
 }
 
 #' Get all `DESCRIPTION` file fields as cleaned up list
