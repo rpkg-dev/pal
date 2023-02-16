@@ -2146,8 +2146,8 @@ exists_in_namespace <- function(x,
 #' Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
 #' returned:
 #'
-#' 1. The \R option `<pkg>.<key>`.
-#' 2. The environment variable `<PKG>_<KEY>`.
+#' 1. The \R [option][options] `<pkg>.<key>`.
+#' 2. The [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `<PKG>_<KEY>`.
 #' 3. The configuration's default value as specified in the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
 #'    specified (`NULL`), an error is thrown.
 #'
@@ -3054,7 +3054,7 @@ md_xml_subnode_ix <- function(xml) {
 #'                   name = "pal") |>
 #'   pal::md_to_xml() |>
 #'   xml2::xml_contents() |>
-#'   magrittr::extract(23:25) |>
+#'   magrittr::extract(22:28) |>
 #'   pal::xml_to_md() |>
 #'   cat()
 xml_to_md <- function(xml) {

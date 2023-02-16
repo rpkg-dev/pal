@@ -22,7 +22,7 @@ pal::gh_text_file(path = "Rmd/pal.Rmd",
                   name = "pal") |>
   pal::md_to_xml() |>
   xml2::xml_contents() |>
-  magrittr::extract(23:25) |>
+  magrittr::extract(22:28) |>
   pal::xml_to_md() |>
   cat()
 }

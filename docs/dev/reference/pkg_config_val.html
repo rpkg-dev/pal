@@ -53,8 +53,8 @@ The configuration's default value as specified in the package's configuration me
     </div>
 
     <div class="ref-description section level2">
-    <p>Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is returned:</p><ol><li><p>The <span style="R">R</span> option <code>&lt;pkg&gt;.&lt;key&gt;</code>.</p></li>
-<li><p>The environment variable <code>&lt;PKG&gt;_&lt;KEY&gt;</code>.</p></li>
+    <p>Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is returned:</p><ol><li><p>The <span style="R">R</span> <a href="https://rdrr.io/r/base/options.html" class="external-link">option</a> <code>&lt;pkg&gt;.&lt;key&gt;</code>.</p></li>
+<li><p>The <a href="https://en.wikipedia.org/wiki/Environment_variable" class="external-link">environment variable</a> <code>&lt;PKG&gt;_&lt;KEY&gt;</code>.</p></li>
 <li><p>The configuration's default value as specified in the package's configuration metadata (<code>&lt;pkg&gt;::pkg_config$default_value</code>). If no default value is specified (<code>NULL</code>), an error is thrown.</p></li>
 </ol></div>
 

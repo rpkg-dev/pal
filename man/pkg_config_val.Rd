@@ -21,8 +21,8 @@ default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if define
 Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
 returned:
 \enumerate{
-\item The \R option \verb{<pkg>.<key>}.
-\item The environment variable \verb{<PKG>_<KEY>}.
+\item The \R \link[=options]{option} \verb{<pkg>.<key>}.
+\item The \href{https://en.wikipedia.org/wiki/Environment_variable}{environment variable} \verb{<PKG>_<KEY>}.
 \item The configuration's default value as specified in the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
 specified (\code{NULL}), an error is thrown.
 }
