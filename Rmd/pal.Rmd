@@ -2187,6 +2187,22 @@ exists_in_namespace <- function(x,
 
 TODO:
 
+-   Document how to add pkg config info to `R/<pkg>-package.R`:
+
+    ``` r
+    @section Package configuration:
+    #'
+    #' `r pkgsnip::md_snip("pkg_config", pkg = "c2d")`
+    #'
+    #' ```{r, echo = FALSE}
+    #' pal::print_pkg_config("c2d")
+    #' ```
+    #'
+    ```
+
+    and figure out best way to show same info on pkgdown site (pkgdown builds the `R/<pkg>-package.R` to `/reference/<pkg>-package.html` but doesn't link it
+    anywhere it seems).
+
 -   Outsource these fns into separate pkg? Maybe first compile a systematic review of existing pkgs with similar functionality like
     [settings](https://github.com/markvanderloo/settings) and [GlobalOptions](https://github.com/jokergoo/GlobalOptions)...
 
@@ -2320,6 +2336,14 @@ augment_pkg_config <- function(pkg) {
 print_pkg_config <- function(pkg) {
   
   augment_pkg_config(pkg) |>
+    dplyr::mutate(dplyr::across(c(r_opt, env_var),
+                                \(x) wrap_chr(x, wrap = "`")),
+                  default_value = purrr::map(default_value,
+                                             \(x) if (is.null(x)) {
+                                               ""
+                                             } else {
+                                               as_md_vals(x)
+                                             })) |>
     # NOTE: col `description` is not mandatory
     dplyr::select(any_of("description"),
                   r_opt,

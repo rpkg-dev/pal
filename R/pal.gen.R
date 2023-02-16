@@ -1948,6 +1948,14 @@ augment_pkg_config <- function(pkg) {
 print_pkg_config <- function(pkg) {
   
   augment_pkg_config(pkg) |>
+    dplyr::mutate(dplyr::across(c(r_opt, env_var),
+                                \(x) wrap_chr(x, wrap = "`")),
+                  default_value = purrr::map(default_value,
+                                             \(x) if (is.null(x)) {
+                                               ""
+                                             } else {
+                                               as_md_vals(x)
+                                             })) |>
     # NOTE: col `description` is not mandatory
     dplyr::select(any_of("description"),
                   r_opt,
