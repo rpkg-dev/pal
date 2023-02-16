@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{augment_pkg_config}
 \alias{augment_pkg_config}
-\title{Augment package configuration}
+\title{Augment package configuration metadata}
 \usage{
 augment_pkg_config(pkg)
 }
@@ -22,15 +22,9 @@ try(
 )
 }
 \seealso{
-Other R package functions:
-\code{\link{assert_pkg}()},
+Other package configuration functions:
 \code{\link{has_pkg_config_val}()},
-\code{\link{is_pkg_cran}()},
-\code{\link{is_pkg_dir}()},
-\code{\link{is_pkg_installed}()},
-\code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()},
 \code{\link{pkg_config_val}()},
-\code{\link{use_pkg}()}
+\code{\link{print_pkg_config}()}
 }
-\concept{rpkgs}
+\concept{pkg_config}

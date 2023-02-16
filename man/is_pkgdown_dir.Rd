@@ -23,13 +23,10 @@ pal::is_pkgdown_dir(fs::path_package("pal"))
 \seealso{
 Other R package functions:
 \code{\link{assert_pkg}()},
-\code{\link{augment_pkg_config}()},
-\code{\link{has_pkg_config_val}()},
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{ls_pkg}()},
-\code{\link{pkg_config_val}()},
 \code{\link{use_pkg}()}
 }
 \concept{rpkgs}

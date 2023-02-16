@@ -80,6 +80,17 @@
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open compressed file '/home/salim/.cache/pal-roxy_tag_value-tinkr/tinkr/DESCRIPTION', probable reason 'No such file or directory'</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open compressed file '/home/salim/.cache/pal-roxy_tag_value-tinkr/tinkr/DESCRIPTION', probable reason 'No such file or directory'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Normalize a tree path. Useful for GitHub's GraphQL API.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ```{r}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> normalize_tree_path &lt;- function(path) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   checkmate::assert_string(path) %&gt;%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fs::path_norm() %&gt;%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     stringr::str_remove(pattern = "^\\.{0,2}(/|$)")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ```</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ### CommonMark parsing helpers</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #### `is_heading_node`</span>
@@ -99,28 +110,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   xml_node %&gt;%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     xml2::xml_attr(attr = "level") %&gt;%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     as.integer()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ```</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #### `subnode_ix`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ```{r}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> subnode_ix &lt;- function(xml_nodes,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        i) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   i_node &lt;- i</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   i &lt;- i + 1L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ix_subnodes &lt;- integer()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   heading_lvl_node &lt;- node_heading_lvl(xml_nodes[i_node])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   is_subnode &lt;- is_heading_node(xml_nodes[i_node]) &amp;&amp; i &lt;= length(xml_nodes)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   while (is_subnode) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     is_subnode &lt;- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) &gt; heading_lvl_node)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ix_subnodes %&lt;&gt;% c(i[is_subnode])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     i &lt;- i + 1L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     if (i &gt; length(xml_nodes)) is_subnode &lt;- FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ix_subnodes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ```</span>
 </code></pre></div>

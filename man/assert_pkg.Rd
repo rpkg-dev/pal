@@ -46,14 +46,11 @@ try(
 \code{\link[rlang:is_installed]{rlang::check_installed()}}
 
 Other R package functions:
-\code{\link{augment_pkg_config}()},
-\code{\link{has_pkg_config_val}()},
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},
 \code{\link{is_pkgdown_dir}()},
 \code{\link{ls_pkg}()},
-\code{\link{pkg_config_val}()},
 \code{\link{use_pkg}()}
 }
 \concept{rpkgs}

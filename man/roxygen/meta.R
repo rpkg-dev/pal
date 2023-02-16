@@ -8,6 +8,7 @@ list(
                          list       = "Other list functions:",
                          md         = "Other (Pandoc) Markdown functions:",
                          path       = "Other path functions:",
+                         pkg_config = "Other package configuration functions:",
                          rmd_format = "Other R Markdown output formats:",
                          rmd_knitr  = "Other R Markdown and knitr functions:",
                          roxy       = "Other package documentation functions:",

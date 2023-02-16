@@ -14,13 +14,17 @@
 
 utils::globalVariables(names = c(".",
                                  # tidyselect fns
+                                 "any_of",
                                  "everything",
                                  "where",
                                  # other
                                  "data",
                                  "default_value",
+                                 "env_var",
+                                 "key",
                                  "package",
                                  "Package",
+                                 "r_opt",
                                  "repository",
                                  "rowid",
                                  "Version",
@@ -1856,7 +1860,7 @@ exists_in_namespace <- function(x,
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #'
 #' @return `pkgsnip::return_label("r_obj")`
-#' @family rpkgs
+#' @family pkg_config
 #' @export
 pkg_config_val <- function(key,
                            pkg,
@@ -1889,7 +1893,7 @@ pkg_config_val <- function(key,
 #' @inheritParams pkg_config_val
 #'
 #' @return A logical scalar.
-#' @family rpkgs
+#' @family pkg_config
 #' @export
 #'
 #' @examples
@@ -1904,7 +1908,7 @@ has_pkg_config_val <- function(key,
                               pkg = pkg))
 }
 
-#' Augment package configuration
+#' Augment package configuration metadata
 #'
 #' Augments a package's configuration metadata (`<pkg>::pkg_config`) with the columns `r_opts` and `env_var` holding the respective \R option and environment
 #' variable names.
@@ -1912,7 +1916,7 @@ has_pkg_config_val <- function(key,
 #' @inheritParams pkg_config_val
 #'
 #' @return A [tibble][tibble::tbl_df] with at minimum the columns `key`, `default_value`, `r_opt` and `env_var`.
-#' @family rpkgs
+#' @family pkg_config
 #' @export
 #'
 #' @examples
@@ -1925,6 +1929,36 @@ augment_pkg_config <- function(pkg) {
     dplyr::mutate(r_opt = paste(pkg, key,
                                 sep = "."),
                   env_var = purrr::map_chr(key, \(k) env_var_name(pkg, k)))
+}
+
+#' Print package configuration metadata
+#'
+#' Prints a package's configuration metadata (`<pkg>::pkg_config`) as a prettily formatted Markdown table.
+#'
+#' @inheritParams pkg_config_val
+#'
+#' @inherit pipe_table return
+#' @family pkg_config
+#' @export
+#'
+#' @examples
+#' try(
+#'   pal::print_pkg_config(pkg = "pkgpurl")
+#' )
+print_pkg_config <- function(pkg) {
+  
+  augment_pkg_config(pkg) |>
+    # NOTE: col `description` is not mandatory
+    dplyr::select(any_of("description"),
+                  r_opt,
+                  env_var,
+                  default_value) |>
+    dplyr::rename_with(.cols = any_of("description"),
+                       .fn = stringr::str_to_title) |>
+    dplyr::rename(`R option` = r_opt,
+                  `Environment variable` = env_var,
+                  `Default value` = default_value) |>
+    pal::pipe_table()
 }
 
 #' Get all `DESCRIPTION` file fields as cleaned up list

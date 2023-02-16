@@ -70,9 +70,13 @@ reference:
   - is_pkg_dir
   - is_pkgdown_dir
   - exists_in_namespace
+- subtitle: Package configuration
+  desc: Functions around pal's canonicalized way to package configuration.
+- contents:
   - pkg_config_val
   - has_pkg_config_val
   - augment_pkg_config
+  - print_pkg_config
 - subtitle: Package DESCRIPTION
   desc: Extending the [desc](https://github.com/r-lib/desc#readme) package.
 - contents:

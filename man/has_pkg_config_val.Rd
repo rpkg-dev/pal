@@ -27,15 +27,9 @@ try(
 )
 }
 \seealso{
-Other R package functions:
-\code{\link{assert_pkg}()},
+Other package configuration functions:
 \code{\link{augment_pkg_config}()},
-\code{\link{is_pkg_cran}()},
-\code{\link{is_pkg_dir}()},
-\code{\link{is_pkg_installed}()},
-\code{\link{is_pkgdown_dir}()},
-\code{\link{ls_pkg}()},
 \code{\link{pkg_config_val}()},
-\code{\link{use_pkg}()}
+\code{\link{print_pkg_config}()}
 }
-\concept{rpkgs}
+\concept{pkg_config}
