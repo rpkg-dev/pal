@@ -4,12 +4,14 @@
 \alias{as_string}
 \title{Convert to a character scalar (aka string)}
 \usage{
-as_string(..., sep = "")
+as_string(..., sep = "", rm_na = FALSE)
 }
 \arguments{
 \item{...}{\R objects to be assembled to a single string. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
 \item{sep}{Separator to delimit \code{...}. Defaults to none (\code{""}).}
+
+\item{rm_na}{Exclude missing values. If \code{FALSE}, missing values will be represented as \code{"NA"} in the resulting string.}
 }
 \value{
 A character scalar.

@@ -1117,6 +1117,7 @@ dsv_colnames <- function(x,
 #'
 #' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
 #' @param sep Separator to delimit `...`. Defaults to none (`""`).
+#' @param rm_na Exclude missing values. If `FALSE`, missing values will be represented as `"NA"` in the resulting string.
 #'
 #' @return A character scalar.
 #' @family string
@@ -1139,12 +1140,19 @@ dsv_colnames <- function(x,
 #' # ...this one works harder
 #' pal::as_string(input)
 as_string <- function(...,
-                      sep = "") {
+                      sep = "",
+                      rm_na = FALSE) {
+  
+  checkmate::assert_flag(rm_na)
   
   result <- as_chr(...)
   
   if (length(result) > 0L) {
     result %<>% paste0(collapse = sep)
+  }
+  
+  if (rm_na) {
+    result %<>% magrittr::extract(!is.na(.))
   }
   
   result
