@@ -1147,12 +1147,12 @@ as_string <- function(...,
   
   result <- as_chr(...)
   
-  if (length(result) > 0L) {
-    result %<>% paste0(collapse = sep)
-  }
-  
   if (rm_na) {
     result %<>% magrittr::extract(!is.na(.))
+  }
+  
+  if (length(result) > 0L) {
+    result %<>% paste0(collapse = sep)
   }
   
   result
