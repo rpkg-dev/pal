@@ -2202,8 +2202,13 @@ TODO:
     and figure out best way to show same info on pkgdown site (pkgdown builds the `R/<pkg>-package.R` to `/reference/<pkg>-package.html` but doesn't link it
     anywhere it seems).
 
--   Outsource these fns into separate pkg? Maybe first compile a systematic review of existing pkgs with similar functionality like
-    [settings](https://github.com/markvanderloo/settings) and [GlobalOptions](https://github.com/jokergoo/GlobalOptions)...
+-   Outsource these fns into separate pkg?
+
+    Maybe first compile a systematic review of existing pkgs with similar functionality like
+
+    -   [GlobalOptions](https://github.com/jokergoo/GlobalOptions)
+    -   [pkgconfig](https://github.com/r-lib/pkgconfig) (has a different goal: pkg-local options)
+    -   [settings](https://github.com/markvanderloo/settings)
 
 #### DESCRIPTION
 
