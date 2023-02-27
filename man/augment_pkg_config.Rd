@@ -24,6 +24,7 @@ try(
 \seealso{
 Other package configuration functions:
 \code{\link{has_pkg_config_val}()},
+\code{\link{pkg_config_val_default}()},
 \code{\link{pkg_config_val}()},
 \code{\link{print_pkg_config}()}
 }

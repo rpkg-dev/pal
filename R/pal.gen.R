@@ -74,8 +74,8 @@ get_pkg_config_val <- function(key,
                                default = NULL) {
   
   pkg_config <- get_pkg_config(pkg)
-  key <- rlang::arg_match(key,
-                          values = pkg_config$key)
+  key <- rlang::arg_match0(key,
+                           values = pkg_config$key)
   opt_name <- paste(pkg, key,
                     sep = ".")
   env_var_name <- env_var_name(pkg, key)
@@ -94,16 +94,22 @@ get_pkg_config_val <- function(key,
   # 3rd priority: default value
   if (is.na(result)) {
     
-    result <- default %||% {
-      pkg_config %>%
-        dplyr::filter(key == !!key) %$%
-        default_value %>%
-        unlist(recursive = FALSE,
-               use.names = FALSE)
-    }
+    result <- default %||% get_pkg_config_val_default(key = key,
+                                                      pkg_config = pkg_config)
   }
   
   result
+}
+
+get_pkg_config_val_default <- function(key,
+                                       pkg_config) {
+  key <- rlang::arg_match0(key,
+                           values = pkg_config$key)
+  pkg_config |>
+    dplyr::filter(key == !!key) %$%
+    default_value |>
+    unlist(recursive = FALSE,
+           use.names = FALSE)
 }
 
 normalize_tree_path <- function(path) {
@@ -1862,6 +1868,12 @@ exists_in_namespace <- function(x,
 #' @return `pkgsnip::return_label("r_obj")`
 #' @family pkg_config
 #' @export
+#'
+#' @examples
+#' try(
+#'   pal::default_pkg_config_val(key = "gen_pkgdown_ref",
+#'                               pkg = "pkgpurl")
+#' )
 pkg_config_val <- function(key,
                            pkg,
                            default = NULL) {
@@ -1882,6 +1894,29 @@ pkg_config_val <- function(key,
   }
   
   result
+}
+
+#' Get default package configuration value
+#'
+#' Retrieves a package configuration's default value from the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
+#' specified (`NULL`), nothing is returned (`NULL`).
+#'
+#' @inheritParams pkg_config_val
+#'
+#' @return `pkgsnip::return_label("r_obj")`
+#' @family pkg_config
+#' @export
+#'
+#' @examples
+#' try(
+#'   pal::pkg_config_val_default(key = "gen_pkgdown_ref",
+#'                               pkg = "pkgpurl")
+#' )
+pkg_config_val_default <- function(key,
+                                   pkg) {
+  
+  get_pkg_config_val_default(key = key,
+                             pkg_config = get_pkg_config(pkg))
 }
 
 #' Test if package configuration value is set
@@ -2225,8 +2260,8 @@ roxy_obj <- function(blocks,
     purrr::compact() %>%
     purrr::list_c(ptype = character())
   
-  obj_name <- rlang::arg_match(arg = obj_name,
-                               values = obj_names)
+  obj_name <- rlang::arg_match0(arg = obj_name,
+                                values = obj_names)
   
   blocks[[which(obj_names == obj_name)]]
 }
@@ -2277,10 +2312,10 @@ roxy_tag_value <- function(blocks,
       purrr::map_lgl(~ .x$tag == "param") %>%
       which()
     
-    param_name <- rlang::arg_match(arg = param_name,
-                                   values = purrr::map_chr(tags[ix_param],
-                                                           purrr::pluck,
-                                                           "val", "name"))
+    param_name <- rlang::arg_match0(arg = param_name,
+                                    values = purrr::map_chr(tags[ix_param],
+                                                            purrr::pluck,
+                                                            "val", "name"))
     i_to_keep <-
       tags[ix_param] %>%
       purrr::map_lgl(~ .x$val$name == param_name) %>%

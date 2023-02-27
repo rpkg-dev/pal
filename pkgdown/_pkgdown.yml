@@ -74,6 +74,7 @@ reference:
   desc: Functions around pal's canonicalized way to package configuration.
 - contents:
   - pkg_config_val
+  - pkg_config_val_default
   - has_pkg_config_val
   - augment_pkg_config
   - print_pkg_config

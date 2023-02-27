@@ -34,10 +34,17 @@ This function is intended to be used by package authors who want to expose their
 \link[=data.frame]{dataframe} or \link[tibble:tbl_df-class]{tibble} with at minimum the columns \code{key} (of type character holding the configuration key names) and
 \code{default_value} (of type list holding the default configuration values, if any).
 }
+\examples{
+try(
+  pal::default_pkg_config_val(key = "gen_pkgdown_ref",
+                              pkg = "pkgpurl")
+)
+}
 \seealso{
 Other package configuration functions:
 \code{\link{augment_pkg_config}()},
 \code{\link{has_pkg_config_val}()},
+\code{\link{pkg_config_val_default}()},
 \code{\link{print_pkg_config}()}
 }
 \concept{pkg_config}
