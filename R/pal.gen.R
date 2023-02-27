@@ -1844,7 +1844,8 @@ exists_in_namespace <- function(x,
 #'
 #' 1. The \R [option][options] `<pkg>.<key>`.
 #' 2. The [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `<PKG>_<KEY>`.
-#' 3. The configuration's default value as specified in the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
+#' 3. The ad-hoc default value specified via this function's `default` argument (`NULL` means unspecified).
+#' 4. The configuration's global default value as specified in the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
 #'    specified (`NULL`), an error is thrown.
 #'
 #' @details

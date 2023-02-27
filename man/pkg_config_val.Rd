@@ -23,7 +23,8 @@ returned:
 \enumerate{
 \item The \R \link[=options]{option} \verb{<pkg>.<key>}.
 \item The \href{https://en.wikipedia.org/wiki/Environment_variable}{environment variable} \verb{<PKG>_<KEY>}.
-\item The configuration's default value as specified in the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
+\item The ad-hoc default value specified via this function's \code{default} argument (\code{NULL} means unspecified).
+\item The configuration's global default value as specified in the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
 specified (\code{NULL}), an error is thrown.
 }
 }
