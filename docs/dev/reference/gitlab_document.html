@@ -67,7 +67,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>smart_punctuation</dt>
-<dd><p>Whether to enable <a href="https://pandoc.org/MANUAL.html#extension-smart" class="external-link">Pandoc's <code>smart</code> extension</a> which converts straight quotes to curly quotes, <code>---</code> to an em-dash (—), <code>--</code> to an en-dash (–), and <code>...</code> to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such as <code>Mr.</code>.</p></dd>
+<dd><p>Whether or not to enable <a href="https://pandoc.org/MANUAL.html#extension-smart" class="external-link">Pandoc's <code>smart</code> extension</a> which converts straight quotes to curly quotes, <code>---</code> to an em-dash (—), <code>--</code> to an en-dash (–), and <code>...</code> to ellipses (…). It also replaces regular spaces after certain abbreviations such as <code>Mr.</code> with <a href="https://en.wikipedia.org/wiki/Non-breaking_space" class="external-link">non-breaking spaces</a>.</p></dd>
 
 
 <dt>parse_emoji_markup</dt>
@@ -149,7 +149,7 @@
 <span class="r-in"><span>                  quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">brio</span><span class="fu">::</span><span class="fu"><a href="https://brio.r-lib.org/reference/read_lines.html" class="external-link">read_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span><span class="co"># }</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3422</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

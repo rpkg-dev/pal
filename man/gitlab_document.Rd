@@ -20,9 +20,9 @@ gitlab_document(
 )
 }
 \arguments{
-\item{smart_punctuation}{Whether to enable \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts straight quotes to
-curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). Nonbreaking spaces are inserted after certain abbreviations, such
-as \code{Mr.}.}
+\item{smart_punctuation}{Whether or not to enable \href{https://pandoc.org/MANUAL.html#extension-smart}{Pandoc's \code{smart} extension} which converts straight quotes
+to curly quotes, \verb{---} to an em-dash (—), \verb{--} to an en-dash (–), and \code{...} to ellipses (…). It also replaces regular spaces after certain abbreviations
+such as \code{Mr.} with \href{https://en.wikipedia.org/wiki/Non-breaking_space}{non-breaking spaces}.}
 
 \item{parse_emoji_markup}{Whether to enable \href{https://pandoc.org/MANUAL.html#extension-emoji}{Pandoc's \code{emoji} extension} which parses emoji markup (e.g.
 \verb{:smile:}) as Unicode emoticons.}
