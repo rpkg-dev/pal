@@ -1542,10 +1542,12 @@ use_pkg <- function(package,
   checkmate::assert_flag(tidy)
   assert_pkg("usethis")
   
+  # TODO: submit PR upstream for this
+  if (isFALSE(min_version)) min_version <- NULL
+  
   usethis::use_package(package = package,
                        type = type,
                        min_version = min_version)
-  
   if (tidy) {
     usethis::use_tidy_description()
   }
