@@ -2098,24 +2098,26 @@ TODO:
 
 -   Once [PR #83](https://github.com/r-lib/rprojroot/pull/83) is also merged, replace this fn with
 
-        is_pkgdown_dir <- function(path = ".", check_parent_dirs = TRUE) {
+    ``` r
+    is_pkgdown_dir <- function(path = ".", check_parent_dirs = TRUE) {
 
-          checkmate::assert_flag(check_parent_dirs)
+      checkmate::assert_flag(check_parent_dirs)
 
-          if (check_parent_dirs) {
+      if (check_parent_dirs) {
 
-            result <- rprojroot::has_root(criterion = rprojroot::is_pkgdown_dir,
-                                          path = path)
-          } else {
+        result <- rprojroot::has_root(criterion = rprojroot::is_pkgdown_dir,
+                                      path = path)
+      } else {
 
-            result <-
-              rprojroot::is_pkgdown_dir$testfun %>%
-              purrr::map_lgl(~ .x(path = path)) %>%
-              any()
-          }
+        result <-
+          rprojroot::is_pkgdown_dir$testfun %>%
+          purrr::map_lgl(~ .x(path = path)) %>%
+          any()
+      }
 
-          result
-        }
+      result
+    }
+    ```
 
     And analogously for `is_pkg_dir()`!
 
