@@ -23,7 +23,7 @@ Asserts that an object is member of any of the specified classes.
 In contrast to \code{\link[checkmate:checkClass]{checkmate::assert_class()}}, this function returns \code{TRUE} as long as \code{x} is at least member of \emph{one} of \code{classes}.
 }
 \examples{
-pal::gh_text_file(path = "README.md",
+pal::gh_text_file(path = "LICENSE.md",
                   owner = "salim-b",
                   name = "pal") |>
   pal::md_to_xml() |>

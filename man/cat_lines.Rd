@@ -22,11 +22,7 @@ fs::path_package(package = "pal",
   pal::cat_lines()
 
 # conversion to type character, recursive vs. non-recursive
-library(magrittr)
-
-to_convert <-
-  list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) \%T>\%
-  print()
+to_convert <- list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day"))
 
 to_convert |> pal::cat_lines()
 to_convert |> cli::cat_line()

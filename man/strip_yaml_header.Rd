@@ -28,12 +28,18 @@ Note that for the \href{https://rmarkdown.rstudio.com/}{R Markdown file format},
 whitespace characters (incl. newlines) before the YAML metadata block are allowed.
 }
 \examples{
-library(magrittr)
+rmd <- pal::gh_text_file(path = "README.Rmd",
+                         owner = "salim-b",
+                         name = "pal")
+rmd |>
+  stringr::str_split_1("\n") |>
+  head() |>
+  pal::cat_lines()
 
-pal::gh_text_file(path = "README.Rmd",
-                  owner = "salim-b",
-                  name = "pal") \%T>\%
-  pal::strip_yaml_header()
+rmd |>
+  pal::strip_yaml_header() |>
+  head() |>
+  pal::cat_lines()
 }
 \seealso{
 Other R Markdown and knitr functions:

@@ -1,6 +1,7 @@
 list(
-  rd_family_title = list(commonmark = "Other CommonMark parsing functions:",
-                         desc       = "Other package documentation functions:",
+  rd_family_title = list(cli        = "Other functions extending the cli package:",
+                         commonmark = "Other CommonMark parsing functions:",
+                         desc       = "Other package `DESCRIPTION` functions:",
                          dots       = "Other dots functions:",
                          gh         = "Other GitHub functions:",
                          htmlwidget = "Other HTML widget functions:",

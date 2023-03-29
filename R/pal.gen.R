@@ -2153,8 +2153,8 @@ roxy_blocks <- function(pkg = NULL,
     
     rlang::check_dots_empty0(...)
     
-    blocks <- rlang::with_handlers(roxygen2::parse_text(text = text),
-                                   error = ~ list(FALSE, .x))
+    blocks <- tryCatch(expr = roxygen2::parse_text(text = text),
+                       error = \(x) list(FALSE, x))
     
     if (length(blocks) > 0L && isFALSE(blocks[[1L]])) {
       
@@ -2515,12 +2515,12 @@ pipe_table <- function(x,
 #' Removes all Markdown formatting from a character vector.
 #'
 #' This function relies on [commonmark::markdown_text()] which [supports the CommonMark specification plus the Github
-#' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) aren't supported
-#' (yet). Therefore a separate option `strip_footnotes` is offered which relies on a simple regular expression to remove inline footnotes and footnote
-#' references.
+#' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) can't be stripped
+#' using `commonmark::markdown_text()`. Therefore a separate option `strip_footnotes` is offered which relies on a simple regular expression to remove inline
+#' footnotes and footnote references.
 #'
 #' @param x A character vector to strip Markdown formatting from.
-#' @param strip_footnotes Whether to remove Markdown footnotes, too.
+#' @param strip_footnotes Whether to remove Markdown footnotes, too. If `FALSE`, footnotes are canonicalized (to have sequential integer identifiers).
 #'
 #' @return A character vector of the same length as `x`.
 #' @family md
@@ -2537,19 +2537,31 @@ pipe_table <- function(x,
 strip_md <- function(x,
                      strip_footnotes = TRUE) {
   
-  assert_pkg("commonmark")
+  assert_pkg("commonmark",
+             min_version = "1.9.0")
   checkmate::assert_character(x)
   checkmate::assert_flag(strip_footnotes)
   
   purrr::map_chr(x,
-                 ~ if (is.na(.x)) {
-                   .x
-                 } else {
-                   commonmark::markdown_text(text = .x,
-                                             extensions = TRUE) %>%
-                     stringr::str_remove(pattern = "\n$") %>%
-                     when(strip_footnotes ~ strip_md_footnotes(.),
-                          ~ .)
+                 \(x2) {
+                   
+                   if (is.na(x2)) {
+                     x2
+                   } else {
+                     
+                     result <- commonmark::markdown_text(text = x2,
+                                                         footnotes = TRUE,
+                                                         extensions = TRUE)
+                     if (!isTRUE(endsWith(x2, "\n"))) {
+                       result %<>% stringr::str_remove(pattern = "\n$")
+                     }
+                     
+                     if (strip_footnotes) {
+                       result %<>% strip_md_footnotes()
+                     }
+                     
+                     result
+                   }
                  })
 }
 
@@ -2557,16 +2569,40 @@ strip_md <- function(x,
 #'
 #' Removes all Markdown footnotes from a character vector.
 #'
+#' Note that it is not checked whether footnote references and definitions actually match (by identifier), thus they are removed even if they were invalid.
+#'
 #' @param x A character vector to strip Markdown footnotes from. Note that elements in `x` are processed as separate Markdown domains, i.e. _not_ as individual
 #' lines belonging to the same Markdown document.
 #'
 #' @return A character vector of the same length as `x`.
 #' @family md
 #' @export
+#'
+#' @examples
+#' pal::strip_md_footnotes(
+#'   "An **MD** formatted string with footnote[^fn].\n\n[^fn]: A note.\n"
+#' )
 strip_md_footnotes <- function(x) {
   
-  checkmate::assert_character(x) %>%
-    stringr::str_remove_all(pattern = "((?<=(^|\\n))\\[\\^.+?\\]: +(.|\\n)+?(\\n{2,}|\\s*$)( {4,}.*?\\n+)*|\\[\\^.+?\\]|\\^\\[.+?\\])")
+  checkmate::assert_character(x) |>
+    stringr::str_split(pattern = "(\\n{3,}|\\n{2}(?! {4}))") |>
+    purrr::map_chr(\(x2) {
+      
+      # remove footnote defs
+      ix_to_rm <-
+        x2 |>
+        stringr::str_detect("^\\[\\^[^\\s\\]]+\\]: .*") |>
+        which()
+      
+      if (length(ix_to_rm)) {
+        x2 <- x2[-ix_to_rm]
+      }
+      
+      # remove inline footnotes and refs
+      x2 |>
+        stringr::str_remove_all(pattern = "\\[\\^[^\\s\\]]+\\]|\\^\\[.+?\\]") |>
+        paste0(collapse = "\n\n")
+    })
 }
 
 #' Parse (R) Markdown as CommonMark XML tree
@@ -2594,6 +2630,7 @@ md_to_xml <- function(md,
                       hardbreaks = FALSE,
                       normalize = TRUE,
                       sourcepos = FALSE,
+                      footnotes = TRUE,
                       extensions = TRUE,
                       eol = c("LF", "CRLF", "CR", "LFCR"),
                       strip_xml_ns = TRUE) {
@@ -2603,13 +2640,14 @@ md_to_xml <- function(md,
   
   result <-
     strip_yaml_header(rmd = md,
-                      eol = eol) %>%
+                      eol = eol) |>
     commonmark::markdown_xml(hardbreaks = hardbreaks,
                              smart = smart_punctuation,
                              normalize = normalize,
                              sourcepos = sourcepos,
-                             extensions = extensions) %>%
-    xml2::read_xml() %>%
+                             footnotes = footnotes,
+                             extensions = extensions) |>
+    xml2::read_xml() |>
     when(strip_xml_ns ~ xml2::xml_ns_strip(.),
          ~ .)
   
@@ -2653,8 +2691,9 @@ md_xml_subnode_ix <- function(xml) {
     xml %<>% xml2::xml_contents()
   }
   
-  seq_along(xml) %>% purrr::map(~ subnode_ix(xml_nodes = xml,
-                                             i = .x))
+  purrr::map(seq_along(xml),
+             \(i) subnode_ix(xml_nodes = xml,
+                             i = i))
 }
 
 #' Convert from CommonMark XML to (R) Markdown
@@ -2879,12 +2918,18 @@ knitr_table_format <- function(default = c("pipe",
 #' @export
 #'
 #' @examples
-#' library(magrittr)
+#' rmd <- pal::gh_text_file(path = "README.Rmd",
+#'                          owner = "salim-b",
+#'                          name = "pal")
+#' rmd |>
+#'   stringr::str_split_1("\n") |>
+#'   head() |>
+#'   pal::cat_lines()
 #' 
-#' pal::gh_text_file(path = "README.Rmd",
-#'                   owner = "salim-b",
-#'                   name = "pal") %T>%
-#'   pal::strip_yaml_header()
+#' rmd |>
+#'   pal::strip_yaml_header() |>
+#'   head() |>
+#'   pal::cat_lines()
 strip_yaml_header <- function(rmd,
                               eol = c("LF", "CRLF", "CR", "LFCR")) {
   
@@ -3481,12 +3526,12 @@ is_http_success <- function(url,
   checkmate::assert_count(retries)
   checkmate::assert_flag(quiet)
   
-  rlang::with_handlers(!httr::http_error(httr::RETRY(verb = "HEAD",
-                                                     url = url,
-                                                     times = retries + 1L,
-                                                     quiet = quiet)),
-                       error = ~ FALSE,
-                       interrupt = ~ cli::cli_abort("Terminated by the user"))
+  tryCatch(!httr::http_error(httr::RETRY(verb = "HEAD",
+                                         url = url,
+                                         times = retries + 1L,
+                                         quiet = quiet)),
+           error = \(x) FALSE,
+           interrupt = \(x) cli::cli_abort("Terminated by the user."))
 }
 
 #' Test if URL
@@ -3709,6 +3754,7 @@ toml_validate <- function(input,
 #' @param cnd Condition. A logical scalar.
 #'
 #' @return `0L` or `1L` with the additional class `cli_noprint`.
+#' @family cli
 #' @export
 #'
 #' @examples
@@ -3741,14 +3787,19 @@ cli_no_lgl <- function(cnd) {
 
 #' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication
 #'
-#' Convenience wrapper around [cli::cli_process_start()], [cli::cli_process_done()] and [cli::cli_process_failed()].
+#' @description
+#'
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `cli_process_expr()` is deprecated in favor of the `cli::cli_progress_*` family of functions (i.a. [cli::cli_progress_step()]) which is more powerful and
+#' versatile than the `cli::cli_process_*` family on which `cli_process_expr()` is built. `cli_process_expr()` will be removed in a future version of pal.
 #'
 #' @inheritParams cli::cli_process_start
 #' @param expr An expression to be evaluated.
 #' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
 #'
 #' @return The result of the evaluated `expr`, invisibly.
-#' @seealso [cli::cli_progress_step()] which additionally shows the time elapsed within the associated step.
+#' @family cli
 #' @export
 #'
 #' @examples
@@ -3799,12 +3850,12 @@ cli_process_expr <- function(expr,
                                                     failed_class = failed_class,
                                                     .envir = env)
   
-  result <- rlang::with_handlers(.expr = rlang::eval_tidy(expr = {{ expr }},
-                                                          env = env),
-                                 error = ~ {
-                                   cli::cli_process_failed(status_bar_container_id)
-                                   rlang::cnd_signal(.x)
-                                 })
+  result <- tryCatch(expr = rlang::eval_tidy(expr = {{ expr }},
+                                             env = env),
+                     error = \(x) {
+                       cli::cli_process_failed(status_bar_container_id)
+                       rlang::cnd_signal(x)
+                     })
   
   cli::cli_process_done(status_bar_container_id)
   
@@ -3844,10 +3895,10 @@ assert_cli <- function(cmd,
   if (force_which || !xfun::is_unix()) {
     
     result <-
-      Sys.which(names = cmd) %>%
-      as.character() %>%
+      Sys.which(names = cmd) |>
+      as.character() |>
       when(. == "" ~ character(0L),
-           ~ .) %>%
+           ~ .) |>
       when(get_cmd_path ~ fs::path(.),
            length(.) == 0L ~ FALSE,
            ~ TRUE)
@@ -3857,13 +3908,13 @@ assert_cli <- function(cmd,
     defuse <- function(e) if (get_cmd_path) character(0L) else FALSE
     
     result <-
-      rlang::with_handlers(system2(command = "command",
-                                   args = c("-v",
-                                            cmd),
-                                   stdout = get_cmd_path,
-                                   stderr = get_cmd_path),
-                           warning = defuse,
-                           error = defuse) %>%
+      tryCatch(expr = system2(command = "command",
+                              args = c("-v",
+                                       cmd),
+                              stdout = get_cmd_path,
+                              stderr = get_cmd_path),
+               warning = defuse,
+               error = defuse) |>
       when(get_cmd_path ~ fs::path(.),
            isFALSE(.) ~ .,
            ~ TRUE)
@@ -3933,7 +3984,7 @@ path_script <- function() {
 #' @export
 #'
 #' @examples
-#' pal::gh_text_file(path = "README.md",
+#' pal::gh_text_file(path = "LICENSE.md",
 #'                   owner = "salim-b",
 #'                   name = "pal") |>
 #'   pal::md_to_xml() |>
@@ -4014,11 +4065,7 @@ capture_print <- function(x,
 #'   pal::cat_lines()
 #' 
 #' # conversion to type character, recursive vs. non-recursive
-#' library(magrittr)
-#' 
-#' to_convert <-
-#'   list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day")) %T>%
-#'   print()
+#' to_convert <- list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::strict_list("day"))
 #' 
 #' to_convert |> pal::cat_lines()
 #' to_convert |> cli::cat_line()
@@ -4219,9 +4266,9 @@ prose_ls_fn_param <- function(param,
   # evaluate default param if it results in a character vector
   if (is.language(default_vals)) {
     
-    evaluated_default_vals <- rlang::with_handlers(.expr = eval(expr = default_vals,
-                                                                envir = env),
-                                                   error = ~ NULL)
+    evaluated_default_vals <- tryCatch(expr = eval(expr = default_vals,
+                                                   envir = env),
+                                       error = \(x) NULL)
     
     if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
   }

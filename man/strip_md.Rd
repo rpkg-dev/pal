@@ -9,7 +9,7 @@ strip_md(x, strip_footnotes = TRUE)
 \arguments{
 \item{x}{A character vector to strip Markdown formatting from.}
 
-\item{strip_footnotes}{Whether to remove Markdown footnotes, too.}
+\item{strip_footnotes}{Whether to remove Markdown footnotes, too. If \code{FALSE}, footnotes are canonicalized (to have sequential integer identifiers).}
 }
 \value{
 A character vector of the same length as \code{x}.
@@ -18,9 +18,9 @@ A character vector of the same length as \code{x}.
 Removes all Markdown formatting from a character vector.
 }
 \details{
-This function relies on \code{\link[commonmark:commonmark]{commonmark::markdown_text()}} which \href{https://github.com/jeroen/commonmark#readme}{supports the CommonMark specification plus the Github extensions}. Unfortunately, \href{https://pandoc.org/MANUAL.html#footnotes}{Markdown footnotes} aren't supported
-(yet). Therefore a separate option \code{strip_footnotes} is offered which relies on a simple regular expression to remove inline footnotes and footnote
-references.
+This function relies on \code{\link[commonmark:commonmark]{commonmark::markdown_text()}} which \href{https://github.com/jeroen/commonmark#readme}{supports the CommonMark specification plus the Github extensions}. Unfortunately, \href{https://pandoc.org/MANUAL.html#footnotes}{Markdown footnotes} can't be stripped
+using \code{commonmark::markdown_text()}. Therefore a separate option \code{strip_footnotes} is offered which relies on a simple regular expression to remove inline
+footnotes and footnote references.
 }
 \examples{
 pal::strip_md(

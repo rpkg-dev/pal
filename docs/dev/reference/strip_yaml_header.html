@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9094</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,13 +82,30 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">rmd</span> <span class="op">&lt;-</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu"><a href="gh_text_file.html">gh_text_file</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"README.Rmd"</span>,</span></span>
+<span class="r-in"><span>                         owner <span class="op">=</span> <span class="st">"salim-b"</span>,</span></span>
+<span class="r-in"><span>                         name <span class="op">=</span> <span class="st">"pal"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rmd</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html" class="external-link">str_split_1</a></span><span class="op">(</span><span class="st">"\n"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu"><a href="cat_lines.html">cat_lines</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> output: pal::gitlab_document</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # `r paste0(pal::desc_value("Package"), ": ", pal::desc_value("Title"))` &lt;a href="https://rpkg.dev/pal/"&gt;&lt;img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/&gt;&lt;/a&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">pal</span><span class="fu">::</span><span class="fu"><a href="gh_text_file.html">gh_text_file</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"README.Rmd"</span>,</span></span>
-<span class="r-in"><span>                  owner <span class="op">=</span> <span class="st">"salim-b"</span>,</span></span>
-<span class="r-in"><span>                  name <span class="op">=</span> <span class="st">"pal"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/tee.html" class="external-link">%T&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu">strip_yaml_header</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "---\noutput: pal::gitlab_document\n---\n\n# `r paste0(pal::desc_value(\"Package\"), \": \", pal::desc_value(\"Title\"))` &lt;a href=\"https://rpkg.dev/pal/\"&gt;&lt;img src=\"man/figures/logo.png\" alt=\"Package Logo\" class=\"pkg-logo\" align=\"right\" height=\"180\"/&gt;&lt;/a&gt;\n\n`r paste0('[![CRAN Status](https://r-pkg.org/badges/version/', pal::desc_value(key = \"Package\"), ')](https://cran.r-project.org/package=', pal::desc_value(key = \"Package\"), '){.pkgdown-release}')`\n\n`r pal::desc_value(\"Description\")`[^1]\n\nThis is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.\n\n```{r}\n#| label: documentation\n#| eval: !expr '!isTRUE(getOption(\"pal.build_readme.is_pkgdown\"))'\n#| results: asis\n#| echo: false\npkgsnip::md_snip(name = \"pkgdown_notice\") %&gt;%\n  paste0(\"## Documentation\\n\\n\",\n         \"[![Netlify Status](https://api.netlify.com/api/v1/badges/a8eddba3-4c85-4750-a737-e0d74d721f65/deploy-status)]\",\n         \"(https://app.netlify.com/sites/pal-rpkg-dev/deploys)\\n\\n\",\n         .) %&gt;%\n  pal::cat_lines()\n```\n\n[^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report\n    it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the\n    avoidance of unnecessary duplication.\n\n## Installation\n\n```{r}\n#| label: install-snippet-dev\n#| child: !expr pkgsnip::snip_path(\"installation-notice_dev-version_gitlab.Rmd\")\n```\n\n```{r}\n#| label: usage\n#| eval: !expr isTRUE(getOption(\"pal.build_readme.is_pkgdown\"))\n#| results: asis\n#| echo: false\npkgsnip::md_snip(name = \"usage_notice\") %&gt;%\n  paste0(\"## Usage\\n\\n\", .) %&gt;%\n  pal::cat_lines()\n```\n\n## Development\n\n### R Markdown format\n\n```{r}\n#| label: rmd-format\n#| child: !expr pkgsnip::snip_path(\"rmd-package-notice.Rmd\")\n```\n\n### Coding style\n\n```{r}\n#| label: coding-style\n#| child: !expr pkgsnip::snip_path(\"coding-style-notice.Rmd\")\n```\n\n## See also\n\n-   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.\n"</span>
+<span class="r-in"><span><span class="va">rmd</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu">strip_yaml_header</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu"><a href="cat_lines.html">cat_lines</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # `r paste0(pal::desc_value("Package"), ": ", pal::desc_value("Title"))` &lt;a href="https://rpkg.dev/pal/"&gt;&lt;img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/&gt;&lt;/a&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `r paste0('[![CRAN Status](https://r-pkg.org/badges/version/', pal::desc_value(key = "Package"), ')](https://cran.r-project.org/package=', pal::desc_value(key = "Package"), '){.pkgdown-release}')`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `r pal::desc_value("Description")`[^1]</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

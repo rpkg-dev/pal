@@ -32,3 +32,8 @@ cli::pluralize(paste0(
 
 cli::pluralize("This function is worth exactly {pal::cli_no_lgl(cnd)} second of my time.")
 }
+\seealso{
+Other functions extending the cli package:
+\code{\link{cli_process_expr}()}
+}
+\concept{cli}

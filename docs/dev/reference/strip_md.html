@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9094</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
 
 
 <dt>strip_footnotes</dt>
-<dd><p>Whether to remove Markdown footnotes, too.</p></dd>
+<dd><p>Whether to remove Markdown footnotes, too. If <code>FALSE</code>, footnotes are canonicalized (to have sequential integer identifiers).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -69,7 +69,7 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function relies on <code><a href="https://docs.ropensci.org/commonmark/reference/commonmark.html" class="external-link">commonmark::markdown_text()</a></code> which <a href="https://github.com/jeroen/commonmark#readme" class="external-link">supports the CommonMark specification plus the Github extensions</a>. Unfortunately, <a href="https://pandoc.org/MANUAL.html#footnotes" class="external-link">Markdown footnotes</a> aren't supported (yet). Therefore a separate option <code>strip_footnotes</code> is offered which relies on a simple regular expression to remove inline footnotes and footnote references.</p>
+    <p>This function relies on <code><a href="https://docs.ropensci.org/commonmark/reference/commonmark.html" class="external-link">commonmark::markdown_text()</a></code> which <a href="https://github.com/jeroen/commonmark#readme" class="external-link">supports the CommonMark specification plus the Github extensions</a>. Unfortunately, <a href="https://pandoc.org/MANUAL.html#footnotes" class="external-link">Markdown footnotes</a> can't be stripped using <code><a href="https://docs.ropensci.org/commonmark/reference/commonmark.html" class="external-link">commonmark::markdown_text()</a></code>. Therefore a separate option <code>strip_footnotes</code> is offered which relies on a simple regular expression to remove inline footnotes and footnote references.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -12,7 +12,7 @@ Parses the roxygen2 package documentation of a specific R package or from a sing
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9094</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -144,59 +144,10 @@ Parses the roxygen2 package documentation of a specific R package or from a sing
 <span class="r-in"><span>                   repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;roxy_block&gt; [add_md.R:9]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  1] @title 'Add markdown content to an XML object' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  3] @param 'body an XML object generated via {tinkr}' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  4] @param 'md a string of new markdown to insert' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  5] @param 'where the position in the markdown document to ...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  6] @keywords 'internal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  8] @return 'a copy of the XML object with the markdown inse...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  9] @usage '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  9] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  9] @backref '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $call   add_md &lt;- function(body, md, where = 0L) { ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $object &lt;function&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     $topic add_md</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     $alias add_md</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;roxy_block&gt; [add_md.R:59]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 35] @title 'Convert markdown to XML' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 37] @param 'md a character vector of markdown text' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 38] @return 'an XML nodeset of the markdown text' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 39] @keywords 'internal' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 40] @examples '...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 59] @usage '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 59] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 59] @backref '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $call   md_to_xml &lt;- function(md) { ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $object &lt;function&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     $topic md_to_xml</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     $alias md_to_xml</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;roxy_block&gt; [asis-nodes.R:24]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  1] @title 'Protect math elements from commonmark's charact...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  3] @param 'body an XML object' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  4] @param 'ns an XML namespace object (defaults: [md_ns()]).' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  5] @return 'a copy of the modified XML object' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line:  6] @details 'Commonmark does not know what LaTeX is and will...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 12] @note 'this function is also a method in the [tinkr::y...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 14] @export '' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 15] @examples '...' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 24] @usage '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 24] @.formals '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [line: 24] @backref '&lt;generated&gt;' {parsed}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $call   protect_math &lt;- function(body, ns = md_ns()) { ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   $object &lt;function&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     $topic protect_math</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     $alias protect_math</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in c("cli::cli_alert_warning(paste0(\"No sources available for download of locally installed version {.val pkg_version_max_installed} of package {.pkg {pkg}}. \", ",  : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #BBBB00;">!</span> Could not evaluate cli `{}` expression: `max(pkgs_available[…`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error</span> in `FUN(X[[i]], ...)`:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> only defined on a data frame with all numeric-alike variables</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

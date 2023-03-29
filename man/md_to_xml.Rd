@@ -10,6 +10,7 @@ md_to_xml(
   hardbreaks = FALSE,
   normalize = TRUE,
   sourcepos = FALSE,
+  footnotes = TRUE,
   extensions = TRUE,
   eol = c("LF", "CRLF", "CR", "LFCR"),
   strip_xml_ns = TRUE
@@ -27,6 +28,8 @@ such as \code{Mr.} with \href{https://en.wikipedia.org/wiki/Non-breaking_space}{
 \item{normalize}{Consolidate adjacent text nodes.}
 
 \item{sourcepos}{Include source position attribute in output.}
+
+\item{footnotes}{parse footnotes}
 
 \item{extensions}{Enables Github extensions. Can be \code{TRUE} (all) \code{FALSE} (none) or a character
 vector with a subset of available \link[commonmark]{extensions}.}

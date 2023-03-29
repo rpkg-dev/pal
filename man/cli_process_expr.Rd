@@ -41,7 +41,10 @@ termination message. Use an empty string to suppress styling.a}
 The result of the evaluated \code{expr}, invisibly.
 }
 \description{
-Convenience wrapper around \code{\link[cli:cli_process_start]{cli::cli_process_start()}}, \code{\link[cli:cli_process_start]{cli::cli_process_done()}} and \code{\link[cli:cli_process_start]{cli::cli_process_failed()}}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{cli_process_expr()} is deprecated in favor of the \verb{cli::cli_progress_*} family of functions (i.a. \code{\link[cli:cli_progress_step]{cli::cli_progress_step()}}) which is more powerful and
+versatile than the \verb{cli::cli_process_*} family on which \code{cli_process_expr()} is built. \code{cli_process_expr()} will be removed in a future version of pal.
 }
 \examples{
 if (interactive()) {
@@ -65,5 +68,7 @@ set.seed(123)
 try(russian_roulette())
 }
 \seealso{
-\code{\link[cli:cli_progress_step]{cli::cli_progress_step()}} which additionally shows the time elapsed within the associated step.
+Other functions extending the cli package:
+\code{\link{cli_qty_lgl}()}
 }
+\concept{cli}

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9094</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,10 +64,22 @@
 <p>A character vector of the same length as <code>x</code>.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Note that it is not checked whether footnote references and definitions actually match (by identifier), thus they are removed even if they were invalid.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other (Pandoc) Markdown functions: <code><a href="as_md_list.html">as_md_list</a>()</code>, <code><a href="as_md_val_list.html">as_md_val_list</a>()</code>, <code><a href="as_md_vals.html">as_md_vals</a>()</code>, <code><a href="pipe_table.html">pipe_table</a>()</code>, <code><a href="strip_md.html">strip_md</a>()</code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">pal</span><span class="fu">::</span><span class="fu">strip_md_footnotes</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"An **MD** formatted string with footnote[^fn].\n\n[^fn]: A note.\n"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "An **MD** formatted string with footnote."</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

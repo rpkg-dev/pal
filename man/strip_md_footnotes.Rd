@@ -16,6 +16,14 @@ A character vector of the same length as \code{x}.
 \description{
 Removes all Markdown footnotes from a character vector.
 }
+\details{
+Note that it is not checked whether footnote references and definitions actually match (by identifier), thus they are removed even if they were invalid.
+}
+\examples{
+pal::strip_md_footnotes(
+  "An **MD** formatted string with footnote[^fn].\n\n[^fn]: A note.\n"
+)
+}
 \seealso{
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
