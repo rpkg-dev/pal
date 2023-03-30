@@ -19,8 +19,8 @@ Removes all Markdown formatting from a character vector.
 }
 \details{
 This function relies on \code{\link[commonmark:commonmark]{commonmark::markdown_text()}} which \href{https://github.com/jeroen/commonmark#readme}{supports the CommonMark specification plus the Github extensions}. Unfortunately, \href{https://pandoc.org/MANUAL.html#footnotes}{Markdown footnotes} can't be stripped
-using \code{commonmark::markdown_text()}. Therefore a separate option \code{strip_footnotes} is offered which relies on a simple regular expression to remove inline
-footnotes and footnote references.
+using \code{commonmark::markdown_text()}. Therefore a separate option \code{strip_footnotes} is offered which relies on regular expressions to remove inline footnotes
+and footnote definitions and references.
 }
 \examples{
 pal::strip_md(

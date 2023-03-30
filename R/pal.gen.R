@@ -2516,8 +2516,8 @@ pipe_table <- function(x,
 #'
 #' This function relies on [commonmark::markdown_text()] which [supports the CommonMark specification plus the Github
 #' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) can't be stripped
-#' using `commonmark::markdown_text()`. Therefore a separate option `strip_footnotes` is offered which relies on a simple regular expression to remove inline
-#' footnotes and footnote references.
+#' using `commonmark::markdown_text()`. Therefore a separate option `strip_footnotes` is offered which relies on regular expressions to remove inline footnotes
+#' and footnote definitions and references.
 #'
 #' @param x A character vector to strip Markdown formatting from.
 #' @param strip_footnotes Whether to remove Markdown footnotes, too. If `FALSE`, footnotes are canonicalized (to have sequential integer identifiers).
