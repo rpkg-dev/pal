@@ -15,7 +15,7 @@ pkg_config_val(key, pkg, default = NULL)
 default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}
 }
 \value{
-\code{pkgsnip::return_label("r_obj")}
+An \R object.
 }
 \description{
 Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
@@ -36,11 +36,13 @@ This function is intended to be used by package authors who want to expose their
 }
 \examples{
 try(
-  pal::default_pkg_config_val(key = "gen_pkgdown_ref",
-                              pkg = "pkgpurl")
+  pal::pkg_config_val(key = "gen_pkgdown_ref",
+                      pkg = "pkgpurl")
 )
 }
 \seealso{
+\code{\link[xfun:env_option]{xfun::env_option()}} for an alternative approach to R option and environment variable coherence.
+
 Other package configuration functions:
 \code{\link{augment_pkg_config}()},
 \code{\link{has_pkg_config_val}()},

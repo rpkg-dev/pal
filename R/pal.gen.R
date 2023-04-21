@@ -1867,14 +1867,15 @@ exists_in_namespace <- function(x,
 #' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #'
-#' @return `pkgsnip::return_label("r_obj")`
+#' @return `r pkgsnip::return_label("r_obj")`
+#' @seealso [xfun::env_option()] for an alternative approach to R option and environment variable coherence.
 #' @family pkg_config
 #' @export
 #'
 #' @examples
 #' try(
-#'   pal::default_pkg_config_val(key = "gen_pkgdown_ref",
-#'                               pkg = "pkgpurl")
+#'   pal::pkg_config_val(key = "gen_pkgdown_ref",
+#'                       pkg = "pkgpurl")
 #' )
 pkg_config_val <- function(key,
                            pkg,
