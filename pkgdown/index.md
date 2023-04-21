@@ -1,4 +1,4 @@
-# pal: Friendly Convenience/Utility Functions <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" /></a>
+# pal: Friendly Convenience/Utility Functions <a href="https://pal.rpkg.dev/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" /></a>
 
 [![CRAN Status](https://r-pkg.org/badges/version/pal)](https://cran.r-project.org/package=pal){.pkgdown-release}
 

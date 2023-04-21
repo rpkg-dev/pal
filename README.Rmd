@@ -2,7 +2,7 @@
 output: pal::gitlab_document
 ---
 
-# `r paste0(pal::desc_value("Package"), ": ", pal::desc_value("Title"))` <a href="https://rpkg.dev/pal/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
+# `r paste0(pal::desc_value("Package"), ": ", pal::desc_value("Title"))` <a href="https://pal.rpkg.dev/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
 
 `r paste0('[![CRAN Status](https://r-pkg.org/badges/version/', pal::desc_value(key = "Package"), ')](https://cran.r-project.org/package=', pal::desc_value(key = "Package"), '){.pkgdown-release}')`
 
