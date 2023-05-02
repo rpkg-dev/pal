@@ -2297,15 +2297,14 @@ roxy_tag_value <- function(blocks,
                            tag_names = "param",
                            param_name) {
   
+  block <- roxy_obj(blocks = blocks,
+                    obj_name = obj_name)
+  tags <- block$tags
   checkmate::assert_subset(tag_names,
                            choices = purrr::map_chr(tags,
                                                     purrr::pluck,
                                                     "tag"),
                            empty.ok = FALSE)
-  
-  block <- roxy_obj(blocks = blocks,
-                    obj_name = obj_name)
-  tags <- block$tags
   tag_names %<>% unique()
   
   if ("param" %in% tag_names) {
