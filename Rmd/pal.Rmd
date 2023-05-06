@@ -2814,7 +2814,7 @@ TODO:
 #' Convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
 #' list](https://pandoc.org/MANUAL.html#lists).
 #'
-#' @param x Character vector to be converted to a Markdown list.
+#' @param x \R object, e.g. a character vector. Each element of `x` will become an item in the resulting Markdown list.
 #' @param type Markdown list type. One of
 #'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to `<ul>` in HTML.
 #'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to `<ol>` in HTML.
@@ -2824,7 +2824,7 @@ TODO:
 #'   integer scalar.
 #' @param wrap An optional string to wrap the list items in.
 #'
-#' @return A character scalar.
+#' @return If `x` is empty, a character vector of length zero. Otherwise, a character scalar.
 #' @family md
 #' @export
 #'
@@ -2845,7 +2845,13 @@ as_md_list <- function(x,
                            null.ok = TRUE)
   assert_pkg("pander")
   
-  pander::pandoc.list.return(elements = paste0(wrap, as_chr(x), wrap),
+  x %<>% as_chr()
+  
+  if (length(x) == 0L) {
+    return(character())
+  }
+  
+  pander::pandoc.list.return(elements = paste0(wrap, x, wrap),
                              style = switch(EXPR = type,
                                             unordered = "bullet",
                                             ordered = "ordered",
@@ -3101,9 +3107,13 @@ strip_md_footnotes <- function(x) {
       }
       
       # remove inline footnotes and refs
-      x2 |>
-        stringr::str_remove_all(pattern = "\\[\\^[^\\s\\]]+\\]|\\^\\[.+?\\]") |>
-        paste0(collapse = "\n\n")
+      x2 %<>% stringr::str_remove_all(pattern = "\\[\\^[^\\s\\]]+\\]|\\^\\[.+?\\]")
+      
+      if (length(x2) > 0L && !all(is.na(x2))) {
+        x2 %<>% paste0(collapse = "\n\n")
+      }
+      
+      x2
     })
 }
 ```

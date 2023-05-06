@@ -13,7 +13,7 @@ as_md_list(
 )
 }
 \arguments{
-\item{x}{Character vector to be converted to a Markdown list.}
+\item{x}{\R object, e.g. a character vector. Each element of \code{x} will become an item in the resulting Markdown list.}
 
 \item{type}{Markdown list type. One of
 \itemize{
@@ -30,7 +30,7 @@ integer scalar.}
 \item{wrap}{An optional string to wrap the list items in.}
 }
 \value{
-A character scalar.
+If \code{x} is empty, a character vector of length zero. Otherwise, a character scalar.
 }
 \description{
 Convenience wrapper around \code{\link[pander:pandoc.list.return]{pander::pandoc.list.return()}} to convert a character vector (or something coercible to) to a \href{https://pandoc.org/MANUAL.html#lists}{Markdown list}.
