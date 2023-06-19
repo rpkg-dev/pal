@@ -13,8 +13,8 @@ use_pkg(package, type = "Imports", min_version = TRUE, tidy = TRUE)
 "Suggests", "Enhances", or "LinkingTo" (or unique abbreviation). Matching
 is case insensitive.}
 
-\item{min_version}{Optionally, supply a minimum version for the package.
-Set to \code{TRUE} to use the currently installed version.}
+\item{min_version}{Optionally, supply a minimum version for the package. Set
+to \code{TRUE} to use the currently installed version.}
 
 \item{tidy}{Whether or not to run \code{\link[usethis:tidyverse]{usethis::use_tidy_description()}} after adding \code{package} to dependencies.}
 }
