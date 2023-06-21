@@ -46,7 +46,14 @@
 <ul><li><p>systematically rely on pkg <a href="https://yihui.name/xfun/" class="external-link">xfun</a> whenever sensible</p></li>
 <li><p>add a <a href="https://keepachangelog.com/" class="external-link">standards-conformant changelog</a> for v0.1.0 but use pkg <a href="https://cynkra.github.io/fledge/" class="external-link">fledge</a> to generate it from Git commits (note the <a href="https://cynkra.github.io/fledge/articles/fledge.html" class="external-link">special rules</a> to mark commit msgs for in-/exclusion in the changelog)</p></li>
 <li><p>generate a <code>codemeta.json</code> file using pkg <a href="https://docs.ropensci.org/codemetar/" class="external-link">codemetar</a></p></li>
-<li><p>release on CRAN (and remove Netlify redirect rule <code>/</code> -&gt; <code>/dev</code>!)</p></li>
+<li>
+<p>release on CRAN:</p>
+<ol style="list-style-type: decimal"><li><p>Thoroughly scan exported fns for possible API improvements (which would harder to introduce once the pkg is on CRAN) and implement them.</p></li>
+<li><p>Replace <code>pkgsnip::*</code> with constants included in pkg. Make changes (to source file <code>Rmd/pal.Rmd</code> only) in a single commit, so it can be easily reverted.</p></li>
+<li><p>Remove Netlify redirect rule <code>/</code> -&gt; <code>/dev</code>.</p></li>
+<li><p>Release pkg pkgsnip on CRAN.</p></li>
+<li><p>Revert step 2.</p></li>
+</ol></li>
 </ul></div>
 
   </main></div>

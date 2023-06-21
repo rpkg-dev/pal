@@ -70,9 +70,9 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>In contrast to <code><a href="https://rdrr.io/r/base/library.html" class="external-link">base::require()</a></code>, it checks if the packages are installed without attaching their namespaces if so.</p>
-<p>In contrast to <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::is_installed()</a></code> or <code><a href="https://rdrr.io/pkg/xfun/man/pkg_attach.html" class="external-link">xfun::pkg_available()</a></code>, it doesn't load the packages if they're installed. It is also fully vectorized, i.e.
-returns a (named) logical vector of the same length as <code>pkg</code>.</p>
+    <p>In contrast to <code><a href="https://rdrr.io/r/base/library.html" class="external-link">base::require()</a></code>, this function checks if the packages are installed without attaching their namespaces if so.</p>
+<p>In contrast to <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::is_installed()</a></code> or <code><a href="https://rdrr.io/pkg/xfun/man/pkg_attach.html" class="external-link">xfun::pkg_available()</a></code>, this function doesn't load the packages if they're installed.</p>
+<p>In contrast to <code><a href="https://rdrr.io/pkg/xfun/man/pkg_attach.html" class="external-link">xfun::pkg_available()</a></code>, it is fully vectorized, i.e. returns a (named) logical vector of the same length as <code>pkg</code>.</p>
 <p>It is <a href="https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613" class="external-link">considerably faster</a> than the commonly used
 <code>pkg %in% rownames(installed.packages())</code> check.</p>
     </div>

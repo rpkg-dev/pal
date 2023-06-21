@@ -1658,10 +1658,11 @@ assert_pkg <- function(pkg,
 #'
 #' Returns `TRUE` or `FALSE` for each `pkg`, depending on whether the `pkg` is installed on the current system or not, optionally ensuring a `min_version`.
 #'
-#' In contrast to [base::require()], it checks if the packages are installed without attaching their namespaces if so.
+#' In contrast to [base::require()], this function checks if the packages are installed without attaching their namespaces if so.
 #' 
-#' In contrast to [rlang::is_installed()] or [xfun::pkg_available()], it doesn't load the packages if they're installed. It is also fully vectorized, i.e.
-#' returns a (named) logical vector of the same length as `pkg`.
+#' In contrast to [rlang::is_installed()] or [xfun::pkg_available()], this function doesn't load the packages if they're installed.
+#' 
+#' In contrast to [xfun::pkg_available()], it is fully vectorized, i.e. returns a (named) logical vector of the same length as `pkg`.
 #' 
 #' It is [considerably
 #' faster](https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613) than the commonly used
@@ -1703,8 +1704,8 @@ is_pkg_installed <- function(pkg,
     
     result <-
       is_pkg_installed(pkg = pkg) %>%
-      list(names(.), min_version) %>%
-      purrr::pmap_lgl(~ {
+      list(names(.), min_version) |>
+      purrr::pmap_lgl(\(...) {
         if (..1) utils::packageVersion(pkg = ..2) >= ..3 else ..1
       })
   }
@@ -1743,15 +1744,15 @@ is_pkg_cran <- function(pkg,
     is_cran <-
       httr::RETRY(verb = "GET",
                   url = url,
-                  times = retries) %>%
+                  times = retries) |>
       httr::content(as = "parsed",
-                    encoding = "UTF-8") %>%
-      rvest::html_element(css = "body") %>%
-      rvest::html_element(css = "table") %>%
-      rvest::html_table() %>%
-      dplyr::filter(stringr::str_detect(X1, "Version")) %>%
-      dplyr::filter(as.package_version(X2) >= !!min_version) %>%
-      nrow() %>%
+                    encoding = "UTF-8") |>
+      rvest::html_element(css = "body") |>
+      rvest::html_element(css = "table") |>
+      rvest::html_table() |>
+      dplyr::filter(stringr::str_detect(X1, "Version")) |>
+      dplyr::filter(as.package_version(X2) >= !!min_version) |>
+      nrow() |>
       magrittr::is_greater_than(0L)
   }
   
@@ -1779,8 +1780,8 @@ is_pkg_dir <- function(path = ".") {
   checkmate::assert_directory_exists(path,
                                      access = "r")
   
-  rprojroot::is_r_package$testfun %>%
-    purrr::map_lgl(~ .x(path = path)) %>%
+  rprojroot::is_r_package$testfun |>
+    purrr::map_lgl(\(x) x(path = path)) |>
     any()
 }
 
@@ -1805,8 +1806,8 @@ is_pkgdown_dir <- function(path = ".") {
   checkmate::assert_directory_exists(path,
                                      access = "r")
   
-  rprojroot::is_pkgdown_project$testfun %>%
-    purrr::map_lgl(~ .x(path = path)) %>%
+  rprojroot::is_pkgdown_project$testfun |>
+    purrr::map_lgl(\(x) x(path = path)) |>
     any()
 }
 
@@ -2134,11 +2135,11 @@ desc_url_git <- function(file = ".") {
   
   desc::desc_get_field(key = "BugReports",
                        default = character(),
-                       file = file) %>%
+                       file = file) |>
     stringr::str_replace(pattern = "/issues/?$",
                          replacement = "/") %>%
-    c(desc::desc_get_urls(), .) %>%
-    stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") %>%
+    c(desc::desc_get_urls(), .) |>
+    stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") |>
     dplyr::first()
 }
 
@@ -2532,8 +2533,12 @@ pipe_table <- function(x,
   rlang::check_installed("knitr",
                          reason = reason_pkg_required())
   
+  if (is.null(incl_rownames)) {
+    incl_rownames <- !identical(rownames(x), as.character(seq_len(nrow(x))))
+  }
+  
   # format rownames <strong> if requested and sensible
-  if (strong_rownames) {
+  if ((is.null(incl_rownames) || incl_rownames) && strong_rownames) {
     # setting rownames on a tibble is deprecated, thus we convert to dataframe
     x %<>% as.data.frame()
     rownames(x) %<>% paste0("**", ., "**")
@@ -2543,9 +2548,7 @@ pipe_table <- function(x,
     alist(x = x,
           format = "pipe",
           digits = digits,
-          row.names = ifelse(is.null(incl_rownames),
-                             NA,
-                             incl_rownames),
+          row.names = incl_rownames,
           col.names = colnames(x) |> when(strong_colnames ~ paste0("**", ., "**"),
                                           ~ .),
           label = label,
