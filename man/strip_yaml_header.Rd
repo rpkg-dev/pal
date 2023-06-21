@@ -28,17 +28,22 @@ Note that for the \href{https://rmarkdown.rstudio.com/}{R Markdown file format},
 whitespace characters (incl. newlines) before the YAML metadata block are allowed.
 }
 \examples{
-rmd <- pal::gh_text_file(path = "README.Rmd",
-                         owner = "salim-b",
-                         name = "pal")
+rmd <- "
+---
+output: pal::gitlab_document
+---
+
+# A heading
+
+Some prose.
+"
+
 rmd |>
   stringr::str_split_1("\n") |>
-  head() |>
   pal::cat_lines()
 
 rmd |>
   pal::strip_yaml_header() |>
-  head() |>
   pal::cat_lines()
 }
 \seealso{

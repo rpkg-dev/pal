@@ -17,12 +17,27 @@ A character scalar.
 Convert from CommonMark XML to (R) Markdown
 }
 \examples{
-pal::gh_text_file(path = "Rmd/pal.Rmd",
-                  owner = "salim-b",
-                  name = "pal") |>
+"# A title
+
+Some prose.
+
+## A subtitle
+
+More prose.
+
+## Another subtitle
+
+Out of prose here.
+
+### A sub-subtitle
+
+I'm dug in.
+
+# Another title
+
+A last word." |>
   pal::md_to_xml() |>
   xml2::xml_contents() |>
-  magrittr::extract(22:28) |>
   pal::xml_to_md() |>
   cat()
 }

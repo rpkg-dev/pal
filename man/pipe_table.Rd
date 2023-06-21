@@ -21,9 +21,9 @@ pipe_table(
 \item{incl_rownames}{Whether to include row names or not. A logical scalar or \code{NULL}. If \code{NULL}, row names are included if \code{rownames(x)} is neither \code{NULL}
 nor identical to \code{seq_len(nrow(x))}.}
 
-\item{strong_colnames}{Highlight column names by formatting them \verb{<strong>} (wrapping them in two asterisks).}
+\item{strong_colnames}{Whether or not to highlight column names by formatting them \verb{<strong>} (wrapping them in two asterisks).}
 
-\item{strong_rownames}{Highlight row names by formatting them \verb{<strong>} (wrapping them in two asterisks).}
+\item{strong_rownames}{Whether or not to highlight row names by formatting them \verb{<strong>} (wrapping them in two asterisks).}
 
 \item{align}{Column alignment. Either \code{NULL} for auto-alignment or a character vector consisting of \code{'l'} (left), \code{'c'} (center) and/or \code{'r'} (right). If
 \code{align = NULL}, numeric columns are right-aligned, and other columns are left-aligned. If \code{length(align) == 1L}, the string will be expanded to a vector

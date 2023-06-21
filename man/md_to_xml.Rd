@@ -51,10 +51,25 @@ An \code{\link[xml2:oldclass]{xml_document}}.
 Parses (R) Markdown file content according to the \href{https://commonmark.org/}{CommonMark} specification and returns it as an XML parse tree.
 }
 \examples{
-pal::gh_text_file(path = "Rmd/pal.Rmd",
-                  owner = "salim-b",
-                  name = "pal") |>
-  pal::md_to_xml()
+"# A title
+
+Some prose.
+
+## A subtitle
+
+More prose.
+
+## Another subtitle
+
+Out of prose here.
+
+### A sub-subtitle
+
+I'm dug in.
+
+# Another title
+
+A last word." |> pal::md_to_xml()
 }
 \seealso{
 Other CommonMark parsing functions:

@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9095
+Version: 0.0.9096
 Authors@R: 
     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5329-5987"))
@@ -18,7 +18,6 @@ Imports:
     fs (>= 1.5.0),
     glue (>= 1.4.2),
     lifecycle (>= 1.0.0),
-    lubridate (>= 1.8.0),
     magrittr (>= 2.0.1),
     methods,
     purrr (>= 1.0.0),
@@ -30,7 +29,6 @@ Suggests:
     brio (>= 1.1.0),
     commonmark (>= 1.9.0),
     desc (>= 1.4.0),
-    gh (>= 1.3.0),
     htmltools (>= 0.5.2),
     httr (>= 1.4.1),
     janeaustenr,

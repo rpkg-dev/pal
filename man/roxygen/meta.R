@@ -3,7 +3,6 @@ list(
                          commonmark = "Other CommonMark parsing functions:",
                          desc       = "Other package `DESCRIPTION` functions:",
                          dots       = "Other dots functions:",
-                         gh         = "Other GitHub functions:",
                          htmlwidget = "Other HTML widget functions:",
                          http       = "Other HTTP functions:",
                          list       = "Other list functions:",

@@ -4,20 +4,22 @@
 \alias{path_mod_time}
 \title{Get path modification time}
 \usage{
-path_mod_time(path, follow = FALSE)
+path_mod_time(path, follow = FALSE, tz = "UTC")
 }
 \arguments{
 \item{path}{A character vector of one or more paths.}
 
 \item{follow}{If \code{TRUE}, symbolic links will be followed (recursively) and
 the results will be that of the final file rather than the link.}
+
+\item{tz}{Timezone to return the result in. A character scalar where \code{""} means the current time zone.}
 }
 \value{
 A \link[base:DateTimeClasses]{datetime}.
 }
 \description{
-Determine a file's or directory's modification time. Other than \code{\link[=file.mtime]{file.mtime()}} datetime of modification is always returned in
-\href{https://en.wikipedia.org/wiki/Coordinated_Universal_Time}{UTC}.
+Determine a file or directory's modification time. Other than \code{\link[=file.mtime]{file.mtime()}}, this function is based on \code{\link[fs:file_info]{fs::file_info()}} and the datetime of modification is
+returned in \href{https://en.wikipedia.org/wiki/Coordinated_Universal_Time}{UTC} by default.
 }
 \examples{
 fs::path_package(package = "dplyr",

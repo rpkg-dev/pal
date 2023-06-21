@@ -23,9 +23,6 @@ Asserts that an object is member of any of the specified classes.
 In contrast to \code{\link[checkmate:checkClass]{checkmate::assert_class()}}, this function returns \code{TRUE} as long as \code{x} is at least member of \emph{one} of \code{classes}.
 }
 \examples{
-pal::gh_text_file(path = "LICENSE.md",
-                  owner = "salim-b",
-                  name = "pal") |>
-  pal::md_to_xml() |>
+xml2::read_html("https://pal.rpkg.dev/dev/license") |>
   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
 }

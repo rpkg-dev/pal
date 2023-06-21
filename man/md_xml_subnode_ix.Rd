@@ -22,12 +22,27 @@ Determines the XML children node indices for every XML node at the highest level
 \code{md_xml_subnode_ix()} fills this gap by giving the hierarchy structure in the form of the XML subnode indices for every node at the highest level of \code{xml}.
 }
 \examples{
-pal::gh_text_file(path = "Rmd/pal.Rmd",
-                  owner = "salim-b",
-                  name = "pal") |>
+"# A title
+
+Some prose.
+
+## A subtitle
+
+More prose.
+
+## Another subtitle
+
+Out of prose here.
+
+### A sub-subtitle
+
+I'm dug in.
+
+# Another title
+
+A last word." |>
   pal::md_to_xml() |>
-  pal::md_xml_subnode_ix() |>
-  head()
+  pal::md_xml_subnode_ix()
 }
 \seealso{
 Other CommonMark parsing functions:

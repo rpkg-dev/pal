@@ -103,15 +103,6 @@
     <loc>https://pal.rpkg.dev/dev/reference/fuse_regex.html</loc>
   </url>
   <url>
-    <loc>https://pal.rpkg.dev/dev/reference/gh_dir_ls.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/gh_text_file.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/gh_text_files.html</loc>
-  </url>
-  <url>
     <loc>https://pal.rpkg.dev/dev/reference/gitlab_document.html</loc>
   </url>
   <url>
@@ -154,9 +145,6 @@
     <loc>https://pal.rpkg.dev/dev/reference/md_xml_subnode_ix.html</loc>
   </url>
   <url>
-    <loc>https://pal.rpkg.dev/dev/reference/order_by.html</loc>
-  </url>
-  <url>
     <loc>https://pal.rpkg.dev/dev/reference/pal-package.html</loc>
   </url>
   <url>
@@ -187,6 +175,9 @@
     <loc>https://pal.rpkg.dev/dev/reference/prose_ls_fn_param.html</loc>
   </url>
   <url>
+    <loc>https://pal.rpkg.dev/dev/reference/reason_pkg_required.html</loc>
+  </url>
+  <url>
     <loc>https://pal.rpkg.dev/dev/reference/reduce_df_list.html</loc>
   </url>
   <url>
@@ -212,6 +203,9 @@
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/sentenceify.html</loc>
+  </url>
+  <url>
+    <loc>https://pal.rpkg.dev/dev/reference/sort_by.html</loc>
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/stat_mode.html</loc>

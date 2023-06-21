@@ -21,8 +21,8 @@ Returns \code{TRUE} or \code{FALSE} for each \code{pkg}, depending on whether th
 \details{
 In contrast to \code{\link[base:library]{base::require()}}, it checks if the packages are installed without attaching their namespaces if so.
 
-In contrast to \code{\link[rlang:is_installed]{rlang::is_installed()}} or \code{\link[xfun:pkg_attach]{xfun::pkg_available()}}, it doesn't load the packages if they're installed and it is fully vectorized, i.e. returns
-a (named) logical vector of the same length as \code{pkg}.
+In contrast to \code{\link[rlang:is_installed]{rlang::is_installed()}} or \code{\link[xfun:pkg_attach]{xfun::pkg_available()}}, it doesn't load the packages if they're installed. It is also fully vectorized, i.e.
+returns a (named) logical vector of the same length as \code{pkg}.
 
 It is \href{https://stackoverflow.com/questions/9341635/check-for-installed-packages-before-running-install-packages/38082613#38082613}{considerably faster} than the commonly used
 \code{pkg \%in\% rownames(installed.packages())} check.

@@ -70,6 +70,7 @@ reference:
   - is_pkg_dir
   - is_pkgdown_dir
   - exists_in_namespace
+  - reason_pkg_required
 - subtitle: Package configuration
   desc: Functions around pal's canonicalized way to package configuration.
 - contents:
@@ -119,13 +120,6 @@ reference:
 - contents:
   - write_widget
   - write_widget_deps
-- title: GitHub
-  desc: Extending the [gh](https://gh.r-lib.org/) package, leveraging [GitHub's GraphQL
-    API](https://docs.github.com/en/graphql).
-- contents:
-  - gh_text_file
-  - gh_text_files
-  - gh_dir_ls
 - title: HTTP
   desc: Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/)
     package.
@@ -138,7 +132,7 @@ reference:
   - toml_read
   - toml_validate
 - title: cli
-  desc: Extending the [cli](https://cli.r-lib.org/) package.
+  desc: Extending the [**cli**](https://cli.r-lib.org/) package.
 - contents:
   - cli_qty_lgl
   - cli_no_lgl
@@ -153,6 +147,6 @@ reference:
   - capture_print
   - cat_lines
   - cols_regex
-  - order_by
+  - sort_by
   - prose_ls_fn_param
   - when
