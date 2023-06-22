@@ -42,7 +42,7 @@ try(
 try(
   pal::assert_pkg("yay",
                   install_hint = paste0("To install the latest development version, run ",
-                                        "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))
+                                        "{.code remotes::install_gitlab(\"rpkg.dev/yay\")}."))
 )
 }
 \seealso{

@@ -100,7 +100,7 @@ Pandoc during conversion.
 \examples{
 \donttest{
 tmp_file <- fs::file_temp()
-download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd",
+download.file(url = "https://gitlab.com/rpkg.dev/pal/-/raw/master/Rmd/pal.Rmd",
               destfile = tmp_file,
               quiet = TRUE,
               mode = "wb")

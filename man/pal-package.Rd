@@ -14,8 +14,8 @@ A collection of convenience/utility functions complementing base R and the tidyv
 Useful links:
 \itemize{
   \item \url{https://pal.rpkg.dev}
-  \item \url{https://gitlab.com/salim_b/r/pkgs/pal}
-  \item Report bugs at \url{https://gitlab.com/salim_b/r/pkgs/pal/issues}
+  \item \url{https://gitlab.com/rpkg.dev/pal}
+  \item Report bugs at \url{https://gitlab.com/rpkg.dev/pal/issues}
 }
 
 }

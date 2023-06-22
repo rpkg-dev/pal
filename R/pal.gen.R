@@ -1590,7 +1590,7 @@ use_pkg <- function(package,
 #' try(
 #'   pal::assert_pkg("yay",
 #'                   install_hint = paste0("To install the latest development version, run ",
-#'                                         "{.code remotes::install_gitlab(\"salim_b/r/pkgs/yay\")}."))
+#'                                         "{.code remotes::install_gitlab(\"rpkg.dev/yay\")}."))
 #' )
 assert_pkg <- function(pkg,
                        min_version = NULL,
@@ -3130,7 +3130,7 @@ strip_yaml_header <- function(rmd,
 #' @examples
 #' \donttest{
 #' tmp_file <- fs::file_temp()
-#' download.file(url = "https://gitlab.com/salim_b/r/pkgs/pal/-/raw/master/Rmd/pal.Rmd",
+#' download.file(url = "https://gitlab.com/rpkg.dev/pal/-/raw/master/Rmd/pal.Rmd",
 #'               destfile = tmp_file,
 #'               quiet = TRUE,
 #'               mode = "wb")
