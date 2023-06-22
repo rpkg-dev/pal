@@ -2254,12 +2254,15 @@ TODO:
 
     Contra:
 
-    -   For these fns and their deps, currently the following pkgs are required, a *substantial* part of pal's deps:
+    -   For these fns and their deps, currently the following pkgs are required, a almost all of pal's deps:
 
         -   checkmate
         -   cli
         -   dplyr
+        -   glue (transitively via dplyr)
+        -   lifecycle (transitively via dplyr)
         -   magrittr
+        -   methods (transitively via dplyr)
         -   rlang
         -   stringr
         -   tibble (transitively via dplyr)
