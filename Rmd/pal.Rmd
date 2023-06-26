@@ -4012,6 +4012,30 @@ assert_mime_type <- function(response,
 
 ### `is_http_success`
 
+TODO:
+
+-   httr2 version of the fn:
+
+    ``` r
+    is_http_success <- function(url,
+                                retries = 0L,
+                                verbosity = NULL) {
+
+      checkmate::assert_string(url)
+      checkmate::assert_count(retries)
+
+      tryCatch(expr =
+                 httr2::request(base_url = url) |>
+                 httr2::req_method(method = "HEAD") |>
+                 httr2::req_retry(max_tries = retries) |>
+                 httr2::req_perform(verbosity = verbosity) |>
+                 httr2::resp_is_error() |>
+                 magrittr::not(),
+               error = \(x) FALSE,
+               interrupt = \(x) cli::cli_abort("Terminated by the user."))
+    }
+    ```
+
 NOTES:
 
 -   A shorter way to define a very similar function would be:
