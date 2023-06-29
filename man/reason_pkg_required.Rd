@@ -22,9 +22,9 @@ Assembles a prose text containing the reason why a certain \R package is require
 \code{\link[rlang:is_installed]{rlang::check_installed()}}.
 }
 \examples{
-try(
+\dontrun{
   rlang::check_installed(pkg = "foo",
                          reason = pal::reason_pkg_required(pkg = "bar",
                                                            fn = "serve"))
-)
+}
 }

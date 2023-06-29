@@ -36,6 +36,7 @@ Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
 \code{\link{as_md_vals}()},
+\code{\link{md_verb}()},
 \code{\link{pipe_table}()},
 \code{\link{strip_md_footnotes}()}
 }

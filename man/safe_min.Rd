@@ -15,33 +15,34 @@ safe_min(..., rm_na = TRUE)
 A numeric scalar or empty value, of the same type as \code{...}.
 }
 \description{
-Modified version of \code{\link[base:Extremes]{min()}} that differs in the following ways:
+Modified version of \code{\link[base:Extremes]{base::min()}} that differs in the following ways:
 \itemize{
 \item \code{NA}s in the input (\code{...}) are ignored \emph{by default} (\code{rm_na = TRUE}).
 \item If the input is of length zero, the output will also be of length zero (of the same type as the input).
-\item It is ensured that all inputs are either numeric, of length zero or \code{NA}. There is \emph{no} case where the return value will be \code{Inf}.
+\item It is ensured that all inputs are either numeric, of length zero or \code{NA}. The only case where the return value will be \code{-Inf} or \code{NA} is when the input
+contains only \code{-Inf} or \code{NA}.
 \item \link[rlang:dyn-dots]{Dynamic dots} are supported.
 }
 }
 \examples{
 # other than `base::min()`, this function removes `NA`s by default
-min(1, NA, 2)
-pal::safe_min(1, NA, 2)
+min(1, NA_real_, 2)
+pal::safe_min(1, NA_real_, 2)
 
-# other than `base::min()`, this function does not return `Inf` or `NA_character_` for
+# other than `base::min()`, this function does not return `-Inf` or `NA_character_` for
 # zero-length inputs
 min(NULL)
-min(character())
 min(integer())
 pal::safe_min(NULL)
-pal::safe_min(character())
 pal::safe_min(integer())
 
-# other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
+# other than `base::min()`, this function fails for non-numeric inputs
 min("zero", 1L)
 min("zero", "one")
+min(character())
 try(pal::safe_min("zero", 1L))
 try(pal::safe_min("zero", "one"))
+try(pal::safe_min(character()))
 }
 \seealso{
 Other statistical computing / numeric functions:

@@ -7,14 +7,15 @@
 as_md_vals(...)
 }
 \arguments{
-\item{...}{\R objects to list.}
+\item{...}{Values to be formatted. One or more \R objects.}
 }
 \value{
 A character vector.
 }
 \description{
 Converts the given values to a character vector, formatted as \href{https://pandoc.org/MANUAL.html#verbatim}{verbatim Markdown}. Character values are additionally
-wrapped in double quotes.
+wrapped in double quotes. Metadata like \link[base:typeof]{types} or \link[base:attributes]{attributes} of the input is \emph{not} represented in the output, only its
+\emph{values}.
 }
 \examples{
 list(1L, 2.2, "other") |>
@@ -28,6 +29,7 @@ list(list(list(1L, list(2.2), list(list("other"))))) |>
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
+\code{\link{md_verb}()},
 \code{\link{pipe_table}()},
 \code{\link{strip_md_footnotes}()},
 \code{\link{strip_md}()}

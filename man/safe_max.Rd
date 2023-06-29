@@ -15,33 +15,34 @@ safe_max(..., rm_na = TRUE)
 A numeric scalar or empty value, of the same type as \code{...}.
 }
 \description{
-Modified version of \code{\link[base:Extremes]{max()}} that differs in the following ways:
+Modified version of \code{\link[base:Extremes]{base::max()}} that differs in the following ways:
 \itemize{
 \item \code{NA}s in the input (\code{...}) are ignored \emph{by default} (\code{rm_na = TRUE}).
 \item If the input is of length zero, the output will also be of length zero (of the same type as the input).
-\item It is ensured that all inputs are either numeric, of length zero or \code{NA}. There is \emph{no} case where the return value will be \code{Inf}.
+\item It is ensured that all inputs are either numeric, of length zero or \code{NA}. The only case where the return value will be \code{-Inf} or \code{NA} is when the input
+contains only \code{-Inf} or \code{NA}.
 \item \link[rlang:dyn-dots]{Dynamic dots} are supported.
 }
 }
 \examples{
 # other than `base::max()`, this function removes `NA`s by default
-max(1, NA, 2)
-pal::safe_max(1, NA, 2)
+max(1, NA_real_, 2)
+pal::safe_max(1, NA_real_, 2)
 
-# other than `base::max()`, this function does not return `Inf` or `NA_character_` for
+# other than `base::max()`, this function does not return `-Inf` or `NA_character_` for
 # zero-length inputs
 max(NULL)
-max(character())
 max(integer())
 pal::safe_max(NULL)
-pal::safe_max(character())
 pal::safe_max(integer())
 
-# other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
+# other than `base::max()`, this function fails for non-numeric inputs
 max("zero", 1L)
 max("zero", "one")
+max(character())
 try(pal::safe_max("zero", 1L))
 try(pal::safe_max("zero", "one"))
+try(pal::safe_max(character()))
 }
 \seealso{
 Other statistical computing / numeric functions:

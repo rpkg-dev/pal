@@ -24,8 +24,8 @@ Condition-action sets are written as formulas with conditions as left-hand sides
 right-hand side will be treated as a condition which is always satisfied. For such a default case one can also omit the \code{~} symbol, but note that its value
 will then be evaluated early. Any named argument will be made available in all conditions and actions, which is useful in avoiding repeated temporary
 computations or temporary assignments.
-Validity of the conditions are tested with \code{\link[=isTRUE]{isTRUE()}}. In other words conditions resulting in more than one logical will never be valid. Note that the input
-value is always treated as a single object, as opposed to the \code{\link[=ifelse]{ifelse()}} function.
+Validity of the conditions are tested with \code{\link[base:Logic]{base::isTRUE()}}. In other words conditions resulting in more than one logical will never be valid. Note that the
+input value is always treated as a single object, as opposed to the \code{\link[base:ifelse]{base::ifelse()}} function.
 
 This function is copied over from package purrr since it \href{https://www.tidyverse.org/blog/2022/12/purrr-1-0-0/#core-purpose-refinements}{has been deprecated with the release of purrr 1.0}. \code{pal::when()} can be used as a drop-in replacement for \code{purrr::when()}.
 All credits go to the original authors of \code{purrr::when()} \href{https://github.com/tidyverse/purrr/blame/54546b6bf938c54da4d232061db2fc91b1d5923c/R/deprec-when.R}{as of 2022-12-21}.

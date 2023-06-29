@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9096</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9097</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,11 +66,11 @@
 
 
 <dt>fn</dt>
-<dd><p>A <a href="https://rdrr.io/r/base/function.html" class="external-link">function</a> or a function name (searched for in <code>env</code>). See <code><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals()</a></code> for details.</p></dd>
+<dd><p>A <a href="https://rdrr.io/r/base/function.html" class="external-link">function</a> or a function name (searched for in <code>env</code>). See <code><a href="https://rdrr.io/r/base/formals.html" class="external-link">base::formals()</a></code> for details.</p></dd>
 
 
 <dt>env</dt>
-<dd><p><a href="https://rdrr.io/r/base/environment.html" class="external-link">Environment</a> <code>fn</code> is defined in. See <code><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals()</a></code> for details.</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/environment.html" class="external-link">Environment</a> <code>fn</code> is defined in. See <code><a href="https://rdrr.io/r/base/formals.html" class="external-link">base::formals()</a></code> for details.</p></dd>
 
 
 <dt>as_scalar</dt>
@@ -104,15 +104,13 @@
 <span>  <span class="va">...</span></span>
 <span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-<code>`r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %&gt;% as_md_list()`</code> in the example above.</p>
+<code>`r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) |&gt; as_md_list()`</code> in the example above.</p>
     </div>
     <div class="section level2">
     <h2 id="caveats">Caveats<a class="anchor" aria-label="anchor" href="#caveats"></a></h2>
-    
-<ul><li><p>This function does not work for Primitives.</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse()</a></code> is used internally to get a character representation of non-character default values. Therefore all of <code><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse()</a></code>'s fuzziness also applies to
-this function.</p></li>
-</ul></div>
+    <p><code><a href="https://rdrr.io/r/base/deparse.html" class="external-link">base::deparse1()</a></code> is used internally to get a character representation of non-character default values. Therefore all of <code><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse()</a></code>'s fuzziness also
+applies to this function.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

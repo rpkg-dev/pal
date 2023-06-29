@@ -17,7 +17,7 @@ as_string(..., sep = "", rm_na = FALSE)
 A character scalar.
 }
 \description{
-Similar to \code{\link[=paste0]{paste0(..., collapse = "")}}, but \emph{recursively} converts its inputs to type character.
+Similar to \code{\link[base:paste]{paste0(..., collapse = "")}}, but \emph{recursively} converts its inputs to type character.
 }
 \examples{
 library(magrittr)

@@ -34,7 +34,7 @@ A character vector of the same length as \code{x}.
 }
 \description{
 Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around \code{\link[=round_to]{round_to()}} and
-\code{\link[base:format]{format()}}.
+\code{\link[base:format]{base::format()}}.
 }
 \examples{
 c(0.11, 11111.11) |> pal::prettify_nr()

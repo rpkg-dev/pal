@@ -9,13 +9,13 @@ as_chr(..., .use_names = FALSE)
 \arguments{
 \item{...}{\R objects to be converted to a character vector. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
-\item{.use_names}{Whether or not to preserve names by \code{\link[=unlist]{unlist()}}.}
+\item{.use_names}{Whether or not to preserve names by \code{\link[base:unlist]{base::unlist()}}.}
 }
 \value{
 A character vector.
 }
 \description{
-\emph{Recursively} applies \code{\link[=as.character]{as.character()}} to its inputs.
+\emph{Recursively} applies \code{\link[base:character]{base::as.character()}} to its inputs.
 }
 \examples{
 library(magrittr)

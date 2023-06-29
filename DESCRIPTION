@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9096
+Version: 0.0.9097
 Authors@R: 
     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5329-5987"))
@@ -12,7 +12,7 @@ BugReports: https://gitlab.com/rpkg.dev/pal/issues
 Depends: 
     R (>= 4.1)
 Imports: 
-    checkmate (>= 2.0.0),
+    checkmate (>= 2.2.0),
     cli (>= 3.1.0),
     dplyr (>= 1.1.0),
     fs (>= 1.5.0),
@@ -34,7 +34,7 @@ Suggests:
     janeaustenr,
     knitr (>= 1.41),
     pander (>= 0.6.3),
-    pkgsnip (>= 0.0.9032),
+    pkgsnip (>= 0.0.9036),
     rappdirs (>= 0.3.3),
     RcppTOML (>= 0.1.7),
     readr (>= 1.4.0),

@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{wrap_chr}
 \alias{wrap_chr}
-\title{Wrap character vector in string}
+\title{Wrap character in character}
 \usage{
 wrap_chr(x, wrap = "\\"")
 }
@@ -15,14 +15,13 @@ wrap_chr(x, wrap = "\\"")
 A character vector of the same length as \code{wrap}.
 }
 \description{
-Wrap character vector in string
+Wraps a character vector \code{x} in another character vector \code{wrap} (by default the string \verb{"}).
 }
 \examples{
-library(magrittr)
-
-mtcars \%>\%
-  magrittr::set_colnames(pal::wrap_chr(x = colnames(.),
-                                       wrap = "`")) \%>\%
+mtcars |>
+  colnames() |>
+  pal::wrap_chr(wrap = "`") |>
+  magrittr::set_colnames(x = mtcars) |>
   pal::pipe_table()
 }
 \seealso{

@@ -18,8 +18,8 @@ the results will be that of the final file rather than the link.}
 A \link[base:DateTimeClasses]{datetime}.
 }
 \description{
-Determine a file or directory's modification time. Other than \code{\link[=file.mtime]{file.mtime()}}, this function is based on \code{\link[fs:file_info]{fs::file_info()}} and the datetime of modification is
-returned in \href{https://en.wikipedia.org/wiki/Coordinated_Universal_Time}{UTC} by default.
+Determine a file or directory's modification time. Other than \code{\link[base:file.info]{base::file.mtime()}}, this function is based on \code{\link[fs:file_info]{fs::file_info()}} and the datetime of
+modification is returned in \href{https://en.wikipedia.org/wiki/Coordinated_Universal_Time}{UTC} by default.
 }
 \examples{
 fs::path_package(package = "dplyr",

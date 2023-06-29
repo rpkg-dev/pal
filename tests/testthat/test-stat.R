@@ -20,53 +20,45 @@ test_that("`round_to()` works as expected", {
 # safe_min ----
 test_that("`safe_min()` returns proper output types", {
 
-  expect_identical(safe_min(NULL),
-                   NULL)
-  expect_identical(safe_min(NA),
-                   NA)
-  expect_identical(safe_min(NA_character_),
-                   NA_character_)
-  expect_identical(safe_min(NA_integer_),
-                   NA_integer_)
-  expect_identical(safe_min(NA_real_),
-                   NA_real_)
-  expect_identical(safe_min(character()),
-                   character())
-  expect_identical(safe_min(integer()),
-                   integer())
-  expect_identical(safe_min(numeric()),
-                   numeric())
   expect_identical(safe_min(1L, 2),
                    1)
   expect_identical(safe_min(1L, 2L),
                    1L)
+  expect_identical(safe_min(NULL),
+                   NULL)
+  expect_identical(safe_min(NA_real_),
+                   NA_real_)
+  expect_identical(safe_min(NA_integer_),
+                   NA_integer_)
+  expect_identical(safe_min(integer()),
+                   integer())
+  expect_identical(safe_min(numeric()),
+                   numeric())
   expect_error(safe_min("one", 1))
+  expect_error(safe_min(NA_character_, NA_real_))
+  expect_error(safe_min(character(), integer()))
 })
 
 # safe_max ----
 test_that("`safe_max()` returns proper output types", {
 
-  expect_identical(safe_max(NULL),
-                   NULL)
-  expect_identical(safe_max(NA),
-                   NA)
-  expect_identical(safe_max(NA_character_),
-                   NA_character_)
-  expect_identical(safe_max(NA_integer_),
-                   NA_integer_)
-  expect_identical(safe_max(NA_real_),
-                   NA_real_)
-  expect_identical(safe_max(character()),
-                   character())
-  expect_identical(safe_max(integer()),
-                   integer())
-  expect_identical(safe_max(numeric()),
-                   numeric())
   expect_identical(safe_max(1L, 2),
                    2)
   expect_identical(safe_max(1L, 2L),
                    2L)
+  expect_identical(safe_max(NULL),
+                   NULL)
+  expect_identical(safe_max(NA_integer_),
+                   NA_integer_)
+  expect_identical(safe_max(NA_real_),
+                   NA_real_)
+  expect_identical(safe_max(integer()),
+                   integer())
+  expect_identical(safe_max(numeric()),
+                   numeric())
   expect_error(safe_max("one", 1))
+  expect_error(safe_max(NA_character_, NA_real_))
+  expect_error(safe_max(character(), integer()))
 })
 
 # stat_mode ----

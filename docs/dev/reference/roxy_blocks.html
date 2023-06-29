@@ -12,7 +12,7 @@ Parses the roxygen2 package documentation of a specific R package or from a sing
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9096</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9097</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,12 +57,12 @@ Parses the roxygen2 package documentation of a specific R package or from a sing
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>pkg, text</dt>
-<dd><p>Either a package name or a character vector of <span style="R">R</span> source code lines to extract the object's roxygen2 tag value from.</p></dd>
+<dd><p>Either a package name (<code>pkg</code>) or a character vector of <span style="R">R</span> source code lines (<code>text</code>) to extract the object's roxygen2 tag value from.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Further arguments passed on to <code><a href="https://rdrr.io/r/utils/download.packages.html" class="external-link">download.packages()</a></code>, excluding <code>pkgs</code>, <code>destdir</code>, <code>available</code> and <code>type</code>. Only relevant
-if <code>pkg</code> is provided. <a href="https://rlang.r-lib.org/reference/dyn-dots.html" class="external-link">Dynamic dots</a> are supported.</p></dd>
+<dd><p>Further arguments passed on to <code><a href="https://rdrr.io/r/utils/download.packages.html" class="external-link">utils::download.packages()</a></code>, excluding
+<code>"pkgs"</code>, <code>"destdir"</code>, <code>"available"</code>, <code>"type"</code> and <code>"quiet"</code>. Only relevant if <code>pkg</code> is provided.</p></dd>
 
 
 <dt>quiet</dt>
@@ -141,7 +141,7 @@ if <code>pkg</code> is provided. <a href="https://rlang.r-lib.org/reference/dyn-
 <span class="r-out co"><span class="r-pr">#&gt;</span>     $alias fn_fmls</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># ...or provide a package name</span></span></span>
+<span class="r-in"><span><span class="co"># ...or provide a package name as `pkg`</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu">roxy_blocks</span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"tinkr"</span>,</span></span>
 <span class="r-in"><span>                   repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>

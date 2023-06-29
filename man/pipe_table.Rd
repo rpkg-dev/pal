@@ -37,7 +37,7 @@ use \code{label = NA}.}
 \code{round()}. This can also be a vector of length \code{ncol(x)}, to set
 the number of digits for individual columns.}
 
-\item{format_args}{A list of arguments to be passed to \code{\link[=format]{format()}} to format table values, e.g. \code{list(big.mark = ',')}.}
+\item{format_args}{A list of arguments to be passed to \code{\link[base:format]{base::format()}} to format table values, e.g. \code{list(big.mark = ',')}.}
 }
 \value{
 A character vector.
@@ -78,6 +78,7 @@ Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
 \code{\link{as_md_vals}()},
+\code{\link{md_verb}()},
 \code{\link{strip_md_footnotes}()},
 \code{\link{strip_md}()}
 }

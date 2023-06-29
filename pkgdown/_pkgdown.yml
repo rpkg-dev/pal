@@ -93,6 +93,7 @@ reference:
   - roxy_tag_value
 - title: (Pandoc) Markdown
 - contents:
+  - md_verb
   - as_md_list
   - as_md_vals
   - as_md_val_list

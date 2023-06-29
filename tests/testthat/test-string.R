@@ -58,11 +58,16 @@ test_that("`prose_ls_fn_param()` works as expected", {
                                      fn = dplyr::bind_rows),
                    '`NULL`')
 
-  ### test vector result
+  ## test vector result
   expect_identical(prose_ls_fn_param(param = ".id",
                                      fn = dplyr::bind_rows,
                                      as_scalar = FALSE),
                    '`NULL`')
+
+  # test primitive
+  expect_identical(prose_ls_fn_param(param = "na.rm",
+                                     fn = base::sum),
+                   "`FALSE`")
 
   # test inexistent param
   expect_error(prose_ls_fn_param(param = ".name_repair99",
@@ -73,9 +78,4 @@ test_that("`prose_ls_fn_param()` works as expected", {
   expect_error(prose_ls_fn_param(param = "x",
                                  fn = tibble::as_tibble),
                regexp = "does not have a default value")
-
-  # test unsupported primitive
-  expect_error(prose_ls_fn_param(param = "x",
-                                 fn = base::as.character),
-               regexp = "Primitives .* not supported")
 })

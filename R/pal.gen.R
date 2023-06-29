@@ -35,7 +35,8 @@ utils::globalVariables(names = c(".",
 forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "destdir",
                                           "available",
-                                          "type"))
+                                          "type",
+                                          "quiet"))
 
 env_var_name <- function(...) {
   
@@ -144,7 +145,7 @@ subnode_ix <- function(xml_nodes,
 
 #' Generate an integer sequence of specific length (safe)
 #'
-#' Modified version of [`seq_len()`][base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
+#' Modified version of [base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
 #'
 #' @param n Desired length of the integer sequence.
 #'
@@ -175,14 +176,15 @@ safe_seq_len <- function(n) {
 #' Maximum (safe)
 #'
 #' @description
-#' Modified version of [`max()`][base::max()] that differs in the following ways:
+#' Modified version of [base::max()] that differs in the following ways:
 #'
 #' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
 #' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
-#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
-#' - `r pkgsnip::roxy_label("dyn_dots_support")`
+#' - It is ensured that all inputs are either numeric, of length zero or `NA`. The only case where the return value will be `-Inf` or `NA` is when the input
+#'   contains only `-Inf` or `NA`.
+#' - `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #'
-#' @param ... Numeric objects of which to determine the maximum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... Numeric objects of which to determine the maximum. `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #' @param rm_na Ignore missing values in `...`. If missing values are present and `rm_na = FALSE`, the result will always be `NA`.
 #'
 #' @return A numeric scalar or empty value, of the same type as `...`.
@@ -191,35 +193,35 @@ safe_seq_len <- function(n) {
 #'
 #' @examples
 #' # other than `base::max()`, this function removes `NA`s by default
-#' max(1, NA, 2)
-#' pal::safe_max(1, NA, 2)
+#' max(1, NA_real_, 2)
+#' pal::safe_max(1, NA_real_, 2)
 #'
-#' # other than `base::max()`, this function does not return `Inf` or `NA_character_` for
+#' # other than `base::max()`, this function does not return `-Inf` or `NA_character_` for
 #' # zero-length inputs
 #' max(NULL)
-#' max(character())
 #' max(integer())
 #' pal::safe_max(NULL)
-#' pal::safe_max(character())
 #' pal::safe_max(integer())
 #' 
-#' # other than `base::max()`, this function fails for non-numeric, non-zero-length inputs
+#' # other than `base::max()`, this function fails for non-numeric inputs
 #' max("zero", 1L)
 #' max("zero", "one")
+#' max(character())
 #' try(pal::safe_max("zero", 1L))
 #' try(pal::safe_max("zero", "one"))
+#' try(pal::safe_max(character()))
 safe_max <- function(...,
                      rm_na = TRUE) {
   
   input <- rlang::list2(...)
   
-  purrr::map(.x = input,
-             .f = checkmate::assert_numeric,
-             null.ok = TRUE,
-             .var.name = "...")
-  
-  input %>%
-    purrr::reduce(c) %>%
+  purrr::map(input,
+             \(x) checkmate::assert_numeric(x,
+                                            typed.missing = TRUE,
+                                            null.ok = TRUE,
+                                            .var.name = "..."))
+  input |>
+    purrr::reduce(c) |>
     when(length(.) == 0L ~ .[0L],
          all(is.na(.)) && rm_na ~ .[NA],
          ~ max(., na.rm = rm_na))
@@ -228,15 +230,16 @@ safe_max <- function(...,
 #' Minimum (safe)
 #'
 #' @description
-#' Modified version of [`min()`][base::min()] that differs in the following ways:
+#' Modified version of [base::min()] that differs in the following ways:
 #'
 #' - `NA`s in the input (`...`) are ignored _by default_ (`rm_na = TRUE`).
 #' - If the input is of length zero, the output will also be of length zero (of the same type as the input).
-#' - It is ensured that all inputs are either numeric, of length zero or `NA`. There is _no_ case where the return value will be `Inf`.
-#' - `r pkgsnip::roxy_label("dyn_dots_support")`
+#' - It is ensured that all inputs are either numeric, of length zero or `NA`. The only case where the return value will be `-Inf` or `NA` is when the input
+#'   contains only `-Inf` or `NA`.
+#' - `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #'
 #' @inheritParams safe_max
-#' @param ... Numeric objects of which to determine the minimum. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... Numeric objects of which to determine the minimum. `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #'
 #' @inherit safe_max return
 #' @family stat
@@ -244,35 +247,35 @@ safe_max <- function(...,
 #'
 #' @examples
 #' # other than `base::min()`, this function removes `NA`s by default
-#' min(1, NA, 2)
-#' pal::safe_min(1, NA, 2)
+#' min(1, NA_real_, 2)
+#' pal::safe_min(1, NA_real_, 2)
 #'
-#' # other than `base::min()`, this function does not return `Inf` or `NA_character_` for
+#' # other than `base::min()`, this function does not return `-Inf` or `NA_character_` for
 #' # zero-length inputs
 #' min(NULL)
-#' min(character())
 #' min(integer())
 #' pal::safe_min(NULL)
-#' pal::safe_min(character())
 #' pal::safe_min(integer())
 #' 
-#' # other than `base::min()`, this function fails for non-numeric, non-zero-length inputs
+#' # other than `base::min()`, this function fails for non-numeric inputs
 #' min("zero", 1L)
 #' min("zero", "one")
+#' min(character())
 #' try(pal::safe_min("zero", 1L))
 #' try(pal::safe_min("zero", "one"))
+#' try(pal::safe_min(character()))
 safe_min <- function(...,
                      rm_na = TRUE) {
   
   input <- rlang::list2(...)
   
-  purrr::map(.x = input,
-             .f = checkmate::assert_numeric,
-             null.ok = TRUE,
-             .var.name = "...")
-  
-  input %>%
-    purrr::reduce(c) %>%
+  purrr::map(input,
+             \(x) checkmate::assert_numeric(x,
+                                            typed.missing = TRUE,
+                                            null.ok = TRUE,
+                                            .var.name = "..."))
+  input |>
+    purrr::reduce(c) |>
     when(length(.) == 0L ~ .[0L],
          all(is.na(.)) && rm_na ~ .[NA],
          ~ min(., na.rm = rm_na))
@@ -530,7 +533,7 @@ is_equal_df <- function(x,
 #' @param x A list containing data frames / tibbles at its leafs.
 #' @param strict Ensure `x` contains data frames / tibbles only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
 #'
-#' @return `r pkgsnip::return_label("data")`
+#' @return `r pkgsnip::return_lbl("data")`
 #' @family tibble
 #' @export
 reduce_df_list <- function(x,
@@ -575,7 +578,7 @@ reduce_df_list <- function(x,
 #'
 #' - removes list names. `unlist()` concatenates nested names (separated by a dot).
 #'
-#' @param x `r pkgsnip::param_label("r_obj")`
+#' @param x `r pkgsnip::param_lbl("r_obj")`
 #' @param keep_attrs Keep [attributes][base::attr()] (and thereby retain list structure of custom objects). A logical scalar.
 #' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
 #'
@@ -679,10 +682,10 @@ rm_list_lvl <- function(x,
 
 #' Convert to a character vector
 #'
-#' _Recursively_ applies [as.character()] to its inputs.
+#' _Recursively_ applies [base::as.character()] to its inputs.
 #'
-#' @param ... \R objects to be converted to a character vector. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @param .use_names Whether or not to preserve names by [unlist()].
+#' @param ... \R objects to be converted to a character vector. `r pkgsnip::roxy_lbl("dyn_dots_support")`
+#' @param .use_names Whether or not to preserve names by [base::unlist()].
 #'
 #' @return A character vector.
 #' @family string
@@ -750,7 +753,7 @@ escape_lf <- function(x,
 #' Prettify a numeric vector
 #'
 #' Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
-#' [`format()`][base::format()].
+#' [base::format()].
 #'
 #' @inheritParams round_to
 #' @param x A numeric vector to prettify.
@@ -845,7 +848,9 @@ capitalize_first <- function(x) {
                        replacement = toupper)
 }
 
-#' Wrap character vector in string
+#' Wrap character in character
+#'
+#' Wraps a character vector `x` in another character vector `wrap` (by default the string `"`).
 #'
 #' @param x A character vector or something coercible to. Will be fed to [as_chr()] before wrapping.
 #' @param wrap Character sequence `x` is to be wrapped in. A character vector or something coercible to.
@@ -855,11 +860,10 @@ capitalize_first <- function(x) {
 #' @export
 #'
 #' @examples
-#' library(magrittr)
-#'
-#' mtcars %>%
-#'   magrittr::set_colnames(pal::wrap_chr(x = colnames(.),
-#'                                        wrap = "`")) %>%
+#' mtcars |>
+#'   colnames() |>
+#'   pal::wrap_chr(wrap = "`") |>
+#'   magrittr::set_colnames(x = mtcars) |>
 #'   pal::pipe_table()
 wrap_chr <- function(x,
                      wrap = "\"") {
@@ -869,7 +873,7 @@ wrap_chr <- function(x,
 
 #' Convert control character sequence name to actual character sequence
 #'
-#' @param eol `r pkgsnip::param_label("eol")`
+#' @param eol `r pkgsnip::param_lbl("eol")`
 #'
 #' @return A character scalar.
 #' @family string
@@ -922,9 +926,9 @@ dsv_colnames <- function(x,
 
 #' Convert to a character scalar (aka string)
 #'
-#' Similar to [`paste0(..., collapse = "")`][paste0()], but _recursively_ converts its inputs to type character.
+#' Similar to [`paste0(..., collapse = "")`][base::paste0()], but _recursively_ converts its inputs to type character.
 #'
-#' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #' @param sep Separator to delimit `...`. Defaults to none (`""`).
 #' @param rm_na Exclude missing values. If `FALSE`, missing values will be represented as `"NA"` in the resulting string.
 #'
@@ -1023,7 +1027,7 @@ as_comment_string <- function(...,
 #'
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
 #'
-#' @param ... Regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... Regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #'
 #' @return A character scalar.
 #' @seealso The [rex][rex::rex] package which provides an intuitive framework to build complex regular expressions.
@@ -1094,13 +1098,13 @@ prose_ls <- function(x,
 
 #' Get path modification time
 #'
-#' Determine a file or directory's modification time. Other than [file.mtime()], this function is based on [fs::file_info()] and the datetime of modification is
-#' returned in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) by default.
+#' Determine a file or directory's modification time. Other than [base::file.mtime()], this function is based on [fs::file_info()] and the datetime of
+#' modification is returned in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) by default.
 #'
 #' @inheritParams fs::file_info
 #' @param tz Timezone to return the result in. A character scalar where `""` means the current time zone.
 #'
-#' @return `r pkgsnip::return_label("datetime")`
+#' @return `r pkgsnip::return_lbl("datetime")`
 #' @family path
 #' @export
 #'
@@ -1566,7 +1570,7 @@ use_pkg <- function(package,
 #' @param pkg Package name (case-sensitive). A character scalar.
 #' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
 #'   [`package_version`][base::package_version()] or something coercible to.
-#' @param message Error message to display in case the package is not installed. `r pkgsnip::param_label("cli_markup_support")` If `NULL`, a sensible standard
+#' @param message Error message to display in case the package is not installed. `r pkgsnip::param_lbl("cli_markup_support")` If `NULL`, a sensible standard
 #'   message is generated.
 #' @param install_hint Additional package installation instructions appended to `message`. Either `NULL` in order to autogenerate the hint, or a
 #'   character scalar. Set `install_hint = ""` in order to disable the hint.
@@ -1865,11 +1869,11 @@ exists_in_namespace <- function(x,
 #' @export
 #'
 #' @examples
-#' try(
+#' \dontrun{
 #'   rlang::check_installed(pkg = "foo",
 #'                          reason = pal::reason_pkg_required(pkg = "bar",
 #'                                                            fn = "serve"))
-#' )
+#' }
 reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
                                 pkg = utils::packageName(parent.frame())) {
   checkmate::assert_string(fn)
@@ -1901,7 +1905,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #'
-#' @return `r pkgsnip::return_label("r_obj")`
+#' @return `r pkgsnip::return_lbl("r_obj")`
 #' @seealso [xfun::env_option()] for an alternative approach to R option and environment variable coherence.
 #' @family pkg_config
 #' @export
@@ -1940,7 +1944,7 @@ pkg_config_val <- function(key,
 #'
 #' @inheritParams pkg_config_val
 #'
-#' @return `pkgsnip::return_label("r_obj")`
+#' @return `pkgsnip::return_lbl("r_obj")`
 #' @family pkg_config
 #' @export
 #'
@@ -2151,10 +2155,10 @@ desc_url_git <- function(file = ".") {
 #'
 #' Parses the roxygen2 package documentation of a specific R package or from a single `.R` source code file.
 #'
-#' @param pkg,text Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.
-#' @param ... Further arguments passed on to [download.packages()], excluding `r forbidden_dots$roxy_tag_value %>% prose_ls(wrap = "\x60")`. Only relevant
-#'   if `pkg` is provided. `r pkgsnip::roxy_label("dyn_dots_support")`
-#' @param quiet `r pkgsnip::param_label("quiet")`
+#' @param pkg,text Either a package name (`pkg`) or a character vector of \R source code lines (`text`) to extract the object's roxygen2 tag value from.
+#' @param ... Further arguments passed on to [utils::download.packages()], excluding
+#'   `r cli::ansi_collapse(as_md_vals(forbidden_dots$roxy_tag_value), last = " and ")`. Only relevant if `pkg` is provided.
+#' @param quiet `r pkgsnip::param_lbl("quiet")`
 #'
 #' @return A list of [`roxy_block`][roxygen2::roxy_block] objects.
 #' @family roxy
@@ -2167,7 +2171,7 @@ desc_url_git <- function(file = ".") {
 #'
 #' pal::roxy_blocks(text = text) |> head(n = 3L)
 #'
-#' # ...or provide a package name
+#' # ...or provide a package name as `pkg`
 #' try(
 #'   pal::roxy_blocks(pkg = "tinkr",
 #'                    repos = "https://cloud.r-project.org") |>
@@ -2261,7 +2265,7 @@ roxy_blocks <- function(pkg = NULL,
     tmp_archive <- utils::download.packages(pkgs = pkg,
                                             destdir = tmp_dir,
                                             available = pkgs_available,
-                                            ... = !!!rlang::list2(...),
+                                            ... = ...,
                                             type = "source",
                                             quiet = quiet)
     
@@ -2372,6 +2376,85 @@ roxy_tag_value <- function(blocks,
                         ~ .))
 }
 
+#' Convert to verbatim Markdown
+#'
+#' Converts the provided \R expressions to their character representation using [base::deparse1()] and formats them as [verbatim
+#' Markdown](https://pandoc.org/MANUAL.html#verbatim).
+#'
+#' @param ... \R expression(s) to convert to verbatim Markdown. Must be unnamed. `r pkgsnip::roxy_lbl("dyn_dots_support")`
+#' @param .eval Whether or not to evaluate the expression(s) in `...`.
+#' @param .collapse String to separate the results of a single expression in `...`.
+#' @param .backtick Whether or not to enclose symbolic names in backticks if they do not follow the standard syntax.
+#' @param .control Deparsing options. A character vector or `NULL`. See [base::.deparseOpts] for all possible options.
+#' @param .width.cutoff Cutoff (in bytes) at which line-breaking is tried. An integer scalar between `20` and `500`.
+#' @param .nlines Maximum number of lines to produce. A negative value indicates no limit. An integer scalar.
+#'
+#' @return A character vector of the same length as `...`.
+#' @family md
+#' @export
+#'
+#' @examples
+#' pal::md_verb(1:3, "It", is.logical, `||`, FALSE, quote(`?!`)) |>
+#'   pal::cat_lines()
+#' 
+#' # you can splice vector or list expressions if you like
+#' pal::md_verb(!!!1:3, "It", is.logical, `||`, FALSE, quote(`?!`)) |>
+#'   pal::cat_lines()
+#'
+#' # to evaluate, or not to evaluate, that is the question
+#' pal::md_verb(!!!1:3, "It", is.logical, `||`, FALSE, quote(`?!`),
+#'              .eval = FALSE) |>
+#'   pal::cat_lines()
+#' 
+#' # unevaluated expressions do not need to exist
+#' pal::md_verb(Not, actual(), `R-expressions`,
+#'              .eval = FALSE) |>
+#'   pal::cat_lines()
+#' 
+#' # you can opt out of wrapping non-standard syntax in additional backticks
+#' pal::md_verb(Not, actual(), `R-expressions`,
+#'              .eval = FALSE,
+#'              .backtick = FALSE) |>
+#'   pal::cat_lines()
+md_verb <- function(...,
+                    .eval = TRUE,
+                    .collapse = " ",
+                    .backtick = TRUE,
+                    .control = c("keepNA",
+                                 "keepInteger",
+                                 "niceNames",
+                                 "showAttributes",
+                                 "warnIncomplete"),
+                    .width.cutoff = 500L,
+                    .nlines = -1L) {
+  
+  checkmate::assert_flag(.eval)
+  checkmate::assert_flag(.backtick)
+  
+  if (.eval) {
+    result <- rlang::list2(...)
+  } else {
+    result <- eval(substitute(alist(...)))
+  }
+  
+  result |>
+    purrr::map(\(x) {
+      
+      deparsed <- deparse1(expr = x,
+                           collapse = .collapse,
+                           width.cutoff = .width.cutoff,
+                           backtick = .backtick,
+                           control = .control,
+                           nlines = .nlines)
+      
+      escape_backtick <- stringr::str_detect(string = deparsed,
+                                             pattern = "`")
+      
+      paste0("`", "` "[escape_backtick], deparsed, " `"[escape_backtick], "`")
+    }) |>
+    purrr::list_c(ptype = character())
+}
+
 #' Convert a character vector to a Markdown list
 #'
 #' Convenience wrapper around [pander::pandoc.list.return()] to convert a character vector (or something coercible to) to a [Markdown
@@ -2379,8 +2462,10 @@ roxy_tag_value <- function(blocks,
 #'
 #' @param x \R object, e.g. a character vector. Each element of `x` will become an item in the resulting Markdown list.
 #' @param type Markdown list type. One of
-#'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to `<ul>` in HTML.
-#'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to `<ol>` in HTML.
+#'   - `"unordered"` for an unordered aka [bullet list](https://pandoc.org/MANUAL.html#bullet-lists). Corresponds to
+#'     [`<ul>`](https://developer.mozilla.org/docs/Web/HTML/Element/ul) in HTML.
+#'   - `"ordered"` for an ordered aka [numbered list](https://pandoc.org/MANUAL.html#ordered-lists). Corresponds to
+#'     [`<ol>`](https://developer.mozilla.org/docs/Web/HTML/Element/ol) in HTML.
 #'   - `"ordered_roman"` for a variation of an ordered/numbered list with uppercase roman numerals instead of Arabic numerals as list markers.
 #' @param tight Whether or not to add additional spacing between list items.
 #' @param indent_lvl Level of indentation of the resulting Markdown list. For each level, four additional spaces are added in front of every list item. An
@@ -2428,9 +2513,10 @@ as_md_list <- function(x,
 #' Format values as verbatim Markdown
 #'
 #' Converts the given values to a character vector, formatted as [verbatim Markdown](https://pandoc.org/MANUAL.html#verbatim). Character values are additionally
-#' wrapped in double quotes.
+#' wrapped in double quotes. Metadata like [types][base::typeof] or [attributes][base::attributes] of the input is *not* represented in the output, only its
+#' *values*.
 #'
-#' @param ... \R objects to list.
+#' @param ... Values to be formatted. One or more \R objects.
 #'
 #' @return A character vector.
 #' @family md
@@ -2445,14 +2531,30 @@ as_md_list <- function(x,
 #'   pal::as_md_vals()
 as_md_vals <- function(...) {
   
-  rlang::list2(...) %>%
-    as_flat_list() %>%
-    # wrap chr vals in double quotes
-    purrr::map(~ {
-      if (is.character(.x)) wrap_chr(.x) else .x
-    }) %>%
-    # make verbatim
-    wrap_chr("`")
+  rlang::list2(...) |>
+    as_flat_list() |>
+    purrr::map(\(x) {
+      
+      # wrap chr vals in double quotes
+      if (is.character(x)) x %<>% wrap_chr()
+      
+      # determine nr of backticks to wrap result in, safely escaping any number of existing backticks
+      add_space <- TRUE
+      backticks <-
+        x |>
+        stringr::str_extract_all(pattern = "`+") |>
+        purrr::list_c(ptype = character()) |>
+        unique() %>%
+        magrittr::extract(nchar(.) == safe_max(nchar(.)))
+      
+      if (length(backticks) == 0L) {
+        add_space <- FALSE
+        backticks <- "`"
+      }
+      
+      paste0(backticks, " "[add_space], x, " "[add_space], backticks)
+    }) |>
+    purrr::list_c(ptype = character())
 }
 
 #' List values as a Markdown list
@@ -2509,7 +2611,7 @@ as_md_val_list <- function(...) {
 #' @param align Column alignment. Either `NULL` for auto-alignment or a character vector consisting of `'l'` (left), `'c'` (center) and/or `'r'` (right). If
 #'   `align = NULL`, numeric columns are right-aligned, and other columns are left-aligned. If `length(align) == 1L`, the string will be expanded to a vector
 #'   of individual letters, e.g. `'clc'` becomes `c('c', 'l', 'c')`.
-#' @param format_args A list of arguments to be passed to [format()] to format table values, e.g. `list(big.mark = ',')`.
+#' @param format_args A list of arguments to be passed to [base::format()] to format table values, e.g. `list(big.mark = ',')`.
 #'
 #' @return A character vector.
 #' @family md
@@ -2856,7 +2958,7 @@ xml_to_md <- function(xml) {
 #'   directory). If `NULL`, it will only be built if the parent directory of `output` [contains a pkgdown configuration file][is_pkgdown_dir]. Note that it will
 #'   be built with the \R option `pal.build_readme.is_pkgdown` set to `TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
 #'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
-#' @param env Environment in which code chunks are to be evaluated, e.g. [parent.frame()], [new.env()], or [globalenv()].
+#' @param env Environment in which code chunks are to be evaluated, e.g. [base::parent.frame()], [base::new.env()], or [base::globalenv()].
 #'
 #' @return The path to `input` as a character scalar, invisibly.
 #' @family rmd_knitr
@@ -3350,8 +3452,8 @@ write_widget_deps <- function(x,
 #'
 #' @param response A [response object][httr::response].
 #' @param mime_type Expected MIME type, e.g. `"application/json"`. A character scalar.
-#' @param msg Message to display in case of an error. `r pkgsnip::param_label("cli_markup_support")` A character scalar.
-#' @param msg_suffix Additional string to append to `msg`. `r pkgsnip::param_label("cli_markup_support")`
+#' @param msg Message to display in case of an error. `r pkgsnip::param_lbl("cli_markup_support")` A character scalar.
+#' @param msg_suffix Additional string to append to `msg`. `r pkgsnip::param_lbl("cli_markup_support")`
 #'
 #' @return `response`, invisibly.
 #' @family http
@@ -3476,7 +3578,7 @@ is_url <- function(x) {
 #' @param input If `from_file = TRUE`, the path to a TOML file as a character scalar. Otherwise, TOML content as a character vector.
 #' @param from_file Whether `input` is the path to a TOML file or already a character vector of TOML content.
 #'
-#' @return `r pkgsnip::return_label("strict_list")`
+#' @return `r pkgsnip::return_lbl("strict_list")`
 #' @family toml
 #' @export
 toml_read <- function(input,
@@ -3773,8 +3875,8 @@ cli_process_expr <- function(expr,
 #' @param cmd System command to invoke the CLI tool. A character scalar.
 #' @param get_cmd_path Whether or not to return the filesystem path to the CLI tool. If `FALSE`, a boolean is returned indicating if the CLI tool is found on
 #'   the system or not.
-#' @param force_which If set to `TRUE`, [Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
-#'   availability of `cmd` on Unix-like systems. On Windows, `Sys.which()` is used in any case. `command -v` is
+#' @param force_which If set to `TRUE`, [base::Sys.which()], which relies on the system command `which`, will be used instead of `command -v` to determine the
+#'   availability of `cmd` on Unix-like systems. On Windows, `base::Sys.which()` is used in any case. `command -v` is
 #'   [generally recommended for bourne-like shells](https://unix.stackexchange.com/q/85249/201803) and therefore is the default on Linux, macOS and other
 #'   [Unixes](https://en.wikipedia.org/wiki/Unix-like).
 #'
@@ -3950,9 +4052,9 @@ capture_print <- function(x,
 
 #' Convert to character vector and print newline-separated
 #' 
-#' Convenience wrapper around [as_chr()] and [`cat()`][base::cat()], mainly intended for interactive use.
+#' Convenience wrapper around [as_chr()] and [base::cat()], mainly intended for interactive use.
 #'
-#' @param ... \R object(s) to convert to character and print. `r pkgsnip::roxy_label("dyn_dots_support")`
+#' @param ... \R object(s) to convert to character and print. `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #'
 #' @inherit base::cat return
 #' @seealso
@@ -3983,7 +4085,7 @@ cat_lines <- function(...) {
 #' Allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
 #'
 #' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by `col_*()`, or their
-#'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]). `r pkgsnip::roxy_label("dyn_dots_support")`
+#'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]). `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
 #' @param .col_names Column names which should be matched by `...`.
 #'
@@ -4105,17 +4207,16 @@ sort_by <- function(x,
 #' ```
 #'
 #' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-#' `` `r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) %>% as_md_list()` `` in the example above.
+#' `` `r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) |> as_md_list()` `` in the example above.
 #'
 #' # Caveats
-#'
-#' - This function does not work for [Primitives][base::.Primitive].
-#' - [deparse()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also applies to
-#'   this function.
+#' 
+#' [base::deparse1()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also 
+#' applies to this function.
 #'
 #' @param param Parameter name. A character scalar.
-#' @param fn A [function][base::function] or a function name (searched for in `env`). See [formals()] for details.
-#' @param env [Environment][base::environment] `fn` is defined in. See [formals()] for details.
+#' @param fn A [function][base::function] or a function name (searched for in `env`). See [base::formals()] for details.
+#' @param env [Environment][base::environment] `fn` is defined in. See [base::formals()] for details.
 #' @param as_scalar Whether to return the result as a single string concatenated by `sep` and `last_sep`.
 #' @param wrap String (usually a single character) in which `param`s default values are to be wrapped.
 #' @param sep Separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
@@ -4150,9 +4251,7 @@ prose_ls_fn_param <- function(param,
                 envir = env)
   }
   
-  if (is.primitive(fn)) cli::cli_abort("Listing parameters of R Primitives is not supported. Sorry.")
-  
-  default_vals <- formals(fun = fn,
+  default_vals <- formals(fun = args(name = fn),
                           envir = env)
   
   if (param %in% names(default_vals)) {
@@ -4160,7 +4259,7 @@ prose_ls_fn_param <- function(param,
   } else {
     fn_name <- deparse1(expr = substitute(fn),
                         backtick = FALSE)
-    cli::cli_abort("The function {.fn {fn_name}}` does not have a parameter named {.arg {param}}.")
+    cli::cli_abort("The function {.fn {fn_name}} does not have a parameter named {.arg {param}}.")
   }
   
   if (missing(default_vals)) {
@@ -4211,8 +4310,8 @@ prose_ls_fn_param <- function(param,
 #' will then be evaluated early. Any named argument will be made available in all conditions and actions, which is useful in avoiding repeated temporary
 #' computations or temporary assignments.
 #
-#' Validity of the conditions are tested with [isTRUE()]. In other words conditions resulting in more than one logical will never be valid. Note that the input
-#' value is always treated as a single object, as opposed to the [ifelse()] function.
+#' Validity of the conditions are tested with [base::isTRUE()]. In other words conditions resulting in more than one logical will never be valid. Note that the
+#' input value is always treated as a single object, as opposed to the [base::ifelse()] function.
 #'
 #' This function is copied over from package purrr since it [has been deprecated with the release of purrr
 #' 1.0](https://www.tidyverse.org/blog/2022/12/purrr-1-0-0/#core-purpose-refinements). `pal::when()` can be used as a drop-in replacement for `purrr::when()`.
@@ -4221,7 +4320,7 @@ prose_ls_fn_param <- function(param,
 #'
 #' @param . Value to match against.
 #' @param ... Formulas, each containing a condition as LHS and an action as RHS. Named arguments will define additional values.
-#'   `r pkgsnip::roxy_label("dyn_dots_support")`
+#'   `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #'
 #' @return The value resulting from the action of the first matched condition, or `NULL` if no matches are found and no default is given.
 #' @export

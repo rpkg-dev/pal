@@ -13,6 +13,8 @@
         implement it.
 
         -   Migrate to httr2!
+        -   implement `prose_ls_fn_param()` TODOs
+        -   move `toml_*()` fns to sep pkg (tomlr?)
 
     2.  Replace `pkgsnip::*` with constants included in pkg. Make changes (to source file `Rmd/pal.Rmd` only) in a single commit, so it can be easily reverted.
 

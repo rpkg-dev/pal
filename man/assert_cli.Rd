@@ -12,8 +12,8 @@ assert_cli(cmd, get_cmd_path = FALSE, force_which = FALSE)
 \item{get_cmd_path}{Whether or not to return the filesystem path to the CLI tool. If \code{FALSE}, a boolean is returned indicating if the CLI tool is found on
 the system or not.}
 
-\item{force_which}{If set to \code{TRUE}, \code{\link[=Sys.which]{Sys.which()}}, which relies on the system command \code{which}, will be used instead of \code{command -v} to determine the
-availability of \code{cmd} on Unix-like systems. On Windows, \code{Sys.which()} is used in any case. \code{command -v} is
+\item{force_which}{If set to \code{TRUE}, \code{\link[base:Sys.which]{base::Sys.which()}}, which relies on the system command \code{which}, will be used instead of \code{command -v} to determine the
+availability of \code{cmd} on Unix-like systems. On Windows, \code{base::Sys.which()} is used in any case. \code{command -v} is
 \href{https://unix.stackexchange.com/q/85249/201803}{generally recommended for bourne-like shells} and therefore is the default on Linux, macOS and other
 \href{https://en.wikipedia.org/wiki/Unix-like}{Unixes}.}
 }

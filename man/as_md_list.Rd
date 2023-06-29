@@ -17,8 +17,10 @@ as_md_list(
 
 \item{type}{Markdown list type. One of
 \itemize{
-\item \code{"unordered"} for an unordered aka \href{https://pandoc.org/MANUAL.html#bullet-lists}{bullet list}. Corresponds to \verb{<ul>} in HTML.
-\item \code{"ordered"} for an ordered aka \href{https://pandoc.org/MANUAL.html#ordered-lists}{numbered list}. Corresponds to \verb{<ol>} in HTML.
+\item \code{"unordered"} for an unordered aka \href{https://pandoc.org/MANUAL.html#bullet-lists}{bullet list}. Corresponds to
+\href{https://developer.mozilla.org/docs/Web/HTML/Element/ul}{\verb{<ul>}} in HTML.
+\item \code{"ordered"} for an ordered aka \href{https://pandoc.org/MANUAL.html#ordered-lists}{numbered list}. Corresponds to
+\href{https://developer.mozilla.org/docs/Web/HTML/Element/ol}{\verb{<ol>}} in HTML.
 \item \code{"ordered_roman"} for a variation of an ordered/numbered list with uppercase roman numerals instead of Arabic numerals as list markers.
 }}
 
@@ -44,6 +46,7 @@ rownames(mtcars) |>
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_val_list}()},
 \code{\link{as_md_vals}()},
+\code{\link{md_verb}()},
 \code{\link{pipe_table}()},
 \code{\link{strip_md_footnotes}()},
 \code{\link{strip_md}()}

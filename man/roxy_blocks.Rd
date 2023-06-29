@@ -7,10 +7,10 @@
 roxy_blocks(pkg = NULL, ..., text = NULL, quiet = TRUE)
 }
 \arguments{
-\item{pkg, text}{Either a package name or a character vector of \R source code lines to extract the object's roxygen2 tag value from.}
+\item{pkg, text}{Either a package name (\code{pkg}) or a character vector of \R source code lines (\code{text}) to extract the object's roxygen2 tag value from.}
 
-\item{...}{Further arguments passed on to \code{\link[=download.packages]{download.packages()}}, excluding \code{pkgs}, \code{destdir}, \code{available} and \code{type}. Only relevant
-if \code{pkg} is provided. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+\item{...}{Further arguments passed on to \code{\link[utils:download.packages]{utils::download.packages()}}, excluding
+\code{"pkgs"}, \code{"destdir"}, \code{"available"}, \code{"type"} and \code{"quiet"}. Only relevant if \code{pkg} is provided.}
 
 \item{quiet}{Whether or not to suppress printing status output from internal processing.}
 }
@@ -29,7 +29,7 @@ text <- readr::read_lines(paste0("https://raw.githubusercontent.com/r-lib/rlang/
 
 pal::roxy_blocks(text = text) |> head(n = 3L)
 
-# ...or provide a package name
+# ...or provide a package name as `pkg`
 try(
   pal::roxy_blocks(pkg = "tinkr",
                    repos = "https://cloud.r-project.org") |>

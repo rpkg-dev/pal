@@ -17,9 +17,9 @@ prose_ls_fn_param(
 \arguments{
 \item{param}{Parameter name. A character scalar.}
 
-\item{fn}{A \link[base:function]{function} or a function name (searched for in \code{env}). See \code{\link[=formals]{formals()}} for details.}
+\item{fn}{A \link[base:function]{function} or a function name (searched for in \code{env}). See \code{\link[base:formals]{base::formals()}} for details.}
 
-\item{env}{\link[base:environment]{Environment} \code{fn} is defined in. See \code{\link[=formals]{formals()}} for details.}
+\item{env}{\link[base:environment]{Environment} \code{fn} is defined in. See \code{\link[base:formals]{base::formals()}} for details.}
 
 \item{as_scalar}{Whether to return the result as a single string concatenated by \code{sep} and \code{last_sep}.}
 
@@ -46,14 +46,11 @@ some_fn <- function(some_param = c("a", "b", "c")) \{
 }\if{html}{\out{</div>}}
 
 Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-\code{`r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) \%>\% as_md_list()`} in the example above.
+\code{`r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) |> as_md_list()`} in the example above.
 }
 \section{Caveats}{
-\itemize{
-\item This function does not work for \link[base:Primitive]{Primitives}.
-\item \code{\link[=deparse]{deparse()}} is used internally to get a character representation of non-character default values. Therefore all of \code{deparse()}'s fuzziness also applies to
-this function.
-}
+\code{\link[base:deparse]{base::deparse1()}} is used internally to get a character representation of non-character default values. Therefore all of \code{deparse()}'s fuzziness also
+applies to this function.
 }
 
 \examples{

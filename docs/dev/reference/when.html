@@ -12,7 +12,7 @@ match/condition is found, the action is executed and the result of the action is
     
     <a class="navbar-brand me-2" href="../index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9096</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9097</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,8 +77,8 @@ match/condition is found, the action is executed and the result of the action is
 right-hand side will be treated as a condition which is always satisfied. For such a default case one can also omit the <code>~</code> symbol, but note that its value
 will then be evaluated early. Any named argument will be made available in all conditions and actions, which is useful in avoiding repeated temporary
 computations or temporary assignments.
-Validity of the conditions are tested with <code><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE()</a></code>. In other words conditions resulting in more than one logical will never be valid. Note that the input
-value is always treated as a single object, as opposed to the <code><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse()</a></code> function.</p>
+Validity of the conditions are tested with <code><a href="https://rdrr.io/r/base/Logic.html" class="external-link">base::isTRUE()</a></code>. In other words conditions resulting in more than one logical will never be valid. Note that the
+input value is always treated as a single object, as opposed to the <code><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">base::ifelse()</a></code> function.</p>
 <p>This function is copied over from package purrr since it <a href="https://www.tidyverse.org/blog/2022/12/purrr-1-0-0/#core-purpose-refinements" class="external-link">has been deprecated with the release of purrr 1.0</a>. <code>pal::when()</code> can be used as a drop-in replacement for <code><a href="https://purrr.tidyverse.org/reference/when.html" class="external-link">purrr::when()</a></code>.
 All credits go to the original authors of <code><a href="https://purrr.tidyverse.org/reference/when.html" class="external-link">purrr::when()</a></code> <a href="https://github.com/tidyverse/purrr/blame/54546b6bf938c54da4d232061db2fc91b1d5923c/R/deprec-when.R" class="external-link">as of 2022-12-21</a>.</p>
     </div>

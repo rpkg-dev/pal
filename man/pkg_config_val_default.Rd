@@ -12,7 +12,7 @@ pkg_config_val_default(key, pkg)
 \item{pkg}{Package name. A character scalar.}
 }
 \value{
-\code{pkgsnip::return_label("r_obj")}
+\code{pkgsnip::return_lbl("r_obj")}
 }
 \description{
 Retrieves a package configuration's default value from the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
