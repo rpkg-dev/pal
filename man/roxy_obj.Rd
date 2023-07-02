@@ -20,6 +20,7 @@ Extracts a single object from a list of \code{\link[roxygen2:roxy_block]{roxy_bl
 \seealso{
 Other package documentation functions:
 \code{\link{roxy_blocks}()},
-\code{\link{roxy_tag_value}()}
+\code{\link{roxy_tag_value}()},
+\code{\link{roxy_to_md_links}()}
 }
 \concept{roxy}

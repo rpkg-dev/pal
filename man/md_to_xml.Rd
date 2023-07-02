@@ -11,7 +11,7 @@ md_to_xml(
   normalize = TRUE,
   sourcepos = FALSE,
   footnotes = TRUE,
-  extensions = TRUE,
+  extensions = c("strikethrough", "table", "tasklist"),
   eol = c("LF", "CRLF", "CR", "LFCR"),
   strip_xml_ns = TRUE
 )

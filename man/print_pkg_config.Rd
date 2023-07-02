@@ -4,10 +4,12 @@
 \alias{print_pkg_config}
 \title{Print package configuration metadata}
 \usage{
-print_pkg_config(pkg)
+print_pkg_config(pkg, roxy_to_md = FALSE)
 }
 \arguments{
 \item{pkg}{Package name. A character scalar.}
+
+\item{roxy_to_md}{Whether or not to convert roxygen2 documentation \href{https://roxygen2.r-lib.org/articles/rd-formatting.html#function-links}{links in pseudo-Markdown style} to actual Markdown ones using \code{\link[=roxy_to_md_links]{roxy_to_md_links()}}.}
 }
 \value{
 A character vector.

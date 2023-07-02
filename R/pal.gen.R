@@ -2012,6 +2012,8 @@ augment_pkg_config <- function(pkg) {
 #' Prints a package's configuration metadata (`<pkg>::pkg_config`) as a prettily formatted Markdown table.
 #'
 #' @inheritParams pkg_config_val
+#' @param roxy_to_md Whether or not to convert roxygen2 documentation [links in pseudo-Markdown
+#'   style](https://roxygen2.r-lib.org/articles/rd-formatting.html#function-links) to actual Markdown ones using [roxy_to_md_links()].
 #'
 #' @inherit pipe_table return
 #' @family pkg_config
@@ -2021,18 +2023,22 @@ augment_pkg_config <- function(pkg) {
 #' try(
 #'   pal::print_pkg_config(pkg = "pkgpurl")
 #' )
-print_pkg_config <- function(pkg) {
+print_pkg_config <- function(pkg,
+                             roxy_to_md = FALSE) {
+  
+  checkmate::assert_flag(roxy_to_md)
   
   augment_pkg_config(pkg) |>
     dplyr::mutate(dplyr::across(c(r_opt, env_var),
                                 \(x) wrap_chr(x, wrap = "`")),
+                  dplyr::across(any_of("description"),
+                                \(x) if (roxy_to_md) purrr::map_chr(x, roxy_to_md_links) else x),
                   default_value = purrr::map(default_value,
                                              \(x) if (is.null(x)) {
                                                ""
                                              } else {
                                                as_md_vals(x)
                                              })) |>
-    # NOTE: col `description` is not mandatory
     dplyr::select(any_of("description"),
                   r_opt,
                   env_var,
@@ -2145,6 +2151,63 @@ desc_url_git <- function(file = ".") {
     c(desc::desc_get_urls(), .) |>
     stringr::str_subset(pattern = "^https?://(git(hub|lab|ea)\\..+|(codeberg|bitbucket)\\.org|(git\\.)?src\\.ht|pagure\\.io)/") |>
     dplyr::first()
+}
+
+#' Convert roxygen2 documentation links to Markdown
+#'
+#' Converts roxygen2 documentation [links in pseudo-Markdown style](https://roxygen2.r-lib.org/articles/rd-formatting.html#function-links) to actual Markdown
+#' ones using [downlit::autolink_url()].
+#'
+#' @param x Markdown text with roxygen2 documentation links. A character scalar.
+#'
+#' @return A character scalar.
+#' @family roxy
+#' @export
+#'
+#' @examples
+#' pal::roxy_to_md_links("[base::c()] is so short I almost forget it's there.")
+#' pal::roxy_to_md_links("Some functions [are magic][downlit::autolink_url]!")
+roxy_to_md_links <- function(x) {
+  
+  checkmate::assert_string(x)
+  rlang::check_installed(pkg = "downlit",
+                         reason = pal::reason_pkg_required())
+  
+  # determine the roxy-specific documentation links by first stripping all valid MD links via CommonMark parsing.
+  md <- md_to_xml(x) |> xml2::xml_text()
+  
+  links_roxy <-
+    stringr::str_extract_all(string = md,
+                             pattern = "(\\[`[^`]+`\\](\\[[^\\]]+\\])?|\\[[^\\]]+\\](\\[[^\\]]+\\])?)") |>
+    purrr::list_c(ptype = character())
+  
+  link_targets_http <-
+    links_roxy |>
+    stringr::str_extract(pattern = "\\[([^\\]]+)\\]$",
+                         group = 1L) |>
+    purrr::map(downlit::autolink_url) |>
+    purrr::list_c(ptype = character())
+  
+  process <- !is.na(link_targets_http)
+  
+  # short-circuit if nothing to do 
+  if (!any(process)) {
+    return(x)
+  }
+  
+  is_short <- stringr::str_detect(string = links_roxy,
+                                  pattern = "^\\[[^\\]]+\\]$")
+  links_md <- links_roxy
+  links_md[process & !is_short] %<>% stringr::str_replace(pattern = "\\[[^\\]]+\\]$",
+                                                          replacement = paste0("(", link_targets_http[process & !is_short], ")"))
+  links_md[process & is_short] %<>%
+    stringr::str_replace(pattern = "(?<=^\\[)([^\\]]+)",
+                         replacement = "`\\1`") %>%
+    paste0("(", link_targets_http[process & is_short], ")")
+  
+  links_md[process] |>
+    magrittr::set_names(value = paste0("\\Q", links_roxy[process], "\\E")) |>
+    stringr::str_replace_all(string = x)
 }
 
 #' Get roxygen2 blocks
@@ -2550,6 +2613,8 @@ as_md_vals <- function(...) {
       if (length(backticks) == 0L) {
         add_space <- FALSE
         backticks <- "`"
+      } else {
+        backticks %<>% paste0("`")
       }
       
       paste0(backticks, " "[add_space], x, " "[add_space], backticks)
@@ -2803,7 +2868,7 @@ md_to_xml <- function(md,
                       normalize = TRUE,
                       sourcepos = FALSE,
                       footnotes = TRUE,
-                      extensions = TRUE,
+                      extensions = c("strikethrough", "table", "tasklist"),
                       eol = c("LF", "CRLF", "CR", "LFCR"),
                       strip_xml_ns = TRUE) {
   

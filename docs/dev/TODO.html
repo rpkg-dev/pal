@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="index.html">pal</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9097</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9098</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@
 <p>Thoroughly scan exported fns for possible API improvements (which would harder to introduce once the pkg is on CRAN) and other outstanding work and implement it.</p>
 <ul><li>Migrate to httr2!</li>
 <li>implement <code><a href="reference/prose_ls_fn_param.html">prose_ls_fn_param()</a></code> TODOs</li>
+<li>move <code>toml_*()</code> fns to sep pkg (tomlr?)</li>
 </ul></li>
 <li><p>Replace <code>pkgsnip::*</code> with constants included in pkg. Make changes (to source file <code>Rmd/pal.Rmd</code> only) in a single commit, so it can be easily reverted.</p></li>
 <li><p>Remove Netlify redirect rule <code>/</code> -&gt; <code>/dev</code>.</p></li>

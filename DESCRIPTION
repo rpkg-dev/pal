@@ -1,6 +1,6 @@
 Package: pal
 Title: Friendly Convenience/Utility Functions
-Version: 0.0.9097
+Version: 0.0.9098
 Authors@R: 
     person("Salim", "Brüggemann", , "salim-b@pm.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5329-5987"))
@@ -29,6 +29,7 @@ Suggests:
     brio (>= 1.1.0),
     commonmark (>= 1.9.0),
     desc (>= 1.4.0),
+    downlit (>= 0.4.3),
     htmltools (>= 0.5.2),
     httr (>= 1.4.1),
     janeaustenr,

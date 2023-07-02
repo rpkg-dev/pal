@@ -88,6 +88,7 @@ reference:
 - subtitle: Package documentation
   desc: Extending the [roxygen2](https://roxygen2.r-lib.org/) package.
 - contents:
+  - roxy_to_md_links
   - roxy_blocks
   - roxy_obj
   - roxy_tag_value
