@@ -18,7 +18,9 @@ ones using \code{\link[downlit:autolink]{downlit::autolink_url()}}.
 }
 \examples{
 pal::roxy_to_md_links("[base::c()] is so short I almost forget it's there.")
+pal::roxy_to_md_links("[`base::c()`], probably the most used base R function ever.")
 pal::roxy_to_md_links("Some functions [are magic][downlit::autolink_url]!")
+pal::roxy_to_md_links("downlit's [`autolink_url()`][downlit::autolink_url()] seems magic!")
 }
 \seealso{
 Other package documentation functions:

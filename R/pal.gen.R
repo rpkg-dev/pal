@@ -2166,44 +2166,49 @@ desc_url_git <- function(file = ".") {
 #'
 #' @examples
 #' pal::roxy_to_md_links("[base::c()] is so short I almost forget it's there.")
+#' pal::roxy_to_md_links("[`base::c()`], probably the most used base R function ever.")
 #' pal::roxy_to_md_links("Some functions [are magic][downlit::autolink_url]!")
+#' pal::roxy_to_md_links("downlit's [`autolink_url()`][downlit::autolink_url()] seems magic!")
 roxy_to_md_links <- function(x) {
   
   checkmate::assert_string(x)
   rlang::check_installed(pkg = "downlit",
                          reason = pal::reason_pkg_required())
   
-  # determine the roxy-specific documentation links by first stripping all valid MD links via CommonMark parsing.
-  md <- md_to_xml(x) |> xml2::xml_text()
-  
+  # determine the roxy-specific doc links by first parsing input as CommonMark which escapes all brackets from roxy doc links (but not from valid MD links)
   links_roxy <-
-    stringr::str_extract_all(string = md,
-                             pattern = "(\\[`[^`]+`\\](\\[[^\\]]+\\])?|\\[[^\\]]+\\](\\[[^\\]]+\\])?)") |>
-    purrr::list_c(ptype = character())
+    md_to_xml(x) |>
+    xml2::xml_contents() |>
+    xml_to_md() |>
+    stringr::str_extract_all(pattern = "(\\\\\\[`[^`]+`\\\\\\](\\\\\\[[^\\]]+?\\\\\\])?|\\\\\\[[^\\]]+?\\\\\\](\\\\\\[[^\\]]+?\\\\\\])?)") |>
+    purrr::list_c(ptype = character()) |>
+    stringr::str_remove_all(pattern = "\\\\")
   
-  link_targets_http <-
-    links_roxy |>
+  is_short <- stringr::str_detect(string = links_roxy,
+                                  pattern = "^\\[[^\\]]+\\]$")
+  targets_roxy <- links_roxy
+  # remove possible enclosing backticks from roxy shortlinks to make them parseable by downlit
+  targets_roxy[is_short] %<>% stringr::str_remove_all(pattern = "`")
+  targets_roxy %<>%
     stringr::str_extract(pattern = "\\[([^\\]]+)\\]$",
-                         group = 1L) |>
-    purrr::map(downlit::autolink_url) |>
+                         group = 1L) %>%
+    purrr::map(downlit::autolink_url) %>%
     purrr::list_c(ptype = character())
   
-  process <- !is.na(link_targets_http)
+  process <- !is.na(targets_roxy)
   
   # short-circuit if nothing to do 
   if (!any(process)) {
     return(x)
   }
   
-  is_short <- stringr::str_detect(string = links_roxy,
-                                  pattern = "^\\[[^\\]]+\\]$")
   links_md <- links_roxy
   links_md[process & !is_short] %<>% stringr::str_replace(pattern = "\\[[^\\]]+\\]$",
-                                                          replacement = paste0("(", link_targets_http[process & !is_short], ")"))
+                                                          replacement = paste0("(", targets_roxy[process & !is_short], ")"))
   links_md[process & is_short] %<>%
-    stringr::str_replace(pattern = "(?<=^\\[)([^\\]]+)",
+    stringr::str_replace(pattern = "(?<=^\\[)([^`\\]]+)",
                          replacement = "`\\1`") %>%
-    paste0("(", link_targets_http[process & is_short], ")")
+    paste0("(", targets_roxy[process & is_short], ")")
   
   links_md[process] |>
     magrittr::set_names(value = paste0("\\Q", links_roxy[process], "\\E")) |>
