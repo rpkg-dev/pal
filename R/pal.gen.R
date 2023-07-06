@@ -533,7 +533,7 @@ is_equal_df <- function(x,
 #' @param x A list containing data frames / tibbles at its leafs.
 #' @param strict Ensure `x` contains data frames / tibbles only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
 #'
-#' @return `r pkgsnip::return_lbl("data")`
+#' @return `r pkgsnip::return_lbl("tibble")`
 #' @family tibble
 #' @export
 reduce_df_list <- function(x,
@@ -3935,6 +3935,47 @@ cli_process_expr <- function(expr,
   cli::cli_process_done(status_bar_container_id)
   
   invisible(result)
+}
+
+#' Get Git remote tree URL
+#'
+#' Determines the base Git tree URL to the current branch's upstream remote of `repo`.
+#' 
+#' This function is useful to assemble URLs to files and folders in your repo's Git forge (GitHub, GitLab, etc.).
+#'
+#' @inheritParams gert::git_remote_list
+#'
+#' @return A character scalar, of length zero if `repo` is not a Git repository.
+#' @family git
+#' @export
+#'
+#' @examples
+#' pal::url_git_remote_tree() |>
+#'   paste0("Rmd/pal.Rmd") |>
+#'   browseURL()
+url_git_remote_tree <- function(repo = ".") {
+  
+  rlang::check_installed("gert",
+                         reason = reason_pkg_required())
+  
+  remotes <- try(gert::git_remote_list(repo = repo))
+  
+  if (is.data.frame(remotes)) {
+    
+    url <-
+      gert::git_remote_info(repo = repo)$url |>
+      when(stringr::str_detect(., "^git@") ~ stringr::str_replace_all(., c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
+                                                                           "^git@" = "https://",
+                                                                           "\\.git$" = "")),
+           ~ .)
+    add_slash_minus <- stringr::str_detect(url, "gitlab")
+    url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
+    
+  } else {
+    url <- character()
+  }
+  
+  url
 }
 
 #' Assert CLI tool is available
