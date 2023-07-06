@@ -103,6 +103,9 @@
     <loc>https://pal.rpkg.dev/dev/reference/fuse_regex.html</loc>
   </url>
   <url>
+    <loc>https://pal.rpkg.dev/dev/reference/git_remote_tree_url.html</loc>
+  </url>
+  <url>
     <loc>https://pal.rpkg.dev/dev/reference/gitlab_document.html</loc>
   </url>
   <url>
@@ -230,9 +233,6 @@
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/toml_validate.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/url_git_remote_tree.html</loc>
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/use_pkg.html</loc>

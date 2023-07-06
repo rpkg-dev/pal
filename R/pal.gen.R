@@ -3950,10 +3950,10 @@ cli_process_expr <- function(expr,
 #' @export
 #'
 #' @examples
-#' pal::url_git_remote_tree() |>
+#' pal::git_remote_tree_url() |>
 #'   paste0("Rmd/pal.Rmd") |>
 #'   browseURL()
-url_git_remote_tree <- function(repo = ".") {
+git_remote_tree_url <- function(repo = ".") {
   
   rlang::check_installed("gert",
                          reason = reason_pkg_required())

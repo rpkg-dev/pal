@@ -80,13 +80,13 @@ reference:
   - augment_pkg_config
   - print_pkg_config
 - subtitle: Package DESCRIPTION
-  desc: Extending the [desc](https://github.com/r-lib/desc#readme) package.
+  desc: Extending the [**desc**](https://github.com/r-lib/desc#readme) package.
 - contents:
   - desc_list
   - desc_value
   - desc_url_git
 - subtitle: Package documentation
-  desc: Extending the [roxygen2](https://roxygen2.r-lib.org/) package.
+  desc: Extending the [**roxygen2**](https://roxygen2.r-lib.org/) package.
 - contents:
   - roxy_to_md_links
   - roxy_blocks
@@ -102,7 +102,8 @@ reference:
   - strip_md
   - strip_md_footnotes
 - subtitle: CommonMark parsing
-  desc: Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
+  desc: Extending the [**commonmark**](https://github.com/r-lib/commonmark#readme)
+    package.
 - contents:
   - md_to_xml
   - md_xml_subnode_ix
@@ -118,12 +119,12 @@ reference:
     formats](https://bookdown.org/yihui/rmarkdown/output-formats.html).
 - contents: gitlab_document
 - title: HTML widgets
-  desc: Extending the [htmlwidgets](https://www.htmlwidgets.org/) package.
+  desc: Extending the [**htmlwidgets**](https://www.htmlwidgets.org/) package.
 - contents:
   - write_widget
   - write_widget_deps
 - title: HTTP
-  desc: Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/)
+  desc: Extending the [**httr**](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/)
     package.
 - contents:
   - assert_mime_type
@@ -140,7 +141,8 @@ reference:
   - cli_no_lgl
   - cli_process_expr
 - title: Git
-- contents: url_git_remote_tree
+  desc: Extending the [**gert**](https://docs.ropensci.org/gert/) package.
+- contents: git_remote_tree_url
 - title: System interaction
 - contents:
   - assert_cli

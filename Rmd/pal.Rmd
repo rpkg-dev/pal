@@ -2484,7 +2484,7 @@ print_pkg_config <- function(pkg,
 
 #### DESCRIPTION
 
-Extending the [desc](https://github.com/r-lib/desc#readme) package.
+Extending the [**desc**](https://github.com/r-lib/desc#readme) package.
 
 #### `desc_list`
 
@@ -2618,7 +2618,7 @@ desc_url_git <- function(file = ".") {
 
 #### DESCRIPTION
 
-Extending the [roxygen2](https://roxygen2.r-lib.org/) package.
+Extending the [**roxygen2**](https://roxygen2.r-lib.org/) package.
 
 #### `roxy_to_md_links`
 
@@ -3383,7 +3383,7 @@ strip_md_footnotes <- function(x) {
 
 #### DESCRIPTION
 
-Extending the [commonmark](https://github.com/r-lib/commonmark#readme) package.
+Extending the [**commonmark**](https://github.com/r-lib/commonmark#readme) package.
 
 #### `md_to_xml`
 
@@ -4057,7 +4057,7 @@ gitlab_document <- function(smart_punctuation = TRUE,
 
 ### DESCRIPTION
 
-Extending the [htmlwidgets](https://www.htmlwidgets.org/) package.
+Extending the [**htmlwidgets**](https://www.htmlwidgets.org/) package.
 
 ### `write_widget`
 
@@ -4168,7 +4168,7 @@ write_widget_deps <- function(x,
 
 ### DESCRIPTION
 
-Extending the [httr](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/) package.
+Extending the [**httr**](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/) package.
 
 ### `assert_mime_type`
 
@@ -4731,7 +4731,11 @@ cli_process_expr <- function(expr,
 
 ## Git
 
-### `url_git_remote_tree`
+### DESCRIPTION
+
+Extending the [**gert**](https://docs.ropensci.org/gert/) package.
+
+### `git_remote_tree_url`
 
 NOTES:
 
@@ -4751,10 +4755,10 @@ NOTES:
 #' @export
 #'
 #' @examples
-#' pal::url_git_remote_tree() |>
+#' pal::git_remote_tree_url() |>
 #'   paste0("Rmd/pal.Rmd") |>
 #'   browseURL()
-url_git_remote_tree <- function(repo = ".") {
+git_remote_tree_url <- function(repo = ".") {
   
   rlang::check_installed("gert",
                          reason = reason_pkg_required())
