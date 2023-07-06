@@ -3945,7 +3945,7 @@ cli_process_expr <- function(expr,
 #'
 #' @inheritParams gert::git_remote_list
 #'
-#' @return A character scalar, of length zero if `repo` is not a Git repository.
+#' @return If `repo` is a Git repository, a character scalar. Otherwise, a character vector of length zero.
 #' @family git
 #' @export
 #'

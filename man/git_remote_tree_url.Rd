@@ -14,7 +14,7 @@ parameter, always explicitly call by name (i.e. \verb{repo = }) because future
 versions of gert may have additional parameters.}
 }
 \value{
-A character scalar, of length zero if \code{repo} is not a Git repository.
+If \code{repo} is a Git repository, a character scalar. Otherwise, a character vector of length zero.
 }
 \description{
 Determines the base Git tree URL to the current branch's upstream remote of \code{repo}.
