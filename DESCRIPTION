@@ -36,7 +36,7 @@ Suggests:
     janeaustenr,
     knitr (>= 1.41),
     pander (>= 0.6.3),
-    pkgsnip (>= 0.0.9036),
+    pkgsnip (>= 0.0.9037),
     rappdirs (>= 0.3.3),
     RcppTOML (>= 0.1.7),
     readr (>= 1.4.0),
