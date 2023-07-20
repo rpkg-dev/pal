@@ -819,12 +819,12 @@ sentenceify <- function(x,
   
   checkmate::assert_string(punctuation_mark)
   
-   capitalize_first(x) %>%
-    purrr::map_chr(~ {
-      if (is.na(.x) || stringr::str_sub(string = .x, start = -1L) == punctuation_mark) {
-        .x
+  capitalize_first(x) |>
+    purrr::map_chr(\(x) {
+      if (is.na(x) || stringr::str_sub(string = x, start = -1L) == punctuation_mark) {
+        x
       } else {
-        paste0(.x, punctuation_mark)
+        paste0(x, punctuation_mark)
       }
     })
 }
@@ -2484,6 +2484,8 @@ roxy_tag_value <- function(blocks,
 #'              .eval = FALSE,
 #'              .backtick = FALSE) |>
 #'   pal::cat_lines()
+
+# nolint start: object_name_linter.
 md_verb <- function(...,
                     .eval = TRUE,
                     .collapse = " ",
@@ -2522,6 +2524,7 @@ md_verb <- function(...,
     }) |>
     purrr::list_c(ptype = character())
 }
+# nolint end
 
 #' Convert a character vector to a Markdown list
 #'
@@ -3338,7 +3341,7 @@ gitlab_document <- function(smart_punctuation = TRUE,
   rlang::check_installed("rmarkdown",
                          reason = reason_pkg_required())
   
-  # `post_process` fn to ensure MD ends in trailing horizontal rule
+  # `post_process` fn to ensure MD ends in trailing horizontal rule (to visually separate footnotes from a possible trailing numbered list)
   if (add_footnotes_hr) {
     
     ensure_trailing_md_hr <- function(metadata,
@@ -3353,20 +3356,16 @@ gitlab_document <- function(smart_punctuation = TRUE,
       
       md <- brio::read_file(output_file)
       
-      # check if file contains footnotes
+      # ensure trailing horizontal rule if file contains footnotes
       if (stringr::str_detect(string = md,
-                              pattern = "(\\n\\[\\^[\\w-]+\\]:.*)")) {
-        
-        # check if there's already a trailing horizontal rule
-        if (!stringr::str_detect(string = md,
-                                 pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)")) {
-          
-          md %>%
-            stringr::str_replace(pattern = "((\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
-                                 replacement = "\n---\n\\1") %>%
-            brio::write_file(path = output_file)
-        }
-        
+                              pattern = "(\\n\\[\\^[\\w-]+\\]:.*)")
+          && stringr::str_detect(string = md,
+                                 pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
+                                 negate = TRUE)) {
+        md |>
+          stringr::str_replace(pattern = "((\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
+                               replacement = "\n---\n\\1") |>
+          brio::write_file(path = output_file)
       }
       
       output_file
@@ -3744,28 +3743,25 @@ toml_validate <- function(input,
                           "{.url https://taplo.tamasfe.dev/cli/installation/binary.html}"))
   }
   
-  result <- suppressWarnings(system2(
-    command = "taplo",
-    args = c("lint",
-             "--no-auto-config",
-             "--colors=always",
-             paste0("--schema=", schema)[!is.null(schema)],
-             ifelse(from_file,
-                    input,
-                    "-")),
-    stdout = TRUE,
-    stderr = TRUE,
-    input = if (!from_file) input else NULL,
-    # cf. https://taplo.tamasfe.dev/cli/usage/configuration.html
-    env = "RUST_LOG=error",
-    timeout = 5L)
-  )
+  result <- suppressWarnings(system2(command = "taplo",
+                                     args = c("lint",
+                                              "--no-auto-config",
+                                              "--colors=always",
+                                              paste0("--schema=", schema)[!is.null(schema)],
+                                              ifelse(from_file,
+                                                     input,
+                                                     "-")),
+                                     stdout = TRUE,
+                                     stderr = TRUE,
+                                     input = if (!from_file) input else NULL,
+                                     # cf. https://taplo.tamasfe.dev/cli/usage/configuration.html
+                                     env = "RUST_LOG=error",
+                                     timeout = 5L))
   
   result_excl_ansi <- cli::ansi_strip(result)
   
-  if (length(result) > 1L &&
-      stringr::str_detect(string = result_excl_ansi[1L],
-                          pattern = "(?i)error")) {
+  if (length(result) > 1L && stringr::str_detect(string = result_excl_ansi[1L],
+                                                 pattern = "(?i)error")) {
     
     # only retain first Taplo error of each class (later ones are usually unhelpful)
     ix_error <-
@@ -3962,12 +3958,14 @@ git_remote_tree_url <- function(repo = ".") {
   
   if (is.data.frame(remotes)) {
     
-    url <-
-      gert::git_remote_info(repo = repo)$url |>
-      when(stringr::str_detect(., "^git@") ~ stringr::str_replace_all(., c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
-                                                                           "^git@" = "https://",
-                                                                           "\\.git$" = "")),
-           ~ .)
+    url <- gert::git_remote_info(repo = repo)$url
+    
+    if (startsWith(url, "git@")) {
+      url %<>% stringr::str_replace_all(pattern = c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
+                                                    "^git@" = "https://",
+                                                    "\\.git$" = ""))
+    }
+    
     add_slash_minus <- stringr::str_detect(url, "gitlab")
     url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
     
