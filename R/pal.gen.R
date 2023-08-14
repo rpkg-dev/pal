@@ -2070,6 +2070,9 @@ print_pkg_config <- function(pkg,
 #' fs::path_package(package = "dplyr") |> pal::desc_list()
 desc_list <- function(file = ".") {
   
+  rlang::check_installed("desc",
+                         reason = reason_pkg_required())
+  
   fields <- desc::desc_fields(file = file)
   
   result <-
@@ -3051,7 +3054,6 @@ build_readme <- function(input = "README.Rmd",
                          reason = reason_pkg_required())
   rlang::check_installed("rmarkdown",
                          reason = reason_pkg_required())
-  
   # add args to `env`
   rlang::env_bind(.env = env,
                   input = input,
@@ -3062,8 +3064,6 @@ build_readme <- function(input = "README.Rmd",
   parent_dir <- fs::path_dir(input) %>% fs::path_abs()
   
   if (is_pkg_dir(parent_dir)) {
-    rlang::check_installed("desc",
-                           reason = reason_pkg_required())
     rlang::env_bind(.env = env,
                     pkg_metadata = desc_list(parent_dir))
   }
