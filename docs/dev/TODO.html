@@ -44,7 +44,10 @@
 <div id="todos" class="section level1">
 
 <ul><li><p>systematically rely on pkg <a href="https://yihui.name/xfun/" class="external-link">xfun</a> whenever sensible</p></li>
-<li><p>add a <a href="https://keepachangelog.com/" class="external-link">standards-conformant changelog</a> for v0.1.0 but use pkg <a href="https://cynkra.github.io/fledge/" class="external-link">fledge</a> to generate it from Git commits (note the <a href="https://cynkra.github.io/fledge/articles/fledge.html" class="external-link">special rules</a> to mark commit msgs for in-/exclusion in the changelog)</p></li>
+<li>
+<p>add a <a href="https://keepachangelog.com/" class="external-link">standards-conformant changelog</a> for v0.1.0 but use pkg <a href="https://cynkra.github.io/fledge/" class="external-link">fledge</a> to generate it from Git commits (note the <a href="https://cynkra.github.io/fledge/articles/fledge.html" class="external-link">special rules</a> to mark commit msgs for in-/exclusion in the changelog)</p>
+<p>note that <a href="https://github.com/cynkra/fledge" class="external-link">according to its README</a>, fledge plays nicely together with the <a href="https://www.conventionalcommits.org/" class="external-link">Conventional Commits</a> syntax (which is a lot more universal; e.g. <a href="https://github.com/googleapis/release-please" class="external-link">release-please</a> builds upon it).</p>
+</li>
 <li><p>generate a <code>codemeta.json</code> file using pkg <a href="https://docs.ropensci.org/codemetar/" class="external-link">codemetar</a></p></li>
 <li>
 <p>release on CRAN:</p>

@@ -516,7 +516,8 @@ stat_mode <- function(x,
 #' Under the hood, this function relies on [waldo::compare()].
 #'
 #' @inheritParams waldo::compare
-#' @param x,y Two data frames/tibbles to compare. `y` is treated as the reference object, so messages describe how `x` is different to `y`.
+#' @param x The data frame / tibble to check for changes.
+#' @param y The data frame / tibble that `x` should be checked against, i.e. the reference, so messages describe how `x` is different to `y`.
 #' @param ignore_col_order Whether or not to ignore the order of columns.
 #' @param ignore_row_order Whether or not to ignore the order of rows.
 #' @param ignore_col_types Whether or not to distinguish similar column types. Currently, if set to `TRUE`, this will convert factor to character and integer to

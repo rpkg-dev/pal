@@ -17,7 +17,9 @@ is_equal_df(
 )
 }
 \arguments{
-\item{x, y}{Two data frames/tibbles to compare. \code{y} is treated as the reference object, so messages describe how \code{x} is different to \code{y}.}
+\item{x}{The data frame / tibble to check for changes.}
+
+\item{y}{The data frame / tibble that \code{x} should be checked against, i.e. the reference, so messages describe how \code{x} is different to \code{y}.}
 
 \item{ignore_col_order}{Whether or not to ignore the order of columns.}
 
