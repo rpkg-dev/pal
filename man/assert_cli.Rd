@@ -4,13 +4,18 @@
 \alias{assert_cli}
 \title{Assert CLI tool is available}
 \usage{
-assert_cli(cmd, get_cmd_path = FALSE, force_which = FALSE)
+assert_cli(
+  cmd,
+  error_msg =
+    paste0("The {.strong {cmd}} executable is required but couldn't be found on ",
+    "system's {.href [PATH](https://en.wikipedia.org/wiki/PATH_(variable))}."),
+  force_which = FALSE
+)
 }
 \arguments{
 \item{cmd}{System command to invoke the CLI tool. A character scalar.}
 
-\item{get_cmd_path}{Whether or not to return the filesystem path to the CLI tool. If \code{FALSE}, a boolean is returned indicating if the CLI tool is found on
-the system or not.}
+\item{error_msg}{Error message to print in case \code{cmd} is not found on system's \code{PATH}. Supports cli's \link[cli:inline-markup]{inline markup}. A character scalar.}
 
 \item{force_which}{If set to \code{TRUE}, \code{\link[base:Sys.which]{base::Sys.which()}}, which relies on the system command \code{which}, will be used instead of \code{command -v} to determine the
 availability of \code{cmd} on Unix-like systems. On Windows, \code{base::Sys.which()} is used in any case. \code{command -v} is
@@ -18,20 +23,21 @@ availability of \code{cmd} on Unix-like systems. On Windows, \code{base::Sys.whi
 \href{https://en.wikipedia.org/wiki/Unix-like}{Unixes}.}
 }
 \value{
-A logical scalar if \code{get_cmd_path = FALSE}, otherwise the filesystem \link[fs:path]{path} to the \code{cmd} executable.
+If the CLI tool is available on the system's \code{PATH}, its filesystem path, invisibly. Otherwise, an error is thrown.
 }
 \description{
 Asserts that a \href{https://en.wikipedia.org/wiki/Command-line_interface}{command-line interface (CLI)} tool is found on the system's
-\href{https://en.wikipedia.org/wiki/PATH_(variable)}{\code{PATH}} and optionally returns the executable's filesystem path.
+\href{https://en.wikipedia.org/wiki/PATH_(variable)}{\code{PATH}} and returns the executable's filesystem path.
 }
 \examples{
 pal::assert_cli("Rscript")
 
 cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
-pal::assert_cli(cmd, get_cmd_path = TRUE)
+pal::assert_cli(cmd)
 }
 \seealso{
 Other system interaction functions:
-\code{\link{path_script}()}
+\code{\link{path_script}()},
+\code{\link{test_cli}()}
 }
 \concept{sys}

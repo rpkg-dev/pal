@@ -4510,12 +4510,11 @@ toml_validate <- function(input,
     checkmate::assert_character(input)
   }
   
-  if (!assert_cli(cmd = "taplo")) {
-    cli::cli_abort(paste0("The {.strong taplo} executable is required but couldn't be found on system's {.href ",
-                          "[PATH](https://en.wikipedia.org/wiki/PATH_(variable))}. Binaries of the {.href [Taplo ",
-                          "CLI](https://taplo.tamasfe.dev/cli/introduction.html)} are available for all common platforms from here: ",
-                          "{.url https://taplo.tamasfe.dev/cli/installation/binary.html}"))
-  }
+  assert_cli(cmd = "taplo",
+             error_msg = paste0("The {.strong taplo} executable is required but couldn't be found on system's {.href ",
+                                "[PATH](https://en.wikipedia.org/wiki/PATH_(variable))}. Binaries of the {.href [Taplo ",
+                                "CLI](https://taplo.tamasfe.dev/cli/introduction.html)} are available for all common platforms from here: ",
+                                "{.url https://taplo.tamasfe.dev/cli/installation/binary.html}"))
   
   result <- suppressWarnings(system2(command = "taplo",
                                      args = c("lint",
@@ -4785,12 +4784,12 @@ git_remote_tree_url <- function(repo = ".") {
 
 ## System interaction
 
-### `assert_cli`
+### `test_cli`
 
 ```{r}
-#' Assert CLI tool is available
+#' Check if CLI tool is available
 #'
-#' Asserts that a [command-line interface (CLI)](https://en.wikipedia.org/wiki/Command-line_interface) tool is found on the system's
+#' Tests whether a [command-line interface (CLI)](https://en.wikipedia.org/wiki/Command-line_interface) tool is found on the system's
 #' [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and optionally returns the executable's filesystem path.
 #'
 #' @param cmd System command to invoke the CLI tool. A character scalar.
@@ -4806,13 +4805,13 @@ git_remote_tree_url <- function(repo = ".") {
 #' @export
 #'
 #' @examples
-#' pal::assert_cli("Rscript")
+#' pal::test_cli("Rscript")
 #'
 #' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
-#' pal::assert_cli(cmd, get_cmd_path = TRUE)
-assert_cli <- function(cmd,
-                       get_cmd_path = FALSE,
-                       force_which = FALSE) {
+#' pal::test_cli(cmd, get_cmd_path = TRUE)
+test_cli <- function(cmd,
+                     get_cmd_path = FALSE,
+                     force_which = FALSE) {
   
   checkmate::assert_string(cmd)
   checkmate::assert_flag(get_cmd_path)
@@ -4825,7 +4824,7 @@ assert_cli <- function(cmd,
     result <-
       Sys.which(names = cmd) |>
       as.character() |>
-      when(. == "" ~ character(0L),
+      when(. == "" ~ character(),
            ~ .) |>
       when(get_cmd_path ~ fs::path(.),
            length(.) == 0L ~ FALSE,
@@ -4833,7 +4832,7 @@ assert_cli <- function(cmd,
   } else {
     
     # define "defused" warning/error handler
-    defuse <- function(e) if (get_cmd_path) character(0L) else FALSE
+    defuse <- function(e) if (get_cmd_path) character() else FALSE
     
     result <-
       tryCatch(expr = system2(command = "command",
@@ -4849,6 +4848,45 @@ assert_cli <- function(cmd,
   }
   
   result
+}
+```
+
+### `assert_cli`
+
+```{r}
+#' Assert CLI tool is available
+#'
+#' Asserts that a [command-line interface (CLI)](https://en.wikipedia.org/wiki/Command-line_interface) tool is found on the system's
+#' [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) and returns the executable's filesystem path.
+#'
+#' @inheritParams test_cli
+#' @param error_msg Error message to print in case `cmd` is not found on system's `PATH`. `r pkgsnip::param_lbl("cli_markup_support")` A character scalar.
+#'
+#' @return If the CLI tool is available on the system's `PATH`, its filesystem path, invisibly. Otherwise, an error is thrown.
+#' @family sys
+#' @export
+#'
+#' @examples
+#' pal::assert_cli("Rscript")
+#'
+#' cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
+#' pal::assert_cli(cmd)
+assert_cli <- function(cmd,
+                       error_msg = paste0("The {.strong {cmd}} executable is required but couldn't be found on ",
+                                          "system's {.href [PATH](https://en.wikipedia.org/wiki/PATH_(variable))}."),
+                       force_which = FALSE) {
+  
+  checkmate::assert_string(error_msg)
+  
+  cli_path <- test_cli(cmd = cmd,
+                       get_cmd_path = TRUE,
+                       force_which = force_which)
+  
+  if (length(cli_path) == 0L) {
+    cli::cli_abort(error_msg)
+  }
+  
+  invisible(cli_path)
 }
 ```
 

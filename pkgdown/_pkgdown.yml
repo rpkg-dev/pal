@@ -145,6 +145,7 @@ reference:
 - contents: git_remote_tree_url
 - title: System interaction
 - contents:
+  - test_cli
   - assert_cli
   - path_script
 - title: Miscellaneous
