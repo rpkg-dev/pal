@@ -4415,47 +4415,54 @@ prose_ls_fn_param <- function(param,
   default_vals
 }
 
-#' Rename elements from list
+#' Rename elements from dictionary
 #'
-#' Renames the elements of a vector or list from a names reference list, leaving unmatched names untouched by default.
+#' Renames the elements of a vector or list from a dictionary, leaving unmatched names untouched by default.
 #'
 #' @param x Object whose elements are to be renamed.
-#' @param names A named list of strings where names are the old and the values are the new names.
-#' @param default Value(s) used when names aren't matched by any name in `names`. Recycled to the length of `x`.
+#' @param dict A named character vector or list of strings where names are the old and the values are the new names.
+#' @param default Value(s) used when names aren't matched by any name in `dict`. Recycled to the length of `x`.
 #'
-#' @return `x` with elements renamed which occur in `names`.
+#' @return `x` with elements renamed according to `dict`.
 #' @export
 #'
 #' @examples
-#' mtcars |> pal::rename_from_list(names = list(mpg = "Miles/(US) gallon",
-#'                                              cyl = "Number of cylinders",
-#'                                              disp = "Displacement (cu.in.)",
-#'                                              hp = "Gross horsepower",
-#'                                              drat = "Rear axle ratio",
-#'                                              wt = "Weight (1000 lbs)",
-#'                                              qsec = "1/4 mile time",
-#'                                              vs = "Engine (0 = V-shaped, 1 = straight)",
-#'                                              am = "Transmission (0 = automatic, 1 = manual)",
-#'                                              gear = "Number of forward gears",
-#'                                              carb = "Number of carburetors",
-#'                                              not_there = "Yikes!"))
-rename_from_list <- function(x,
-                             names,
-                             default = names(x)) {
+#' mtcars |> pal::rename_from(dict = c(mpg = "Miles/(US) gallon",
+#'                                     cyl = "Number of cylinders",
+#'                                     disp = "Displacement (cu.in.)",
+#'                                     hp = "Gross horsepower",
+#'                                     drat = "Rear axle ratio",
+#'                                     wt = "Weight (1000 lbs)",
+#'                                     qsec = "1/4 mile time",
+#'                                     vs = "Engine (0 = V-shaped, 1 = straight)",
+#'                                     am = "Transmission (0 = automatic, 1 = manual)",
+#'                                     gear = "Number of forward gears",
+#'                                     carb = "Number of carburetors",
+#'                                     not_there = "Yikes!"))
+rename_from <- function(x,
+                        dict,
+                        default = names(x)) {
   
-  checkmate::assert_list(names,
-                         types = "character",
-                         any.missing = FALSE,
-                         names = "unique")
-  checkmate::assert_character(default)
+  if (is.list(dict)) {
+    checkmate::assert_list(dict,
+                           types = "character",
+                           any.missing = FALSE,
+                           names = "unique")
+  } else {
+    checkmate::assert_vector(dict,
+                             strict = TRUE,
+                             any.missing = FALSE,
+                             names = "unique")
+  }
   
   if (length(x) > 0L) {
     
-    names %<>% purrr::imap(\(x, name) rlang::new_formula(lhs = name,
-                                                         rhs = x,
-                                                         env = emptyenv()))
+    checkmate::assert_character(default)
+    dict %<>% purrr::imap(\(x, name) rlang::new_formula(lhs = name,
+                                                        rhs = x,
+                                                        env = emptyenv()))
     names_new <- dplyr::case_match(names(x),
-                                   !!!names,
+                                   !!!dict,
                                    .default = default)
     
     return(magrittr::set_names(x, names_new))

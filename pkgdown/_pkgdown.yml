@@ -155,6 +155,6 @@ reference:
   - cat_lines
   - cols_regex
   - prose_ls_fn_param
-  - rename_from_list
+  - rename_from
   - sort_by
   - when
