@@ -20,15 +20,15 @@ rename_from(x, dict, default = names(x))
 Renames the elements of a vector or list from a dictionary, leaving unmatched names untouched by default.
 }
 \examples{
-mtcars |> pal::rename_from(dict = c(mpg = "Miles/(US) gallon",
-                                    cyl = "Number of cylinders",
+mtcars |> pal::rename_from(dict = c(mpg  = "Miles/(US) gallon",
+                                    cyl  = "Number of cylinders",
                                     disp = "Displacement (cu.in.)",
-                                    hp = "Gross horsepower",
+                                    hp   = "Gross horsepower",
                                     drat = "Rear axle ratio",
-                                    wt = "Weight (1000 lbs)",
+                                    wt   = "Weight (1000 lbs)",
                                     qsec = "1/4 mile time",
-                                    vs = "Engine (0 = V-shaped, 1 = straight)",
-                                    am = "Transmission (0 = automatic, 1 = manual)",
+                                    vs   = "Engine (0 = V-shaped, 1 = straight)",
+                                    am   = "Transmission (0 = automatic, 1 = manual)",
                                     gear = "Number of forward gears",
                                     carb = "Number of carburetors",
                                     not_there = "Yikes!"))
