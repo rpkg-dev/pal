@@ -154,6 +154,7 @@ reference:
   - capture_print
   - cat_lines
   - cols_regex
-  - sort_by
   - prose_ls_fn_param
+  - rename_from_list
+  - sort_by
   - when

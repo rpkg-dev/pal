@@ -4306,35 +4306,6 @@ cols_regex <- function(...,
   do.call(readr::cols, spec)
 }
 
-#' Sort vector by another vector
-#'
-#' Orders a vector `x` by the order of another vector `by`.
-#'
-#' @param x Vector to be ordered.
-#' @param by Reference vector which `x` will be ordered by.
-#'
-#' @return A permutation of `x`.
-#' @export
-#'
-#' @examples
-#' library(magrittr)
-#'
-#' # generate 100 random letters
-#' random_letters <-
-#'   letters %>%
-#'   magrittr::extract(sample.int(n = 26L,
-#'                                size = 100L,
-#'                                replace = TRUE)) %T>%
-#'   print()
-#'
-#' # sort the random letters alphabetically
-#' random_letters %>% pal::sort_by(by = letters)
-sort_by <- function(x,
-                    by) {
-  
-  x[order(match(x = x, table = by))]
-}
-
 #' List a function's default parameter values in prose-style
 #'
 #' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
@@ -4442,6 +4413,85 @@ prose_ls_fn_param <- function(param,
   }
   
   default_vals
+}
+
+#' Rename elements from list
+#'
+#' Renames the elements of a vector or list from a names reference list, leaving unmatched names untouched by default.
+#'
+#' @param x Object whose elements are to be renamed.
+#' @param names A named list of strings where names are the old and the values are the new names.
+#' @param default Value(s) used when names aren't matched by any name in `names`. Recycled to the length of `x`.
+#'
+#' @return `x` with elements renamed which occur in `names`.
+#' @export
+#'
+#' @examples
+#' mtcars |> pal::rename_from_list(names = list(mpg = "Miles/(US) gallon",
+#'                                              cyl = "Number of cylinders",
+#'                                              disp = "Displacement (cu.in.)",
+#'                                              hp = "Gross horsepower",
+#'                                              drat = "Rear axle ratio",
+#'                                              wt = "Weight (1000 lbs)",
+#'                                              qsec = "1/4 mile time",
+#'                                              vs = "Engine (0 = V-shaped, 1 = straight)",
+#'                                              am = "Transmission (0 = automatic, 1 = manual)",
+#'                                              gear = "Number of forward gears",
+#'                                              carb = "Number of carburetors",
+#'                                              not_there = "Yikes!"))
+rename_from_list <- function(x,
+                             names,
+                             default = names(x)) {
+  
+  checkmate::assert_list(names,
+                         types = "character",
+                         any.missing = FALSE,
+                         names = "unique")
+  checkmate::assert_character(default)
+  
+  if (length(x) > 0L) {
+    
+    names %<>% purrr::imap(\(x, name) rlang::new_formula(lhs = name,
+                                                         rhs = x,
+                                                         env = emptyenv()))
+    names_new <- dplyr::case_match(names(x),
+                                   !!!names,
+                                   .default = default)
+    
+    return(magrittr::set_names(x, names_new))
+    
+  } else {
+    return(x)
+  }
+}
+
+#' Sort vector by another vector
+#'
+#' Orders a vector `x` by the order of another vector `by`.
+#'
+#' @param x Vector to be ordered.
+#' @param by Reference vector which `x` will be ordered by.
+#'
+#' @return A permutation of `x`.
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#'
+#' # generate 100 random letters
+#' random_letters <-
+#'   letters %>%
+#'   magrittr::extract(sample.int(n = 26L,
+#'                                size = 100L,
+#'                                replace = TRUE)) %T>%
+#'   print()
+#'
+#' # sort the random letters alphabetically
+#' random_letters %>% pal::sort_by(by = letters)
+sort_by <- function(x,
+                    by) {
+  
+  x[order(match(x = x, table = by))]
 }
 
 #' Generalized `switch()` for pipes
