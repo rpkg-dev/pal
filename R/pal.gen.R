@@ -4443,6 +4443,8 @@ rename_from <- function(x,
                         dict,
                         default = names(x)) {
   
+  checkmate::assert_named(x)
+  
   if (is.list(dict)) {
     checkmate::assert_list(dict,
                            types = "character",
