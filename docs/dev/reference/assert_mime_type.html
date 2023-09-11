@@ -94,7 +94,6 @@ httr::http_type()."><meta property="og:image" content="https://pal.rpkg.dev/logo
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html" class="external-link">GET</a></span><span class="op">(</span><span class="st">"https://api.github.com/users/salim-b"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">assert_mime_type</span><span class="op">(</span><span class="st">"application/json"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in curl::curl_fetch_memory(url, handle = handle):</span> Could not resolve host: api.github.com</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># an informative error is thrown when the assertion is violated</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span></span>
