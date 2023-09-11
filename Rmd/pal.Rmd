@@ -2954,7 +2954,7 @@ roxy_tag_value <- function(blocks,
 
 ## (Pandoc) Markdown
 
-#### `md_verb`
+### `md_verb`
 
 NOTES:
 
@@ -3396,37 +3396,49 @@ Extending the [**commonmark**](https://github.com/r-lib/commonmark#readme) packa
 
 TODO:
 
--   There's already the [tinkr](https://docs.ropensci.org/tinkr/) package providing [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The
-    main advantage of `md_to_xml()` is that `strip_yaml_header()` is more robust in YAML header detection than [blogdown's
-    `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `tinkr::to_xml()`.
+-   There are two noteworthy R packages for R Markdown file parsing:
 
-    Thus it would be ideal to:
+    1.  [**parsermd**](https://rundel.github.io/parsermd/) which uses custom C++ code under the hood and therefore should be very fast. But it appears to
+        implement its [own custom abstract syntax tree (AST)](https://rundel.github.io/parsermd/articles/parsermd.html#working-with-the-ast), which seems like a
+        silly idea.
 
-    1.  Submit PR introducing `xfun::split_yaml_body()` based on logic in `strip_yaml_header()`; xfun is already imported in blogdown and xaringan.
+        We should thoroughly check out the package and compare it to the XML-based tinkr approach!
 
-    2.  Submit PR replacing [`blogdown:::split_yaml_body()`](https://github.com/rstudio/blogdown/blob/main/R/utils.R#L761-L775) with `xfun::split_yaml_body()`.
+    2.  [**tinkr**](https://docs.ropensci.org/tinkr/), whose built-in XSL stylesheet we already use (via `tinkr::stylesheet()` and `tinkr::md_ns()`).
 
-    3.  Submit PR replacing [`xaringan:::split_yaml_body()`](https://github.com/yihui/xaringan/blob/master/R/utils.R#L34-L43) with `xfun::split_yaml_body()`.
+        tinkr also provides its own [`to_xml()`](https://docs.ropensci.org/tinkr/reference/to_xml.html). The main advantage of `pal::md_to_xml()` is that
+        `pal::strip_yaml_header()` is more robust in YAML header detection than [blogdown's
+        `split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) used in `tinkr::to_xml()`.
 
-    4.  Submit PR importing xfun and replacing [`tinkr:::split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) with
-        `xfun::split_yaml_body()`.
+        Thus it would be ideal to:
 
-    5.  Deprecate `pal::md_to_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
+        1.  Submit PR introducing `xfun::split_yaml_body()` based on logic in `strip_yaml_header()`; xfun is already imported in blogdown and xaringan.
 
-    Further note that `tinkr::to_xml()` (as well as the unexported and separate `tinkr:::md_to_xml()`) additionally
+        2.  Submit PR replacing [`blogdown:::split_yaml_body()`](https://github.com/rstudio/blogdown/blob/main/R/utils.R#L761-L775) with
+            `xfun::split_yaml_body()`.
 
-    -   parse knitr *in-header* chunk options via a call to `tinkr:::parse_rmd()`, something `pal::md_to_xml()` simply omits (but which could be very useful for
-        certain use cases; but would ideally also include *in-body* chunk options! but maybe that functionality will be added in a future version of tinkr...).
+        3.  Submit PR replacing [`xaringan:::split_yaml_body()`](https://github.com/yihui/xaringan/blob/master/R/utils.R#L34-L43) with
+            `xfun::split_yaml_body()`.
 
-    -   replace *certain* typographic single and double quotes with the basic commonmark-compliant ones via a call to FIX ME. I think it is a pretty bad idea to
-        enable this by default and there should at least be an option to opt out of this behaviour (i.e. introduce an additional boolean param
-        `normalize_quotation_marks` or the like).
+        4.  Submit PR importing xfun and replacing [`tinkr:::split_yaml_body()`](https://github.com/ropensci/tinkr/blob/master/R/utils.R#L25-L40) with
+            `xfun::split_yaml_body()`.
 
-    -   do not allow to change the `hardbreaks`, `smart`, `normalize` and `extensions` params of the internal call to `commonmark::markdown_xml()`. At least
-        being able to set `normalize = TRUE` (the default of `pal::md_to_xml()`) seems useful, but currently `commonmark::markdown_xml()`s default of
-        `normalize = FALSE` is used.
+        5.  Deprecate `pal::md_to_xml()` and instead rely on `tinkr::to_xml()$body` for the same purpose.
 
-    Lastly, it would be nice to upstream `md_xml_subnode_ix()` as well.
+        Further note that `tinkr::to_xml()` (as well as the unexported and separate `tinkr:::md_to_xml()`) additionally
+
+        -   parse knitr *in-header* chunk options via a call to `tinkr:::parse_rmd()`, something `pal::md_to_xml()` simply omits (but which could be very useful
+            for certain use cases; note though that it doesn't yet [support *in-body* chunk options](https://github.com/ropensci/tinkr/issues/55)).
+
+        -   replace *certain* typographic single and double quotes with the basic commonmark-compliant ones via a call to FIX ME. I think it is a pretty bad
+            idea to enable this by default and there should at least be an option to opt out of this behaviour (i.e. introduce an additional boolean param
+            `normalize_quotation_marks` or the like).
+
+        -   do not allow to change the `hardbreaks`, `smart`, `normalize` and `extensions` params of the internal call to `commonmark::markdown_xml()`. At least
+            being able to set `normalize = TRUE` (the default of `pal::md_to_xml()`) seems useful, but currently `commonmark::markdown_xml()`s default of
+            `normalize = FALSE` is used.
+
+        Lastly, it would be nice to upstream `md_xml_subnode_ix()` as well.
 
 ```{r}
 #' Parse (R) Markdown as CommonMark XML tree
