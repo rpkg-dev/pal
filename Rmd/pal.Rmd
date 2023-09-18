@@ -4684,12 +4684,12 @@ cli_no_lgl <- function(cnd) {
 #' russian_roulette <- function() {
 #'   msg <- "Spinning the cylinder \U0001F91E … "
 #'   pal::cli_process_expr(msg = msg,
-#'                        msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-#'                        msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                        expr = {
-#'                          if (interactive()) Sys.sleep(1)
-#'                          if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-#'                        })
+#'                         msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+#'                         msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                         expr = {
+#'                           if (interactive()) Sys.sleep(1)
+#'                           if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+#'                         })
 #' }
 #' 
 #' set.seed(321)
