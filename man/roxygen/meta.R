@@ -1,5 +1,6 @@
 list(
-  rd_family_title = list(cli        = "Other functions extending the cli package:",
+  rd_family_title = list(checkmate  = "Other functions extending the checkmate package:",
+                         cli        = "Other functions extending the cli package:",
                          commonmark = "Other CommonMark parsing functions:",
                          desc       = "Other package `DESCRIPTION` functions:",
                          dots       = "Other dots functions:",

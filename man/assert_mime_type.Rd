@@ -40,5 +40,12 @@ try(
 Other HTTP functions:
 \code{\link{is_http_success}()},
 \code{\link{is_url}()}
+
+Other functions extending the checkmate package:
+\code{\link{assert_class_any}()},
+\code{\link{assert_cli}()},
+\code{\link{assert_inf_count}()},
+\code{\link{assert_pkg}()}
 }
+\concept{checkmate}
 \concept{http}

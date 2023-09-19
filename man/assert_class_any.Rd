@@ -26,3 +26,11 @@ In contrast to \code{\link[checkmate:checkClass]{checkmate::assert_class()}}, th
 xml2::read_html("https://pal.rpkg.dev/dev/license") |>
   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
 }
+\seealso{
+Other functions extending the checkmate package:
+\code{\link{assert_cli}()},
+\code{\link{assert_inf_count}()},
+\code{\link{assert_mime_type}()},
+\code{\link{assert_pkg}()}
+}
+\concept{checkmate}

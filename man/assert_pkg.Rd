@@ -55,5 +55,12 @@ Other R package functions:
 \code{\link{is_pkgdown_dir}()},
 \code{\link{ls_pkg}()},
 \code{\link{use_pkg}()}
+
+Other functions extending the checkmate package:
+\code{\link{assert_class_any}()},
+\code{\link{assert_cli}()},
+\code{\link{assert_inf_count}()},
+\code{\link{assert_mime_type}()}
 }
+\concept{checkmate}
 \concept{rpkgs}

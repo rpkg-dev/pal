@@ -39,5 +39,12 @@ pal::assert_cli(cmd)
 Other system interaction functions:
 \code{\link{path_script}()},
 \code{\link{test_cli}()}
+
+Other functions extending the checkmate package:
+\code{\link{assert_class_any}()},
+\code{\link{assert_inf_count}()},
+\code{\link{assert_mime_type}()},
+\code{\link{assert_pkg}()}
 }
+\concept{checkmate}
 \concept{sys}

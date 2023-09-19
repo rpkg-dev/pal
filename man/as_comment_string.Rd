@@ -14,7 +14,7 @@ as_comment_string(
 \arguments{
 \item{...}{Comment lines. A character vector or something coercible to.}
 
-\item{line_width}{Maximum character width at which to wrap lines. An integer scalar.}
+\item{line_width}{Maximum character width at which to wrap lines. A positive integerish scalar.}
 
 \item{comment_prefix}{Character sequence that indicates the start of a comment. A character scalar.}
 

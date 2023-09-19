@@ -123,6 +123,20 @@ reference:
 - contents:
   - write_widget
   - write_widget_deps
+- title: checkmate
+  desc: Extending the [**checkmate**](https://mllg.github.io/checkmate/) package.
+- contents:
+  - assert_class_any
+  - assert_inf_count
+- title: cli
+  desc: Extending the [**cli**](https://cli.r-lib.org/) package.
+- contents:
+  - cli_qty_lgl
+  - cli_no_lgl
+  - cli_process_expr
+- title: Git
+  desc: Extending the [**gert**](https://docs.ropensci.org/gert/) package.
+- contents: git_remote_tree_url
 - title: HTTP
   desc: Extending the [**httr**](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/)
     package.
@@ -134,15 +148,6 @@ reference:
 - contents:
   - toml_read
   - toml_validate
-- title: cli
-  desc: Extending the [**cli**](https://cli.r-lib.org/) package.
-- contents:
-  - cli_qty_lgl
-  - cli_no_lgl
-  - cli_process_expr
-- title: Git
-  desc: Extending the [**gert**](https://docs.ropensci.org/gert/) package.
-- contents: git_remote_tree_url
 - title: System interaction
 - contents:
   - test_cli
@@ -150,7 +155,6 @@ reference:
   - path_script
 - title: Miscellaneous
 - contents:
-  - assert_class_any
   - capture_print
   - cat_lines
   - cols_regex

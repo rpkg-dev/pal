@@ -977,7 +977,7 @@ as_string <- function(...,
 #' Takes a vector of paragraphs, wraps them at the specified line width, prefixes them with comment markers and returns the result as a single string.
 #'
 #' @param ... Comment lines. A character vector or something coercible to.
-#' @param line_width Maximum character width at which to wrap lines. An integer scalar.
+#' @param line_width Maximum character width at which to wrap lines. A positive integerish scalar.
 #' @param comment_prefix Character sequence that indicates the start of a comment. A character scalar.
 #' @param sep_paragraphs Whether or not to separate paragraphs with an empty comment line.
 #'
@@ -1579,6 +1579,7 @@ use_pkg <- function(package,
 #' @return `pkg`, invisibly.
 #' @seealso [rlang::check_installed()]
 #' @family rpkgs
+#' @family checkmate
 #' @export
 #'
 #' @examples
@@ -3515,6 +3516,247 @@ write_widget_deps <- function(x,
   invisible(head_snippet)
 }
 
+#' Assert object is member of any class
+#'
+#' Asserts that an object is member of any of the specified classes.
+#'
+#' In contrast to [checkmate::assert_class()], this function returns `TRUE` as long as `x` is at least member of *one* of `classes`.
+#'
+#' @param x \R object to test.
+#' @param classes Class names to check for inheritance. A character vector.
+#' @param name Name of the checked object to print in error message in case the assertion fails. A character scalar.
+#'
+#' @return `x`, invisibly.
+#' @family checkmate
+#' @export
+#'
+#' @examples
+#' xml2::read_html("https://pal.rpkg.dev/dev/license") |>
+#'   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
+assert_class_any <- function(x,
+                             classes,
+                             name = "x") {
+  
+  checkmate::assert_character(classes,
+                              any.missing = FALSE)
+  
+  if (!inherits(x = x,
+                what = classes)) {
+    
+    checkmate::assert_string(name)
+    classes_actual <- class(x)
+    cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
+                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_sep = " or "),
+                          ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
+  }
+  
+  invisible(x)
+}
+
+#' Assert count or `Inf`
+#'
+#' Asserts that `x` is either a [count][checkmate::assert_count] or [positive infinity][is.infinite] (`Inf`).
+#'
+#' @param x Object to check.
+#' @param ... Further arguments passed on to [checkmate::assert_count()].
+#'
+#' @return `x`, invisibly.
+#' @family checkmate
+#' @export
+#'
+#' @examples
+#' pal::assert_inf_count(1001L)
+#' pal::assert_inf_count(1)
+#' pal::assert_inf_count(0.0)
+#' pal::assert_inf_count(Inf)
+#' 
+#' try(
+#'   pal::assert_inf_count(-1)
+#' )
+#' try(
+#'   pal::assert_inf_count(1.5)
+#' )
+#' try(
+#'   pal::assert_inf_count(-Inf)
+#' )
+assert_inf_count <- function(x,
+                             ...) {
+  
+  if (isTRUE(is.infinite(x))) {
+    
+    if (x < 0L) {
+      cli::cli_abort("{.arg x} must either be a single integerish value or positive infinity ({.code Inf}).")
+    }
+    
+    return(invisible(x))
+    
+  } else {
+    
+    return(checkmate::assert_count(x = x,
+                                   ...))
+  }
+}
+
+#' [cli](https://cli.r-lib.org/) pluralization helpers for booleans
+#'
+#' Equivalents to [cli::qty()] and [cli::no()] for a logical input.
+#' 
+#' If `cnd` evaluates to `TRUE`, the resulting cli quantity is `1`, otherwise `0`. See cli's [pluralization
+#' rules](https://cli.r-lib.org/articles/pluralization.html#pluralization-markup-1) for details about how these quantities are interpreted.
+#'
+#' @param cnd Condition. A logical scalar.
+#'
+#' @return `0L` or `1L` with the additional class `cli_noprint`.
+#' @family cli
+#' @export
+#'
+#' @examples
+#' cnd <- runif(1L) < 0.5
+#' 
+#' cli::pluralize(paste0(
+#'   "{pal::cli_qty_lgl(cnd)}I think this function ",
+#'   "{?comes in handy/is not worth a second of my attention}. Having looked at the rest of the ",
+#'   "package, this {?is quite surprising/does not come as a surprise}."
+#' ))
+#' 
+#' cli::pluralize("This function is worth exactly {pal::cli_no_lgl(cnd)} second of my time.")
+cli_qty_lgl <- function(cnd) {
+  
+  checkmate::assert_flag(cnd)
+  
+  structure(as.integer(cnd),
+            class = "cli_noprint")
+}
+
+#' @rdname cli_qty_lgl
+#' @export
+cli_no_lgl <- function(cnd) {
+  
+  checkmate::assert_flag(cnd)
+  
+  structure(as.integer(cnd),
+            class = "cli_no")
+}
+
+#' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication
+#'
+#' @description
+#'
+#' `r lifecycle::badge("deprecated")` \cr
+#' This function is deprecated in favor of the `cli::cli_progress_*` family of functions (i.a. [cli::cli_progress_step()]) which is more powerful and
+#' versatile than the `cli::cli_process_*` family on which `cli_process_expr()` is built. `cli_process_expr()` will be removed in a future version of pal.
+#'
+#' @inheritParams cli::cli_process_start
+#' @param expr An expression to be evaluated.
+#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
+#'
+#' @return The result of the evaluated `expr`, invisibly.
+#' @family cli
+#' @export
+#'
+#' @examples
+#' if (interactive()) {
+#'   pal::cli_process_expr(Sys.sleep(3L), "Zzzz")
+#' }
+#'
+#' russian_roulette <- function() {
+#'   msg <- "Spinning the cylinder \U0001F91E … "
+#'   pal::cli_process_expr(msg = msg,
+#'                         msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
+#'                         msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
+#'                         expr = {
+#'                           if (interactive()) Sys.sleep(1)
+#'                           if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
+#'                         })
+#' }
+#' 
+#' set.seed(321)
+#' russian_roulette()
+#' set.seed(123)
+#' try(russian_roulette())
+cli_process_expr <- function(expr,
+                             msg,
+                             msg_done = paste(msg, "... done"),
+                             msg_failed = paste(msg, "... failed"),
+                             msg_class = "alert-info",
+                             done_class = "alert-success",
+                             failed_class = "alert-danger",
+                             env = parent.frame()) {
+  checkmate::assert_string(msg,
+                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
+                           min.chars = 1L)
+  checkmate::assert_string(msg_done)
+  checkmate::assert_string(msg_failed)
+  checkmate::assert_string(msg_class)
+  checkmate::assert_string(done_class)
+  checkmate::assert_string(failed_class)
+  checkmate::assert_environment(env)
+  
+  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function won't reach execution because we throw the error
+  #       using `rlang::cnd_signal(.x)` first.
+  status_bar_container_id <- cli::cli_process_start(msg = msg,
+                                                    msg_done = msg_done,
+                                                    msg_failed = msg_failed,
+                                                    msg_class = msg_class,
+                                                    done_class = done_class,
+                                                    failed_class = failed_class,
+                                                    .envir = env)
+  
+  result <- tryCatch(expr = rlang::eval_tidy(expr = {{ expr }},
+                                             env = env),
+                     error = \(x) {
+                       cli::cli_process_failed(status_bar_container_id)
+                       rlang::cnd_signal(x)
+                     })
+  
+  cli::cli_process_done(status_bar_container_id)
+  
+  invisible(result)
+}
+
+#' Get Git remote tree URL
+#'
+#' Determines the base Git tree URL to the current branch's upstream remote of `repo`.
+#' 
+#' This function is useful to assemble URLs to files and folders in your repo's Git forge (GitHub, GitLab, etc.).
+#'
+#' @inheritParams gert::git_remote_list
+#'
+#' @return If `repo` is a Git repository, a character scalar. Otherwise, a character vector of length zero.
+#' @family git
+#' @export
+#'
+#' @examples
+#' pal::git_remote_tree_url() |>
+#'   paste0("Rmd/pal.Rmd") |>
+#'   browseURL()
+git_remote_tree_url <- function(repo = ".") {
+  
+  rlang::check_installed("gert",
+                         reason = reason_pkg_required())
+  
+  remotes <- try(gert::git_remote_list(repo = repo))
+  
+  if (is.data.frame(remotes)) {
+    
+    url <- gert::git_remote_info(repo = repo)$url
+    
+    if (startsWith(url, "git@")) {
+      url %<>% stringr::str_replace_all(pattern = c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
+                                                    "^git@" = "https://",
+                                                    "\\.git$" = ""))
+    }
+    
+    add_slash_minus <- stringr::str_detect(url, "gitlab")
+    url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
+    
+  } else {
+    url <- character()
+  }
+  
+  url
+}
+
 #' Assert MIME type
 #'
 #' Asserts that a [response object][httr::response] is of a specific [MIME type](https://en.wikipedia.org/wiki/Media_type). Convenience wrapper around
@@ -3527,6 +3769,7 @@ write_widget_deps <- function(x,
 #'
 #' @return `response`, invisibly.
 #' @family http
+#' @family checkmate
 #' @export
 #'
 #' @examples
@@ -3816,166 +4059,6 @@ toml_validate <- function(input,
   invisible(input)
 }
 
-#' [cli](https://cli.r-lib.org/) pluralization helpers for booleans
-#'
-#' Equivalents to [cli::qty()] and [cli::no()] for a logical input.
-#' 
-#' If `cnd` evaluates to `TRUE`, the resulting cli quantity is `1`, otherwise `0`. See cli's [pluralization
-#' rules](https://cli.r-lib.org/articles/pluralization.html#pluralization-markup-1) for details about how these quantities are interpreted.
-#'
-#' @param cnd Condition. A logical scalar.
-#'
-#' @return `0L` or `1L` with the additional class `cli_noprint`.
-#' @family cli
-#' @export
-#'
-#' @examples
-#' cnd <- runif(1L) < 0.5
-#' 
-#' cli::pluralize(paste0(
-#'   "{pal::cli_qty_lgl(cnd)}I think this function ",
-#'   "{?comes in handy/is not worth a second of my attention}. Having looked at the rest of the ",
-#'   "package, this {?is quite surprising/does not come as a surprise}."
-#' ))
-#' 
-#' cli::pluralize("This function is worth exactly {pal::cli_no_lgl(cnd)} second of my time.")
-cli_qty_lgl <- function(cnd) {
-  
-  checkmate::assert_flag(cnd)
-  
-  structure(as.integer(cnd),
-            class = "cli_noprint")
-}
-
-#' @rdname cli_qty_lgl
-#' @export
-cli_no_lgl <- function(cnd) {
-  
-  checkmate::assert_flag(cnd)
-  
-  structure(as.integer(cnd),
-            class = "cli_no")
-}
-
-#' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")` \cr
-#' This function is deprecated in favor of the `cli::cli_progress_*` family of functions (i.a. [cli::cli_progress_step()]) which is more powerful and
-#' versatile than the `cli::cli_process_*` family on which `cli_process_expr()` is built. `cli_process_expr()` will be removed in a future version of pal.
-#'
-#' @inheritParams cli::cli_process_start
-#' @param expr An expression to be evaluated.
-#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
-#'
-#' @return The result of the evaluated `expr`, invisibly.
-#' @family cli
-#' @export
-#'
-#' @examples
-#' if (interactive()) {
-#'   pal::cli_process_expr(Sys.sleep(3L), "Zzzz")
-#' }
-#'
-#' russian_roulette <- function() {
-#'   msg <- "Spinning the cylinder \U0001F91E … "
-#'   pal::cli_process_expr(msg = msg,
-#'                         msg_done = paste0(msg, "and pulling the trigger – lucky again. \U0001F60C"),
-#'                         msg_failed = paste0(msg, "and pulling the trigger – head blast!"),
-#'                         expr = {
-#'                           if (interactive()) Sys.sleep(1)
-#'                           if (runif(1L) < 0.4) stop("\U0001F92F\u2620")
-#'                         })
-#' }
-#' 
-#' set.seed(321)
-#' russian_roulette()
-#' set.seed(123)
-#' try(russian_roulette())
-cli_process_expr <- function(expr,
-                             msg,
-                             msg_done = paste(msg, "... done"),
-                             msg_failed = paste(msg, "... failed"),
-                             msg_class = "alert-info",
-                             done_class = "alert-success",
-                             failed_class = "alert-danger",
-                             env = parent.frame()) {
-  checkmate::assert_string(msg,
-                           # NOTE: This is necessary since `cli::cli_process_start(msg = "")` throws an error
-                           min.chars = 1L)
-  checkmate::assert_string(msg_done)
-  checkmate::assert_string(msg_failed)
-  checkmate::assert_string(msg_class)
-  checkmate::assert_string(done_class)
-  checkmate::assert_string(failed_class)
-  checkmate::assert_environment(env)
-  
-  # NOTE: We cannot rely on `on_exit = "done"` since in case of an error the on-exit code of this function won't reach execution because we throw the error
-  #       using `rlang::cnd_signal(.x)` first.
-  status_bar_container_id <- cli::cli_process_start(msg = msg,
-                                                    msg_done = msg_done,
-                                                    msg_failed = msg_failed,
-                                                    msg_class = msg_class,
-                                                    done_class = done_class,
-                                                    failed_class = failed_class,
-                                                    .envir = env)
-  
-  result <- tryCatch(expr = rlang::eval_tidy(expr = {{ expr }},
-                                             env = env),
-                     error = \(x) {
-                       cli::cli_process_failed(status_bar_container_id)
-                       rlang::cnd_signal(x)
-                     })
-  
-  cli::cli_process_done(status_bar_container_id)
-  
-  invisible(result)
-}
-
-#' Get Git remote tree URL
-#'
-#' Determines the base Git tree URL to the current branch's upstream remote of `repo`.
-#' 
-#' This function is useful to assemble URLs to files and folders in your repo's Git forge (GitHub, GitLab, etc.).
-#'
-#' @inheritParams gert::git_remote_list
-#'
-#' @return If `repo` is a Git repository, a character scalar. Otherwise, a character vector of length zero.
-#' @family git
-#' @export
-#'
-#' @examples
-#' pal::git_remote_tree_url() |>
-#'   paste0("Rmd/pal.Rmd") |>
-#'   browseURL()
-git_remote_tree_url <- function(repo = ".") {
-  
-  rlang::check_installed("gert",
-                         reason = reason_pkg_required())
-  
-  remotes <- try(gert::git_remote_list(repo = repo))
-  
-  if (is.data.frame(remotes)) {
-    
-    url <- gert::git_remote_info(repo = repo)$url
-    
-    if (startsWith(url, "git@")) {
-      url %<>% stringr::str_replace_all(pattern = c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
-                                                    "^git@" = "https://",
-                                                    "\\.git$" = ""))
-    }
-    
-    add_slash_minus <- stringr::str_detect(url, "gitlab")
-    url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
-    
-  } else {
-    url <- character()
-  }
-  
-  url
-}
-
 #' Check if CLI tool is available
 #'
 #' Tests whether a [command-line interface (CLI)](https://en.wikipedia.org/wiki/Command-line_interface) tool is found on the system's
@@ -4049,6 +4132,7 @@ test_cli <- function(cmd,
 #'
 #' @return If the CLI tool is available on the system's `PATH`, its filesystem path, invisibly. Otherwise, an error is thrown.
 #' @family sys
+#' @family checkmate
 #' @export
 #'
 #' @examples
@@ -4120,42 +4204,6 @@ path_script <- function() {
   }
   
   cli::cli_abort("Couldn't determine script path.")
-}
-
-#' Assert object is member of any class
-#'
-#' Asserts that an object is member of any of the specified classes.
-#'
-#' In contrast to [checkmate::assert_class()], this function returns `TRUE` as long as `x` is at least member of *one* of `classes`.
-#'
-#' @param x \R object to test.
-#' @param classes Class names to check for inheritance. A character vector.
-#' @param name Name of the checked object to print in error message in case the assertion fails. A character scalar.
-#'
-#' @return `x`, invisibly.
-#' @export
-#'
-#' @examples
-#' xml2::read_html("https://pal.rpkg.dev/dev/license") |>
-#'   assert_class_any(classes = c("xml_document", "xml_nodeset", "xml_node"))
-assert_class_any <- function(x,
-                             classes,
-                             name = "x") {
-  
-  checkmate::assert_character(classes,
-                              any.missing = FALSE)
-  
-  if (!inherits(x = x,
-                what = classes)) {
-    
-    checkmate::assert_string(name)
-    classes_actual <- class(x)
-    cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
-                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_sep = " or "),
-                          ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
-  }
-  
-  invisible(x)
 }
 
 #' Capture printed console output as string
