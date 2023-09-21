@@ -4470,9 +4470,13 @@ git_remote_tree_url <- function(repo = ".") {
 
 ### DESCRIPTION
 
-Extending the [**httr**](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/) package.
+Extending the [**httr**](https://httr.r-lib.org/) and [**httr2**](https://httr2.r-lib.org/) packages that wrap the [curl](https://jeroen.cran.dev/curl/)
+package.
 
 ### `assert_mime_type`
+
+TODO: When we finished switching to httr2, deprecate this fn in favor of
+[`httr2::resp_check_content_type()`](https://httr2.r-lib.org/reference/resp_check_content_type.html).
 
 ```{r}
 #' Assert MIME type
@@ -4645,6 +4649,35 @@ is_url <- function(x) {
                                    # NOTE: we don't consider col `port`
                                    ~ any(nchar(c(..2, ..4, ..5, ..6, ..7)) > 0L))
   has_scheme & has_specifics
+}
+```
+
+### `req_cached`
+
+```{r}
+#' Perform a cached HTTP GET request
+#'
+#' Convenience wrapper around a bunch of [httr2][httr2::httr2-package] functions.
+#'
+#' @inheritParams is_http_success
+#' @param max_tries Maximum number of attempts to retry in case of an HTTP error. An integerish scalar.
+#'
+#' @inherit httr2::req_perform return
+#' @family http
+#' @export
+req_cached <- function(url,
+                       max_tries = 3L) {
+  
+  rlang::check_installed("httr2",
+                         reason = reason_pkg_required())
+  
+  httr2::request(base_url = url) |>
+    httr2::req_method(method = "GET") |>
+    httr2::req_cache(path = fs::path(tools::R_user_dir(package = "httr2",
+                                                       which = "cache"),
+                                     "req_cache")) |>
+    httr2::req_retry(max_tries = max_tries) |>
+    httr2::req_perform()
 }
 ```
 

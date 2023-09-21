@@ -39,7 +39,8 @@ try(
 \seealso{
 Other HTTP functions:
 \code{\link{is_http_success}()},
-\code{\link{is_url}()}
+\code{\link{is_url}()},
+\code{\link{req_cached}()}
 
 Other functions extending the checkmate package:
 \code{\link{assert_class_any}()},

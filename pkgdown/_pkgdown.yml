@@ -138,12 +138,14 @@ reference:
   desc: Extending the [**gert**](https://docs.ropensci.org/gert/) package.
 - contents: git_remote_tree_url
 - title: HTTP
-  desc: Extending the [**httr**](https://httr.r-lib.org/) package that wraps the [curl](https://jeroen.cran.dev/curl/)
+  desc: |-
+    Extending the [**httr**](https://httr.r-lib.org/) and [**httr2**](https://httr2.r-lib.org/) packages that wrap the [curl](https://jeroen.cran.dev/curl/)
     package.
 - contents:
   - assert_mime_type
   - is_http_success
   - is_url
+  - req_cached
 - title: TOML
 - contents:
   - toml_read

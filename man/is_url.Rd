@@ -26,6 +26,7 @@ pal::is_url(c("/some/path",
 \seealso{
 Other HTTP functions:
 \code{\link{assert_mime_type}()},
-\code{\link{is_http_success}()}
+\code{\link{is_http_success}()},
+\code{\link{req_cached}()}
 }
 \concept{http}

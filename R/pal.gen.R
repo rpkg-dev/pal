@@ -3881,6 +3881,31 @@ is_url <- function(x) {
   has_scheme & has_specifics
 }
 
+#' Perform a cached HTTP GET request
+#'
+#' Convenience wrapper around a bunch of [httr2][httr2::httr2-package] functions.
+#'
+#' @inheritParams is_http_success
+#' @param max_tries Maximum number of attempts to retry in case of an HTTP error. An integerish scalar.
+#'
+#' @inherit httr2::req_perform return
+#' @family http
+#' @export
+req_cached <- function(url,
+                       max_tries = 3L) {
+  
+  rlang::check_installed("httr2",
+                         reason = reason_pkg_required())
+  
+  httr2::request(base_url = url) |>
+    httr2::req_method(method = "GET") |>
+    httr2::req_cache(path = fs::path(tools::R_user_dir(package = "httr2",
+                                                       which = "cache"),
+                                     "req_cache")) |>
+    httr2::req_retry(max_tries = max_tries) |>
+    httr2::req_perform()
+}
+
 #' Read in and parse TOML file as strict list
 #'
 #' Reads in a file in [Tom's Obvious Minimal Language (TOML)](https://toml.io/) format and returns its content as a (nested) [strict list][xfun::strict_list()].

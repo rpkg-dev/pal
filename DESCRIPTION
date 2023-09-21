@@ -33,6 +33,7 @@ Suggests:
     gert (>= 1.9.2),
     htmltools (>= 0.5.2),
     httr (>= 1.4.1),
+    httr2 (>= 0.2.3),
     janeaustenr,
     knitr (>= 1.41),
     pander (>= 0.6.3),
