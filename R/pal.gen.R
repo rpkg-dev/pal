@@ -3069,10 +3069,8 @@ build_readme <- function(input = "README.Rmd",
                     pkg_metadata = desc_list(parent_dir))
   }
   
-  status_msg <- "Building {.file {input}}..."
-  cli::cli_progress_step(msg = status_msg,
-                         msg_done = paste(status_msg, "done"),
-                         msg_failed = paste(status_msg, "failed"))
+  cli_progress_step_quick("Building {.file {input}}")
+  
   # generate `output`
   ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = input,
@@ -3636,6 +3634,40 @@ cli_no_lgl <- function(cnd) {
   
   structure(as.integer(cnd),
             class = "cli_no")
+}
+
+#' Quick [cli](https://cli.r-lib.org/) simplified progress message
+#'
+#' Version of [cli::cli_progress_step()] that for the messages on (un)successful termination simply appends **done**/**failed** to `msg`.
+#'
+#' @inheritParams cli::cli_progress_bar
+#' @inheritParams cli::cli_progress_step
+#'
+#' @return The cli progress bar `id` as a character scalar, invisibly.
+#' @family cli
+#' @export
+#'
+#' @examples
+#' pal::cli_progress_step_quick(msg = "Doing my thing")
+#' Sys.sleep(1)
+#' cli::cli_progress_done()
+cli_progress_step_quick <- function(msg,
+                                    spinner = FALSE,
+                                    class = if (!spinner) ".alert-info",
+                                    current = TRUE,
+                                    .auto_close = TRUE,
+                                    .envir = parent.frame()) {
+  checkmate::assert_string(msg)
+  msg %<>% paste0("\u2026")
+  
+  cli::cli_progress_step(msg = msg,
+                         msg_done = paste(msg, " done"),
+                         msg_failed = paste(msg, " failed"),
+                         spinner = spinner,
+                         class = class,
+                         current = current,
+                         .auto_close = .auto_close,
+                         .envir = .envir)
 }
 
 #' Evaluate an expression with [cli](https://cli.r-lib.org/) process indication

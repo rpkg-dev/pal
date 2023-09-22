@@ -34,6 +34,7 @@ cli::pluralize("This function is worth exactly {pal::cli_no_lgl(cnd)} second of 
 }
 \seealso{
 Other functions extending the cli package:
-\code{\link{cli_process_expr}()}
+\code{\link{cli_process_expr}()},
+\code{\link{cli_progress_step_quick}()}
 }
 \concept{cli}

@@ -68,6 +68,7 @@ try(russian_roulette())
 }
 \seealso{
 Other functions extending the cli package:
+\code{\link{cli_progress_step_quick}()},
 \code{\link{cli_qty_lgl}()}
 }
 \concept{cli}

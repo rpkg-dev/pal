@@ -133,6 +133,7 @@ reference:
 - contents:
   - cli_qty_lgl
   - cli_no_lgl
+  - cli_progress_step_quick
   - cli_process_expr
 - title: Git
   desc: Extending the [**gert**](https://docs.ropensci.org/gert/) package.
