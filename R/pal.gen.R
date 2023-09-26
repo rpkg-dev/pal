@@ -296,6 +296,7 @@ safe_min <- function(...,
 #' @param round_up Whether to round a remainder of exactly `to / 2` _up_ or not. Set to `FALSE` in order to round _off_.
 #'
 #' @return A numeric vector of the same length as `x`.
+#' @seealso [prettyunits::pretty_round()]
 #' @family stat
 #' @export
 #'

@@ -32,6 +32,8 @@ vals |> pal::round_to(to = 0.05,
                       round_up = FALSE)
 }
 \seealso{
+\code{\link[prettyunits:pretty_round]{prettyunits::pretty_round()}}
+
 Other statistical computing / numeric functions:
 \code{\link{safe_max}()},
 \code{\link{safe_min}()},
