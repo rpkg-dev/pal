@@ -4,12 +4,12 @@
 \alias{as_chr}
 \title{Convert to a character vector}
 \usage{
-as_chr(..., .use_names = FALSE)
+as_chr(..., use_names = FALSE)
 }
 \arguments{
 \item{...}{\R objects to be converted to a character vector. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
-\item{.use_names}{Whether or not to preserve names by \code{\link[base:unlist]{base::unlist()}}.}
+\item{use_names}{Whether or not to preserve names by \code{\link[base:unlist]{base::unlist()}}.}
 }
 \value{
 A character vector.

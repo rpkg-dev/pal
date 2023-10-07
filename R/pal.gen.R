@@ -686,7 +686,7 @@ rm_list_lvl <- function(x,
 #' _Recursively_ applies [base::as.character()] to its inputs.
 #'
 #' @param ... \R objects to be converted to a character vector. `r pkgsnip::roxy_lbl("dyn_dots_support")`
-#' @param .use_names Whether or not to preserve names by [base::unlist()].
+#' @param use_names Whether or not to preserve names by [base::unlist()].
 #'
 #' @return A character vector.
 #' @family string
@@ -702,12 +702,12 @@ rm_list_lvl <- function(x,
 #' as.character(to_convert)
 #' pal::as_chr(!!!to_convert)
 as_chr <- function(...,
-                   .use_names = FALSE) {
+                   use_names = FALSE) {
 
   rlang::list2(...) |>
     purrr::modify_tree(leaf = as.character,
                        is_node = is.list) |>
-    unlist(use.names = .use_names)
+    unlist(use.names = use_names)
 }
 
 #' Escape line feeds / newlines
