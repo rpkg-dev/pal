@@ -109,8 +109,7 @@ get_pkg_config_val_default <- function(key,
   pkg_config |>
     dplyr::filter(key == !!key) %$%
     default_value |>
-    unlist(recursive = FALSE,
-           use.names = FALSE)
+    Reduce(f = c)
 }
 
 is_heading_node <- function(xml_node) {
