@@ -2036,11 +2036,7 @@ print_pkg_config <- function(pkg,
                   dplyr::across(any_of("description"),
                                 \(x) if (roxy_to_md) purrr::map_chr(x, roxy_to_md_links) else x),
                   default_value = purrr::map(default_value,
-                                             \(x) if (is.null(x)) {
-                                               ""
-                                             } else {
-                                               as_md_vals(x)
-                                             })) |>
+                                             \(x) if (is.null(x)) "" else as_md_vals(x))) |>
     dplyr::select(any_of("description"),
                   r_opt,
                   env_var,
@@ -3622,8 +3618,10 @@ cli_qty_lgl <- function(cnd) {
   
   checkmate::assert_flag(cnd)
   
-  structure(as.integer(cnd),
-            class = "cli_noprint")
+  cnd %<>% as.integer()
+  class(cnd) <- "cli_noprint"
+  
+  cnd
 }
 
 #' @rdname cli_qty_lgl
@@ -3632,8 +3630,10 @@ cli_no_lgl <- function(cnd) {
   
   checkmate::assert_flag(cnd)
   
-  structure(as.integer(cnd),
-            class = "cli_no")
+  cnd %<>% as.integer()
+  class(cnd) <- "cli_no"
+  
+  cnd
 }
 
 #' Quick [cli](https://cli.r-lib.org/) simplified progress message
@@ -4398,13 +4398,17 @@ cols_regex <- function(...,
   }
   
   for (i in seq_along(patterns)) {
+    
     matched_vars <- grep(x = .col_names,
                          pattern = names(patterns[i]),
                          value = TRUE,
                          perl = TRUE)
     
-    spec <- c(spec, structure(rep(list(patterns[[i]]), length(matched_vars)),
-                              names = matched_vars))
+    spec <-
+      rep(list(patterns[[i]]),
+          length(matched_vars)) |>
+      magrittr::set_names(matched_vars) %>%
+      c(spec, .)
   }
   
   spec <- c(spec, alist(.default = .default))
