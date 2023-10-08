@@ -44,9 +44,11 @@ The cli progress bar \code{id} as a character scalar, invisibly.
 Version of \code{\link[cli:cli_progress_step]{cli::cli_progress_step()}} that for the messages on (un)successful termination simply appends \strong{done}/\strong{failed} to \code{msg}.
 }
 \examples{
-pal::cli_progress_step_quick(msg = "Doing my thing")
-Sys.sleep(1)
-cli::cli_progress_done()
+{
+  pal::cli_progress_step_quick(msg = "Doing my thing")
+  Sys.sleep(1)
+  cli::cli_progress_done()
+}
 }
 \seealso{
 Other functions extending the cli package:

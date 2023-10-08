@@ -3648,9 +3648,11 @@ cli_no_lgl <- function(cnd) {
 #' @export
 #'
 #' @examples
-#' pal::cli_progress_step_quick(msg = "Doing my thing")
-#' Sys.sleep(1)
-#' cli::cli_progress_done()
+#' {
+#'   pal::cli_progress_step_quick(msg = "Doing my thing")
+#'   Sys.sleep(1)
+#'   cli::cli_progress_done()
+#' }
 cli_progress_step_quick <- function(msg,
                                     spinner = FALSE,
                                     class = if (!spinner) ".alert-info",
@@ -3661,8 +3663,8 @@ cli_progress_step_quick <- function(msg,
   msg %<>% paste0("\u2026")
   
   cli::cli_progress_step(msg = msg,
-                         msg_done = paste(msg, " done"),
-                         msg_failed = paste(msg, " failed"),
+                         msg_done = paste(msg, "done"),
+                         msg_failed = paste(msg, "failed"),
                          spinner = spinner,
                          class = class,
                          current = current,
