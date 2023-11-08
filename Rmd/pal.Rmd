@@ -520,8 +520,8 @@ stat_mode <- function(x,
 #' @param y The data frame / tibble that `x` should be checked against, i.e. the reference, so messages describe how `x` is different to `y`.
 #' @param ignore_col_order Whether or not to ignore the order of columns.
 #' @param ignore_row_order Whether or not to ignore the order of rows.
-#' @param ignore_col_types Whether or not to distinguish similar column types. Currently, if set to `TRUE`, this will convert factor to character and integer to
-#'   double before comparison.
+#' @param ignore_col_types Whether or not to distinguish similar column types. Currently, if set to `TRUE`, this will convert factors to characters and integers
+#'   to doubles before the comparison.
 #' @param quiet Whether or not to output detected differences between `x` and `y` to the console.
 #' @param max_diffs Maximum number of differences shown. Only relevant if `quiet = FALSE` or `return_waldo_compare = TRUE`. Set `max_diffs = Inf` to see all
 #'   differences.

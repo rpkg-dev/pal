@@ -25,8 +25,8 @@ is_equal_df(
 
 \item{ignore_row_order}{Whether or not to ignore the order of rows.}
 
-\item{ignore_col_types}{Whether or not to distinguish similar column types. Currently, if set to \code{TRUE}, this will convert factor to character and integer to
-double before comparison.}
+\item{ignore_col_types}{Whether or not to distinguish similar column types. Currently, if set to \code{TRUE}, this will convert factors to characters and integers
+to doubles before the comparison.}
 
 \item{tolerance}{If non-\code{NULL}, used as threshold for ignoring small
 floating point difference when comparing numeric vectors. Using any
