@@ -48,7 +48,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cols_regex</span><span class="op">(</span><span class="va">...</span>, .default <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_character</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">.col_names</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cols_regex</span><span class="op">(</span><span class="va">...</span>, <span class="va">.col_names</span>, .default <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -58,12 +58,12 @@
 abbreviated character names (as described in the <code>col_types</code> parameter of <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_delim()</a></code>). <a href="https://rlang.r-lib.org/reference/dyn-dots.html" class="external-link">Dynamic dots</a> are supported.</p></dd>
 
 
-<dt>.default</dt>
-<dd><p>Any named columns not matched by any of the regular expressions in <code>...</code> will be read with this column type.</p></dd>
-
-
 <dt>.col_names</dt>
 <dd><p>Column names which should be matched by <code>...</code>.</p></dd>
+
+
+<dt>.default</dt>
+<dd><p>Any named columns not matched by any of the regular expressions in <code>...</code> will be read with this column type.</p></dd>
 
 </dl></div>
     <div class="section level2">

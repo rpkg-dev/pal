@@ -1203,7 +1203,7 @@ as_comment_string <- function(...,
   
   as_chr(...) %>%
     stringr::str_wrap(width = line_width - nchar(comment_prefix)) %>%
-    stringr::str_split(pattern = "\n") %>%
+    stringr::str_split(pattern = stringr::fixed("\n")) %>%
     purrr::map(~ paste0(comment_prefix, .x) %>%
                  paste0(collapse = "\n")) %>%
     purrr::map2_chr(.f =
@@ -1691,9 +1691,9 @@ check_dots_named <- function(...,
     msg <- "{.arg ...} must be provided (!= NULL)."
     
     switch(EXPR = .action,
-           "abort" = cli::cli_abort(msg),
-           "warn" = cli::cli_warn(msg),
-           "inform" = cli::cli_inform(msg))
+           abort = cli::cli_abort(msg),
+           warn = cli::cli_warn(msg),
+           inform = cli::cli_inform(msg))
   }
 }
 
@@ -1720,13 +1720,13 @@ check_dot_named <- function(dot,
     
     if (length(allowed_arg_names_excl_dots) > 0L) {
       
-      msg %<>% c("i" = paste0(ifelse(is_restricted,
-                                     "Named arguments allowed to pass on to ",
-                                     "Valid named arguments for "),
-                              "{.fun {fn_name}} include: {.arg {allowed_arg_names_excl_dots}}"))
+      msg %<>% c(i = paste0(ifelse(is_restricted,
+                                   "Named arguments allowed to pass on to ",
+                                   "Valid named arguments for "),
+                            "{.fun {fn_name}} include: {.arg {allowed_arg_names_excl_dots}}"))
     } else {
       
-      msg %<>% c("i" = paste0("Only unnamed arguments are ", ifelse(is_restricted, "allowed", "valid"), " for {.fun {fn_name}}."))
+      msg %<>% c(i = paste0("Only unnamed arguments are ", ifelse(is_restricted, "allowed", "valid"), " for {.fun {fn_name}}."))
     }
     
     i_partial <- pmatch(dot, allowed_arg_names_excl_dots)
@@ -1747,9 +1747,9 @@ check_dot_named <- function(dot,
     }
     
     switch(EXPR = action,
-           "abort" = cli::cli_abort(msg),
-           "warn" = cli::cli_warn(msg),
-           "inform" = cli::cli_inform(msg))
+           abort = cli::cli_abort(msg),
+           warn = cli::cli_warn(msg),
+           inform = cli::cli_inform(msg))
   }
 }
 ```
@@ -2056,7 +2056,7 @@ is_pkg_cran <- function(pkg,
       rvest::html_element(css = "body") |>
       rvest::html_element(css = "table") |>
       rvest::html_table() |>
-      dplyr::filter(stringr::str_detect(X1, "Version")) |>
+      dplyr::filter(stringr::str_detect(X1, stringr::fixed("Version"))) |>
       dplyr::filter(as.package_version(X2) >= !!min_version) |>
       nrow() |>
       magrittr::is_greater_than(0L)
@@ -2672,13 +2672,13 @@ roxy_to_md_links <- function(x) {
     xml_to_md() |>
     stringr::str_extract_all(pattern = "(\\\\\\[`[^`]+`\\\\\\](\\\\\\[[^\\]]+?\\\\\\])?|\\\\\\[[^\\]]+?\\\\\\](\\\\\\[[^\\]]+?\\\\\\])?)") |>
     purrr::list_c(ptype = character()) |>
-    stringr::str_remove_all(pattern = "\\\\")
+    stringr::str_remove_all(pattern = stringr::fixed("\\"))
   
   is_short <- stringr::str_detect(string = links_roxy,
                                   pattern = "^\\[[^\\]]+\\]$")
   targets_roxy <- links_roxy
   # remove possible enclosing backticks from roxy shortlinks to make them parseable by downlit
-  targets_roxy[is_short] %<>% stringr::str_remove_all(pattern = "`")
+  targets_roxy[is_short] %<>% stringr::str_remove_all(pattern = stringr::fixed("`"))
   targets_roxy %<>%
     stringr::str_extract(pattern = "\\[([^\\]]+)\\]$",
                          group = 1L) %>%
@@ -2889,8 +2889,8 @@ TODO: Fix failing examples during `pkgdown::build_site()` or -- if not possible 
 #' Extracts the value(s) belonging to the `tag_name`s documenting `obj_name` from a list of [`roxy_block`][roxygen2::roxy_block] objects.
 #'
 #' @inheritParams roxy_obj
-#' @param tag_names Name(s) of the [roxygen2 tag(s)](https://roxygen2.r-lib.org/articles/rd.html) (without the `@`) to extract the value(s) from. A character
-#'   vector.
+#' @param tag_names Name(s) of the [roxygen2 tag(s)](https://roxygen2.r-lib.org/articles/rd.html) (without the `@` prefix) to extract the value(s) from. A
+#'   character vector.
 #' @param param_name Parameter name to extract the value from. Only relevant if `"param" %in% tag_names`. A character scalar.
 #'
 #' @return A character vector of the same length as `tag_names`.
@@ -2909,7 +2909,7 @@ TODO: Fix failing examples during `pkgdown::build_site()` or -- if not possible 
 #' }
 roxy_tag_value <- function(blocks,
                            obj_name,
-                           tag_names = "param",
+                           tag_names,
                            param_name) {
   
   block <- roxy_obj(blocks = blocks,
@@ -3033,7 +3033,7 @@ md_verb <- function(...,
                            nlines = .nlines)
       
       escape_backtick <- stringr::str_detect(string = deparsed,
-                                             pattern = "`")
+                                             pattern = stringr::fixed("`"))
       
       paste0("`", "` "[escape_backtick], deparsed, " `"[escape_backtick], "`")
     }) |>
@@ -4493,7 +4493,7 @@ git_remote_tree_url <- function(repo = ".") {
                                                     "\\.git$" = ""))
     }
     
-    add_slash_minus <- stringr::str_detect(url, "gitlab")
+    add_slash_minus <- stringr::str_detect(url, stringr::fixed("gitlab"))
     url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
     
   } else {
@@ -4900,7 +4900,7 @@ toml_validate <- function(input,
                                                      "-")),
                                      stdout = TRUE,
                                      stderr = TRUE,
-                                     input = if (!from_file) input else NULL,
+                                     input = if (from_file) NULL else input,
                                      # cf. https://taplo.tamasfe.dev/cli/usage/configuration.html
                                      env = "RUST_LOG=error",
                                      timeout = 5L))
@@ -5104,28 +5104,24 @@ path_script <- function() {
   
   # Rscript
   if (length(match) > 0L) {
-    
     return(normalizePath(sub(needle, "", cmd_args[match])))
   }
   
   # `source()`d via R console
   if (!is.null(sys.frames()[[1L]][["ofile"]])) {
-    
     return(normalizePath(sys.frames()[[1L]][["ofile"]]))
-    
-    # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
-  } else if (!is.null(rprojroot::thisfile())) {
-    
+  }
+  
+  # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
+  if (!is.null(rprojroot::thisfile())) {
     return(rprojroot::thisfile())
-    
-    # RStudio document
-  } else {
-    
-    path <- rstudioapi::getActiveDocumentContext()[["path"]]
-    
-    if (path != "") {
-      return(normalizePath(path))
-    }
+  }
+  
+  # RStudio document
+  path <- rstudioapi::getActiveDocumentContext()[["path"]]
+  
+  if (path != "") {
+    return(normalizePath(path))
   }
   
   cli::cli_abort("Couldn't determine script path.")
@@ -5225,8 +5221,8 @@ NOTES:
 #'
 #' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by `col_*()`, or their
 #'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]). `r pkgsnip::roxy_lbl("dyn_dots_support")`
-#' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
 #' @param .col_names Column names which should be matched by `...`.
+#' @param .default Any named columns not matched by any of the regular expressions in `...` will be read with this column type.
 #'
 #' @return A [column specification][readr::cols].
 #' @export
@@ -5275,8 +5271,8 @@ NOTES:
 #'                                                   .default = "i",
 #'                                                   .col_names = colnames(.)))
 cols_regex <- function(...,
-                       .default = readr::col_character(),
-                       .col_names) {
+                       .col_names,
+                       .default = readr::col_character()) {
   
   rlang::check_installed("readr",
                          reason = reason_pkg_required())

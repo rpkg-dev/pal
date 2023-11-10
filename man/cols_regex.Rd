@@ -4,15 +4,15 @@
 \alias{cols_regex}
 \title{Create \link[readr:readr-package]{readr} column specification using regular expression matching}
 \usage{
-cols_regex(..., .default = readr::col_character(), .col_names)
+cols_regex(..., .col_names, .default = readr::col_character())
 }
 \arguments{
 \item{...}{Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by \verb{col_*()}, or their
 abbreviated character names (as described in the \code{col_types} parameter of \code{\link[readr:read_delim]{readr::read_delim()}}). \link[rlang:dyn-dots]{Dynamic dots} are supported.}
 
-\item{.default}{Any named columns not matched by any of the regular expressions in \code{...} will be read with this column type.}
-
 \item{.col_names}{Column names which should be matched by \code{...}.}
+
+\item{.default}{Any named columns not matched by any of the regular expressions in \code{...} will be read with this column type.}
 }
 \value{
 A \link[readr:cols]{column specification}.

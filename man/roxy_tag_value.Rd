@@ -4,15 +4,15 @@
 \alias{roxy_tag_value}
 \title{Get an object's roxygen2 tag value(s)}
 \usage{
-roxy_tag_value(blocks, obj_name, tag_names = "param", param_name)
+roxy_tag_value(blocks, obj_name, tag_names, param_name)
 }
 \arguments{
 \item{blocks}{A list of \code{\link[roxygen2:roxy_block]{roxy_block}} objects as returned by \code{\link[=roxy_blocks]{roxy_blocks()}}.}
 
 \item{obj_name}{Object name to extract, usually a function name. A character scalar.}
 
-\item{tag_names}{Name(s) of the \href{https://roxygen2.r-lib.org/articles/rd.html}{roxygen2 tag(s)} (without the \code{@}) to extract the value(s) from. A character
-vector.}
+\item{tag_names}{Name(s) of the \href{https://roxygen2.r-lib.org/articles/rd.html}{roxygen2 tag(s)} (without the \code{@} prefix) to extract the value(s) from. A
+character vector.}
 
 \item{param_name}{Parameter name to extract the value from. Only relevant if \code{"param" \%in\% tag_names}. A character scalar.}
 }
