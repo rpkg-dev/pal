@@ -65,11 +65,15 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>If request is successful (i.e. the request was successfully
-performed and a response with HTTP status code &lt;400 was recieved), an HTTP
-<a href="https://httr2.r-lib.org/reference/response.html" class="external-link">response</a>; otherwise throws an error. Override this behaviour with
-<code><a href="https://httr2.r-lib.org/reference/req_error.html" class="external-link">req_error()</a></code>.</p>
-    </div>
+<ul><li><p>If the HTTP request succeeds, and the status code is ok (e.g. 200),
+an HTTP <a href="https://httr2.r-lib.org/reference/response.html" class="external-link">response</a>.</p></li>
+<li><p>If the HTTP request succeeds, but the status code is an error
+(e.g a 404), an error with class <code>c("httr2_http_404", "httr2_http")</code>.
+By default, all 400 and 500 status codes will be treated as an error,
+but you can customise this with <code><a href="https://httr2.r-lib.org/reference/req_error.html" class="external-link">req_error()</a></code>.</p></li>
+<li><p>If the HTTP request fails (e.g. the connection is dropped or the
+server doesn't exist), an error with class <code>"httr2_failure"</code>.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other HTTP functions:
