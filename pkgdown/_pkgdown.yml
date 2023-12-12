@@ -161,7 +161,7 @@ reference:
   - capture_print
   - cat_lines
   - cols_regex
-  - prose_ls_fn_param
+  - fn_param_defaults
   - rename_from
   - sort_by
   - when

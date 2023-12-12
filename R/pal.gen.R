@@ -1057,6 +1057,9 @@ fuse_regex <- function(...) {
 
 #' List items concatenated in prose style (..., ... and ...)
 #'
+#' `r lifecycle::badge("deprecated")` \cr
+#' This function has been deprecated in favor of the more powerful [cli::ansi_collapse()] and will be removed in the future.
+#'
 #' Takes a vector or list and concatenates its elements to a single string separated in prose-style.
 #'
 #' @param x A vector or a list.
@@ -3142,7 +3145,7 @@ build_readme <- function(input = "README.Rmd",
 #' account for the possibility that `knitr.table.format` is set to a function rather than a format string.
 #'
 #' @param default knitr table format to fall back to when the \R option `knitr.table.format` is not set. One of
-#' `r prose_ls_fn_param(param = "default", fn = knitr_table_format, as_scalar = FALSE) %>% as_md_list()`
+#' `r fn_param_defaults(param = "default", fn = knitr_table_format) |> wrap_chr("\x60") |> as_md_list()`
 #'   
 #' See [knitr::kable()]'s `format` argument for details.
 #'
@@ -4413,23 +4416,24 @@ cols_regex <- function(...,
   do.call(readr::cols, spec)
 }
 
-#' List a function's default parameter values in prose-style
+#' Get function's default parameter values
 #'
-#' Extracts the default value(s) of a function's definition and returns it in [prose style listing][prose_ls].
+#' Extracts a function parameter's default value(s) from its language definition and returns the result as a character vector.
 #'
 #' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
 #' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
 #'
 #' ```r
-#' #' @param some_param Some parameter. One of `r prose_ls_fn_param(param = "some_param", fn = "some_fn")`.
+#' #' @param some_param Some parameter. One of
+#' #'   `r pal::fn_param_defaults(param = "some_param", fn = "some_fn") |> pal::wrap_chr("\x60") |> cli::ansi_collapse()`.
 #' some_fn <- function(some_param = c("a", "b", "c")) {
 #'   some_param <- rlang::arg_match(some_param)
 #'   ...
 #' }
 #' ```
 #'
-#' Or to list the possible parameter values formatted as an unnumbered list instead, use the inline code
-#' `` `r prose_ls_fn_param(param = "some_param", fn = "some_fn", as_scalar = FALSE) |> as_md_list()` `` in the example above.
+#' Or to list the possible parameter values formatted as an unnumbered list instead, replace `cli::ansi_collapse()` with [pal::as_md_list()] in the example
+#' above.
 #'
 #' # Caveats
 #' 
@@ -4439,33 +4443,25 @@ cols_regex <- function(...,
 #' @param param Parameter name. A character scalar.
 #' @param fn A [function][base::function] or a function name (searched for in `env`). See [base::formals()] for details.
 #' @param env [Environment][base::environment] `fn` is defined in. See [base::formals()] for details.
-#' @param as_scalar Whether to return the result as a single string concatenated by `sep` and `last_sep`.
-#' @param wrap String (usually a single character) in which `param`s default values are to be wrapped.
-#' @param sep Separator to delimit `param`s default values. Only relevant if `as_scalar = TRUE`.
-#' @param last_sep Separator to delimit the second-last and last one of `param`s default values. Only relevant if `as_scalar = TRUE`.
 #'
-#' @return A character vector. Of length 1 if `as_scalar = TRUE`.
+#' @return A character vector.
 #' @export
 #'
 #' @examples
-#' pal::prose_ls_fn_param(param = ".name_repair",
-#'                        fn = tibble::as_tibble) |>
-#' pal::cat_lines()
+#' pal::fn_param_defaults(param = ".name_repair",
+#'                        fn = tibble::as_tibble)
 #'
-#' pal::prose_ls_fn_param(param = ".name_repair",
-#'                        fn = tibble::as_tibble,
-#'                        as_scalar = FALSE) |>
-#' pal::cat_lines()
-prose_ls_fn_param <- function(param,
+#' # as Markdown-formatted enumeration in prose
+#' pal::fn_param_defaults(param = ".name_repair",
+#'                        fn = tibble::as_tibble) |>
+#'   pal::wrap_chr("`") |>
+#'   cli::ansi_collapse() |>
+#'   cat()
+fn_param_defaults <- function(param,
                               fn = sys.function(sys.parent()),
-                              env = parent.frame(),
-                              as_scalar = TRUE,
-                              wrap = "`",
-                              sep = ",",
-                              last_sep = " or ") {
+                              env = parent.frame()) {
   
   checkmate::assert_string(param)
-  checkmate::assert_flag(as_scalar)
   
   # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
   if (is.character(fn)) {
@@ -4509,14 +4505,6 @@ prose_ls_fn_param <- function(param,
                                            "niceNames",
                                            "showAttributes",
                                            "warnIncomplete"))
-  }
-  
-  if (as_scalar) {
-    default_vals %<>% prose_ls(wrap = wrap,
-                               sep = sep,
-                               last_sep = last_sep)
-  } else {
-    default_vals %<>% wrap_chr(wrap = wrap)
   }
   
   default_vals

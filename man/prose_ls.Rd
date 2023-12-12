@@ -19,6 +19,10 @@ prose_ls(x, wrap = "", sep = ", ", last_sep = " and ")
 A character scalar.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \cr
+This function has been deprecated in favor of the more powerful \code{\link[cli:ansi_collapse]{cli::ansi_collapse()}} and will be removed in the future.
+}
+\details{
 Takes a vector or list and concatenates its elements to a single string separated in prose-style.
 }
 \examples{

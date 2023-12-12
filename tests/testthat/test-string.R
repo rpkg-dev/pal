@@ -8,74 +8,62 @@ test_that("`fuse_regex()` works as expected", {
                    "(1|2|3)")
 })
 
-# prose_ls_fn_param ----
-test_that("`prose_ls_fn_param()` works as expected", {
+# fn_param_defaults ----
+test_that("`fn_param_defaults()` works as expected", {
 
   # test with internal fns
-  expect_identical(prose_ls_fn_param(param = "wrap",
+  expect_identical(fn_param_defaults(param = "wrap",
                                      fn = prose_ls),
-                   '`""`')
+                   '""')
 
-  expect_identical(prose_ls_fn_param(param = "wrap",
+  expect_identical(fn_param_defaults(param = "wrap",
                                      fn = "prose_ls"),
-                   '`""`')
+                   '""')
 
-  expect_identical(prose_ls_fn_param(param = "type",
+  expect_identical(fn_param_defaults(param = "type",
                                      fn = stat_mode),
-                   '`"one"`,`"all"` or `"n"`')
-
-  ## test vector result
-  expect_identical(prose_ls_fn_param(param = "type",
-                                     fn = stat_mode,
-                                     as_scalar = FALSE),
-                   c('`"one"`', '`"all"`', '`"n"`'))
+                   c('"one"','"all"', '"n"'))
 
   ## test non-character results
-  expect_identical(prose_ls_fn_param(param = ".default",
+  expect_identical(fn_param_defaults(param = ".default",
                                      fn = cols_regex),
-                   '`readr::col_character()`')
+                   'readr::col_character()')
 
-  expect_identical(prose_ls_fn_param(param = "env",
+  expect_identical(fn_param_defaults(param = "env",
                                      fn = cli_process_expr),
-                   '`parent.frame()`')
+                   'parent.frame()')
 
-  expect_identical(prose_ls_fn_param(param = "msg_done",
+  expect_identical(fn_param_defaults(param = "msg_done",
                                      fn = cli_process_expr),
-                   '`paste(msg, "... done")`')
+                   'paste(msg, "... done")')
 
   # test with external fns
-  expect_identical(prose_ls_fn_param(param = ".name_repair",
+  expect_identical(fn_param_defaults(param = ".name_repair",
                                      fn = tibble::as_tibble),
-                   '`"check_unique"`,`"unique"`,`"universal"` or `"minimal"`')
+                   c('"check_unique"', '"unique"', '"universal"', '"minimal"'))
 
-  expect_identical(prose_ls_fn_param(param = ".name_repair",
+  expect_identical(fn_param_defaults(param = ".name_repair",
                                      fn = "as_tibble",
                                      env = environment(tibble::as_tibble)),
-                   '`"check_unique"`,`"unique"`,`"universal"` or `"minimal"`')
+                   c('"check_unique"', '"unique"', '"universal"', '"minimal"'))
 
   ## test non-character results
-  expect_identical(prose_ls_fn_param(param = ".id",
+  expect_identical(fn_param_defaults(param = ".id",
                                      fn = dplyr::bind_rows),
-                   '`NULL`')
+                   'NULL')
 
-  ## test vector result
-  expect_identical(prose_ls_fn_param(param = ".id",
-                                     fn = dplyr::bind_rows,
-                                     as_scalar = FALSE),
-                   '`NULL`')
-
-  # test primitive
-  expect_identical(prose_ls_fn_param(param = "na.rm",
+  ## test primitive
+  expect_identical(fn_param_defaults(param = "na.rm",
                                      fn = base::sum),
-                   "`FALSE`")
+                   "FALSE")
 
-  # test inexistent param
-  expect_error(prose_ls_fn_param(param = ".name_repair99",
+  ## test inexistent param
+  expect_error(fn_param_defaults(param = ".name_repair99",
                                  fn = tibble::as_tibble),
                regexp = "does not have a parameter .*.name_repair99")
 
-  # test param with no default
-  expect_error(prose_ls_fn_param(param = "x",
+  ## test param with no default
+  expect_error(fn_param_defaults(param = "x",
                                  fn = tibble::as_tibble),
                regexp = "does not have a default value")
 })
