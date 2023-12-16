@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{when}
 \alias{when}
-\title{Generalized \code{switch()} for pipes}
+\title{Generalized \code{if}-\verb{else} for pipes}
 \usage{
 when(., ...)
 }

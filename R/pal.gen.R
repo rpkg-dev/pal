@@ -4598,7 +4598,7 @@ sort_by <- function(x,
   x[order(match(x = x, table = by))]
 }
 
-#' Generalized `switch()` for pipes
+#' Generalized `if`-`else` for pipes
 #'
 #' A flavour of pattern matching (or an if-else abstraction) in which a value `.` is matched against a sequence `...` of condition-action sets. When a valid
 #' match/condition is found, the action is executed and the result of the action is returned.
