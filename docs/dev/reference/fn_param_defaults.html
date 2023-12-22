@@ -76,6 +76,7 @@
     <p>This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging <a href="https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code" class="external-link">inline <span style="R">R</span> code evaluation</a> as follows:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co">#' @param some_param Some parameter. One of</span></span>
 <span><span class="co">#'   `r pal::fn_param_defaults(param = "some_param", fn = "some_fn") |&gt; pal::wrap_chr("\x60") |&gt; cli::ansi_collapse()`.</span></span>
+<span><span class="co">#'</span></span>
 <span><span class="va">some_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">some_param</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">some_param</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">arg_match</a></span><span class="op">(</span><span class="va">some_param</span><span class="op">)</span></span>
 <span>  <span class="va">...</span></span>
@@ -87,6 +88,15 @@ above.</p>
     <h2 id="caveats">Caveats<a class="anchor" aria-label="anchor" href="#caveats"></a></h2>
     <p><code><a href="https://rdrr.io/r/base/deparse.html" class="external-link">base::deparse1()</a></code> is used internally to get a character representation of non-character default values. Therefore all of <code><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse()</a></code>'s fuzziness also
 applies to this function.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other package documentation functions:
+<code><a href="enum_fn_param_defaults.html">enum_fn_param_defaults</a>()</code>,
+<code><a href="roxy_blocks.html">roxy_blocks</a>()</code>,
+<code><a href="roxy_obj.html">roxy_obj</a>()</code>,
+<code><a href="roxy_tag_value.html">roxy_tag_value</a>()</code>,
+<code><a href="roxy_to_md_links.html">roxy_to_md_links</a>()</code></p></div>
     </div>
 
     <div class="section level2">

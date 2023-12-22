@@ -86,8 +86,11 @@ reference:
   - desc_value
   - desc_url_git
 - subtitle: Package documentation
-  desc: Extending the [**roxygen2**](https://roxygen2.r-lib.org/) package.
+  desc: Complementing and extending the [**roxygen2**](https://roxygen2.r-lib.org/)
+    package.
 - contents:
+  - fn_param_defaults
+  - enum_fn_param_defaults
   - roxy_to_md_links
   - roxy_blocks
   - roxy_obj
@@ -161,7 +164,6 @@ reference:
   - capture_print
   - cat_lines
   - cols_regex
-  - fn_param_defaults
   - rename_from
   - sort_by
   - when

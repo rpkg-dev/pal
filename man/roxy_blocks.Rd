@@ -38,6 +38,8 @@ try(
 }
 \seealso{
 Other package documentation functions:
+\code{\link{enum_fn_param_defaults}()},
+\code{\link{fn_param_defaults}()},
 \code{\link{roxy_obj}()},
 \code{\link{roxy_tag_value}()},
 \code{\link{roxy_to_md_links}()}

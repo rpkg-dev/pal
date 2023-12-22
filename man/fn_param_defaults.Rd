@@ -24,6 +24,7 @@ This function can be very convenient to avoid duplication in roxygen2 documentat
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{#' @param some_param Some parameter. One of
 #'   `r pal::fn_param_defaults(param = "some_param", fn = "some_fn") |> pal::wrap_chr("\\x60") |> cli::ansi_collapse()`.
+#'
 some_fn <- function(some_param = c("a", "b", "c")) \{
   some_param <- rlang::arg_match(some_param)
   ...
@@ -49,3 +50,12 @@ pal::fn_param_defaults(param = ".name_repair",
   cli::ansi_collapse() |>
   cat()
 }
+\seealso{
+Other package documentation functions:
+\code{\link{enum_fn_param_defaults}()},
+\code{\link{roxy_blocks}()},
+\code{\link{roxy_obj}()},
+\code{\link{roxy_tag_value}()},
+\code{\link{roxy_to_md_links}()}
+}
+\concept{roxy}

@@ -24,6 +24,8 @@ pal::roxy_to_md_links("downlit's [`autolink_url()`][downlit::autolink_url()] see
 }
 \seealso{
 Other package documentation functions:
+\code{\link{enum_fn_param_defaults}()},
+\code{\link{fn_param_defaults}()},
 \code{\link{roxy_blocks}()},
 \code{\link{roxy_obj}()},
 \code{\link{roxy_tag_value}()}

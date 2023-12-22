@@ -2157,6 +2157,143 @@ desc_url_git <- function(file = ".") {
     dplyr::first()
 }
 
+#' Get function's default parameter values
+#'
+#' Extracts a function parameter's default value(s) from its language definition and returns the result as a character vector.
+#'
+#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
+#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
+#'
+#' ```r
+#' #' @param some_param Some parameter. One of
+#' #'   `r pal::fn_param_defaults(param = "some_param", fn = "some_fn") |> pal::wrap_chr("\x60") |> cli::ansi_collapse()`.
+#' #'
+#' some_fn <- function(some_param = c("a", "b", "c")) {
+#'   some_param <- rlang::arg_match(some_param)
+#'   ...
+#' }
+#' ```
+#'
+#' Or to list the possible parameter values formatted as an unnumbered list instead, replace `cli::ansi_collapse()` with [pal::as_md_list()] in the example
+#' above.
+#'
+#' # Caveats
+#' 
+#' [base::deparse1()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also 
+#' applies to this function.
+#'
+#' @param param Parameter name. A character scalar.
+#' @param fn A [function][base::function] or a function name (searched for in `env`). See [base::formals()] for details.
+#' @param env [Environment][base::environment] `fn` is defined in. See [base::formals()] for details.
+#'
+#' @return A character vector.
+#' @family roxy
+#' @export
+#'
+#' @examples
+#' pal::fn_param_defaults(param = ".name_repair",
+#'                        fn = tibble::as_tibble)
+#'
+#' # as Markdown-formatted enumeration in prose
+#' pal::fn_param_defaults(param = ".name_repair",
+#'                        fn = tibble::as_tibble) |>
+#'   pal::wrap_chr("`") |>
+#'   cli::ansi_collapse() |>
+#'   cat()
+fn_param_defaults <- function(param,
+                              fn = sys.function(sys.parent()),
+                              env = parent.frame()) {
+  
+  checkmate::assert_string(param)
+  
+  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
+  if (is.character(fn)) {
+    fn %<>% get(mode = "function",
+                envir = env)
+  }
+  
+  default_vals <- formals(fun = args(name = fn),
+                          envir = env)
+  
+  if (param %in% names(default_vals)) {
+    default_vals <- default_vals[[param]]
+  } else {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    cli::cli_abort("The function {.fn {fn_name}} does not have a parameter named {.arg {param}}.")
+  }
+  
+  if (missing(default_vals)) {
+    fn_name <- deparse1(expr = substitute(fn),
+                        backtick = FALSE)
+    cli::cli_abort("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value.")
+  }
+  
+  # evaluate default param if it results in a character vector
+  if (is.language(default_vals)) {
+    
+    evaluated_default_vals <- tryCatch(expr = eval(expr = default_vals,
+                                                   envir = env),
+                                       error = \(x) NULL)
+    
+    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
+  }
+  
+  if (is.character(default_vals)) {
+    default_vals %<>% wrap_chr()
+  } else {
+    default_vals %<>% deparse1(backtick = FALSE,
+                               control = c("keepNA",
+                                           "keepInteger",
+                                           "niceNames",
+                                           "showAttributes",
+                                           "warnIncomplete"))
+  }
+  
+  default_vals
+}
+
+#' Enumerate function's default parameter values
+#'
+#' Convenience function combining [fn_param_defaults()], [wrap_chr()] and [cli::ansi_collapse()].
+#'
+#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
+#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
+#'
+#' ```r
+#' #' @param some_param Some parameter. One of
+#' #'   `r pal::enum_fn_param_defaults(param = "some_param", fn = "some_fn")`.
+#' #'
+#' some_fn <- function(some_param = c("a", "b", "c")) {
+#'   some_param <- rlang::arg_match(some_param)
+#'   ...
+#' }
+#' ```
+#'
+#' @inheritParams fn_param_defaults
+#' @param sep2,last Passed on to [cli::ansi_collapse()].
+#'
+#' @return A character scalar.
+#' @family roxy
+#' @export
+#'
+#' @examples
+#' pal::enum_fn_param_defaults(param = ".name_repair",
+#'                             fn = tibble::as_tibble) |>
+#'   cat()
+enum_fn_param_defaults <- function(param,
+                                   fn = sys.function(sys.parent()),
+                                   env = parent.frame(),
+                                   sep2 = " or ",
+                                   last = sep2) {
+  fn_param_defaults(param = param,
+                    fn = fn,
+                    env = env) |>
+    wrap_chr("`") |>
+    cli::ansi_collapse(sep2 = sep2,
+                       last = last)
+}
+
 #' Convert roxygen2 documentation links to Markdown
 #'
 #' Converts roxygen2 documentation [links in pseudo-Markdown style](https://roxygen2.r-lib.org/articles/rd-formatting.html#function-links) to actual Markdown
@@ -4414,100 +4551,6 @@ cols_regex <- function(...,
   
   spec <- c(spec, alist(.default = .default))
   do.call(readr::cols, spec)
-}
-
-#' Get function's default parameter values
-#'
-#' Extracts a function parameter's default value(s) from its language definition and returns the result as a character vector.
-#'
-#' This function can be very convenient to avoid duplication in roxygen2 documentation by leveraging [inline \R code
-#' evaluation](https://roxygen2.r-lib.org/articles/rd-formatting.html#inline-code) as follows:
-#'
-#' ```r
-#' #' @param some_param Some parameter. One of
-#' #'   `r pal::fn_param_defaults(param = "some_param", fn = "some_fn") |> pal::wrap_chr("\x60") |> cli::ansi_collapse()`.
-#' some_fn <- function(some_param = c("a", "b", "c")) {
-#'   some_param <- rlang::arg_match(some_param)
-#'   ...
-#' }
-#' ```
-#'
-#' Or to list the possible parameter values formatted as an unnumbered list instead, replace `cli::ansi_collapse()` with [pal::as_md_list()] in the example
-#' above.
-#'
-#' # Caveats
-#' 
-#' [base::deparse1()] is used internally to get a character representation of non-character default values. Therefore all of `deparse()`'s fuzziness also 
-#' applies to this function.
-#'
-#' @param param Parameter name. A character scalar.
-#' @param fn A [function][base::function] or a function name (searched for in `env`). See [base::formals()] for details.
-#' @param env [Environment][base::environment] `fn` is defined in. See [base::formals()] for details.
-#'
-#' @return A character vector.
-#' @export
-#'
-#' @examples
-#' pal::fn_param_defaults(param = ".name_repair",
-#'                        fn = tibble::as_tibble)
-#'
-#' # as Markdown-formatted enumeration in prose
-#' pal::fn_param_defaults(param = ".name_repair",
-#'                        fn = tibble::as_tibble) |>
-#'   pal::wrap_chr("`") |>
-#'   cli::ansi_collapse() |>
-#'   cat()
-fn_param_defaults <- function(param,
-                              fn = sys.function(sys.parent()),
-                              env = parent.frame()) {
-  
-  checkmate::assert_string(param)
-  
-  # turn `fn` into type function if necessary (the same as `formals(fun)` does internally)
-  if (is.character(fn)) {
-    fn %<>% get(mode = "function",
-                envir = env)
-  }
-  
-  default_vals <- formals(fun = args(name = fn),
-                          envir = env)
-  
-  if (param %in% names(default_vals)) {
-    default_vals <- default_vals[[param]]
-  } else {
-    fn_name <- deparse1(expr = substitute(fn),
-                        backtick = FALSE)
-    cli::cli_abort("The function {.fn {fn_name}} does not have a parameter named {.arg {param}}.")
-  }
-  
-  if (missing(default_vals)) {
-    fn_name <- deparse1(expr = substitute(fn),
-                        backtick = FALSE)
-    cli::cli_abort("{.fn {fn_name}}'s parameter {.arg {param}} does not have a default value.")
-  }
-  
-  # evaluate default param if it results in a character vector
-  if (is.language(default_vals)) {
-    
-    evaluated_default_vals <- tryCatch(expr = eval(expr = default_vals,
-                                                   envir = env),
-                                       error = \(x) NULL)
-    
-    if (is.character(evaluated_default_vals)) default_vals <- evaluated_default_vals
-  }
-  
-  if (is.character(default_vals)) {
-    default_vals %<>% wrap_chr()
-  } else {
-    default_vals %<>% deparse1(backtick = FALSE,
-                               control = c("keepNA",
-                                           "keepInteger",
-                                           "niceNames",
-                                           "showAttributes",
-                                           "warnIncomplete"))
-  }
-  
-  default_vals
 }
 
 #' Rename elements from dictionary
