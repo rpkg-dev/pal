@@ -9,7 +9,8 @@ enum_fn_param_defaults(
   fn = sys.function(sys.parent()),
   env = parent.frame(),
   sep2 = " or ",
-  last = sep2
+  last = sep2,
+  ...
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ enum_fn_param_defaults(
 \item{env}{\link[base:environment]{Environment} \code{fn} is defined in. See \code{\link[base:formals]{base::formals()}} for details.}
 
 \item{sep2, last}{Passed on to \code{\link[cli:ansi_collapse]{cli::ansi_collapse()}}.}
+
+\item{...}{Further arguments passed on to \code{\link[cli:ansi_collapse]{cli::ansi_collapse()}}.}
 }
 \value{
 A character scalar.

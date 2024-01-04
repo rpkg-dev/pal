@@ -2,7 +2,7 @@
 # See `README.md#r-markdown-format` for more information on the literate programming approach used applying the R Markdown format.
 
 # pal: Friendly Convenience/Utility Functions
-# Copyright (C) 2023 Salim Brüggemann
+# Copyright (C) 2024 Salim Brüggemann
 # 
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
 # Software Foundation, either version 3 of the License, or any later version.
@@ -38,7 +38,7 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "type",
                                           "quiet"))
 
-env_var_name <- function(...) {
+as_env_var_name <- function(...) {
   
   as_string(...,
             sep = "_") %>%
@@ -77,17 +77,14 @@ get_pkg_config_val <- function(key,
   pkg_config <- get_pkg_config(pkg)
   key <- rlang::arg_match0(key,
                            values = pkg_config$key)
-  opt_name <- paste(pkg, key,
-                    sep = ".")
-  env_var_name <- env_var_name(pkg, key)
-  
   # 1st priority: R option
-  result <- getOption(opt_name)
-  
+  result <- getOption(pkg_config_opt_name(pkg = pkg,
+                                          key = key))
   # 2nd priority: environment variable
   if (is.null(result)) {
     
-    result <- Sys.getenv(env_var_name,
+    result <- Sys.getenv(pkg_config_env_var_name(pkg = pkg,
+                                                 key = key),
                          unset = NA,
                          names = FALSE)
   }
@@ -110,6 +107,17 @@ get_pkg_config_val_default <- function(key,
     dplyr::filter(key == !!key) %$%
     default_value |>
     Reduce(f = c)
+}
+
+pkg_config_env_var_name <- function(pkg,
+                                    key) {
+  as_env_var_name("R", pkg, key)
+}
+
+pkg_config_opt_name <- function(pkg,
+                                key) {
+  paste(pkg, key,
+        sep = ".")
 }
 
 is_heading_node <- function(xml_node) {
@@ -1894,7 +1902,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' returned:
 #'
 #' 1. The \R [option][options] `<pkg>.<key>`.
-#' 2. The [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `<PKG>_<KEY>`.
+#' 2. The [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `R_<PKG>_<KEY>`.
 #' 3. The ad-hoc default value specified via this function's `default` argument (`NULL` means unspecified).
 #' 4. The configuration's global default value as specified in the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
 #'    specified (`NULL`), an error is thrown.
@@ -1907,7 +1915,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #'
 #' @param key Configuration key name. A character scalar.
 #' @param pkg Package name. A character scalar.
-#' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `<PKG>_<KEY>` is set. If `NULL`, the
+#' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `R_<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #'
 #' @return `r pkgsnip::return_lbl("r_obj")`
@@ -1931,12 +1939,9 @@ pkg_config_val <- function(key,
   # abort if no default value was provided
   if (is.null(result)) {
     
-    opt_name <- paste(pkg, key,
-                      sep = ".")
-    env_var_name <- env_var_name(pkg, key)
-    
-    cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option {.field {opt_name}} or the ",
-                          "environment variable {.envvar {env_var_name}}."))
+    cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option ",
+                          "{.field {pkg_config_opt_name(pkg = pkg, key = key)}} or the environment variable ",
+                          "{.envvar {pkg_config_env_var_name(pkg = pkg, key = key)}}."))
   }
   
   result
@@ -2007,9 +2012,10 @@ has_pkg_config_val <- function(key,
 augment_pkg_config <- function(pkg) {
   
   get_pkg_config(pkg) |>
-    dplyr::mutate(r_opt = paste(pkg, key,
-                                sep = "."),
-                  env_var = purrr::map_chr(key, \(k) env_var_name(pkg, k)))
+    dplyr::mutate(r_opt = pkg_config_opt_name(pkg = pkg,
+                                              key = key),
+                  env_var = purrr::map_chr(key, \(k) pkg_config_env_var_name(pkg = pkg,
+                                                                             key = k)))
 }
 
 #' Print package configuration metadata
@@ -2272,6 +2278,7 @@ fn_param_defaults <- function(param,
 #'
 #' @inheritParams fn_param_defaults
 #' @param sep2,last Passed on to [cli::ansi_collapse()].
+#' @param ... Further arguments passed on to [cli::ansi_collapse()].
 #'
 #' @return A character scalar.
 #' @family roxy
@@ -2285,13 +2292,19 @@ enum_fn_param_defaults <- function(param,
                                    fn = sys.function(sys.parent()),
                                    env = parent.frame(),
                                    sep2 = " or ",
-                                   last = sep2) {
+                                   last = sep2,
+                                   ...) {
+  check_dots_named(...,
+                   .fn = cli::ansi_collapse,
+                   .forbidden = c("sep2", "last"))
+  
   fn_param_defaults(param = param,
                     fn = fn,
                     env = env) |>
     wrap_chr("`") |>
     cli::ansi_collapse(sep2 = sep2,
-                       last = last)
+                       last = last,
+                       ...)
 }
 
 #' Convert roxygen2 documentation links to Markdown

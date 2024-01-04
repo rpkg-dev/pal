@@ -11,7 +11,7 @@ pkg_config_val(key, pkg, default = NULL)
 
 \item{pkg}{Package name. A character scalar.}
 
-\item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{<PKG>_<KEY>} is set. If \code{NULL}, the
+\item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{R_<PKG>_<KEY>} is set. If \code{NULL}, the
 default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}
 }
 \value{
@@ -22,7 +22,7 @@ Retrieves a package configuration value in a canonical way. The following config
 returned:
 \enumerate{
 \item The \R \link[=options]{option} \verb{<pkg>.<key>}.
-\item The \href{https://en.wikipedia.org/wiki/Environment_variable}{environment variable} \verb{<PKG>_<KEY>}.
+\item The \href{https://en.wikipedia.org/wiki/Environment_variable}{environment variable} \verb{R_<PKG>_<KEY>}.
 \item The ad-hoc default value specified via this function's \code{default} argument (\code{NULL} means unspecified).
 \item The configuration's global default value as specified in the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
 specified (\code{NULL}), an error is thrown.
