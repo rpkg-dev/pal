@@ -8,6 +8,7 @@ enum_fn_param_defaults(
   param,
   fn = sys.function(sys.parent()),
   env = parent.frame(),
+  wrap = "`",
   sep2 = " or ",
   last = sep2,
   ...
@@ -19,6 +20,8 @@ enum_fn_param_defaults(
 \item{fn}{A \link[base:function]{function} or a function name (searched for in \code{env}). See \code{\link[base:formals]{base::formals()}} for details.}
 
 \item{env}{\link[base:environment]{Environment} \code{fn} is defined in. See \code{\link[base:formals]{base::formals()}} for details.}
+
+\item{wrap}{Character sequence the default parameter values are to be wrapped in. A character vector or something coercible to.}
 
 \item{sep2, last}{Passed on to \code{\link[cli:ansi_collapse]{cli::ansi_collapse()}}.}
 

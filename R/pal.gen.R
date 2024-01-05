@@ -2277,6 +2277,7 @@ fn_param_defaults <- function(param,
 #' ```
 #'
 #' @inheritParams fn_param_defaults
+#' @param wrap Character sequence the default parameter values are to be wrapped in. A character vector or something coercible to.
 #' @param sep2,last Passed on to [cli::ansi_collapse()].
 #' @param ... Further arguments passed on to [cli::ansi_collapse()].
 #'
@@ -2291,6 +2292,7 @@ fn_param_defaults <- function(param,
 enum_fn_param_defaults <- function(param,
                                    fn = sys.function(sys.parent()),
                                    env = parent.frame(),
+                                   wrap = "`",
                                    sep2 = " or ",
                                    last = sep2,
                                    ...) {
@@ -2301,7 +2303,7 @@ enum_fn_param_defaults <- function(param,
   fn_param_defaults(param = param,
                     fn = fn,
                     env = env) |>
-    wrap_chr("`") |>
+    wrap_chr(wrap = wrap) |>
     cli::ansi_collapse(sep2 = sep2,
                        last = last,
                        ...)

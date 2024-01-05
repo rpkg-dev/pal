@@ -52,6 +52,7 @@
 <span>  <span class="va">param</span>,</span>
 <span>  fn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">sys.function</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">sys.parent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  wrap <span class="op">=</span> <span class="st">"`"</span>,</span>
 <span>  sep2 <span class="op">=</span> <span class="st">" or "</span>,</span>
 <span>  last <span class="op">=</span> <span class="va">sep2</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -70,6 +71,10 @@
 
 <dt>env</dt>
 <dd><p><a href="https://rdrr.io/r/base/environment.html" class="external-link">Environment</a> <code>fn</code> is defined in. See <code><a href="https://rdrr.io/r/base/formals.html" class="external-link">base::formals()</a></code> for details.</p></dd>
+
+
+<dt>wrap</dt>
+<dd><p>Character sequence the default parameter values are to be wrapped in. A character vector or something coercible to.</p></dd>
 
 
 <dt>sep2, last</dt>
