@@ -20,7 +20,7 @@ A character scalar.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \cr
-This function has been deprecated in favor of the more powerful \code{\link[cli:ansi_collapse]{cli::ansi_collapse()}} and will be removed in the future.
+This function has been deprecated in favor of the more powerful \code{\link[=enum_str]{enum_str()}} (which builds upon \code{\link[cli:ansi_collapse]{cli::ansi_collapse()}}) and will be removed in the future.
 }
 \details{
 Takes a vector or list and concatenates its elements to a single string separated in prose-style.
@@ -36,6 +36,7 @@ Other string functions:
 \code{\link{as_string}()},
 \code{\link{capitalize_first}()},
 \code{\link{dsv_colnames}()},
+\code{\link{enum_str}()},
 \code{\link{escape_lf}()},
 \code{\link{fuse_regex}()},
 \code{\link{prettify_nr}()},

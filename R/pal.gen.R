@@ -1032,6 +1032,47 @@ as_comment_string <- function(...,
     paste0(collapse = "")
 }
 
+#' Enumerate vector's elements as string
+#'
+#' Takes a vector or list and enumerates its elements in a single string. Convenience function combining [wrap_chr()] and [cli::ansi_collapse()] with slightly
+#' differing defaults (`last` defaults to the value of `sep2`).
+#'
+#' @inheritParams cli::ansi_collapse
+#' @inheritParams wrap_chr
+#'
+#' @return A character scalar.
+#' @family string
+#' @export
+#'
+#' @examples
+#' # by default, `last` defaults to `sep2`
+#' pal::enum_str(1:2)
+#' pal::enum_str(1:3)
+#' 
+#' # input is optionally wrapped in a character sequence
+#' pal::enum_str(letters[1:3],
+#'               wrap = "`")
+enum_str <- function(x,
+                     sep = ", ",
+                     sep2 = " and ",
+                     last = sep2,
+                     trunc = Inf,
+                     width = Inf,
+                     ellipsis = cli::symbol$ellipsis,
+                     style = c("both-ends", "head"),
+                     wrap = "") {
+  
+  wrap_chr(x = x,
+           wrap = wrap) |>
+    cli::ansi_collapse(sep = sep,
+                       sep2 = sep2,
+                       last = last,
+                       trunc = trunc,
+                       width = width,
+                       ellipsis = ellipsis,
+                       style = style)
+}
+
 #' Fuse regular expressions
 #'
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
@@ -1066,7 +1107,7 @@ fuse_regex <- function(...) {
 #' List items concatenated in prose style (..., ... and ...)
 #'
 #' `r lifecycle::badge("deprecated")` \cr
-#' This function has been deprecated in favor of the more powerful [cli::ansi_collapse()] and will be removed in the future.
+#' This function has been deprecated in favor of the more powerful [enum_str()] (which builds upon [cli::ansi_collapse()]) and will be removed in the future.
 #'
 #' Takes a vector or list and concatenates its elements to a single string separated in prose-style.
 #'

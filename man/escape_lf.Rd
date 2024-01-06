@@ -39,6 +39,7 @@ Other string functions:
 \code{\link{as_string}()},
 \code{\link{capitalize_first}()},
 \code{\link{dsv_colnames}()},
+\code{\link{enum_str}()},
 \code{\link{fuse_regex}()},
 \code{\link{prettify_nr}()},
 \code{\link{prose_ls}()},
