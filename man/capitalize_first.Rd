@@ -21,9 +21,9 @@ pal::capitalize_first(c("one", "Two", "tHREE"))
 \seealso{
 Other string functions:
 \code{\link{as_chr}()},
-\code{\link{as_comment_string}()},
+\code{\link{as_comment_str}()},
 \code{\link{as_line_feed_chr}()},
-\code{\link{as_string}()},
+\code{\link{as_str}()},
 \code{\link{dsv_colnames}()},
 \code{\link{enum_str}()},
 \code{\link{escape_lf}()},

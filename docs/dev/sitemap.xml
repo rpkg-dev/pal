@@ -16,7 +16,7 @@
     <loc>https://pal.rpkg.dev/dev/reference/as_chr.html</loc>
   </url>
   <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_comment_string.html</loc>
+    <loc>https://pal.rpkg.dev/dev/reference/as_comment_str.html</loc>
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/as_flat_list.html</loc>
@@ -34,7 +34,7 @@
     <loc>https://pal.rpkg.dev/dev/reference/as_md_vals.html</loc>
   </url>
   <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_string.html</loc>
+    <loc>https://pal.rpkg.dev/dev/reference/as_str.html</loc>
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/assert_class_any.html</loc>

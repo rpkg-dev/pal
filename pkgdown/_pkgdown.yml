@@ -45,8 +45,8 @@ reference:
   - dsv_colnames
 - subtitle: Collapsed into character scalar
 - contents:
-  - as_string
-  - as_comment_string
+  - as_str
+  - as_comment_str
   - enum_str
   - fuse_regex
   - prose_ls

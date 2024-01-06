@@ -40,8 +40,8 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
 
 as_env_var_name <- function(...) {
   
-  as_string(...,
-            sep = "_") %>%
+  as_str(...,
+         sep = "_") %>%
     stringr::str_replace_all(pattern = "\\W",
                              replacement = "_") %>%
     stringr::str_replace(pattern = "^(\\d)",
@@ -960,10 +960,10 @@ dsv_colnames <- function(x,
 #'        collapse = "")
 #'
 #' # ...this one works harder
-#' pal::as_string(input)
-as_string <- function(...,
-                      sep = "",
-                      rm_na = FALSE) {
+#' pal::as_str(input)
+as_str <- function(...,
+                   sep = "",
+                   rm_na = FALSE) {
   
   checkmate::assert_flag(rm_na)
   
@@ -994,22 +994,22 @@ as_string <- function(...,
 #' @export
 #'
 #' @examples
-#' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
-#'                        "No presents without code.") |>
+#' pal::as_comment_str(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
+#'                     "No presents without code.") |>
 #'   cat()
 #'
 #' # wrap lines at 20 chars
-#' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
-#'                        "No presents without code.",
-#'                        line_width = 20L) |>
+#' pal::as_comment_str(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
+#'                     "No presents without code.",
+#'                     line_width = 20L) |>
 #'   cat()
 #'
 #' # disable empty comment lines between paragraphs:
-#' pal::as_comment_string(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
-#'                        "Hohoho.",
-#'                        sep_paragraphs = FALSE) |>
+#' pal::as_comment_str(glue::glue("Copyright (C) {format(Sys.Date(), '%Y')} Santa Clause"),
+#'                     "Hohoho.",
+#'                     sep_paragraphs = FALSE) |>
 #'   cat()
-as_comment_string <- function(...,
+as_comment_str <- function(...,
                               line_width = 160L,
                               comment_prefix = "# ",
                               sep_paragraphs = TRUE) {
@@ -1095,7 +1095,7 @@ enum_str <- function(x,
 #'                     pattern = pal::fuse_regex(regex))}
 fuse_regex <- function(...) {
   
-  result <- as_string(..., sep = "|")
+  result <- as_str(..., sep = "|")
   
   if (length(rlang::list2(...)) > 1L || length(rlang::list2(...)[[1L]]) > 1L) {
     result %<>% paste0("(", ., ")")
