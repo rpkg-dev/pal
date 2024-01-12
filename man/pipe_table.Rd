@@ -57,7 +57,7 @@ This function can be useful to create tables inside \link[roxygen2:roxygen2-pack
 
 For example, the inline code
 
-\code{`r mtcars \%>\% head() \%>\% pipe_table()`}
+\code{`r mtcars |> head() |> pipe_table()`}
 
 should produce the following table in \href{https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/}{roxygen2 7.1.0} and above:\tabular{lrrrrrrrrrrr}{
     \tab \strong{mpg} \tab \strong{cyl} \tab \strong{disp} \tab \strong{hp} \tab \strong{drat} \tab \strong{wt} \tab \strong{qsec} \tab \strong{vs} \tab \strong{am} \tab \strong{gear} \tab \strong{carb} \cr

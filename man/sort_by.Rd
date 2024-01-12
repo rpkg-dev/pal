@@ -22,12 +22,12 @@ library(magrittr)
 
 # generate 100 random letters
 random_letters <-
-  letters \%>\%
+  letters |>
   magrittr::extract(sample.int(n = 26L,
                                size = 100L,
                                replace = TRUE)) \%T>\%
   print()
 
 # sort the random letters alphabetically
-random_letters \%>\% pal::sort_by(by = letters)
+random_letters |> pal::sort_by(by = letters)
 }

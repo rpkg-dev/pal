@@ -99,11 +99,11 @@ NOTES:
 as_env_var_name <- function(...) {
   
   as_str(...,
-         sep = "_") %>%
+         sep = "_") |>
     stringr::str_replace_all(pattern = "\\W",
-                             replacement = "_") %>%
+                             replacement = "_") |>
     stringr::str_replace(pattern = "^(\\d)",
-                         replacement = "_\\1") %>%
+                         replacement = "_\\1") |>
     toupper()
 }
 ```
@@ -215,8 +215,8 @@ is_heading_node <- function(xml_node) {
 ```{r}
 node_heading_lvl <- function(xml_node) {
   
-  xml_node %>%
-    xml2::xml_attr(attr = "level") %>%
+  xml_node |>
+    xml2::xml_attr(attr = "level") |>
     as.integer()
 }
 ```
@@ -511,7 +511,7 @@ stat_mode <- function(x,
   # determine number of modes
   n_modes <- sum(modes) %>% ifelse(. == n_u_x, 0L, .)
   
-  type %>% when(
+  type |> when(
     # return the number of modes if requested
     . == "n" ~ n_modes,
     # or return mode(s) if requested and existing
@@ -696,9 +696,9 @@ reduce_df_list <- function(x,
   } else {
     
     result <-
-      x %>%
+      x |>
       purrr::map(reduce_df_list,
-                 strict = strict) %>%
+                 strict = strict) |>
       purrr::list_rbind()
   }
   
@@ -720,9 +720,9 @@ TODO:
                                     canton = canton,
                                     prcd = "proportional",
                                     election_nr = election_nr) %$%
-        party %>%
-        dplyr::first() %>%
-        pal::as_flat_list() %>%
+        party |>
+        dplyr::first() |>
+        pal::as_flat_list() |>
         str()
     ```
 
@@ -757,17 +757,17 @@ TODO:
 #' 
 #' # unlike `unlist()` which also removes the last list tier in many cases...
 #' unlist("foobar")
-#' unlist(nested_list) %>% str()
+#' unlist(nested_list) |> str()
 #' # ...this function always returns an (unnested) list
-#' pal::as_flat_list("foobar") %>% str()
-#' pal::as_flat_list(nested_list) %>% str()
+#' pal::as_flat_list("foobar") |> str()
+#' pal::as_flat_list(nested_list) |> str()
 #' 
 #' nested_list <- list(list(factor("a"), factor("b")), factor("c")) %T>% str()
 #' 
 #' # unlike `unlist()` which combines factors...
-#' unlist(nested_list) %>% str()
+#' unlist(nested_list) |> str()
 #' # ...this function does not modify the list elements
-#' pal::as_flat_list(nested_list) %>% str()
+#' pal::as_flat_list(nested_list) |> str()
 #' 
 #' nested_list <-
 #'   list(c(list(1L), list(tibble::tibble(a = list(1.1, "2")))),
@@ -777,12 +777,12 @@ TODO:
 #'
 #' # by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
 #' # not flattened...
-#' pal::as_flat_list(nested_list) %>% str()
-#' pal::as_flat_list(nested_list_2) %>% str()
+#' pal::as_flat_list(nested_list) |> str()
+#' pal::as_flat_list(nested_list_2) |> str()
 #' # ...but you can drop them and thereby flatten custom objects if needed...
-#' pal::as_flat_list(nested_list, keep_attrs = FALSE) %>% str()
+#' pal::as_flat_list(nested_list, keep_attrs = FALSE) |> str()
 #' # ...or retain `xfun_strict_list`s, too
-#' pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) %>% str()
+#' pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) |> str()
 as_flat_list <- function(x,
                          keep_attrs = TRUE,
                          attrs_to_drop = "xfun_strict_list") {
@@ -812,10 +812,10 @@ as_flat_list <- function(x,
     
     # recursively feed the elements of `x` to this function and flatten the two last list levels (keeping attributes if requested)
     result <-
-      x %>%
-      purrr::map(.f = as_flat_list,
-                 keep_attrs = keep_attrs,
-                 attrs_to_drop = attrs_to_drop) %>%
+      x |>
+      purrr::map(\(x) as_flat_list(x = x,
+                                   keep_attrs = keep_attrs,
+                                   attrs_to_drop = attrs_to_drop)) |>
       when(keep_attrs ~ rm_list_lvl(.,
                                     attrs_to_drop = attrs_to_drop),
            ~ purrr::list_flatten(.))
@@ -962,7 +962,7 @@ prettify_nr <- function(x,
                         ...) {
   round_to(x = x,
            to = round_to,
-           round_up = round_up) %>%
+           round_up = round_up) |>
     format(big.mark = big_mark,
            decimal.mark = decimal_mark,
            trim = !justify_right,
@@ -1117,12 +1117,12 @@ dsv_colnames <- function(x,
   checkmate::assert_string(quote,
                            null.ok = TRUE,
                            pattern = "^.$")
-  x %>%
-    regexpr(pattern = "[\r\n]") %>%
-    magrittr::subtract(1L) %>%
+  x |>
+    regexpr(pattern = "[\r\n]") |>
+    magrittr::subtract(1L) |>
     stringr::str_sub(string = x,
-                     start = 1L) %>%
-    stringr::str_split_1(pattern = delim) %>%
+                     start = 1L) |>
+    stringr::str_split_1(pattern = delim) |>
     stringr::str_remove_all(pattern = glue::glue("^{quote}|{quote}$"))
 }
 ```
@@ -1221,17 +1221,15 @@ as_comment_str <- function(...,
   checkmate::assert_string(comment_prefix)
   checkmate::assert_flag(sep_paragraphs)
   
-  as_chr(...) %>%
-    stringr::str_wrap(width = line_width - nchar(comment_prefix)) %>%
-    stringr::str_split(pattern = stringr::fixed("\n")) %>%
-    purrr::map(~ paste0(comment_prefix, .x) %>%
-                 paste0(collapse = "\n")) %>%
-    purrr::map2_chr(.f =
-                      function(.x, .y, n_lines) {
-                        if (sep_paragraphs && .y < n_lines) paste0(.x, "\n", comment_prefix, "\n") else paste0(.x, "\n")
-                      },
-                    .y = seq_along(.),
-                    n_lines = length(.)) %>%
+  as_chr(...) |>
+    stringr::str_wrap(width = line_width - nchar(comment_prefix)) |>
+    stringr::str_split(pattern = stringr::fixed("\n")) |>
+    purrr::map(\(x) paste0(paste0(comment_prefix, x),
+                           collapse = "\n")) %>%
+    purrr::map2_chr(.y = seq_along(.),
+                    .f = \(x, y) {
+                      if (sep_paragraphs && y < length(.)) paste0(x, "\n", comment_prefix, "\n") else paste0(x, "\n")
+                    }) |>
     paste0(collapse = "")
 }
 ```
@@ -1437,10 +1435,10 @@ flatten_path_tree <- function(path_tree,
   if (purrr::pluck_depth(path_tree) > 1L) {
     
     result <-
-      rlang::names2(path_tree) %>%
-      purrr::map_chr(~ fs::path_join(c(parent_path, .x))) %>%
+      rlang::names2(path_tree) |>
+      purrr::map_chr(\(x) fs::path_join(c(parent_path, x))) |>
       purrr::map2(.x = path_tree,
-                  .f = flatten_path_tree) %>%
+                  .f = flatten_path_tree) |>
       purrr::list_c(ptype = character()) %>%
       c(parent_path, .)
     
@@ -1501,11 +1499,11 @@ draw_path_tree <- function(paths,
   checkmate::assert_flag(quiet)
   
   has_leading_root <-
-    paths %>%
-    fs::path_split() %>%
+    paths |>
+    fs::path_split() |>
     purrr::map_chr(purrr::chuck,
-                   1L) %>%
-    magrittr::equals(paths[1L]) %>%
+                   1L) |>
+    magrittr::equals(paths[1L]) |>
     all()
   
   leaf_paths <- paths
@@ -1556,7 +1554,7 @@ draw_path_tree <- function(paths,
     
     dir_root <- ifelse(has_leading_root,
                        paths[1L],
-                       by_dir %>%
+                       by_dir |>
                          names() %>%
                          magrittr::extract(which.min(nchar(.))))
     # print dir root
@@ -1850,8 +1848,8 @@ ls_pkg <- function(pkg,
     regex <- paste0("^", regex, "$")
   }
   
-  utils::installed.packages() %>%
-    tibble::as_tibble() %>%
+  utils::installed.packages() |>
+    tibble::as_tibble() |>
     dplyr::filter(stringr::str_detect(string = Package,
                                       pattern = regex))
 }
@@ -2164,8 +2162,8 @@ TODO:
       } else {
 
         result <-
-          rprojroot::is_pkgdown_dir$testfun %>%
-          purrr::map_lgl(~ .x(path = path)) %>%
+          rprojroot::is_pkgdown_dir$testfun |>
+          purrr::map_lgl(\(x) x(path = path)) |>
           any()
       }
 
@@ -2559,13 +2557,13 @@ desc_list <- function(file = ".") {
   fields <- desc::desc_fields(file = file)
   
   result <-
-    fields %>%
+    fields |>
     setdiff(c("Authors@R",
               "Depends",
               "Imports",
               "Suggests",
-              "URL")) %>%
-    rlang::set_names() %>%
+              "URL")) |>
+    rlang::set_names() |>
     purrr::map(desc_value,
                file = file)
   
@@ -2966,15 +2964,16 @@ roxy_blocks <- function(pkg = NULL,
     if (length(blocks) > 0L && isFALSE(blocks[[1L]])) {
       
       error_msg <- as.character(blocks[[2L]])
-      is_missing_obj <- error_msg %>% stringr::str_detect(" (not found|could not find .+)\\n")
+      is_missing_obj <- stringr::str_detect(string = error_msg,
+                                            pattern = " (not found|could not find .+)\\n")
       
       cli::cli_abort(ifelse(is_missing_obj,
-                            error_msg %>%
-                              stringr::str_remove(pattern = '^.*: ') %>%
+                            error_msg |>
+                              stringr::str_remove(pattern = '^.*: ') |>
                               stringr::str_replace(pattern = "could not find function \"(.+?)\"",
-                                                   replacement = "Function {.fun \\1} not found") %>%
+                                                   replacement = "Function {.fun \\1} not found") |>
                               stringr::str_replace(pattern = "object '(.+?)'",
-                                                   replacement = "Object {.var \\1}") %>%
+                                                   replacement = "Object {.var \\1}") |>
                               stringr::str_replace(pattern = "not found\\n?",
                                                    replacement = paste0("was not found when parsing {.arg text}. You might need to attach the package you're ",
                                                                         "trying to extract the roxygen2 tag value from. Or try ",
@@ -2995,14 +2994,14 @@ roxy_blocks <- function(pkg = NULL,
                                 filters = c("R_version",
                                             "OS_type",
                                             "subarch",
-                                            "CRAN")) %>%
-      tibble::as_tibble() %>%
+                                            "CRAN")) |>
+      tibble::as_tibble() |>
       dplyr::filter(Package == pkg)
     
     pkg_version_max_installed <-
       ls_pkg(pkg = pkg,
              as_regex = FALSE) %$%
-      Version %>%
+      Version |>
       max()
     
     if (pkg_version_max_installed %in% pkgs_available$Version) { 
@@ -3018,12 +3017,12 @@ roxy_blocks <- function(pkg = NULL,
     
     pkgs_available %<>%
       as.matrix() %>%
-      magrittr::set_rownames(.[, 1L])
+      magrittr::set_rownames(value = .[, 1L])
     
     tmp_dir <-
-      rappdirs::user_cache_dir() %>%
-      fs::path(glue::glue("pal-roxy_tag_value-{pkg}")) %>%
-      fs::dir_create() %>%
+      rappdirs::user_cache_dir() |>
+      fs::path(glue::glue("pal-roxy_tag_value-{pkg}")) |>
+      fs::dir_create() |>
       fs::path_real()
     
     tmp_archive <- utils::download.packages(pkgs = pkg,
@@ -3067,11 +3066,11 @@ roxy_obj <- function(blocks,
                          types = "roxy_block",
                          all.missing = FALSE)
   obj_names <-
-    blocks %>%
+    blocks |>
     purrr::map_depth(.depth = 1L,
                      .f = purrr::pluck,
-                     "object", "topic") %>%
-    purrr::compact() %>%
+                     "object", "topic") |>
+    purrr::compact() |>
     purrr::list_c(ptype = character())
   
   obj_name <- rlang::arg_match0(arg = obj_name,
@@ -3127,8 +3126,8 @@ roxy_tag_value <- function(blocks,
   if ("param" %in% tag_names) {
     
     ix_param <-
-      tags %>%
-      purrr::map_lgl(~ .x$tag == "param") %>%
+      tags |>
+      purrr::map_lgl(\(x) x$tag == "param") |>
       which()
     
     param_name <- rlang::arg_match0(arg = param_name,
@@ -3136,16 +3135,16 @@ roxy_tag_value <- function(blocks,
                                                             purrr::pluck,
                                                             "val", "name"))
     i_to_keep <-
-      tags[ix_param] %>%
-      purrr::map_lgl(~ .x$val$name == param_name) %>%
+      tags[ix_param] |>
+      purrr::map_lgl(\(x) x$val$name == param_name) |>
       which()
     
     block$tags %<>% magrittr::extract(-ix_param[-i_to_keep])
   }
   
   purrr::map_chr(tag_names,
-                 ~ roxygen2::block_get_tag_value(block = block,
-                                                 tag = .x) %>%
+                 \(x) roxygen2::block_get_tag_value(block = block,
+                                                    tag = x) |>
                    when(is.list(.) ~ .$description,
                         ~ .))
 }
@@ -3404,11 +3403,11 @@ as_md_val_list <- function(...) {
 #' 
 #' For example, the inline code
 #' 
-#' `` `r mtcars %>% head() %>% pipe_table()` ``
+#' `` `r mtcars |> head() |> pipe_table()` ``
 #'
 #' should produce the following table in [roxygen2 7.1.0](https://www.tidyverse.org/blog/2020/03/roxygen2-7-1-0/) and above:
 #'
-#' `r mtcars %>% head() %>% pipe_table()`
+#' `r mtcars |> head() |> pipe_table()`
 #'
 #' @inherit knitr::kable details
 #'
@@ -3814,16 +3813,16 @@ xml_to_md <- function(xml) {
                          reason = reason_pkg_required())
   rlang::check_installed("xslt",
                          reason = reason_pkg_required())
-  xml %>%
-    as.character() %>%
-    paste0(collapse = "\n") %>%
+  xml |>
+    as.character() |>
+    paste0(collapse = "\n") |>
     # trim whitespace in case `xml` was already of type character
-    stringr::str_trim() %>%
+    stringr::str_trim() |>
     # add CommonMark XML namespace
     when(stringr::str_detect(string = .,
                              pattern = "^<document[>\\s]") ~ .,
-         ~ paste0('<document xmlns="', as.character(tinkr::md_ns()), '">', ., '</document>')) %>%
-    xml2::read_xml() %>%
+         ~ paste0('<document xmlns="', as.character(tinkr::md_ns()), '">', ., '</document>')) |>
+    xml2::read_xml() |>
     # convert XML to CommonMark
     xslt::xml_xslt(stylesheet = xml2::read_xml(tinkr::stylesheet()))
 }
@@ -3876,7 +3875,7 @@ build_readme <- function(input = "README.Rmd",
                   build_index_md = build_index_md)
   
   # add `pkg_metadata` to env
-  parent_dir <- fs::path_dir(input) %>% fs::path_abs()
+  parent_dir <- fs::path_dir(input) |> fs::path_abs()
   
   if (is_pkg_dir(parent_dir)) {
     rlang::env_bind(.env = env,
@@ -3900,10 +3899,10 @@ build_readme <- function(input = "README.Rmd",
     if (is_pkgdown_dir(output_dir)) {
       
       index_md_path <-
-        fs::path(output_dir, "pkgdown") %>%
-        fs::dir_create() %>%
-        fs::path("index.md") %>%
-        checkmate::assert_path_for_output(overwrite = TRUE) %>%
+        fs::path(output_dir, "pkgdown") |>
+        fs::dir_create() |>
+        fs::path("index.md") |>
+        checkmate::assert_path_for_output(overwrite = TRUE) |>
         fs::path_abs()
       
       # clean Rmd file
@@ -3915,16 +3914,16 @@ build_readme <- function(input = "README.Rmd",
       tmp_file <- fs::file_temp(pattern = "tmp-pal-build_readme",
                                 ext = fs::path_ext(input))
       
-      brio::read_file(input) %>%
+      brio::read_file(input) |>
         # remove possible trailing horizontal line in Rmd file since pkgdown always adds one below content
         # TODO: submit PR to pkgdown fixing this?
         stringr::str_replace(pattern = " {0,3}([-\\*_]{3,}|<hr */?>)(\\s*(\\n\\[\\^[\\w-]+\\]:.*\\n?)*$)",
-                             replacement = "\\2") %>%
+                             replacement = "\\2") |>
         # remove `align` and `height` <img> tags (rely on custom CSS file `pkgdown/extra.css` instead)
         stringr::str_replace_all(pattern = "(<img [^>]+)(align=['\"].*?['\"]\\s*)",
-                                 replacement = "\\1") %>%
+                                 replacement = "\\1") |>
         stringr::str_replace_all(pattern = "(<img [^>]+)(height=['\"].*?['\"]\\s*)",
-                                 replacement = "\\1") %>%
+                                 replacement = "\\1") |>
         brio::write_file(path = tmp_file)
       
       # render `pkgdown/index.md`
@@ -3937,7 +3936,7 @@ build_readme <- function(input = "README.Rmd",
                                                           # disable Pandoc extensions in input which rmarkdown only adds for backwards compatibility
                                                           md_extensions = c("-autolink_bare_uris",
                                                                             "-tex_math_single_backslash"),
-                                                          pandoc_args = "--columns=9999") %>%
+                                                          pandoc_args = "--columns=9999") |>
                                    # overwrite Pandoc output format (i.a. disable Pandoc's raw attributes to have more control over inline HTML)
                                    purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
                                  knit_root_dir = parent_dir,
@@ -3987,8 +3986,8 @@ knitr_table_format <- function(default = c("pipe",
   if (!(result %in% allowed_formats)) {
     
     cli::cli_abort(paste0("R option {.field knitr.table.format} must evaluate to one of ",
-                          prose_ls(x = paste0("{.val ", allowed_formats, "}"),
-                                   last_sep = " or "),
+                          enum_str(x = paste0("{.val ", allowed_formats, "}"),
+                                   sep2 = " or "),
                           ", but is {.code {deparse1(opt)}}",
                           ifelse(is.function(opt),
                                  " which evaluates to {.val {result}}",
@@ -4051,17 +4050,17 @@ strip_yaml_header <- function(rmd,
   if (has_yaml) {
     
     last_yaml_line_nr <-
-      rmd %>%
-      stringr::str_locate("^---\\s*$") %>%
-      tibble::as_tibble() %>%
-      tibble::rowid_to_column() %>%
+      rmd |>
+      stringr::str_locate("^---\\s*$") |>
+      tibble::as_tibble() |>
+      tibble::rowid_to_column() |>
       dplyr::filter(!dplyr::if_any(.cols = everything(),
                                    .fns = is.na)) %$%
-      rowid[2L] %>%
-      min(rmd %>%
-            stringr::str_locate("^\\.{3}\\s*$") %>%
-            tibble::as_tibble() %>%
-            tibble::rowid_to_column() %>%
+      rowid[2L] |>
+      min(rmd |>
+            stringr::str_locate("^\\.{3}\\s*$") |>
+            tibble::as_tibble() |>
+            tibble::rowid_to_column() |>
             dplyr::filter(!dplyr::if_any(.cols = everything(),
                                          .fns = is.na)) %$%
             rowid[1L],
@@ -4238,13 +4237,13 @@ gitlab_document <- function(smart_punctuation = TRUE,
                                            "-link_attributes",
                                            "-raw_attribute",
                                            "-pandoc_title_block",
-                                           "-yaml_metadata_block"[!preserve_yaml]) %>%
+                                           "-yaml_metadata_block"[!preserve_yaml]) |>
                                          paste0(collapse = ""),
                                        from =
                                          c("markdown",
                                            "+autolink_bare_uris"[autolink_bare_uris],
                                            "+tex_math_single_backslash"[tex_math_single_backslash],
-                                           "-smart"[!smart_punctuation]) %>%
+                                           "-smart"[!smart_punctuation]) |>
                                          paste0(collapse = ""),
                                        args = c("--columns=9999",
                                                 "--standalone",
@@ -4345,16 +4344,18 @@ write_widget_deps <- function(x,
   rlang::check_installed("htmltools",
                          reason = reason_pkg_required())
   deps <-
-    htmltools::findDependencies(x) %>%
-    purrr::map(~ htmltools::copyDependencyToDir(dependency = .x,
-                                                outputDir = path) %>%
-                 htmltools::makeDependencyRelative(basepath = path_base))
+    htmltools::findDependencies(x) |>
+    purrr::map(\(x) {
+      htmltools::copyDependencyToDir(dependency = x,
+                                     outputDir = path) |>
+        htmltools::makeDependencyRelative(basepath = path_base)
+    })
   
   head_snippet <-
-    htmltools::renderDependencies(deps) %>%
+    htmltools::renderDependencies(deps) |>
     # manually add the root slash
     stringr::str_replace_all(pattern = "(\\s(src|href)\\s*=\\s*[\"'])([^/])",
-                             replacement = "\\1/\\3") %>%
+                             replacement = "\\1/\\3") |>
     htmltools::HTML()
   
   if (!is.null(path_head_snippet)) {
@@ -4366,7 +4367,7 @@ write_widget_deps <- function(x,
     cli::cli_alert_info(text = "Include the following HTML snippet in the {.field <head>} of your document:")
     cli::cli_par()
     cli::cli_end()
-    head_snippet %>% cli::cli_code()
+    head_snippet |> cli::cli_code()
   }
   
   invisible(head_snippet)
@@ -4414,7 +4415,7 @@ assert_class_any <- function(x,
     checkmate::assert_string(name)
     classes_actual <- class(x)
     cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
-                          classes %>% paste0("{.val ", ., "}") %>% pal::prose_ls(last_sep = " or "),
+                          classes %>% paste0("{.val ", ., "}") |> enum_str(sep2 = " or "),
                           ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
   }
   
@@ -4792,8 +4793,8 @@ NOTES:
 -   A shorter way to define a very similar function would be:
 
     ``` r
-    is_http_success <- purrr::possibly(~ !httr::http_error(.x),
-                                     otherwise = FALSE)
+    is_http_success <- purrr::possibly(\(x) !httr::http_error(x),
+                                       otherwise = FALSE)
     ```
 
 -   Handling/catching interrupts allows to abort the check in RStudio via its "stop" button. Mainly useful if `retries > 2`.
@@ -5022,7 +5023,7 @@ jsonvalidate::json_validate(
     engine = "ajv",
     error = TRUE, # set to FALSE in order to get the `errors` tibble below
     verbose = TRUE
-) %T>% { attr(., "errors") %>% tibble::as_tibble() }
+) %T>% { attr(., "errors") |> tibble::as_tibble() }
 ```
 
 ```{r}
@@ -5114,36 +5115,36 @@ toml_validate <- function(input,
     
     # only retain first Taplo error of each class (later ones are usually unhelpful)
     ix_error <-
-      result_excl_ansi %>%
-      stringr::str_detect(pattern = "^(?i)error:") %>%
+      result_excl_ansi |>
+      stringr::str_detect(pattern = "^(?i)error:") |>
       which()
     
     ix_error_begin <-
-      result_excl_ansi %>%
-      stringr::str_detect(pattern = "^(?i)error:") %>%
-      magrittr::and(!duplicated(result_excl_ansi)) %>%
+      result_excl_ansi |>
+      stringr::str_detect(pattern = "^(?i)error:") |>
+      magrittr::and(!duplicated(result_excl_ansi)) |>
       which()
     
     if (top_errors_only && length(ix_error) > 0L) {
       
       i_error_end <-
-        result_excl_ansi %>%
-        stringr::str_detect(pattern = "^ERROR ") %>%
-        which() %>%
+        result_excl_ansi |>
+        stringr::str_detect(pattern = "^ERROR ") |>
+        which() |>
         dplyr::first()
       
       ix_final <-
-        ix_error_begin %>%
-        purrr::imap(~ {
+        ix_error_begin |>
+        purrr::map(\(x) {
           
-          i_error_current <- which(ix_error == .x)
+          i_error_current <- which(ix_error == x)
           has_next <- i_error_current < length(ix_error)
           
-          seq(from = .x,
+          seq(from = x,
               to = ifelse(has_next,
                           ix_error[i_error_current + 1L] - 1L,
                           i_error_end - 1L))
-        }) %>%
+        }) |>
         purrr::list_c(ptype = integer())
       
     } else {
@@ -5367,7 +5368,7 @@ capture_print <- function(x,
   utils::capture.output(print(x),
                         file = NULL,
                         type = "output",
-                        split = FALSE) %>%
+                        split = FALSE) |>
     paste0(collapse = collapse)
 }
 ```
@@ -5455,7 +5456,7 @@ NOTES:
 #' # we can parse some real data:
 #' raw_data <-
 #'   httr::GET(paste0("http://www.web.statistik.zh.ch/ogd/data/",
-#'                    "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) %>%
+#'                    "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) |>
 #'   httr::content(as = "text",
 #'                 encoding = "UTF-8")
 #'
@@ -5614,14 +5615,14 @@ rename_from <- function(x,
 #'
 #' # generate 100 random letters
 #' random_letters <-
-#'   letters %>%
+#'   letters |>
 #'   magrittr::extract(sample.int(n = 26L,
 #'                                size = 100L,
 #'                                replace = TRUE)) %T>%
 #'   print()
 #'
 #' # sort the random letters alphabetically
-#' random_letters %>% pal::sort_by(by = letters)
+#' random_letters |> pal::sort_by(by = letters)
 sort_by <- function(x,
                     by) {
   

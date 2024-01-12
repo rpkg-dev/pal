@@ -22,11 +22,10 @@ This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(comp
 #| eval: !expr '!isTRUE(getOption("pal.build_readme.is_pkgdown"))'
 #| results: asis
 #| echo: false
-pkgsnip::md_snip(id = "pkgdown_notice") %>%
-  paste0("## Documentation\n\n",
-         "[![Netlify Status](https://api.netlify.com/api/v1/badges/a8eddba3-4c85-4750-a737-e0d74d721f65/deploy-status)]",
-         "(https://app.netlify.com/sites/pal-rpkg-dev/deploys)\n\n",
-         .) %>%
+paste0("## Documentation\n\n",
+       "[![Netlify Status](https://api.netlify.com/api/v1/badges/a8eddba3-4c85-4750-a737-e0d74d721f65/deploy-status)]",
+       "(https://app.netlify.com/sites/pal-rpkg-dev/deploys)\n\n",
+       pkgsnip::md_snip(id = "pkgdown_notice")) |>
   pal::cat_lines()
 ```
 

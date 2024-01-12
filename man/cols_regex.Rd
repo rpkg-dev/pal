@@ -46,7 +46,7 @@ pal::cols_regex(.col_names = col_names,
 # we can parse some real data:
 raw_data <-
   httr::GET(paste0("http://www.web.statistik.zh.ch/ogd/data/",
-                   "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) \%>\%
+                   "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) |>
   httr::content(as = "text",
                 encoding = "UTF-8")
 
