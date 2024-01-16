@@ -4,19 +4,21 @@
 \alias{pkg_config_val_default}
 \title{Get default package configuration value}
 \usage{
-pkg_config_val_default(key, pkg)
+pkg_config_val_default(key, pkg, env = parent.frame())
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
 
 \item{pkg}{Package name. A character scalar.}
+
+\item{env}{Environment to evaluate \code{default_value_dynamic} in, if necessary.}
 }
 \value{
 \code{pkgsnip::return_lbl("r_obj")}
 }
 \description{
-Retrieves a package configuration's default value from the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
-specified (\code{NULL}), nothing is returned (\code{NULL}).
+Retrieves a package configuration's default value from the package's configuration metadata (column \code{default_value} or \code{default_value_dynamic} of
+\verb{<pkg>::pkg_config}). If no default value is specified (\code{NULL}), nothing is returned (\code{NULL}).
 }
 \examples{
 try(

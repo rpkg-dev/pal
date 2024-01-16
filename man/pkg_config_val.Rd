@@ -4,7 +4,7 @@
 \alias{pkg_config_val}
 \title{Get package configuration value}
 \usage{
-pkg_config_val(key, pkg, default = NULL)
+pkg_config_val(key, pkg, default = NULL, env = parent.frame())
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
@@ -13,6 +13,8 @@ pkg_config_val(key, pkg, default = NULL)
 
 \item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{R_<PKG>_<KEY>} is set. If \code{NULL}, the
 default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}
+
+\item{env}{Environment to evaluate \code{default_value_dynamic} in, if necessary.}
 }
 \value{
 An \R object.
@@ -24,15 +26,16 @@ returned:
 \item The \R \link[=options]{option} \verb{<pkg>.<key>}.
 \item The \href{https://en.wikipedia.org/wiki/Environment_variable}{environment variable} \verb{R_<PKG>_<KEY>}.
 \item The ad-hoc default value specified via this function's \code{default} argument (\code{NULL} means unspecified).
-\item The configuration's global default value as specified in the package's configuration metadata (\verb{<pkg>::pkg_config$default_value}). If no default value is
-specified (\code{NULL}), an error is thrown.
+\item The configuration's global default value as specified in the package's configuration metadata (column \code{default_value} or \code{default_value_dynamic} of
+\verb{<pkg>::pkg_config}). If no default value is specified (\code{NULL}), an error is thrown.
 }
 }
 \details{
 This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
 \code{pkg_config_val()} to properly work, the configuration metadata must be available in the package's namespace as object \code{pkg_config}, which must be a
 \link[=data.frame]{dataframe} or \link[tibble:tbl_df-class]{tibble} with at minimum the columns \code{key} (of type character holding the configuration key names) and
-\code{default_value} (of type list holding the default configuration values, if any).
+\code{default_value} (of type list holding static default configuration values) or \code{default_value_dynamic} (of type character holding R code expressions that
+evaluate to default configuration values dynamically at access time).
 }
 \examples{
 try(
@@ -41,7 +44,7 @@ try(
 )
 }
 \seealso{
-\code{\link[xfun:env_option]{xfun::env_option()}} for an alternative approach to R option and environment variable coherence.
+\code{\link[xfun:env_option]{xfun::env_option()}} for a compatible (albeit less powerful) approach to R option and environment variable coherence.
 
 Other package configuration functions:
 \code{\link{augment_pkg_config}()},

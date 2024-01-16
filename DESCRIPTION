@@ -24,7 +24,8 @@ Imports:
     rlang (>= 1.0.0),
     stringr (>= 1.5.0),
     tibble (>= 3.1.4),
-    utils
+    utils,
+    vctrs (>= 0.6.5)
 Suggests: 
     brio (>= 1.1.0),
     commonmark (>= 1.9.0),
@@ -60,4 +61,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0

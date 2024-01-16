@@ -20,6 +20,7 @@ utils::globalVariables(names = c(".",
                                  # other
                                  "data",
                                  "default_value",
+                                 "default_value_dynamic",
                                  "env_var",
                                  "key",
                                  "package",
@@ -62,17 +63,23 @@ get_pkg_config <- function(pkg) {
                                         ns = pkg)
   checkmate::assert_data_frame(pkg_config,
                                col.names = "unique")
-  if (!all(c("key", "default_value") %in% colnames(pkg_config))) {
+  if (!("key" %in% colnames(pkg_config) && any(c("default_value", "default_value_dynamic") %in% colnames(pkg_config)))) {
     obj <- paste0(pkg, "::pkg_config")
-    cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value}.")
+    cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
   }
   
-  pkg_config
+  # ensure/complement df structure
+  vctrs::tib_cast(x = pkg_config,
+                  to = tibble::tibble(key = character(),
+                                      default_value = list(),
+                                      default_value_dynamic = character(),
+                                      description = character()))
 }
 
 get_pkg_config_val <- function(key,
                                pkg,
-                               default = NULL) {
+                               default,
+                               env) {
   
   pkg_config <- get_pkg_config(pkg)
   key <- rlang::arg_match0(key,
@@ -93,20 +100,38 @@ get_pkg_config_val <- function(key,
   if (is.na(result)) {
     
     result <- default %||% get_pkg_config_val_default(key = key,
-                                                      pkg_config = pkg_config)
+                                                      pkg_config = pkg_config,
+                                                      env = env)
   }
   
   result
 }
 
 get_pkg_config_val_default <- function(key,
-                                       pkg_config) {
+                                       pkg_config,
+                                       env = parent.frame()) {
   key <- rlang::arg_match0(key,
                            values = pkg_config$key)
-  pkg_config |>
-    dplyr::filter(key == !!key) %$%
-    default_value |>
-    Reduce(f = c)
+  
+  data <- pkg_config |> dplyr::filter(key == !!key)
+  
+  if (is.na(data$default_value_dynamic)) {
+    
+    result <- Reduce(x = data$default_value,
+                     f = c)
+  } else {
+    
+    # ensure only one of `default_value_dynamic` and `default_value` is set
+    if (!is.null(data$default_value[[1L]])) {
+      cli::cli_abort(paste0("Only one of {.var default_value} and {.var default_value_dynamic} can be set in {.var pkg_config} for a specific {.var key}, but ",
+                            "for {.field {key}} both are."))
+    }
+    
+    result <- eval(expr = parse(text = data$default_value_dynamic),
+                   envir = env)
+  }
+  
+  result
 }
 
 pkg_config_env_var_name <- function(pkg,
@@ -1943,22 +1968,24 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' 1. The \R [option][options] `<pkg>.<key>`.
 #' 2. The [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `R_<PKG>_<KEY>`.
 #' 3. The ad-hoc default value specified via this function's `default` argument (`NULL` means unspecified).
-#' 4. The configuration's global default value as specified in the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
-#'    specified (`NULL`), an error is thrown.
+#' 4. The configuration's global default value as specified in the package's configuration metadata (column `default_value` or `default_value_dynamic` of
+#'    `<pkg>::pkg_config`). If no default value is specified (`NULL`), an error is thrown.
 #'
 #' @details
 #' This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
 #' `pkg_config_val()` to properly work, the configuration metadata must be available in the package's namespace as object `pkg_config`, which must be a
 #' [dataframe][data.frame] or [tibble][tibble::tbl_df] with at minimum the columns `key` (of type character holding the configuration key names) and
-#' `default_value` (of type list holding the default configuration values, if any).
+#' `default_value` (of type list holding static default configuration values) or `default_value_dynamic` (of type character holding R code expressions that
+#' evaluate to default configuration values dynamically at access time).
 #'
 #' @param key Configuration key name. A character scalar.
 #' @param pkg Package name. A character scalar.
 #' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `R_<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
+#' @param env Environment to evaluate `default_value_dynamic` in, if necessary.
 #'
 #' @return `r pkgsnip::return_lbl("r_obj")`
-#' @seealso [xfun::env_option()] for an alternative approach to R option and environment variable coherence.
+#' @seealso [xfun::env_option()] for a compatible (albeit less powerful) approach to R option and environment variable coherence.
 #' @family pkg_config
 #' @export
 #'
@@ -1969,11 +1996,13 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' )
 pkg_config_val <- function(key,
                            pkg,
-                           default = NULL) {
+                           default = NULL,
+                           env = parent.frame()) {
   
   result <- get_pkg_config_val(key = key,
                                pkg = pkg,
-                               default = default)
+                               default = default,
+                               env = env)
   
   # abort if no default value was provided
   if (is.null(result)) {
@@ -1988,8 +2017,8 @@ pkg_config_val <- function(key,
 
 #' Get default package configuration value
 #'
-#' Retrieves a package configuration's default value from the package's configuration metadata (`<pkg>::pkg_config$default_value`). If no default value is
-#' specified (`NULL`), nothing is returned (`NULL`).
+#' Retrieves a package configuration's default value from the package's configuration metadata (column `default_value` or `default_value_dynamic` of
+#' `<pkg>::pkg_config`). If no default value is specified (`NULL`), nothing is returned (`NULL`).
 #'
 #' @inheritParams pkg_config_val
 #'
@@ -2003,10 +2032,12 @@ pkg_config_val <- function(key,
 #'                               pkg = "pkgpurl")
 #' )
 pkg_config_val_default <- function(key,
-                                   pkg) {
+                                   pkg,
+                                   env = parent.frame()) {
   
   get_pkg_config_val_default(key = key,
-                             pkg_config = get_pkg_config(pkg))
+                             pkg_config = get_pkg_config(pkg),
+                             env = env)
 }
 
 #' Test if package configuration value is set
@@ -2027,10 +2058,13 @@ pkg_config_val_default <- function(key,
 #'                           pkg = "pkgpurl")
 #' )
 has_pkg_config_val <- function(key,
-                               pkg) {
+                               pkg,
+                               env = parent.frame()) {
   
   !is.null(get_pkg_config_val(key = key,
-                              pkg = pkg))
+                              pkg = pkg,
+                              default = NULL,
+                              env = env))
 }
 
 #' Augment package configuration metadata
@@ -2083,8 +2117,20 @@ print_pkg_config <- function(pkg,
                                 \(x) wrap_chr(x, wrap = "`")),
                   dplyr::across(any_of("description"),
                                 \(x) if (roxy_to_md) purrr::map_chr(x, roxy_to_md_links) else x),
-                  default_value = purrr::map(default_value,
-                                             \(x) if (is.null(x)) "" else as_md_vals(x))) |>
+                  default_value = purrr::map2(default_value,
+                                              default_value_dynamic,
+                                              \(x, y) {
+                                                
+                                                if (!is.na(y)) {
+                                                  return(pal::wrap_chr(y, "`"))
+                                                  
+                                                } else if (is.null(x)) {
+                                                  return("")
+                                                  
+                                                } else {
+                                                  return(as_md_vals(x))
+                                                }
+                                              })) |>
     dplyr::select(any_of("description"),
                   r_opt,
                   env_var,
