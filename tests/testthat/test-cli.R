@@ -11,7 +11,6 @@ test_that("`cli_process_expr()` works as expected", {
     cli_process_expr(msg = "Omnitest",
                      expr = {
 
-                       cat("\n")
                        local_string <- "good"
                        local_col_name <- "Species"
 
@@ -36,5 +35,5 @@ test_that("`cli_process_expr()` works as expected", {
   global_string <- "good"
   global_col_name <- "Petal.Length"
 
-  test()
+  suppressMessages(test())
 })

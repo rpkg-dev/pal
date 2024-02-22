@@ -27,4 +27,8 @@ pal::git_remote_tree_url() |>
   paste0("Rmd/pal.Rmd") |>
   browseURL()
 }
+\seealso{
+Other Git functions:
+\code{\link{git_file_mod_time}()}
+}
 \concept{git}

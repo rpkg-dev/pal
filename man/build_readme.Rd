@@ -8,7 +8,8 @@ build_readme(
   input = "README.Rmd",
   output = "README.md",
   build_index_md = NULL,
-  env = parent.frame()
+  env = parent.frame(),
+  quiet = FALSE
 )
 }
 \arguments{
@@ -21,6 +22,8 @@ directory). If \code{NULL}, it will only be built if the parent directory of \co
 be built with the \R option \code{pal.build_readme.is_pkgdown} set to \code{TRUE}, allowing for conditional content inclusion in \code{input} – e.g. via the \href{https://yihui.org/knitr/options/#code-evaluation}{code chunk option} \code{eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))}.}
 
 \item{env}{Environment in which code chunks are to be evaluated, e.g. \code{\link[base:sys.parent]{base::parent.frame()}}, \code{\link[base:environment]{base::new.env()}}, or \code{\link[base:environment]{base::globalenv()}}.}
+
+\item{quiet}{Whether or not to suppress printing status output from internal processing.}
 }
 \value{
 The path to \code{input} as a character scalar, invisibly.

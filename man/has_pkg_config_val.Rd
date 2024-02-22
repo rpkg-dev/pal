@@ -31,8 +31,8 @@ try(
 \seealso{
 Other package configuration functions:
 \code{\link{augment_pkg_config}()},
-\code{\link{pkg_config_val_default}()},
 \code{\link{pkg_config_val}()},
+\code{\link{pkg_config_val_default}()},
 \code{\link{print_pkg_config}()}
 }
 \concept{pkg_config}

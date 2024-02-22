@@ -31,7 +31,7 @@ Other (Pandoc) Markdown functions:
 \code{\link{as_md_val_list}()},
 \code{\link{md_verb}()},
 \code{\link{pipe_table}()},
-\code{\link{strip_md_footnotes}()},
-\code{\link{strip_md}()}
+\code{\link{strip_md}()},
+\code{\link{strip_md_footnotes}()}
 }
 \concept{md}

@@ -26,7 +26,7 @@ try(
 Other package configuration functions:
 \code{\link{augment_pkg_config}()},
 \code{\link{has_pkg_config_val}()},
-\code{\link{pkg_config_val_default}()},
-\code{\link{pkg_config_val}()}
+\code{\link{pkg_config_val}()},
+\code{\link{pkg_config_val_default}()}
 }
 \concept{pkg_config}

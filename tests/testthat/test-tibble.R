@@ -47,10 +47,10 @@ test_that("`is_equal_df()` works as expected", {
                            ignore_col_types = FALSE))
 
   # non-quiet
-  expect_output(is_equal_df(mtcars_tibble,
-                            mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
-                            ignore_col_types = FALSE,
-                            quiet = FALSE),
+  expect_output(suppressMessages(is_equal_df(mtcars_tibble,
+                                             mtcars_tibble %>% dplyr::mutate(model = as.factor(model)),
+                                             ignore_col_types = FALSE,
+                                             quiet = FALSE)),
                 regexp = "a character vector.*an S3 object of class <factor>")
 
   # waldo object instead of a boolean

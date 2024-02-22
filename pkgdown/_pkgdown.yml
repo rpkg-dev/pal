@@ -140,8 +140,11 @@ reference:
   - cli_progress_step_quick
   - cli_process_expr
 - title: Git
-  desc: Extending the [**gert**](https://docs.ropensci.org/gert/) package.
-- contents: git_remote_tree_url
+  desc: Extending the [**gert**](https://docs.ropensci.org/gert/) and [**git2r**](https://docs.ropensci.org/git2r/)
+    packages.
+- contents:
+  - git_file_mod_time
+  - git_remote_tree_url
 - title: HTTP
   desc: |-
     Extending the [**httr**](https://httr.r-lib.org/) and [**httr2**](https://httr2.r-lib.org/) packages that wrap the [curl](https://jeroen.cran.dev/curl/)

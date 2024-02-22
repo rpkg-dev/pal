@@ -3274,6 +3274,7 @@ xml_to_md <- function(xml) {
 #'   be built with the \R option `pal.build_readme.is_pkgdown` set to `TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
 #'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
 #' @param env Environment in which code chunks are to be evaluated, e.g. [base::parent.frame()], [base::new.env()], or [base::globalenv()].
+#' @param quiet `r pkgsnip::param_lbl("quiet")`
 #'
 #' @return The path to `input` as a character scalar, invisibly.
 #' @family rmd_knitr
@@ -3281,13 +3282,16 @@ xml_to_md <- function(xml) {
 build_readme <- function(input = "README.Rmd",
                          output = "README.md",
                          build_index_md = NULL,
-                         env = parent.frame()) {
+                         env = parent.frame(),
+                         quiet = FALSE) {
   
   checkmate::assert_environment(env)
   checkmate::assert_string(input)
   checkmate::assert_path_for_output(output,
                                     overwrite = TRUE)
-  checkmate::assert_flag(build_index_md, null.ok = TRUE)
+  checkmate::assert_flag(build_index_md,
+                         null.ok = TRUE)
+  checkmate::assert_flag(quiet)
   rlang::check_installed("knitr",
                          reason = reason_pkg_required())
   rlang::check_installed("rmarkdown",
@@ -3306,7 +3310,9 @@ build_readme <- function(input = "README.Rmd",
                     pkg_metadata = desc_list(parent_dir))
   }
   
-  cli_progress_step_quick("Building {.file {input}}")
+  if (!quiet) {
+    cli_progress_step_quick("Building {.file {input}}")
+  }
   
   # generate `output`
   ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
@@ -3989,6 +3995,45 @@ cli_process_expr <- function(expr,
   cli::cli_process_done(status_bar_container_id)
   
   invisible(result)
+}
+
+#' Get Git file modification time
+#'
+#' Determine the time a file in a Git repository was last modified.
+#'
+#' Note that only *committed* changes to the file are regarded. The modification is returned in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
+#'
+#' @param path Path to a file in `repo`.
+#' @param repo Path to a Git repository.
+#'
+#' @return `r pkgsnip::return_lbl("datetime")`
+#' @family git
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pal::git_file_mod_time(path = "README.md")}
+git_file_mod_time <- function(path,
+                              repo = ".") {
+  
+  rlang::check_installed("git2r",
+                         reason = reason_pkg_required())
+  
+  # make path relative to `repo` if necessary to please `git2r::blame()`
+  if (fs::is_absolute_path(path)) {
+    
+    path <-
+      fs::path_abs(repo) |>
+      c(path) |>
+      fs::path_common() |>
+      fs::path_rel(path = path)
+  }
+  
+  git2r::blame(repo = repo,
+               path = path)$hunks |>
+    purrr::map(\(x) as.POSIXct(x$final_signature$when)) |>
+    purrr::list_c(ptype = vctrs::new_datetime()) |>
+    pal::safe_max()
 }
 
 #' Get Git remote tree URL

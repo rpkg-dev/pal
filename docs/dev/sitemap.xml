@@ -118,6 +118,9 @@
     <loc>https://pal.rpkg.dev/dev/reference/fuse_regex.html</loc>
   </url>
   <url>
+    <loc>https://pal.rpkg.dev/dev/reference/git_file_mod_time.html</loc>
+  </url>
+  <url>
     <loc>https://pal.rpkg.dev/dev/reference/git_remote_tree_url.html</loc>
   </url>
   <url>
