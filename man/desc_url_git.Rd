@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{desc_url_git}
 \alias{desc_url_git}
-\title{Get the Git repository URL from a \code{DESCRIPTION} file}
+\title{Get the Git repository URL from \code{DESCRIPTION} file}
 \usage{
 desc_url_git(file = ".")
 }
@@ -23,6 +23,7 @@ Currently, this function recognizes \href{https://gitlab.com/}{GitLab}, \href{ht
 }
 \seealso{
 Other package `DESCRIPTION` functions:
+\code{\link{desc_dep_vrsn}()},
 \code{\link{desc_list}()},
 \code{\link{desc_value}()}
 }

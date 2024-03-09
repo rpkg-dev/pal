@@ -7,7 +7,7 @@
 git_file_mod_time(path, repo = ".")
 }
 \arguments{
-\item{path}{Path to a file in \code{repo}.}
+\item{path}{Path to a file, relative to the Git repository root.}
 
 \item{repo}{Path to a Git repository.}
 }

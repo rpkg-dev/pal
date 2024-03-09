@@ -15,7 +15,7 @@ is part of) is used.}
 A list.
 }
 \description{
-Returns all fields from a specific \code{DESCRIPTION} file as a named list with values cleaned up:
+Returns all fields from a \code{DESCRIPTION} file as a named list with values cleaned up:
 \itemize{
 \item Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
 \item Multi-value fields are returned as vectors.
@@ -27,6 +27,7 @@ fs::path_package(package = "dplyr") |> pal::desc_list()
 }
 \seealso{
 Other package `DESCRIPTION` functions:
+\code{\link{desc_dep_vrsn}()},
 \code{\link{desc_url_git}()},
 \code{\link{desc_value}()}
 }

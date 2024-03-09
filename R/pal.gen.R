@@ -28,6 +28,7 @@ utils::globalVariables(names = c(".",
                                  "r_opt",
                                  "repository",
                                  "rowid",
+                                 "type",
                                  "Version",
                                  "X1",
                                  "X2"))
@@ -2146,7 +2147,7 @@ print_pkg_config <- function(pkg,
 #' Get all `DESCRIPTION` file fields as cleaned up list
 #'
 #' @description
-#' Returns all fields from a specific `DESCRIPTION` file as a named list with values cleaned up:
+#' Returns all fields from a `DESCRIPTION` file as a named list with values cleaned up:
 #' - Whitespaces at the start and end of field values as well as repeated whitespaces within them are removed.
 #' - Multi-value fields are returned as vectors.
 #' - The fields `Depends`, `Imports` and `Suggests` are returned as a single data frame named `dependencies`.
@@ -2184,9 +2185,9 @@ desc_list <- function(file = ".") {
   result
 }
 
-#' Get the value from a `DESCRIPTION` file field, cleaned up and with dynamic fallback
+#' Get value from `DESCRIPTION` file field, cleaned up and with dynamic fallback
 #'
-#' Returns the value from a specific `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
+#' Returns the value from a `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
 #' it are removed.
 #' 
 #' This function is a slightly modified version of [desc::desc_get_field()] that allows the `default` parameter to be dependent on the `key` parameter.
@@ -2210,8 +2211,8 @@ desc_list <- function(file = ".") {
 #' pal::desc_value(key = "Description",
 #'                 file = fs::path_package("pal"))
 desc_value <- function(key,
-                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
-                       file = ".") {
+                       file = ".",
+                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>")) {
   
   rlang::check_installed("desc",
                          reason = reason_pkg_required())
@@ -2221,7 +2222,52 @@ desc_value <- function(key,
                        file = file)
 }
 
-#' Get the Git repository URL from a `DESCRIPTION` file
+#' Get dependency version from `DESCRIPTION` file
+#'
+#' Returns the version of the specified `pkg` dependency from a `DESCRIPTION` file.
+#'
+#' @inheritParams pkg_config_val
+#' @inheritParams desc::desc_get_deps
+#' @param types Dependency types to be considered. If `pkg` is listed in multiple dependency types, the maximally required version is returned.
+#'
+#' @return `r pkgsnip::return_lbl("num_vrsn")`
+#' @family desc
+#' @export
+#'
+#' @examples
+#' fs::path_package(package = "dplyr") |> pal::desc_dep_vrsn(pkg = "tibble")
+desc_dep_vrsn <- function(pkg,
+                          file = ".",
+                          types = c("Imports", "Depends", "Suggests", "Enhances", "LinkingTo")) {
+  
+  checkmate::assert_string(pkg)
+  types <- rlang::arg_match(arg = types,
+                            multiple = TRUE)
+  
+  result <-
+    desc::desc_get_deps(file = file) |>
+    dplyr::filter(package == !!pkg & type %in% !!types)
+  
+  if (nrow(result) == 0L) {
+    cli::cli_abort("Package {.val {pkg}} is not listed as a dependency of type {.or {.val {types}}} in {.file {file}}.")
+  }
+  
+  result$version |>
+    stringr::str_extract("\\d+[\\d.]+") |>
+    purrr::map(\(x) {
+      if (is.na(x)) {
+        as.numeric_version(NULL)[NA]
+      } else {
+        as.numeric_version(x)
+      }
+    }) |>
+    purrr::list_c(ptype = numeric_version(NULL)) |>
+    max(na.rm = TRUE) |>
+    pal::when(length(.) == 0L ~ as.numeric_version(NULL)[NA],
+              ~ .)
+}
+
+#' Get the Git repository URL from `DESCRIPTION` file
 #'
 #' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
 #'
@@ -4003,7 +4049,7 @@ cli_process_expr <- function(expr,
 #'
 #' Note that only *committed* changes to the file are regarded. The modification is returned in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 #'
-#' @param path Path to a file in `repo`.
+#' @param path Path to a file, relative to the Git repository root.
 #' @param repo Path to a Git repository.
 #'
 #' @return `r pkgsnip::return_lbl("datetime")`

@@ -85,6 +85,7 @@ reference:
 - contents:
   - desc_list
   - desc_value
+  - desc_dep_vrsn
   - desc_url_git
 - subtitle: Package documentation
   desc: Complementing and extending the [**roxygen2**](https://roxygen2.r-lib.org/)

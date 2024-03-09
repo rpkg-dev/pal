@@ -2,28 +2,28 @@
 % Please edit documentation in R/pal.gen.R
 \name{desc_value}
 \alias{desc_value}
-\title{Get the value from a \code{DESCRIPTION} file field, cleaned up and with dynamic fallback}
+\title{Get value from \code{DESCRIPTION} file field, cleaned up and with dynamic fallback}
 \usage{
 desc_value(
   key,
-  default = glue::glue("<No `{key}` field set in DESCRIPTION!>"),
-  file = "."
+  file = ".",
+  default = glue::glue("<No `{key}` field set in DESCRIPTION!>")
 )
 }
 \arguments{
 \item{key}{The field to query.}
 
-\item{default}{Default value to return if \code{key} is not found.}
-
 \item{file}{DESCRIPTION file to use. By default the DESCRIPTION
 file of the current package (i.e. the package the working directory
 is part of) is used.}
+
+\item{default}{Default value to return if \code{key} is not found.}
 }
 \value{
 A character scalar.
 }
 \description{
-Returns the value from a specific \code{DESCRIPTION} file field (aka \emph{key}). Whitespaces at the start and end of the value as well as repeated whitespaces within
+Returns the value from a \code{DESCRIPTION} file field (aka \emph{key}). Whitespaces at the start and end of the value as well as repeated whitespaces within
 it are removed.
 }
 \details{
@@ -42,6 +42,7 @@ pal::desc_value(key = "Description",
 }
 \seealso{
 Other package `DESCRIPTION` functions:
+\code{\link{desc_dep_vrsn}()},
 \code{\link{desc_list}()},
 \code{\link{desc_url_git}()}
 }
