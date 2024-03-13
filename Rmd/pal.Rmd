@@ -208,6 +208,8 @@ get_pkg_config_val_default <- function(key,
 
 ### `has_root`
 
+TODO: Submit this function as `check_criterion()` upstream as outlined [from here on](https://github.com/r-lib/rprojroot/pull/83#issuecomment-1874876315).
+
 ```{r}
 has_root <- function(criterion,
                      path,
