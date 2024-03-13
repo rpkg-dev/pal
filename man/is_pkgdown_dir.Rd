@@ -4,17 +4,20 @@
 \alias{is_pkgdown_dir}
 \title{Test if pkgdown is set up for an R package directory}
 \usage{
-is_pkgdown_dir(path = ".")
+is_pkgdown_dir(path = ".", check_parent_dirs = FALSE)
 }
 \arguments{
 \item{path}{Path of the R package directory to check. A character scalar. Defaults to the current working directory.}
+
+\item{check_parent_dirs}{Whether or not to also check \code{path}'s parent directories (up until the filesystem root) for a pkgdown setup. Setting
+\code{check_parent_dirs = TRUE} guarantees that \code{TRUE} is returned for all subdirectories of an R package that has pkgdown set up.}
 }
 \value{
 \code{TRUE} if pkgdown is set up for \code{path}, \code{FALSE} otherwise.
 }
 \description{
-Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_pkgdown_project}} root criterion. Note that it will only return \code{TRUE} for the
-root of a package directory and the \code{pkgdown} subdirectory, not other subdirectories.
+Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_pkgdown_project}} root criterion. Note that it will by default only return
+\code{TRUE} for the root of a package directory and the \code{pkgdown} subdirectory, not other subdirectories.
 }
 \examples{
 pal::is_pkgdown_dir()

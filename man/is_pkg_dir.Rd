@@ -4,17 +4,21 @@
 \alias{is_pkg_dir}
 \title{Test if a directory is an \R package}
 \usage{
-is_pkg_dir(path = ".")
+is_pkg_dir(path = ".", check_parent_dirs = FALSE)
 }
 \arguments{
 \item{path}{Path of the directory to check. A character scalar. Defaults to the current working directory.}
+
+\item{check_parent_dirs}{Whether or not to also check \code{path}'s parent directories (up until the filesystem root) for an \R package setup. Setting
+\code{check_parent_dirs = TRUE} guarantees that \code{TRUE} is returned for all subdirectories of an R package.}
 }
 \value{
-\code{TRUE} if \code{path} is the root directory of an \R package, \code{FALSE} otherwise.
+\code{TRUE} if \code{path} is the root (if \code{check_parent_dirs = FALSE}) or a (sub)directory directory (if \code{check_parent_dirs = TRUE}) of an \R package,
+\code{FALSE} otherwise.
 }
 \description{
-Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_package}} root criterion. Note that it will only return \code{TRUE} for the root of a
-package directory, not its subdirectories.
+Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_package}} root criterion. Note that it will by default only return \code{TRUE} for the
+root of a package directory, not its subdirectories.
 }
 \examples{
 pal::is_pkg_dir()
