@@ -30,8 +30,8 @@ nor identical to \code{seq_len(nrow(x))}.}
 of individual letters, e.g. \code{'clc'} becomes \code{c('c', 'l', 'c')}.}
 
 \item{label}{The table reference label. By default, the label is obtained
-from \code{knitr::\link[knitr]{opts_current}$get('label')}. To disable the label,
-use \code{label = NA}.}
+from \code{knitr::\link[knitr]{opts_current}$get('label')} (i.e., the current
+chunk label). To disable the label, use \code{label = NA}.}
 
 \item{digits}{Maximum number of digits for numeric columns, passed to
 \code{round()}. This can also be a vector of length \code{ncol(x)}, to set

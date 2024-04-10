@@ -992,6 +992,10 @@ escape_lf <- function(x,
 
 #### `prettify_nr`
 
+TODO:
+
+-   Rename fn to `phrase_nr()`?
+
 ```{r}
 #' Prettify a numeric vector
 #'

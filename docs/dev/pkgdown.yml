@@ -1,8 +1,8 @@
-pandoc: 3.1.12.2
+pandoc: 3.1.13
 pkgdown: 2.0.7.9000
-pkgdown_sha: e60fd3ca8f7efe9e6492c02329b8a6e13cf94c3f
+pkgdown_sha: f465d9ac12d99d4e829b92d28cd88a2b35f57264
 articles: {}
-last_built: 2024-03-13T01:07Z
+last_built: 2024-04-10T16:54Z
 urls:
   reference: https://pal.rpkg.dev/reference
   article: https://pal.rpkg.dev/articles

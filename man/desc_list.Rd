@@ -26,7 +26,7 @@ Returns all fields from a \code{DESCRIPTION} file as a named list with values cl
 fs::path_package(package = "dplyr") |> pal::desc_list()
 }
 \seealso{
-Other package `DESCRIPTION` functions:
+Other package \code{DESCRIPTION} functions:
 \code{\link{desc_dep_vrsn}()},
 \code{\link{desc_url_git}()},
 \code{\link{desc_value}()}

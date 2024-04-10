@@ -41,7 +41,7 @@ pal::desc_value(key = "Description",
                 file = fs::path_package("pal"))
 }
 \seealso{
-Other package `DESCRIPTION` functions:
+Other package \code{DESCRIPTION} functions:
 \code{\link{desc_dep_vrsn}()},
 \code{\link{desc_list}()},
 \code{\link{desc_url_git}()}

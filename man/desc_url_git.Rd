@@ -22,7 +22,7 @@ Currently, this function recognizes \href{https://gitlab.com/}{GitLab}, \href{ht
 \href{https://codeberg.org/}{Codeberg}, \href{https://pagure.io/}{Pagure}, \href{https://bitbucket.org/}{Bitbucket} and \href{https://sr.ht/}{SourceHut} repository URLs.
 }
 \seealso{
-Other package `DESCRIPTION` functions:
+Other package \code{DESCRIPTION} functions:
 \code{\link{desc_dep_vrsn}()},
 \code{\link{desc_list}()},
 \code{\link{desc_value}()}

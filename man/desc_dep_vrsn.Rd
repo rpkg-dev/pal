@@ -29,7 +29,7 @@ Returns the version of the specified \code{pkg} dependency from a \code{DESCRIPT
 fs::path_package(package = "dplyr") |> pal::desc_dep_vrsn(pkg = "tibble")
 }
 \seealso{
-Other package `DESCRIPTION` functions:
+Other package \code{DESCRIPTION} functions:
 \code{\link{desc_list}()},
 \code{\link{desc_url_git}()},
 \code{\link{desc_value}()}
