@@ -36,7 +36,7 @@ pal::assert_pkg(pkg = "glue",
                                 "package! It's the glue that keeps strings and variables",
                                 "together 🤲."))
 try(
-  pal::assert_pkg("pal", min_version = 9999.9)
+  pal::assert_pkg("pal", min_version = "9999.9")
 )
 
 try(
@@ -59,6 +59,7 @@ Other R package functions:
 Other functions extending the checkmate package:
 \code{\link{assert_class_any}()},
 \code{\link{assert_cli}()},
+\code{\link{assert_df_tbl}()},
 \code{\link{assert_inf_count}()},
 \code{\link{assert_mime_type}()}
 }

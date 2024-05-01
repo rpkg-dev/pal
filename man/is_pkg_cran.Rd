@@ -24,7 +24,7 @@ Test if a package is available on CRAN
 \examples{
 pal::is_pkg_cran("foobar")
 pal::is_pkg_cran("dplyr")
-pal::is_pkg_cran("dplyr", min_version = 9999.9)
+pal::is_pkg_cran("dplyr", min_version = "9999.9")
 }
 \seealso{
 Other R package functions:

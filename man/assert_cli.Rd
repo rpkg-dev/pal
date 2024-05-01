@@ -42,6 +42,7 @@ Other system interaction functions:
 
 Other functions extending the checkmate package:
 \code{\link{assert_class_any}()},
+\code{\link{assert_df_tbl}()},
 \code{\link{assert_inf_count}()},
 \code{\link{assert_mime_type}()},
 \code{\link{assert_pkg}()}

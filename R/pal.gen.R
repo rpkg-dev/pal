@@ -1697,7 +1697,7 @@ use_pkg <- function(package,
 #'                                 "package! It's the glue that keeps strings and variables",
 #'                                 "together 🤲."))
 #' try(
-#'   pal::assert_pkg("pal", min_version = 9999.9)
+#'   pal::assert_pkg("pal", min_version = "9999.9")
 #' )
 #' 
 #' try(
@@ -1838,7 +1838,7 @@ is_pkg_installed <- function(pkg,
 #' @examples
 #' pal::is_pkg_cran("foobar")
 #' pal::is_pkg_cran("dplyr")
-#' pal::is_pkg_cran("dplyr", min_version = 9999.9)
+#' pal::is_pkg_cran("dplyr", min_version = "9999.9")
 is_pkg_cran <- function(pkg,
                         min_version = NULL,
                         retries = 1L) {
@@ -3864,10 +3864,39 @@ assert_class_any <- function(x,
     classes_actual <- class(x)
     cli::cli_abort(paste0("{.arg {name}} must {cli::qty(classes)} be {?of class/member of any of the classes} ",
                           classes %>% paste0("{.val ", ., "}") |> enum_str(sep2 = " or "),
-                          ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}"))
+                          ", but is {cli::qty(classes_actual)} of class{?es} {.val {classes_actual}}."))
   }
   
   invisible(x)
+}
+
+#' Assert object is data frame or tibble (extension)
+#'
+#' Asserts that an object is `pkgsnip::param_lbl(id = "df_or_tibble", as_sentence = FALSE)`.
+#'
+#' @inheritParams assert_class_any
+#'
+#' @inherit assert_class_any return
+#' @family checkmate
+#' @export
+#'
+#' @examples
+#' tibble::tibble() |> pal::assert_df_tbl()
+#' 
+#' try(
+#'   matrix() |> pal::assert_df_tbl()
+#' )
+assert_df_tbl <- function(x,
+                          name = "x") {
+  
+  assert_class_any(x = x,
+                   classes = c("data.frame",
+                               "tbl",
+                               "tbl_dbi",
+                               "tbl_df",
+                               "tbl_lazy",
+                               "tbl_sql"),
+                   name = name)
 }
 
 #' Assert count or `Inf`

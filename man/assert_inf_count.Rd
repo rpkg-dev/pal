@@ -37,6 +37,7 @@ try(
 Other functions extending the checkmate package:
 \code{\link{assert_class_any}()},
 \code{\link{assert_cli}()},
+\code{\link{assert_df_tbl}()},
 \code{\link{assert_mime_type}()},
 \code{\link{assert_pkg}()}
 }
