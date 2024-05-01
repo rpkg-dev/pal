@@ -3881,13 +3881,13 @@ assert_class_any <- function(x,
 #' @export
 #'
 #' @examples
-#' tibble::tibble() |> pal::assert_df_tbl()
+#' tibble::tibble() |> pal::assert_df_or_tibble()
 #' 
 #' try(
-#'   matrix() |> pal::assert_df_tbl()
+#'   matrix() |> pal::assert_df_or_tibble()
 #' )
-assert_df_tbl <- function(x,
-                          name = "x") {
+assert_df_or_tibble <- function(x,
+                                name = "x") {
   
   assert_class_any(x = x,
                    classes = c("data.frame",

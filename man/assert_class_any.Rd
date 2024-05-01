@@ -29,7 +29,7 @@ xml2::read_html("https://pal.rpkg.dev/dev/license") |>
 \seealso{
 Other functions extending the checkmate package:
 \code{\link{assert_cli}()},
-\code{\link{assert_df_tbl}()},
+\code{\link{assert_df_or_tibble}()},
 \code{\link{assert_inf_count}()},
 \code{\link{assert_mime_type}()},
 \code{\link{assert_pkg}()}

@@ -132,7 +132,7 @@ reference:
   desc: Extending the [**checkmate**](https://mllg.github.io/checkmate/) package.
 - contents:
   - assert_class_any
-  - assert_df_tbl
+  - assert_df_or_tibble
   - assert_inf_count
 - title: cli
   desc: Extending the [**cli**](https://cli.r-lib.org/) package.
