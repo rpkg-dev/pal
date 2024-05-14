@@ -4,7 +4,6 @@
 #' @importFrom magrittr %<>%
 #' @importFrom magrittr %T>%
 #' @importFrom magrittr %$%
-#' @importFrom rlang %||%
 #' @importFrom rlang %|%
 "_PACKAGE"
 
