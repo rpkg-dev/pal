@@ -3348,6 +3348,7 @@ xml_to_md <- function(xml) {
 #'   be built with the \R option `pal.build_readme.is_pkgdown` set to `TRUE`, allowing for conditional content inclusion in `input` – e.g. via the [code chunk
 #'   option](https://yihui.org/knitr/options/#code-evaluation) `eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))`.
 #' @param env Environment in which code chunks are to be evaluated, e.g. [base::parent.frame()], [base::new.env()], or [base::globalenv()].
+#' @param clean Whether or not to delete intermediate files created by [rmarkdown::render()].
 #' @param quiet `r pkgsnip::param_lbl("quiet")`
 #'
 #' @return The path to `input` as a character scalar, invisibly.
@@ -3357,6 +3358,7 @@ build_readme <- function(input = "README.Rmd",
                          output = "README.md",
                          build_index_md = NULL,
                          env = parent.frame(),
+                         clean = TRUE,
                          quiet = FALSE) {
   
   checkmate::assert_environment(env)
@@ -3365,6 +3367,7 @@ build_readme <- function(input = "README.Rmd",
                                     overwrite = TRUE)
   checkmate::assert_flag(build_index_md,
                          null.ok = TRUE)
+  checkmate::assert_flag(clean)
   checkmate::assert_flag(quiet)
   rlang::check_installed("knitr",
                          reason = reason_pkg_required())
@@ -3392,6 +3395,7 @@ build_readme <- function(input = "README.Rmd",
   ## render to the output format specified in the YAML header (defaults to `rmarkdown::md_document`)
   rmarkdown::render(input = input,
                     output_file = output,
+                    clean = clean,
                     quiet = TRUE,
                     envir = env)
   
@@ -3444,6 +3448,7 @@ build_readme <- function(input = "README.Rmd",
                                    # overwrite Pandoc output format (i.a. disable Pandoc's raw attributes to have more control over inline HTML)
                                    purrr::list_modify(pandoc = list(to = "markdown-raw_attribute")),
                                  knit_root_dir = parent_dir,
+                                 clean = clean,
                                  quiet = TRUE,
                                  envir = env)
       )
@@ -4865,7 +4870,9 @@ rename_from <- function(x,
 
 #' Sort vector by another vector
 #'
-#' Orders a vector `x` by the order of another vector `by`.
+#' Arranges a vector `x` by the order of another vector `by`.
+#'
+#' Note that this function significantly differs from [base::sort_by()].
 #'
 #' @param x Vector to be ordered.
 #' @param by Reference vector which `x` will be ordered by.
@@ -4885,9 +4892,9 @@ rename_from <- function(x,
 #'   print()
 #'
 #' # sort the random letters alphabetically
-#' random_letters |> pal::sort_by(by = letters)
-sort_by <- function(x,
-                    by) {
+#' random_letters |> pal::arrange_by(by = letters)
+arrange_by <- function(x,
+                       by) {
   
   x[order(match(x = x, table = by))]
 }

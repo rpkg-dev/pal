@@ -55,6 +55,7 @@ README.Rmd. This has the pleasant side effect that, other than the latter functi
 <span>  output <span class="op">=</span> <span class="st">"README.md"</span>,</span>
 <span>  build_index_md <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  clean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -77,6 +78,10 @@ be built with the <span style="R">R</span> option <code>pal.build_readme.is_pkgd
 
 <dt>env</dt>
 <dd><p>Environment in which code chunks are to be evaluated, e.g. <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">base::parent.frame()</a></code>, <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::new.env()</a></code>, or <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::globalenv()</a></code>.</p></dd>
+
+
+<dt>clean</dt>
+<dd><p>Whether or not to delete intermediate files created by <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render()</a></code>.</p></dd>
 
 
 <dt>quiet</dt>

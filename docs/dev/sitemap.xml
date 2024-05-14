@@ -13,6 +13,9 @@
     <loc>https://pal.rpkg.dev/dev/index.html</loc>
   </url>
   <url>
+    <loc>https://pal.rpkg.dev/dev/reference/arrange_by.html</loc>
+  </url>
+  <url>
     <loc>https://pal.rpkg.dev/dev/reference/as_chr.html</loc>
   </url>
   <url>
@@ -239,9 +242,6 @@
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/sentenceify.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/sort_by.html</loc>
   </url>
   <url>
     <loc>https://pal.rpkg.dev/dev/reference/stat_mode.html</loc>

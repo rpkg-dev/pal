@@ -171,5 +171,5 @@ reference:
   - cat_lines
   - cols_regex
   - rename_from
-  - sort_by
+  - arrange_by
   - when
