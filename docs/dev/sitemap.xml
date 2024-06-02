@@ -1,285 +1,97 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://pal.rpkg.dev/dev/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/TODO.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/arrange_by.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_chr.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_comment_str.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_flat_list.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_line_feed_chr.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_md_list.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_md_val_list.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_md_vals.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/as_str.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/assert_class_any.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/assert_cli.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/assert_df_or_tibble.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/assert_inf_count.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/assert_mime_type.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/assert_pkg.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/augment_pkg_config.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/build_readme.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/capitalize_first.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/capture_print.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/cat_lines.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/check_dots_named.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/cli_process_expr.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/cli_progress_step_quick.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/cli_qty_lgl.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/cols_regex.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/desc_dep_vrsn.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/desc_list.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/desc_url_git.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/desc_value.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/draw_path_tree.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/dsv_colnames.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/enum_fn_param_defaults.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/enum_str.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/escape_lf.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/exists_in_namespace.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/flatten_path_tree.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/fn_param_defaults.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/fuse_regex.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/git_file_mod_time.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/git_remote_tree_url.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/gitlab_document.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/has_pkg_config_val.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_equal_df.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_http_success.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_pkg_cran.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_pkg_dir.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_pkg_installed.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_pkgdown_dir.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/is_url.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/knitr_table_format.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/ls_pkg.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/md_to_xml.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/md_verb.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/md_xml_subnode_ix.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/pal-package.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/path_mod_time.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/path_script.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/pipe_table.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/pkg_config_val.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/pkg_config_val_default.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/prettify_nr.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/print_pkg_config.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/prose_ls.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/reason_pkg_required.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/reduce_df_list.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/rename_from.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/req_cached.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/round_to.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/roxy_blocks.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/roxy_obj.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/roxy_tag_value.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/roxy_to_md_links.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/safe_max.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/safe_min.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/safe_seq_len.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/sentenceify.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/stat_mode.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/strip_md.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/strip_md_footnotes.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/strip_yaml_header.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/test_cli.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/toml_read.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/toml_validate.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/use_pkg.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/when.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/wrap_chr.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/write_widget.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/write_widget_deps.html</loc>
-  </url>
-  <url>
-    <loc>https://pal.rpkg.dev/dev/reference/xml_to_md.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://pal.rpkg.dev/dev/LICENSE.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/TODO.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/authors.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/index.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/arrange_by.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_chr.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_comment_str.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_flat_list.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_line_feed_chr.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_md_list.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_md_val_list.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_md_vals.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_str.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_class_any.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_cli.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_df_or_tibble.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_inf_count.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_mime_type.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_pkg.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/augment_pkg_config.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/build_readme.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/capitalize_first.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/capture_print.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/cat_lines.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/check_dots_named.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/cli_process_expr.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/cli_progress_step_quick.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/cli_qty_lgl.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/cols_regex.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/desc_dep_vrsn.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/desc_list.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/desc_url_git.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/desc_value.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/draw_path_tree.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/dsv_colnames.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/enum_fn_param_defaults.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/enum_str.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/escape_lf.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/exists_in_namespace.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/flatten_path_tree.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/fn_param_defaults.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/fuse_regex.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/git_file_mod_time.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/git_remote_tree_url.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/gitlab_document.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/has_pkg_config_val.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/index.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_equal_df.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_http_success.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_pkg_cran.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_pkg_dir.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_pkg_installed.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_pkgdown_dir.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/is_url.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/knitr_table_format.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/ls_pkg.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/md_to_xml.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/md_verb.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/md_xml_subnode_ix.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/pal-package.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/path_mod_time.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/path_script.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/pipe_table.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/pkg_config_val.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/pkg_config_val_default.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/prettify_nr.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/print_pkg_config.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/prose_ls.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/reason_pkg_required.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/reduce_df_list.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/rename_from.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/req_cached.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/round_to.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/roxy_blocks.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/roxy_obj.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/roxy_tag_value.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/roxy_to_md_links.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/safe_max.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/safe_min.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/safe_seq_len.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/sentenceify.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/stat_mode.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/strip_md.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/strip_md_footnotes.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/strip_yaml_header.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/test_cli.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/toml_read.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/toml_validate.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/use_pkg.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/when.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/wrap_chr.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/write_widget.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/write_widget_deps.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/xml_to_md.html</loc></url>
 </urlset>
+

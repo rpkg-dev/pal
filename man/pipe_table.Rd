@@ -50,6 +50,9 @@ Missing values (\code{NA}) in the table are displayed as \code{NA} by
 default. If you want to display them with other characters, you can set the
 option \code{knitr.kable.NA}, e.g. \code{options(knitr.kable.NA = '')} to
 hide \code{NA} values.
+
+You can set the option \code{knitr.kable.max_rows} to limit the number of
+rows to show in the table, e.g., \code{options(knitr.kable.max_rows = 30)}.
 }
 \section{Create tables dynamically in roxygen2 documentation}{
 This function can be useful to create tables inside \link[roxygen2:roxygen2-package]{roxygen2} documentation programmatically from data using
