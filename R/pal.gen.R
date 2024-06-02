@@ -2011,6 +2011,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' @param pkg Package name. A character scalar.
 #' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `R_<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
+#' @param required Whether or not the configuration value is required. If `TRUE`, an error is thrown with instructions on how to provide a value.
 #' @param env Environment to evaluate `default_value_dynamic` in, if necessary.
 #'
 #' @return `r pkgsnip::return_lbl("r_obj")`
@@ -2026,7 +2027,10 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 pkg_config_val <- function(key,
                            pkg,
                            default = NULL,
+                           required = TRUE,
                            env = parent.frame()) {
+  
+  checkmate::assert_flag(required)
   
   result <- get_pkg_config_val(key = key,
                                pkg = pkg,
@@ -2034,7 +2038,7 @@ pkg_config_val <- function(key,
                                env = env)
   
   # abort if no default value was provided
-  if (is.null(result)) {
+  if (required && is.null(result)) {
     
     cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option ",
                           "{.field {pkg_config_opt_name(pkg = pkg, key = key)}} or the environment variable ",
