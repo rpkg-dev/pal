@@ -590,7 +590,7 @@ stat_mode <- function(x,
 ### `is_equal_df`
 
 ```{r}
-#' Determine if two data frames/tibbles are equal
+#' Test if two data frames/tibbles are equal
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
 #' ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the case and `quiet = FALSE`, information
@@ -2375,6 +2375,10 @@ TODO:
 Functions around pal's canonicalized way to package configuration.
 
 #### `pkg_config_val`
+
+TODO:
+
+-   Consider allowing to set `required` in a pkg's `pkg_config` obj and respect it in `pkg_config_val()` (i.a. default to `required = NULL`).
 
 ```{r}
 #' Get package configuration value
@@ -5098,6 +5102,13 @@ is_url <- function(x) {
 ```
 
 ### `req_cached`
+
+TODO:
+
+-   Rename this fn to be less missleading (it returns a *response* object, not a request object; but `resp_cached()` wouldn't be much better since all the
+    `httr2::resp_*()` fns *extract* something from a response rather than returning a response).
+
+    Maybe `http_get_cached()` would be appropriate (since it only does *GET* requests anyways)?
 
 ```{r}
 #' Perform a cached HTTP GET request

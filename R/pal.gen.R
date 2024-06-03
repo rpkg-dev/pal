@@ -460,7 +460,7 @@ stat_mode <- function(x,
   )
 }
 
-#' Determine if two data frames/tibbles are equal
+#' Test if two data frames/tibbles are equal
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
 #' ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the case and `quiet = FALSE`, information

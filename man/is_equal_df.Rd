@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{is_equal_df}
 \alias{is_equal_df}
-\title{Determine if two data frames/tibbles are equal}
+\title{Test if two data frames/tibbles are equal}
 \usage{
 is_equal_df(
   x,
