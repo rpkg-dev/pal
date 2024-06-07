@@ -51,7 +51,7 @@ returned:</p><ol><li><p>The <span style="R">R</span> <a href="https://rdrr.io/r/
 </ol></div>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pkg_config_val</span><span class="op">(</span><span class="va">key</span>, <span class="va">pkg</span>, default <span class="op">=</span> <span class="cn">NULL</span>, required <span class="op">=</span> <span class="cn">TRUE</span>, env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pkg_config_val</span><span class="op">(</span><span class="va">key</span>, <span class="va">pkg</span>, default <span class="op">=</span> <span class="cn">NULL</span>, require <span class="op">=</span> <span class="cn">NULL</span>, env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
@@ -62,8 +62,9 @@ returned:</p><ol><li><p>The <span style="R">R</span> <a href="https://rdrr.io/r/
 <dt id="arg-default">default<a class="anchor" aria-label="anchor" href="#arg-default"></a></dt>
 <dd><p>Default value to fall back to if neither the <span style="R">R</span> option <code>&lt;pkg&gt;.&lt;key&gt;</code> nor the environment variable <code>R_&lt;PKG&gt;_&lt;KEY&gt;</code> is set. If <code>NULL</code>, the
 default value for <code>key</code> in <code>&lt;pkg&gt;::pkg_config</code> will be used (if defined).</p></dd>
-<dt id="arg-required">required<a class="anchor" aria-label="anchor" href="#arg-required"></a></dt>
-<dd><p>Whether or not the configuration value is required. If <code>TRUE</code>, an error is thrown with instructions on how to provide a value.</p></dd>
+<dt id="arg-require">require<a class="anchor" aria-label="anchor" href="#arg-require"></a></dt>
+<dd><p>Whether or not to require that the configuration value is set. If <code>TRUE</code> and no configuration value is set, an error is thrown with
+instructions on how to provide a value. If <code>NULL</code>, the <code>require</code> value for <code>key</code> in <code>&lt;pkg&gt;::pkg_config</code> will be used (defaults to <code>TRUE</code>).</p></dd>
 <dt id="arg-env">env<a class="anchor" aria-label="anchor" href="#arg-env"></a></dt>
 <dd><p>Environment to evaluate <code>default_value_dynamic</code> in, if necessary.</p></dd>
 </dl></div>

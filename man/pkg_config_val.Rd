@@ -4,7 +4,7 @@
 \alias{pkg_config_val}
 \title{Get package configuration value}
 \usage{
-pkg_config_val(key, pkg, default = NULL, required = TRUE, env = parent.frame())
+pkg_config_val(key, pkg, default = NULL, require = NULL, env = parent.frame())
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
@@ -14,7 +14,8 @@ pkg_config_val(key, pkg, default = NULL, required = TRUE, env = parent.frame())
 \item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{R_<PKG>_<KEY>} is set. If \code{NULL}, the
 default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}
 
-\item{required}{Whether or not the configuration value is required. If \code{TRUE}, an error is thrown with instructions on how to provide a value.}
+\item{require}{Whether or not to require that the configuration value is set. If \code{TRUE} and no configuration value is set, an error is thrown with
+instructions on how to provide a value. If \code{NULL}, the \code{require} value for \code{key} in \verb{<pkg>::pkg_config} will be used (defaults to \code{TRUE}).}
 
 \item{env}{Environment to evaluate \code{default_value_dynamic} in, if necessary.}
 }

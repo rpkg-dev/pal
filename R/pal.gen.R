@@ -65,47 +65,17 @@ get_pkg_config <- function(pkg) {
   checkmate::assert_data_frame(pkg_config,
                                col.names = "unique")
   if (!("key" %in% colnames(pkg_config) && any(c("default_value", "default_value_dynamic") %in% colnames(pkg_config)))) {
-    obj <- paste0(pkg, "::pkg_config")
-    cli::cli_abort("{.code {obj}} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
+    cli::cli_abort("{.code {pkg}:::pkg_config} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
   }
   
   # ensure/complement df structure
-  vctrs::tib_cast(x = pkg_config,
-                  to = tibble::tibble(key = character(),
-                                      default_value = list(),
-                                      default_value_dynamic = character(),
-                                      description = character()))
-}
-
-get_pkg_config_val <- function(key,
-                               pkg,
-                               default,
-                               env) {
-  
-  pkg_config <- get_pkg_config(pkg)
-  key <- rlang::arg_match0(key,
-                           values = pkg_config$key)
-  # 1st priority: R option
-  result <- getOption(pkg_config_opt_name(pkg = pkg,
-                                          key = key))
-  # 2nd priority: environment variable
-  if (is.null(result)) {
-    
-    result <- Sys.getenv(pkg_config_env_var_name(pkg = pkg,
-                                                 key = key),
-                         unset = NA,
-                         names = FALSE)
-  }
-  
-  # 3rd priority: default value
-  if (is.na(result)) {
-    
-    result <- default %||% get_pkg_config_val_default(key = key,
-                                                      pkg_config = pkg_config,
-                                                      env = env)
-  }
-  
-  result
+  pkg_config |>
+    vctrs::tib_cast(tibble::tibble(key = character(),
+                                   default_value = list(),
+                                   default_value_dynamic = character(),
+                                   require = logical(),
+                                   description = character())) |>
+    tidyr::replace_na(replace = list(require = TRUE))
 }
 
 get_pkg_config_val_default <- function(key,
@@ -2011,7 +1981,8 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' @param pkg Package name. A character scalar.
 #' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `R_<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
-#' @param required Whether or not the configuration value is required. If `TRUE`, an error is thrown with instructions on how to provide a value.
+#' @param require Whether or not to require that the configuration value is set. If `TRUE` and no configuration value is set, an error is thrown with
+#'   instructions on how to provide a value. If `NULL`, the `require` value for `key` in `<pkg>::pkg_config` will be used (defaults to `TRUE`).
 #' @param env Environment to evaluate `default_value_dynamic` in, if necessary.
 #'
 #' @return `r pkgsnip::return_lbl("r_obj")`
@@ -2027,22 +1998,48 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 pkg_config_val <- function(key,
                            pkg,
                            default = NULL,
-                           required = TRUE,
+                           require = NULL,
                            env = parent.frame()) {
   
-  checkmate::assert_flag(required)
+  checkmate::assert_flag(require,
+                         null.ok = TRUE)
   
-  result <- get_pkg_config_val(key = key,
-                               pkg = pkg,
-                               default = default,
-                               env = env)
+  pkg_config <- get_pkg_config(pkg)
+  key <- rlang::arg_match0(key,
+                           values = pkg_config$key)
+  # 1st priority: R option
+  result <- getOption(pkg_config_opt_name(pkg = pkg,
+                                          key = key))
+  # 2nd priority: environment variable
+  if (is.null(result)) {
+    result <- Sys.getenv(pkg_config_env_var_name(pkg = pkg,
+                                                 key = key),
+                         unset = NA,
+                         names = FALSE)
+  }
   
-  # abort if no default value was provided
-  if (required && is.null(result)) {
+  # 3rd priority: default value
+  if (is.na(result)) {
+    result <- default %||% get_pkg_config_val_default(key = key,
+                                                      pkg_config = pkg_config,
+                                                      env = env)
+  }
+  
+  # abort if value is required but none was provided
+  if (is.null(result)) {
     
-    cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option ",
-                          "{.field {pkg_config_opt_name(pkg = pkg, key = key)}} or the environment variable ",
-                          "{.envvar {pkg_config_env_var_name(pkg = pkg, key = key)}}."))
+    if (is.null(require)) {
+      require <-
+        pkg_config |>
+        dplyr::filter(key == !!key) |>
+        dplyr::pull("require")
+    }
+    
+    if (require) {
+      cli::cli_abort(paste0("Please set the {pkg} package configuration option {.field {key}} by either setting the R option ",
+                            "{.field {pkg_config_opt_name(pkg = pkg, key = key)}} or the environment variable ",
+                            "{.envvar {pkg_config_env_var_name(pkg = pkg, key = key)}}."))
+    }
   }
   
   result
@@ -2094,10 +2091,11 @@ has_pkg_config_val <- function(key,
                                pkg,
                                env = parent.frame()) {
   
-  !is.null(get_pkg_config_val(key = key,
-                              pkg = pkg,
-                              default = NULL,
-                              env = env))
+  !is.null(pkg_config_val(key = key,
+                          pkg = pkg,
+                          default = NULL,
+                          require = FALSE,
+                          env = env))
 }
 
 #' Augment package configuration metadata
