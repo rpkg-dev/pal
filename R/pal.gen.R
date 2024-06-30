@@ -4811,6 +4811,40 @@ cols_regex <- function(...,
   do.call(readr::cols, spec)
 }
 
+#' MIME type to file extension
+#'
+#' Determines a suitable file extension from a [MIME type](https://en.wikipedia.org/wiki/Media_type) based on [`mime::mimemap`][mime::mimemap]. In case of
+#' multiple matches, the first one is returned and a warning is printed (unless `quiet = TRUE`).
+#'
+#' @param mime_type MIME type to determine the file extension for. A character scalar.
+#' @param quiet `r pkgsnip::param_lbl("quiet")`
+#'
+#' @return A character scalar.
+#' @export
+#'
+#' @examples
+#' pal::mime_to_ext("audio/mpeg")
+mime_to_ext = function(mime_type,
+                       quiet = FALSE) {
+  
+  checkmate::assert_string(mime_type)
+  rlang::check_installed("mime",
+                         reason = reason_pkg_required())
+  
+  i <- which(mime::mimemap %in% mime_type)
+  result <- names(mime::mimemap[i])
+  
+  if (length(i) == 0L) {
+    return(NA_character_)
+  }
+  
+  if (!quiet && length(i) > 1L) {
+    cli::cli_warn("The MIME type {.val {mime_type}} maps to multiple file extensions ({.val {result}}). Simply the first one is returned.")
+  }
+  
+  result[1L]
+}
+
 #' Rename elements from dictionary
 #'
 #' Renames the elements of a vector or list from a dictionary, leaving unmatched names untouched by default.

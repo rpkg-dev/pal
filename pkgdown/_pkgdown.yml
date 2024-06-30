@@ -155,6 +155,7 @@ reference:
   - capture_print
   - cat_lines
   - cols_regex
+  - mime_to_ext
   - rename_from
   - arrange_by
   - when

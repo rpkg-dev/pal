@@ -39,6 +39,7 @@ Suggests:
     httr2 (>= 0.2.3),
     janeaustenr,
     knitr (>= 1.41),
+    mime (>= 0.12),
     pander (>= 0.6.3),
     pkgdown.tpl (>= 0.0.9000),
     pkgsnip (>= 0.0.9037),
