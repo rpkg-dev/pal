@@ -15,9 +15,10 @@ mime_to_ext(mime_type, quiet = FALSE)
 A character scalar.
 }
 \description{
-Determines a suitable file extension from a \href{https://en.wikipedia.org/wiki/Media_type}{MIME type} based on \code{\link[mime:mimemap]{mime::mimemap}}. In case of
-multiple matches, the first one is returned and a warning is printed (unless \code{quiet = TRUE}).
+Determines a suitable file extension from a \href{https://en.wikipedia.org/wiki/Media_type}{MIME type}, based i.a. on \code{\link[mime:mimemap]{mime::mimemap}} and
+\code{mime:::mimeextra}. In case of multiple matches, the first one is returned and a warning is printed (unless \code{quiet = TRUE}).
 }
 \examples{
+pal::mime_to_ext("application/json")
 pal::mime_to_ext("audio/mpeg")
 }

@@ -40,6 +40,11 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "type",
                                           "quiet"))
 
+mime_types_exts <- c(mime::mimemap,
+                     setdiff(mime:::mimeextra, mime::mimemap),
+                     # MIME types not yet included in pkg mime
+                     webp = "image/webp")
+
 as_env_var_name <- function(...) {
   
   as_str(...,
@@ -4813,8 +4818,8 @@ cols_regex <- function(...,
 
 #' MIME type to file extension
 #'
-#' Determines a suitable file extension from a [MIME type](https://en.wikipedia.org/wiki/Media_type) based on [`mime::mimemap`][mime::mimemap]. In case of
-#' multiple matches, the first one is returned and a warning is printed (unless `quiet = TRUE`).
+#' Determines a suitable file extension from a [MIME type](https://en.wikipedia.org/wiki/Media_type), based i.a. on [`mime::mimemap`][mime::mimemap] and
+#' `mime:::mimeextra`. In case of multiple matches, the first one is returned and a warning is printed (unless `quiet = TRUE`).
 #'
 #' @param mime_type MIME type to determine the file extension for. A character scalar.
 #' @param quiet `r pkgsnip::param_lbl("quiet")`
@@ -4823,16 +4828,15 @@ cols_regex <- function(...,
 #' @export
 #'
 #' @examples
+#' pal::mime_to_ext("application/json")
 #' pal::mime_to_ext("audio/mpeg")
 mime_to_ext = function(mime_type,
                        quiet = FALSE) {
   
   checkmate::assert_string(mime_type)
-  rlang::check_installed("mime",
-                         reason = reason_pkg_required())
   
-  i <- which(mime::mimemap %in% mime_type)
-  result <- names(mime::mimemap[i])
+  i <- which(mime_types_exts %in% mime_type)
+  result <- names(mime_types_exts[i])
   
   if (length(i) == 0L) {
     return(NA_character_)
