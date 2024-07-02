@@ -4,7 +4,7 @@
 \alias{git_remote_tree_url}
 \title{Get Git remote tree URL}
 \usage{
-git_remote_tree_url(repo = ".")
+git_remote_tree_url(repo = ".", remote = NULL)
 }
 \arguments{
 \item{repo}{The path to the git repository. If the directory is not a
@@ -12,6 +12,9 @@ repository, parent directories are considered (see \link[gert]{git_find}). To di
 this search, provide the filepath protected with \code{\link[=I]{I()}}. When using this
 parameter, always explicitly call by name (i.e. \verb{repo = }) because future
 versions of gert may have additional parameters.}
+
+\item{remote}{Name of the Git remote to determine the URL for. Defaults to \code{"origin"} if present, otherwise the first remote listed by
+\code{\link[gert:git_remote]{gert::git_remote_list()}}.}
 }
 \value{
 If \code{repo} is a Git repository, a character scalar. Otherwise, a character vector of length zero.

@@ -4878,6 +4878,8 @@ NOTES:
 #' This function is useful to assemble URLs to files and folders in your repo's Git forge (GitHub, GitLab, etc.).
 #'
 #' @inheritParams gert::git_remote_list
+#' @param remote Name of the Git remote to determine the URL for. Defaults to `"origin"` if present, otherwise the first remote listed by
+#'   [gert::git_remote_list()].
 #'
 #' @return If `repo` is a Git repository, a character scalar. Otherwise, a character vector of length zero.
 #' @family git
@@ -4887,30 +4889,40 @@ NOTES:
 #' pal::git_remote_tree_url() |>
 #'   paste0("Rmd/pal.Rmd") |>
 #'   browseURL()
-git_remote_tree_url <- function(repo = ".") {
+git_remote_tree_url <- function(repo = ".",
+                                remote = NULL) {
   
+  checkmate::assert_string(remote,
+                           null.ok = TRUE)
   rlang::check_installed("gert",
                          reason = reason_pkg_required())
   
   remotes <- try(gert::git_remote_list(repo = repo))
   
-  if (is.data.frame(remotes)) {
-    
-    url <- gert::git_remote_info(repo = repo)$url
-    
-    if (startsWith(url, "git@")) {
-      url %<>% stringr::str_replace_all(pattern = c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
-                                                    "^git@" = "https://",
-                                                    "\\.git$" = ""))
-    }
-    
-    add_slash_minus <- stringr::str_detect(url, stringr::fixed("gitlab"))
-    url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
-    
-  } else {
-    url <- character()
+  # return empty chr if no remotes found
+  if (!is.data.frame(remotes)) {
+    return(character())
   }
   
+  # if multiple remotes present and no explicit `remote` provided, take "origin" if present, otherwise the first one
+  remote <- remote %||% ifelse(nrow(remotes) > 1L && "origin" %in% remotes$name,
+                               "origin",
+                               remotes$name[1L])
+  url <-
+    gert::git_remote_info(repo = repo,
+                          remote = remote) |>
+    _$url
+  
+  # convert SSH address to URL
+  if (startsWith(url, "git@")) {
+    url %<>% stringr::str_replace_all(pattern = c("(git@[\\w\\.]{1,}\\.[a-z]{2,}):" = "\\1/",
+                                                  "^git@" = "https://",
+                                                  "\\.git$" = ""))
+  }
+  
+  add_slash_minus <- stringr::str_detect(url, stringr::fixed("gitlab"))
+  url %<>% paste0("/-"[add_slash_minus], "/tree/", gert::git_branch(), "/")
+
   url
 }
 ```
