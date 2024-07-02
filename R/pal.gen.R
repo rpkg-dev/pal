@@ -40,11 +40,6 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "type",
                                           "quiet"))
 
-mime_types_exts <- c(mime::mimemap,
-                     setdiff(mime:::mimeextra, mime::mimemap),
-                     # MIME types not yet included in pkg mime
-                     webp = "image/webp")
-
 as_env_var_name <- function(...) {
   
   as_str(...,
