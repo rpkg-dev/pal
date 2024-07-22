@@ -3,12 +3,19 @@
 README.Rmd. This has the pleasant side effect that, other than the latter function, it also works for .Rmd files which aren't part of an R package."><meta property="og:description" content="A simpler, but considerably faster alternative to devtools::build_readme() since it doesn't install your package in a temporary library before building the
 README.Rmd. This has the pleasant side effect that, other than the latter function, it also works for .Rmd files which aren't part of an R package."><meta property="og:image" content="https://pal.rpkg.dev/logo.png"><meta name="twitter:card" content="summary"><meta name="twitter:creator" content="@2BSalim"><meta name="twitter:site" content="@2BSalim"><meta name="robots" content="noindex"><script src="https://rpkg.dev/counter-dev.min.js" data-id="4c4963fe-9fcf-4d81-95bb-2135e114b85b" data-utcoffset="1"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+
+
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">pal</a>
+
     <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.0.9101</small>
+
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -21,6 +28,8 @@ README.Rmd. This has the pleasant side effect that, other than the latter functi
     <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
   </ul></li>
       </ul></div>
+
+
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -29,10 +38,12 @@ README.Rmd. This has the pleasant side effect that, other than the latter functi
       <small class="dont-index">Source: <a href="https://gitlab.com/rpkg.dev/pal/blob/HEAD/R/pal.gen.R" class="external-link"><code>R/pal.gen.R</code></a></small>
       <div class="d-none name"><code>build_readme.Rd</code></div>
     </div>
+
     <div class="ref-description section level2">
     <p>A simpler, but considerably faster alternative to <code><a href="https://devtools.r-lib.org/reference/build_rmd.html" class="external-link">devtools::build_readme()</a></code> since it doesn't install your package in a temporary library before building the
 <code>README.Rmd</code>. This has the pleasant side effect that, other than the latter function, it also works for <code>.Rmd</code> files which aren't part of an <span style="R">R</span> package.</p>
     </div>
+
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build_readme</span><span class="op">(</span></span>
@@ -44,22 +55,36 @@ README.Rmd. This has the pleasant side effect that, other than the latter functi
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
+
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
 <dl><dt id="arg-input">input<a class="anchor" aria-label="anchor" href="#arg-input"></a></dt>
 <dd><p>Path to the R Markdown README file to be built. A character scalar.</p></dd>
+
+
 <dt id="arg-output">output<a class="anchor" aria-label="anchor" href="#arg-output"></a></dt>
 <dd><p>Path to the built Markdown README. A character scalar.</p></dd>
+
+
 <dt id="arg-build-index-md">build_index_md<a class="anchor" aria-label="anchor" href="#arg-build-index-md"></a></dt>
 <dd><p>Whether to build a separate <a href="https://pkgdown.r-lib.org/reference/pkgdown-package.html" class="external-link">pkgdown</a>-optimized <code>pkgdown/index.md</code> alongside <code>output</code> (i.e. in the same parent
 directory). If <code>NULL</code>, it will only be built if the parent directory of <code>output</code> <a href="is_pkgdown_dir.html">contains a pkgdown configuration file</a>. Note that it will
 be built with the <span style="R">R</span> option <code>pal.build_readme.is_pkgdown</code> set to <code>TRUE</code>, allowing for conditional content inclusion in <code>input</code> – e.g. via the <a href="https://yihui.org/knitr/options/#code-evaluation" class="external-link">code chunk option</a> <code>eval = isTRUE(getOption("pal.build_readme.is_pkgdown"))</code>.</p></dd>
+
+
 <dt id="arg-env">env<a class="anchor" aria-label="anchor" href="#arg-env"></a></dt>
 <dd><p>Environment in which code chunks are to be evaluated, e.g. <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">base::parent.frame()</a></code>, <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::new.env()</a></code>, or <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::globalenv()</a></code>.</p></dd>
+
+
 <dt id="arg-clean">clean<a class="anchor" aria-label="anchor" href="#arg-clean"></a></dt>
 <dd><p>Whether or not to delete intermediate files created by <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render()</a></code>.</p></dd>
+
+
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>Whether or not to suppress printing status output from internal processing.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -77,14 +102,24 @@ which means all the objects and files it references must be accessible from the 
 <code><a href="knitr_table_format.html">knitr_table_format</a>()</code>,
 <code><a href="strip_yaml_header.html">strip_yaml_header</a>()</code></p></div>
     </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
+
+
     <footer><div class="pkgdown-footer-left">
   <p>Developed by Salim Brüggemann.</p>
 </div>
+
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
+
     </footer></div>
+
+
+
+
+
   </body></html>
 

@@ -3005,6 +3005,7 @@ as_md_val_list <- function(...) {
 #' @param format_args A list of arguments to be passed to [base::format()] to format table values, e.g. `list(big.mark = ',')`.
 #'
 #' @return A character vector.
+#' @seealso [xfun::md_table()]
 #' @family md
 #' @export
 #'

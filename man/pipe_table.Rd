@@ -77,6 +77,8 @@ should produce the following table in \href{https://www.tidyverse.org/blog/2020/
 mtcars |> head() |> pal::pipe_table() |> pal::cat_lines()
 }
 \seealso{
+\code{\link[xfun:md_table]{xfun::md_table()}}
+
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
