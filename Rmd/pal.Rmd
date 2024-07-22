@@ -3496,6 +3496,10 @@ as_md_val_list <- function(...) {
 
 ### `pipe_table`
 
+TODO:
+
+-   Systematically compare with `xfun::md_table()` and consider upstreaming `pipe_table()`'s current upsides (col/rownames formatting etc.) there.
+
 ```{r}
 #' Convert dataframe/tibble to Markdown pipe table
 #'
