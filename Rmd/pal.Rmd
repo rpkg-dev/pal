@@ -2283,15 +2283,18 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 
 TODO:
 
+-   Add support for system keyrings as (4th) pkg config val src via [`keyring::key_set_with_value()`](https://keyring.r-lib.org/reference/key_get.html), which
+    is more secure to store secrets than the existing srcs.
+
 -   Document how to add pkg config info to `R/<pkg>-package.R`:
 
     ``` r
-    @section Package configuration:
+    #' @section Package configuration:
     #'
-    #' `r pkgsnip::md_snip("pkg_config", pkg = "c2d")`
+    #' `r pkgsnip::md_snip("pkg_config", pkg = "PKG_NAME")`
     #'
     #' ```{r, echo = FALSE}
-    #' pal::print_pkg_config("c2d")
+    #' pal::print_pkg_config("PKG_NAME")
     #' ```
     #'
     ```
@@ -2336,6 +2339,8 @@ TODO:
     -   [GlobalOptions](https://github.com/jokergoo/GlobalOptions)
     -   [pkgconfig](https://github.com/r-lib/pkgconfig) (has a different goal: pkg-local options)
     -   [settings](https://github.com/markvanderloo/settings)
+
+    and ask Posit/tidyverse folks for advice?
 
 #### DESCRIPTION
 
