@@ -2625,8 +2625,8 @@ roxy_blocks <- function(pkg = NULL,
     
     pkg_version_max_installed <-
       ls_pkg(pkg = pkg,
-             as_regex = FALSE) %$%
-      Version |>
+             as_regex = FALSE) |>
+      dplyr::pull("Version") |>
       max()
     
     if (pkg_version_max_installed %in% pkgs_available$Version) { 
@@ -3561,15 +3561,17 @@ strip_yaml_header <- function(rmd,
       tibble::as_tibble() |>
       tibble::rowid_to_column() |>
       dplyr::filter(!dplyr::if_any(.cols = everything(),
-                                   .fns = is.na)) %$%
-      rowid[2L] |>
+                                   .fns = is.na)) |>
+      dplyr::pull("rowid") |>
+      purrr::chuck(2L) |>
       min(rmd |>
             stringr::str_locate("^\\.{3}\\s*$") |>
             tibble::as_tibble() |>
             tibble::rowid_to_column() |>
             dplyr::filter(!dplyr::if_any(.cols = everything(),
-                                         .fns = is.na)) %$%
-            rowid[1L],
+                                         .fns = is.na)) |>
+            dplyr::pull("rowid") |>
+            purrr::chuck(1L),
           na.rm = TRUE)
   }
   
