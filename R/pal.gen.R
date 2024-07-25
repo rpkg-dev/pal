@@ -2154,7 +2154,7 @@ print_pkg_config <- function(pkg,
                                               \(x, y) {
                                                 
                                                 if (!is.na(y)) {
-                                                  return(pal::wrap_chr(y, "`"))
+                                                  return(wrap_chr(y, "`"))
                                                   
                                                 } else if (is.null(x)) {
                                                   return("")
@@ -2172,7 +2172,7 @@ print_pkg_config <- function(pkg,
     dplyr::rename(`R option` = r_opt,
                   `Environment variable` = env_var,
                   `Default value` = default_value) |>
-    pal::pipe_table()
+    pipe_table()
 }
 
 #' Get all `DESCRIPTION` file fields as cleaned up list
@@ -2294,8 +2294,8 @@ desc_dep_vrsn <- function(pkg,
     }) |>
     purrr::list_c(ptype = numeric_version(NULL)) |>
     max(na.rm = TRUE) |>
-    pal::when(length(.) == 0L ~ as.numeric_version(NULL)[NA],
-              ~ .)
+    when(length(.) == 0L ~ as.numeric_version(NULL)[NA],
+         ~ .)
 }
 
 #' Get the Git repository URL from `DESCRIPTION` file
@@ -2491,7 +2491,7 @@ roxy_to_md_links <- function(x) {
   
   checkmate::assert_string(x)
   rlang::check_installed(pkg = "downlit",
-                         reason = pal::reason_pkg_required())
+                         reason = reason_pkg_required())
   
   # determine the roxy-specific doc links by first parsing input as CommonMark which escapes all brackets from roxy doc links (but not from valid MD links)
   links_roxy <-
@@ -3548,7 +3548,7 @@ strip_yaml_header <- function(rmd,
   
   has_yaml <- stringr::str_detect(string = rmd,
                                   pattern = "^(\\n\\s*)?---\\s*\\n.*(---|...)\\s*\\n")
-  eol %<>% pal::as_line_feed_chr()
+  eol %<>% as_line_feed_chr()
   rmd %<>% stringr::str_split_1(pattern = eol)
   last_yaml_line_nr <- 0L
   
@@ -4147,7 +4147,7 @@ git_file_mod_time <- function(path,
                path = path)$hunks |>
     purrr::map(\(x) as.POSIXct(x$final_signature$when)) |>
     purrr::list_c(ptype = vctrs::new_datetime()) |>
-    pal::safe_max()
+    safe_max()
 }
 
 #' Get Git remote tree URL
