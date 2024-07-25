@@ -1968,7 +1968,9 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' 2. The [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `R_<PKG>_<KEY>`.
 #' 3. The ad-hoc default value specified via this function's `default` argument (`NULL` means unspecified).
 #' 4. The configuration's global default value as specified in the package's configuration metadata (column `default_value` or `default_value_dynamic` of
-#'    `<pkg>::pkg_config`). If no default value is specified (`NULL`), an error is thrown.
+#'    `<pkg>::pkg_config`; `NULL` means unspecified).
+#' 
+#' Depending on `require`, an error is thrown if none of the above sources contain a value.
 #'
 #' @details
 #' This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For

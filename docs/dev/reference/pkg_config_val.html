@@ -5,17 +5,19 @@ The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;.
 The environment variable R_&amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;.
 The ad-hoc default value specified via this function's default argument (NULL means unspecified).
 The configuration's global default value as specified in the package's configuration metadata (column default_value or default_value_dynamic of
-&amp;lt;pkg&amp;gt;::pkg_config). If no default value is specified (NULL), an error is thrown.
+&amp;lt;pkg&amp;gt;::pkg_config; NULL means unspecified).
 
-"><meta property="og:description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
+
+Depending on require, an error is thrown if none of the above sources contain a value."><meta property="og:description" content="Retrieves a package configuration value in a canonical way. The following configuration sources are consulted in descending order and the first hit is
 returned:
 The R option &amp;lt;pkg&amp;gt;.&amp;lt;key&amp;gt;.
 The environment variable R_&amp;lt;PKG&amp;gt;_&amp;lt;KEY&amp;gt;.
 The ad-hoc default value specified via this function's default argument (NULL means unspecified).
 The configuration's global default value as specified in the package's configuration metadata (column default_value or default_value_dynamic of
-&amp;lt;pkg&amp;gt;::pkg_config). If no default value is specified (NULL), an error is thrown.
+&amp;lt;pkg&amp;gt;::pkg_config; NULL means unspecified).
 
-"><meta property="og:image" content="https://pal.rpkg.dev/logo.png"><meta name="twitter:card" content="summary"><meta name="twitter:creator" content="@2BSalim"><meta name="twitter:site" content="@2BSalim"><meta name="robots" content="noindex"><script src="https://rpkg.dev/counter-dev.min.js" data-id="4c4963fe-9fcf-4d81-95bb-2135e114b85b" data-utcoffset="1"></script></head><body>
+
+Depending on require, an error is thrown if none of the above sources contain a value."><meta property="og:image" content="https://pal.rpkg.dev/logo.png"><meta name="twitter:card" content="summary"><meta name="twitter:creator" content="@2BSalim"><meta name="twitter:site" content="@2BSalim"><meta name="robots" content="noindex"><script src="https://rpkg.dev/counter-dev.min.js" data-id="4c4963fe-9fcf-4d81-95bb-2135e114b85b" data-utcoffset="1"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -59,8 +61,9 @@ returned:</p><ol><li><p>The <span style="R">R</span> <a href="https://rdrr.io/r/
 <li><p>The <a href="https://en.wikipedia.org/wiki/Environment_variable" class="external-link">environment variable</a> <code>R_&lt;PKG&gt;_&lt;KEY&gt;</code>.</p></li>
 <li><p>The ad-hoc default value specified via this function's <code>default</code> argument (<code>NULL</code> means unspecified).</p></li>
 <li><p>The configuration's global default value as specified in the package's configuration metadata (column <code>default_value</code> or <code>default_value_dynamic</code> of
-<code>&lt;pkg&gt;::pkg_config</code>). If no default value is specified (<code>NULL</code>), an error is thrown.</p></li>
-</ol></div>
+<code>&lt;pkg&gt;::pkg_config</code>; <code>NULL</code> means unspecified).</p></li>
+</ol><p>Depending on <code>require</code>, an error is thrown if none of the above sources contain a value.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>

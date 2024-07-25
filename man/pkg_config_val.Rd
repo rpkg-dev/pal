@@ -30,8 +30,10 @@ returned:
 \item The \href{https://en.wikipedia.org/wiki/Environment_variable}{environment variable} \verb{R_<PKG>_<KEY>}.
 \item The ad-hoc default value specified via this function's \code{default} argument (\code{NULL} means unspecified).
 \item The configuration's global default value as specified in the package's configuration metadata (column \code{default_value} or \code{default_value_dynamic} of
-\verb{<pkg>::pkg_config}). If no default value is specified (\code{NULL}), an error is thrown.
+\verb{<pkg>::pkg_config}; \code{NULL} means unspecified).
 }
+
+Depending on \code{require}, an error is thrown if none of the above sources contain a value.
 }
 \details{
 This function is intended to be used by package authors who want to expose their package configuration options in a canonical way (as outlined above). For
