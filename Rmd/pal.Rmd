@@ -2339,6 +2339,7 @@ TODO:
     -   [GlobalOptions](https://github.com/jokergoo/GlobalOptions)
     -   [pkgconfig](https://github.com/r-lib/pkgconfig) (has a different goal: pkg-local options)
     -   [settings](https://github.com/markvanderloo/settings)
+    -   [fallback](https://github.com/lorenzwalthert/fallback) (great pkg name!)
 
     and ask Posit/tidyverse folks for advice?
 
