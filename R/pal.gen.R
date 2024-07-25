@@ -3571,7 +3571,7 @@ strip_yaml_header <- function(rmd,
             dplyr::filter(!dplyr::if_any(.cols = everything(),
                                          .fns = is.na)) |>
             dplyr::pull("rowid") |>
-            purrr::chuck(1L),
+            purrr::pluck(1L),
           na.rm = TRUE)
   }
   
