@@ -24,12 +24,7 @@ check_dots_named(
 
 \item{.empty_ok}{Set to \code{TRUE} if empty \code{...} should be allowed, or to \code{FALSE} otherwise.}
 
-\item{.action}{Action to take when the check fails. One of
-\itemize{
-\item \code{"abort"}
-\item \code{"warn"}
-\item \code{"inform"}
-}}
+\item{.action}{Action to take when the check fails. One of \code{"abort"}, \code{"warn"} or \code{"inform"}}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

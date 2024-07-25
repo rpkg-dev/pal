@@ -1370,8 +1370,7 @@ draw_path_tree <- function(paths,
 #' @param .additional Parameter names within `...` that should be treated as valid in addition to `.fn`'s actual parameter names. A character vector.
 #' @param .forbidden Parameter names within `...` that should be treated as invalid. This has precedence over `.additional`. A character vector.
 #' @param .empty_ok Set to `TRUE` if empty `...` should be allowed, or to `FALSE` otherwise.
-#' @param .action Action to take when the check fails. One of
-#' `r pal::as_md_val_list(c("abort", "warn", "inform"))`
+#' @param .action Action to take when the check fails. One of `r as_md_vals(c("abort", "warn", "inform")) |> enum_str(sep2 = " or ")`
 #'
 #' @seealso rlang's check dots functions: [rlang::check_dots_empty()], [rlang::check_dots_used()] and [rlang::check_dots_unnamed()]
 #' @family dots
