@@ -2154,16 +2154,19 @@ print_pkg_config <- function(pkg,
                                               \(x, y) {
                                                 
                                                 if (!is.na(y)) {
-                                                  return(wrap_chr(y, "`"))
+                                                  return(wrap_chr(y,
+                                                                  wrap = "`"))
                                                   
                                                 } else if (is.null(x)) {
                                                   return("")
                                                   
                                                 } else {
-                                                  return(constructive::construct(x = x,
-                                                                                 unicode_representation = "unicode",
-                                                                                 check = TRUE,
-                                                                                 one_liner = TRUE)$code)
+                                                  return(x |>
+                                                           constructive::construct(unicode_representation = "unicode",
+                                                                                   check = TRUE,
+                                                                                   one_liner = TRUE) |>
+                                                           purrr::chuck("code") |>
+                                                           wrap_chr(wrap = "`"))
                                                 }
                                               })) |>
     dplyr::select(any_of("description"),
