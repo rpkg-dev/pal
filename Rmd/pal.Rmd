@@ -825,7 +825,7 @@ as_flat_list <- function(x,
   depth <- purrr::pluck_depth(x)
   
   # wrap `x` in a list if it's not
-  if (regard_attrs || depth < 2L) {
+  if (regard_attrs || (!rlang::is_bare_list(x) && depth < 2L)) {
     result <- list(x)
     
     # return `x` as-is if it is an unnested list
