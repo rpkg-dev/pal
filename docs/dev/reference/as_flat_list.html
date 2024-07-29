@@ -187,10 +187,10 @@ removes list names. unlist() concatenates nested names (separated by a dot).
 <span class="r-in"><span><span class="co"># ...but you can drop them and thereby flatten custom objects if needed...</span></span></span>
 <span class="r-in"><span><span class="fu">pal</span><span class="fu">::</span><span class="fu">as_flat_list</span><span class="op">(</span><span class="va">nested_list</span>, keep_attrs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $    : int 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ a_1: num 1.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ a_2: chr "2"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $    : tibble [2 × 11] (S3: tbl_df/tbl/data.frame)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : int 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : num 1.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : chr "2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : tibble [2 × 11] (S3: tbl_df/tbl/data.frame)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ mpg : num [1:2] 21 21</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ cyl : num [1:2] 6 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ disp: num [1:2] 160 160</span>
