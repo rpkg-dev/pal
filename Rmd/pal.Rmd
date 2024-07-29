@@ -2282,7 +2282,11 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 
 TODO:
 
--   Add support for config files (text files with structured data in YAML, TOML, JSON) as (4th) pkg config val src.
+-   Add support for [config files](https://github.com/rstudio/renv/issues/1865#issuecomment-2250406951) (text files with structured data in YAML, TOML, JSON) as
+    (4th) pkg config val src.
+
+    -   use the [config](https://rstudio.github.io/config/) pkg under the hood
+    -   add support for TOML to the config pkg
 
 -   Add support for system keyrings as (5th) pkg config val src via [`keyring::key_get()`](https://keyring.r-lib.org/reference/key_get.html), which is more
     secure to store secrets than the existing srcs.
