@@ -741,6 +741,10 @@ reduce_df_list <- function(x,
 
 TODO:
 
+-   This fn is ill-fated -\> get rid of it (first of its usage)!
+
+    -   I.a. `keep_attrs` does not work as one would expected, e.g. `pal::as_flat_list(mtcars, keep_attrs = FALSE)`
+
 -   Behaviour with named (sub)lists like the following one is counter-intuitive:
 
     ``` r
