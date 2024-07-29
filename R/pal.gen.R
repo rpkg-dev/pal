@@ -677,7 +677,7 @@ as_flat_list <- function(x,
     
     # flatten the two last list levels (keeping attributes if requested)
   } else if (depth < 4L) {
-    result <- if (keep_attrs) rm_list_lvl(x, attrs_to_drop = attrs_to_drop) else purrr::list_flatten(as.list(x))
+    result <- if (keep_attrs) rm_list_lvl(x, attrs_to_drop = attrs_to_drop) else unname(purrr::list_flatten(as.list(x)))
     
   } else {
     
@@ -689,7 +689,7 @@ as_flat_list <- function(x,
                                    attrs_to_drop = attrs_to_drop)) |>
       when(keep_attrs ~ rm_list_lvl(.,
                                     attrs_to_drop = attrs_to_drop),
-           ~ purrr::list_flatten(.))
+           ~ unname(purrr::list_flatten(.)))
   }
   
   result
