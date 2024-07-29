@@ -2160,7 +2160,10 @@ print_pkg_config <- function(pkg,
                                                   return("")
                                                   
                                                 } else {
-                                                  return(as_md_vals(x))
+                                                  return(constructive::construct(x = x,
+                                                                                 unicode_representation = "unicode",
+                                                                                 check = TRUE,
+                                                                                 one_liner = TRUE)$code)
                                                 }
                                               })) |>
     dplyr::select(any_of("description"),
