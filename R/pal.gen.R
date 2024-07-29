@@ -664,8 +664,7 @@ as_flat_list <- function(x,
                               any.missing = FALSE,
                               null.ok = TRUE)
   
-  regard_attrs <- keep_attrs && length(setdiff(attributes(x),
-                                               attrs_to_drop))
+  regard_attrs <- keep_attrs && length(setdiff(attributes(x), attrs_to_drop)) > 0L
   depth <- purrr::pluck_depth(x)
   
   # wrap `x` in a list if it's not
@@ -704,7 +703,7 @@ rm_list_lvl <- function(x,
   
   for (i in seq_along(x)) {
     
-    regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop))
+    regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop)) > 0L
     
     if (!regard_attrs && purrr::pluck_depth(x[[i]]) > 1L) {
       result %<>% c(x[[i]])
