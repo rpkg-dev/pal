@@ -1329,6 +1329,8 @@ TODO:
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
 #'
 #' @param ... Regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_lbl("dyn_dots_support")`
+#' @param .literal Whether or not the input should be interpreted *literally* instead of as regular expressions. If `TRUE`, all elements of `...` are wrapped in
+#'   the literal escape sequences `\Q` and `\E`.
 #'
 #' @return A character scalar.
 #' @seealso The [rex][rex::rex] package which provides an intuitive framework to build complex regular expressions.
@@ -1344,11 +1346,19 @@ TODO:
 #'
 #' stringr::str_subset(string = janeaustenr::prideprejudice,
 #'                     pattern = pal::fuse_regex(regex))}
-fuse_regex <- function(...) {
+fuse_regex <- function(...,
+                       .literal = FALSE) {
   
-  result <- as_str(..., sep = "|")
+  checkmate::assert_flag(.literal)
   
-  if (length(rlang::list2(...)) > 1L || length(rlang::list2(...)[[1L]]) > 1L) {
+  result <- as_chr(...)
+  if (.literal) {
+    result %<>% paste0("\\Q", ., "\\E")
+  }
+  result %<>% paste0(collapse = "|")
+  dots <- rlang::list2(...)
+  
+  if (length(dots) > 1L || length(dots[[1L]]) > 1L) {
     result %<>% paste0("(", ., ")")
   }
   

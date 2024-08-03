@@ -4,10 +4,13 @@
 \alias{fuse_regex}
 \title{Fuse regular expressions}
 \usage{
-fuse_regex(...)
+fuse_regex(..., .literal = FALSE)
 }
 \arguments{
 \item{...}{Regular expressions. All elements will be converted to type character before fusing. \link[rlang:dyn-dots]{Dynamic dots} are supported.}
+
+\item{.literal}{Whether or not the input should be interpreted \emph{literally} instead of as regular expressions. If \code{TRUE}, all elements of \code{...} are wrapped in
+the literal escape sequences \verb{\\Q} and \verb{\\E}.}
 }
 \value{
 A character scalar.
