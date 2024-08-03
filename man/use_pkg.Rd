@@ -14,7 +14,8 @@ use_pkg(package, type = "Imports", min_version = TRUE, tidy = TRUE)
 is case insensitive.}
 
 \item{min_version}{Optionally, supply a minimum version for the package. Set
-to \code{TRUE} to use the currently installed version.}
+to \code{TRUE} to use the currently installed version or use a version string
+suitable for \code{\link[=numeric_version]{numeric_version()}}, such as "2.5.0".}
 
 \item{tidy}{Whether or not to run \code{\link[usethis:tidyverse]{usethis::use_tidy_description()}} after adding \code{package} to dependencies.}
 }
