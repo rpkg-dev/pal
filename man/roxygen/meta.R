@@ -3,6 +3,7 @@ list(
                          cli        = "Other functions extending the cli package:",
                          commonmark = "Other CommonMark parsing functions:",
                          desc       = "Other package `DESCRIPTION` functions:",
+                         df         = "Other data frame / tibble functions:",
                          dots       = "Other dots functions:",
                          git        = "Other Git functions:",
                          htmlwidget = "Other HTML widget functions:",
@@ -18,6 +19,5 @@ list(
                          stat       = "Other statistical computing / numeric functions:",
                          string     = "Other string functions:",
                          sys        = "Other system interaction functions:",
-                         tibble     = "Other data frame / tibble functions:",
                          toml       = "Other TOML functions:")
 )

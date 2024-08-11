@@ -430,6 +430,63 @@ stat_mode <- function(x,
   )
 }
 
+#' Assert data frame columns
+#'
+#' Asserts that a data frame contains the specified columns.
+#'
+#' @param data Data frame to check.
+#' @param cols Column names which must be present in `data`. A character vector or `NULL`.
+#' @param strict Whether additional columns not specified in `cols` are allowed in `data`.
+#' @param obj_name Name of the checked object to print in error messages.
+#'
+#' @return `data`, invisibly.
+#' @family df
+#' @export
+#'
+#' @examples
+#' pal::assert_cols(data = mtcars,
+#'                  cols = c("mpg", "disp"))
+#'
+#' try(
+#'   pal::assert_cols(data = mtcars,
+#'                    cols = c("mpg", "display"))
+#' )
+#'
+#' try(
+#'   pal::assert_cols(data = mtcars,
+#'                    cols = c("mpg", "disp"),
+#'                    strict = TRUE)
+#' )
+#'
+#' try(
+#'   pal::assert_cols(data = mtcars,
+#'                    strict = TRUE)
+#' )
+assert_cols <- function(data,
+                        cols = NULL,
+                        strict = FALSE,
+                        obj_name = checkmate::vname(data)) {
+  
+  checkmate::assert_character(cols,
+                              null.ok = TRUE)
+  checkmate::assert_flag(strict)
+  checkmate::assert_string(obj_name)
+  checkmate::assert_data_frame(data,
+                               min.cols = length(cols))
+  
+  # disallow any cols when `strict` without `cols`
+  if (strict && is.null(cols)) {
+    cols <- character()
+  }
+  
+  checkmate::assert_names(colnames(data),
+                          must.include = if (strict) NULL else cols,
+                          identical.to = if (strict) cols else NULL,
+                          what = "column names",
+                          .var.name = obj_name)
+  invisible(data)
+}
+
 #' Test if two data frames/tibbles are equal
 #'
 #' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
@@ -453,7 +510,7 @@ stat_mode <- function(x,
 #'
 #' @return If `return_waldo_compare = FALSE`, a logical scalar indicating the result of the comparison. Otherwise a character vector of class
 #'   [`waldo_compare`][waldo::compare] describing the differences between `x` and `y`.
-#' @family tibble
+#' @family df
 #' @export
 #'
 #' @examples
@@ -570,7 +627,7 @@ is_equal_df <- function(x,
 #' @param strict Ensure `x` contains data frames / tibbles only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
 #'
 #' @return `r pkgsnip::return_lbl("tibble")`
-#' @family tibble
+#' @family df
 #' @export
 reduce_df_list <- function(x,
                            strict = TRUE) {

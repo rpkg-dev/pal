@@ -88,6 +88,7 @@ pal::is_equal_df(df1, df2,
 }
 \seealso{
 Other data frame / tibble functions:
+\code{\link{assert_cols}()},
 \code{\link{reduce_df_list}()}
 }
-\concept{tibble}
+\concept{df}

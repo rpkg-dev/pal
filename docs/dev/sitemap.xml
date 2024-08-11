@@ -14,6 +14,7 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/as_str.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_class_any.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_cli.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/assert_cols.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_df_or_tibble.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_inf_count.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_mime_type.html</loc></url>

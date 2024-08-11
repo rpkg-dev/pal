@@ -11,6 +11,7 @@ reference:
   - stat_mode
 - title: Data frames / Tibbles
 - contents:
+  - assert_cols
   - is_equal_df
   - reduce_df_list
 - title: Lists

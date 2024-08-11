@@ -19,6 +19,7 @@ Recursively reduces a nested list containing data frames / tibbles at its leafs 
 }
 \seealso{
 Other data frame / tibble functions:
+\code{\link{assert_cols}()},
 \code{\link{is_equal_df}()}
 }
-\concept{tibble}
+\concept{df}
