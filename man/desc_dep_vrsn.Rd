@@ -20,7 +20,7 @@ is part of) is used.}
 \item{types}{Dependency types to be considered. If \code{pkg} is listed in multiple dependency types, the maximally required version is returned.}
 }
 \value{
-A \link[=numeric_version]{numeric version}.
+A \link[base:numeric_version]{numeric version}.
 }
 \description{
 Returns the version of the specified \code{pkg} dependency from a \code{DESCRIPTION} file.
