@@ -4447,9 +4447,6 @@ toml_read <- function(input,
   checkmate::assert_flag(verbose)
   rlang::check_installed("RcppTOML",
                          reason = reason_pkg_required())
-  rlang::check_installed("xfun",
-                         reason = reason_pkg_required())
-  
   if (from_file) {
     checkmate::assert_file_exists(input,
                                   access = "r")
@@ -4633,8 +4630,6 @@ test_cli <- function(cmd,
   checkmate::assert_string(cmd)
   checkmate::assert_flag(get_cmd_path)
   checkmate::assert_flag(force_which)
-  rlang::check_installed("xfun",
-                         reason = reason_pkg_required())
   
   if (force_which || !xfun::is_unix()) {
     
