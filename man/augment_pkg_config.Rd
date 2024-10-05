@@ -4,10 +4,10 @@
 \alias{augment_pkg_config}
 \title{Augment package configuration metadata}
 \usage{
-augment_pkg_config(pkg)
+augment_pkg_config(pkg = utils::packageName(env = parent.frame()))
 }
 \arguments{
-\item{pkg}{Package name. A character scalar.}
+\item{pkg}{Package name. A character scalar. Defaults to the name of the calling package.}
 }
 \value{
 A \link[tibble:tbl_df-class]{tibble} with at minimum the columns \code{key}, \code{default_value}, \code{r_opt} and \code{env_var}.

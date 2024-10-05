@@ -2045,7 +2045,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' evaluate to default configuration values dynamically at access time).
 #'
 #' @param key Configuration key name. A character scalar.
-#' @param pkg Package name. A character scalar.
+#' @param pkg Package name. A character scalar. Defaults to the name of the calling package.
 #' @param default Default value to fall back to if neither the \R option `<pkg>.<key>` nor the environment variable `R_<PKG>_<KEY>` is set. If `NULL`, the
 #'   default value for `key` in `<pkg>::pkg_config` will be used (if defined).
 #' @param require Whether or not to require that the configuration value is set. If `TRUE` and no configuration value is set, an error is thrown with
@@ -2063,7 +2063,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #'                       pkg = "pkgpurl")
 #' )
 pkg_config_val <- function(key,
-                           pkg,
+                           pkg = utils::packageName(env = parent.frame()),
                            default = NULL,
                            require = NULL,
                            env = parent.frame()) {
@@ -2129,7 +2129,7 @@ pkg_config_val <- function(key,
 #'                               pkg = "pkgpurl")
 #' )
 pkg_config_val_default <- function(key,
-                                   pkg,
+                                   pkg = utils::packageName(env = parent.frame()),
                                    env = parent.frame()) {
   
   get_pkg_config_val_default(key = key,
@@ -2155,7 +2155,7 @@ pkg_config_val_default <- function(key,
 #'                           pkg = "pkgpurl")
 #' )
 has_pkg_config_val <- function(key,
-                               pkg,
+                               pkg = utils::packageName(env = parent.frame()),
                                env = parent.frame()) {
   
   !is.null(pkg_config_val(key = key,
@@ -2180,7 +2180,7 @@ has_pkg_config_val <- function(key,
 #' try(
 #'   pal::augment_pkg_config(pkg = "pkgpurl")
 #' )
-augment_pkg_config <- function(pkg) {
+augment_pkg_config <- function(pkg = utils::packageName(env = parent.frame())) {
   
   get_pkg_config(pkg) |>
     dplyr::mutate(r_opt = pkg_config_opt_name(pkg = pkg,
@@ -2205,7 +2205,7 @@ augment_pkg_config <- function(pkg) {
 #' try(
 #'   pal::print_pkg_config(pkg = "pkgpurl")
 #' )
-print_pkg_config <- function(pkg,
+print_pkg_config <- function(pkg = utils::packageName(env = parent.frame()),
                              roxy_to_md = FALSE) {
   
   checkmate::assert_flag(roxy_to_md)

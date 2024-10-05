@@ -4,12 +4,16 @@
 \alias{pkg_config_val_default}
 \title{Get default package configuration value}
 \usage{
-pkg_config_val_default(key, pkg, env = parent.frame())
+pkg_config_val_default(
+  key,
+  pkg = utils::packageName(env = parent.frame()),
+  env = parent.frame()
+)
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
 
-\item{pkg}{Package name. A character scalar.}
+\item{pkg}{Package name. A character scalar. Defaults to the name of the calling package.}
 
 \item{env}{Environment to evaluate \code{default_value_dynamic} in, if necessary.}
 }

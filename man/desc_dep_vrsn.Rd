@@ -11,7 +11,7 @@ desc_dep_vrsn(
 )
 }
 \arguments{
-\item{pkg}{Package name. A character scalar.}
+\item{pkg}{Package name. A character scalar. Defaults to the name of the calling package.}
 
 \item{file}{DESCRIPTION file to use. By default the DESCRIPTION
 file of the current package (i.e. the package the working directory

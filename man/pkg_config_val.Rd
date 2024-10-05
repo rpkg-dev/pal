@@ -4,12 +4,18 @@
 \alias{pkg_config_val}
 \title{Get package configuration value}
 \usage{
-pkg_config_val(key, pkg, default = NULL, require = NULL, env = parent.frame())
+pkg_config_val(
+  key,
+  pkg = utils::packageName(env = parent.frame()),
+  default = NULL,
+  require = NULL,
+  env = parent.frame()
+)
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
 
-\item{pkg}{Package name. A character scalar.}
+\item{pkg}{Package name. A character scalar. Defaults to the name of the calling package.}
 
 \item{default}{Default value to fall back to if neither the \R option \verb{<pkg>.<key>} nor the environment variable \verb{R_<PKG>_<KEY>} is set. If \code{NULL}, the
 default value for \code{key} in \verb{<pkg>::pkg_config} will be used (if defined).}

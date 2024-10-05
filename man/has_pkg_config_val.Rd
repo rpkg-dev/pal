@@ -4,12 +4,16 @@
 \alias{has_pkg_config_val}
 \title{Test if package configuration value is set}
 \usage{
-has_pkg_config_val(key, pkg, env = parent.frame())
+has_pkg_config_val(
+  key,
+  pkg = utils::packageName(env = parent.frame()),
+  env = parent.frame()
+)
 }
 \arguments{
 \item{key}{Configuration key name. A character scalar.}
 
-\item{pkg}{Package name. A character scalar.}
+\item{pkg}{Package name. A character scalar. Defaults to the name of the calling package.}
 
 \item{env}{Environment to evaluate \code{default_value_dynamic} in, if necessary.}
 }
