@@ -5368,7 +5368,7 @@ jsonvalidate::json_validate(
 #'
 #' @inheritParams toml_read
 #' @param schema URL to a [JSON Schema](https://json-schema.org/) ([Draft 4](https://json-schema.org/specification-links.html#draft-4)) file to validate `input`
-#'   against. Can also be a local filesystem path specified in the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) (path prefixed with
+#'   against. Can also be a local filesystem path specified in the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) (absolute path prefixed with
 #'   `file://`). If `NULL`, no schema-based validation is performed and `input` is only checked to be TOML-compliant.
 #' @param top_errors_only Whether to reduce the output to the top error message of each of TOML CLI's error classes. If `FALSE`, TOML CLI's complete error
 #'   output is shown.
