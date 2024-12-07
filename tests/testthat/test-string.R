@@ -13,11 +13,11 @@ test_that("`fn_param_defaults()` works as expected", {
 
   # test with internal fns
   expect_identical(fn_param_defaults(param = "wrap",
-                                     fn = prose_ls),
+                                     fn = enum_str),
                    '""')
 
   expect_identical(fn_param_defaults(param = "wrap",
-                                     fn = "prose_ls"),
+                                     fn = "enum_str"),
                    '""')
 
   expect_identical(fn_param_defaults(param = "type",
