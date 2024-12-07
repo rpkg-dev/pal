@@ -4111,9 +4111,9 @@ cli_progress_step_quick <- function(msg,
 #'
 #' @description
 #'
-#' `r lifecycle::badge("deprecated")` \cr
-#' This function is deprecated in favor of the `cli::cli_progress_*` family of functions (i.a. [cli::cli_progress_step()]) which is more powerful and
-#' versatile than the `cli::cli_process_*` family on which `cli_process_expr()` is built. `cli_process_expr()` will be removed in a future version of pal.
+#' `r lifecycle::badge("superseded")` \cr
+#' This function is superseded in favor of [cli_progress_step_quick()] and the underlying `cli::cli_progress_*` family of functions which are more powerful and
+#' versatile than the `cli::cli_process_*` family on which `cli_process_expr()` is built.
 #'
 #' @inheritParams cli::cli_process_start
 #' @param expr An expression to be evaluated.
