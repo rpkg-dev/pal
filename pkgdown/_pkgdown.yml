@@ -35,7 +35,6 @@ reference:
   - as_comment_str
   - enum_str
   - fuse_regex
-  - prose_ls
 - title: Filesystem paths
   desc: Functions to work with filesystem paths.
 - contents:
@@ -51,7 +50,6 @@ reference:
 - contents:
   - ls_pkg
   - use_pkg
-  - assert_pkg
   - is_pkg_installed
   - is_pkg_cran
   - is_pkg_dir
