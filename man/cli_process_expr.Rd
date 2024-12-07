@@ -41,9 +41,9 @@ termination message. Use an empty string to suppress styling.a}
 The result of the evaluated \code{expr}, invisibly.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \cr
-This function is deprecated in favor of the \verb{cli::cli_progress_*} family of functions (i.a. \code{\link[cli:cli_progress_step]{cli::cli_progress_step()}}) which is more powerful and
-versatile than the \verb{cli::cli_process_*} family on which \code{cli_process_expr()} is built. \code{cli_process_expr()} will be removed in a future version of pal.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}} \cr
+This function is superseded in favor of \code{\link[=cli_progress_step_quick]{cli_progress_step_quick()}} and the underlying \verb{cli::cli_progress_*} family of functions which are more powerful and
+versatile than the \verb{cli::cli_process_*} family on which \code{cli_process_expr()} is built.
 }
 \examples{
 if (interactive()) {

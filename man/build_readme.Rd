@@ -39,7 +39,7 @@ A simpler, but considerably faster alternative to \code{\link[devtools:build_rmd
 Note that for public package repositories, it's recommended to use \code{\link[devtools:build_rmd]{devtools::build_readme()}} since it ensures the \code{README.Rmd} can be built \emph{reproducibly},
 which means all the objects and files it references must be accessible from the repository.
 
-This function is also registered as an \href{https://rstudio.github.io/rstudioaddins/}{RStudio add-in}, allowing RStudio users to assign a \href{https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts-in-the-RStudio-IDE}{custom shortcut} to it and to invoke it from the \href{https://www.rstudio.com/blog/rstudio-1-4-a-quick-tour/#command-palette--shortcuts}{command palette}.
+This function is registered as an \href{https://rstudio.github.io/rstudioaddins/}{RStudio add-in}, allowing RStudio users to assign a \href{https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts-in-the-RStudio-IDE}{custom shortcut} to it and to invoke it from the \href{https://www.rstudio.com/blog/rstudio-1-4-a-quick-tour/#command-palette--shortcuts}{command palette}.
 }
 \seealso{
 Other R Markdown and knitr functions:

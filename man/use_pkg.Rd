@@ -27,7 +27,6 @@ Wrapper around \code{\link[usethis:use_package]{usethis::use_package()}} with di
 }
 \seealso{
 Other R package functions:
-\code{\link{assert_pkg}()},
 \code{\link{is_pkg_cran}()},
 \code{\link{is_pkg_dir}()},
 \code{\link{is_pkg_installed}()},

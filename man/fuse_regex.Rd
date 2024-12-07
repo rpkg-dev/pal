@@ -41,7 +41,6 @@ Other string functions:
 \code{\link{enum_str}()},
 \code{\link{escape_lf}()},
 \code{\link{prettify_nr}()},
-\code{\link{prose_ls}()},
 \code{\link{sentenceify}()},
 \code{\link{wrap_chr}()}
 }
