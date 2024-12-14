@@ -1,8 +1,8 @@
-pandoc: '3.5'
+pandoc: '3.6'
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-12-07T03:32Z
+last_built: 2024-12-14T00:12Z
 urls:
   reference: https://pal.rpkg.dev/reference
   article: https://pal.rpkg.dev/articles

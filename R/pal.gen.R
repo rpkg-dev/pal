@@ -3270,7 +3270,7 @@ xml_to_md <- function(xml) {
 #' Note that for public package repositories, it's recommended to use [devtools::build_readme()] since it ensures the `README.Rmd` can be built _reproducibly_,
 #' which means all the objects and files it references must be accessible from the repository.
 #' 
-#' `r pkgsnip::md_snip("rstudio_addin_hint")`
+#' `r pkgsnip::md_snip("rstudio_addin")`
 #'
 #' @param input Path to the R Markdown README file to be built. A character scalar.
 #' @param output Path to the built Markdown README. A character scalar.
