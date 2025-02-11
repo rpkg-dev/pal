@@ -38,9 +38,7 @@ output: pal::gitlab_document
 Some prose.
 "
 
-rmd |>
-  stringr::str_split_1("\n") |>
-  pal::cat_lines()
+pal::cat_lines(rmd)
 
 rmd |>
   pal::strip_yaml_header() |>

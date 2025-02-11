@@ -2,7 +2,7 @@
 # See `README.md#r-markdown-format` for more information on the literate programming approach used applying the R Markdown format.
 
 # pal: Friendly Convenience/Utility Functions
-# Copyright (C) 2024 Salim Brüggemann
+# Copyright (C) 2025 Salim Brüggemann
 # 
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
 # Software Foundation, either version 3 of the License, or any later version.
@@ -3461,9 +3461,7 @@ knitr_table_format <- function(default = c("pipe",
 #' Some prose.
 #' "
 #'
-#' rmd |>
-#'   stringr::str_split_1("\n") |>
-#'   pal::cat_lines()
+#' pal::cat_lines(rmd)
 #' 
 #' rmd |>
 #'   pal::strip_yaml_header() |>
