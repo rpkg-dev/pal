@@ -61,7 +61,8 @@
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="https://cli.r-lib.org/reference/cat_line.html" class="external-link">cli::cat_line()</a></code> for a faster alternative that doesn't <em>recursively</em> convert its input to type character.</p>
-<p><code><a href="https://rdrr.io/pkg/xfun/man/raw_string.html" class="external-link">xfun::raw_string()</a></code> (and <code><a href="https://rdrr.io/pkg/xfun/man/file_string.html" class="external-link">xfun::file_string()</a></code>) for an alternative approach to the same use case (but without any conversion to type character at all).</p></div>
+<p><code><a href="https://rdrr.io/pkg/xfun/man/raw_string.html" class="external-link">xfun::raw_string()</a></code> (and <code><a href="https://rdrr.io/pkg/xfun/man/file_string.html" class="external-link">xfun::file_string()</a></code>) for an alternative approach to the same use case (but without any conversion to type character at all).</p>
+<p><code><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines(con = stdout())</a></code> for a base R alternative that <em>only</em> accepts character inputs.</p></div>
     </div>
 
     <div class="section level2">
@@ -90,6 +91,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list("day")</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># this OTOH only accepts chr inputs</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">to_convert</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in writeLines(to_convert) : can only write character objects</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

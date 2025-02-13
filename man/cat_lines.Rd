@@ -26,9 +26,16 @@ to_convert <- list(tibble::tibble(a = 1:3), "A", factor("wonderful"), xfun::stri
 
 to_convert |> pal::cat_lines()
 to_convert |> cli::cat_line()
+
+# this OTOH only accepts chr inputs
+try(
+  to_convert |> writeLines()
+)
 }
 \seealso{
 \code{\link[cli:cat_line]{cli::cat_line()}} for a faster alternative that doesn't \emph{recursively} convert its input to type character.
 
 \code{\link[xfun:raw_string]{xfun::raw_string()}} (and \code{\link[xfun:file_string]{xfun::file_string()}}) for an alternative approach to the same use case (but without any conversion to type character at all).
+
+\code{\link[base:writeLines]{writeLines(con = stdout())}} for a base R alternative that \emph{only} accepts character inputs.
 }

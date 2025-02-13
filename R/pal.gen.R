@@ -4641,7 +4641,9 @@ capture_print <- function(x,
 #' @seealso
 #' [cli::cat_line()] for a faster alternative that doesn't _recursively_ convert its input to type character.
 #'
-#' [xfun::raw_string()] (and [xfun::file_string()]) for an alternative approach to the same use case (but without any conversion to type character at all). 
+#' [xfun::raw_string()] (and [xfun::file_string()]) for an alternative approach to the same use case (but without any conversion to type character at all).
+#' 
+#' [`writeLines(con = stdout())`][base::writeLines] for a base R alternative that *only* accepts character inputs.
 #' @export
 #'
 #' @examples
@@ -4655,6 +4657,11 @@ capture_print <- function(x,
 #' 
 #' to_convert |> pal::cat_lines()
 #' to_convert |> cli::cat_line()
+#' 
+#' # this OTOH only accepts chr inputs
+#' try(
+#'   to_convert |> writeLines()
+#' )
 cat_lines <- function(...) {
   
   cat(as_chr(...),
