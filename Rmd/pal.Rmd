@@ -4860,56 +4860,7 @@ git_remote_tree_url <- function(repo = ".",
 
 ### DESCRIPTION
 
-Extending the [**httr**](https://httr.r-lib.org/) and [**httr2**](https://httr2.r-lib.org/) packages that wrap the [curl](https://jeroen.cran.dev/curl/)
-package.
-
-### `assert_mime_type`
-
-TODO: When we finished switching to httr2, deprecate this fn in favor of
-[`httr2::resp_check_content_type()`](https://httr2.r-lib.org/reference/resp_check_content_type.html).
-
-```{r}
-#' Assert MIME type
-#'
-#' Asserts that a [response object][httr::response] is of a specific [MIME type](https://en.wikipedia.org/wiki/Media_type). Convenience wrapper around
-#' [httr::http_type()].
-#'
-#' @param response A [response object][httr::response].
-#' @param mime_type Expected MIME type, e.g. `"application/json"`. A character scalar.
-#' @param msg Message to display in case of an error. `r pkgsnip::param_lbl("cli_markup_support")` A character scalar.
-#' @param msg_suffix Additional string to append to `msg`. `r pkgsnip::param_lbl("cli_markup_support")`
-#'
-#' @return `response`, invisibly.
-#' @family http
-#' @family checkmate
-#' @export
-#'
-#' @examples
-#' httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("application/json")
-#' 
-#' # an informative error is thrown when the assertion is violated
-#' try(
-#'   httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("text/plain")
-#' )
-assert_mime_type <- function(response,
-                             mime_type,
-                             msg = paste0("The response's MIME type is {.val {mime_type_actual}} ",
-                                          "but expected was {.val {mime_type}}."),
-                             msg_suffix = "") {
-  
-  checkmate::assert_class(response, "response")
-  checkmate::assert_string(mime_type)
-  checkmate::assert_string(msg)
-  checkmate::assert_string(msg_suffix)
-  mime_type_actual <- httr::http_type(response)
-  
-  if (mime_type_actual != mime_type) {
-    cli::cli_abort(paste0(msg, msg_suffix))
-  }
-  
-  invisible(response)
-}
-```
+Extending the [**httr2**](https://httr2.r-lib.org/) package which is built upon the [curl](https://jeroen.cran.dev/curl/) package.
 
 ### `is_http_success`
 
