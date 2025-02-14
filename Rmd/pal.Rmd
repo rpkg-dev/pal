@@ -1218,10 +1218,12 @@ dsv_colnames <- function(x,
                            null.ok = TRUE,
                            pattern = "^.$")
   x |>
+    # extract first line
     regexpr(pattern = "[\r\n]") |>
     magrittr::subtract(1L) |>
-    stringr::str_sub(string = x,
-                     start = 1L) |>
+    substr(x = x,
+           start = 1L,
+           stop = _) |>
     stringr::str_split_1(pattern = delim) |>
     stringr::str_remove_all(pattern = glue::glue("^{quote}|{quote}$"))
 }
