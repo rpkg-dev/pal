@@ -800,6 +800,8 @@ reduce_df_list <- function(x,
 
 ### `as_flat_list`
 
+DEPRECATED!
+
 TODO:
 
 -   This fn is ill-fated -\> get rid of it (first of its usage)!
