@@ -39,7 +39,6 @@ Suggests:
     htmltools (>= 0.5.2),
     httr (>= 1.4.1),
     httr2 (>= 0.2.3),
-    janeaustenr,
     knitr (>= 1.41),
     mime (>= 0.12),
     pander (>= 0.6.3),
