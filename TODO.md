@@ -18,14 +18,18 @@
     1.  Thoroughly scan exported fns for possible API improvements (which would be harder to introduce once the pkg is on CRAN) and other outstanding work and
         implement it.
 
-        -   Migrate to httr2!
         -   move `toml_*()` fns to sep pkg (tomlr?)
-        -   remove deprecated fns
 
-    2.  Replace `pkgsnip::*` with constants included in pkg. Make changes (to source file `Rmd/pal.Rmd` only) in a single commit, so it can be easily reverted.
+        -   remove deprecated fns: `as_flat_list()`, `fuse_regex()`, ...
+
+            (lazier solution might be moving them to pkg salim and adapting downstream accordingly)
+
+    2.  Replace `pkgsnip::*` with constants included in pkg. Make changes in a single commit (only incl. source file `Rmd/pal.Rmd`), so it can be easily
+        reverted.
 
     3.  Remove Netlify redirect rule `/` -\> `/dev`.
 
     4.  Release pkg pkgsnip on CRAN.
 
     5.  Revert step 2.
+
