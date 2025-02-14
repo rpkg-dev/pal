@@ -5628,7 +5628,7 @@ mime_to_ext = function(mime_type,
   }
   
   if (!quiet && length(i) > 1L) {
-    cli::cli_warn("The MIME type {.val {mime_type}} maps to multiple file extensions ({.val {result}}). Simply the first one is returned.")
+    cli::cli_warn("The MIME type {.val {mime_type}} maps to multiple file extensions ({.val {result}}). Only the first one is returned.")
   }
   
   result[1L]
