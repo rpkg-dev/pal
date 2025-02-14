@@ -1739,7 +1739,7 @@ is_pkg_cran <- function(pkg,
   
   url <- glue::glue("https://cran.r-project.org/package={pkg}")
   is_cran <- is_http_success(url = url,
-                             retries = 1L)
+                             retries = retries)
   
   if (is_cran && length(min_version)) {
     
