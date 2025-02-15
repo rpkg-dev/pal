@@ -1,11 +1,28 @@
-# fuse_regex ----
-test_that("`fuse_regex()` works as expected", {
+# dsv_colnames ----
+test_that("`dsv_colnames()` hadnles", {
 
-  expect_identical(fuse_regex(1:3),
-                   "(1|2|3)")
+  raw_csv <-
+    httr2::request(base_url = "https://salim_b.gitlab.io/misc/Kantonsratswahl_Zuerich_2019_Ergebnisse_Gemeinden.csv") |>
+    httr2::req_perform() |>
+    httr2::resp_body_string()
 
-  expect_identical(fuse_regex(1, 2, 3),
-                   "(1|2|3)")
+  # this CSV file has a UTF-8 BOM and uses Windows-style line breaks (`\r\n\`); ensure the latter aren't spuriously included
+  expect_identical(dsv_colnames(raw_csv),
+                   c("Gemeindenamen",
+                     "BFS-Nr.",
+                     "Listen-Nr.",
+                     "Liste",
+                     "Wahlkreis-Nr.",
+                     "Wahlkreis",
+                     "Stimmen",
+                     "Stimmenanteil",
+                     "+/- (Stimmenanteil)",
+                     "Stimmenzusatz",
+                     "Wähler",
+                     "Wähleranteil",
+                     "+/- (Wähleranteil)",
+                     "Stimmenanteil 2015",
+                     "Wähleranteil 2015"))
 })
 
 # fn_param_defaults ----
@@ -66,4 +83,14 @@ test_that("`fn_param_defaults()` works as expected", {
   expect_error(fn_param_defaults(param = "x",
                                  fn = tibble::as_tibble),
                regexp = "does not have a default value")
+})
+
+# fuse_regex ----
+test_that("`fuse_regex()` works as expected", {
+
+  expect_identical(fuse_regex(1:3),
+                   "(1|2|3)")
+
+  expect_identical(fuse_regex(1, 2, 3),
+                   "(1|2|3)")
 })
