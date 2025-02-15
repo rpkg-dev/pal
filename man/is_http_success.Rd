@@ -4,22 +4,43 @@
 \alias{is_http_success}
 \title{Test if an HTTP request is successful}
 \usage{
-is_http_success(url, retries = 0L, quiet = TRUE)
+is_http_success(
+  url,
+  max_tries = 1L,
+  retry_on_failure = FALSE,
+  is_transient = NULL,
+  verbosity = NULL
+)
 }
 \arguments{
 \item{url}{HTTP protocol address. The scheme is optional, so both \code{"google.com"} and \code{"https://google.com"} will work. A character scalar.}
 
-\item{retries}{Maximum number of retries of the \code{HEAD} request in case of an HTTP error. An integer scalar \verb{>= 0}. The retries are performed using
-exponential backoff and jitter, see \code{\link[httr:RETRY]{httr::RETRY()}} for details.}
+\item{max_tries}{Maximum number of request attempts in case of an HTTP error. An integerish scalar. Retries are performed using exponential backoff and jitter, see \code{\link[httr2:req_retry]{httr2::req_retry()}} for details.}
 
-\item{quiet}{Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant
-if \code{retries > 0}.}
+\item{retry_on_failure}{Treat low-level failures as if they are
+transient errors that can be retried.}
+
+\item{is_transient}{A predicate function that takes a single argument
+(the response) and returns \code{TRUE} or \code{FALSE} specifying whether or not
+the response represents a transient error.}
+
+\item{verbosity}{How much information to print? This is a wrapper
+around \code{\link[httr2:req_verbose]{req_verbose()}} that uses an integer to control verbosity:
+\itemize{
+\item \code{0}: no output
+\item \code{1}: show headers
+\item \code{2}: show headers and bodies
+\item \code{3}: show headers, bodies, and curl status messages.
+}
+
+Use \code{\link[httr2:with_verbosity]{with_verbosity()}} to control the verbosity of requests that
+you can't affect directly.}
 }
 \value{
 A logical scalar.
 }
 \description{
-Convenience wrapper around \code{\link[httr:http_error]{!httr::http_error()}} that returns
+Convenience wrapper around a bunch of \link[httr2:httr2-package]{httr2} functions that returns
 \itemize{
 \item \code{TRUE} if the specified \code{url} could be resolved \emph{and} a \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}{\code{HEAD}} request could
 be \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{successfully completed}, or
@@ -27,23 +48,32 @@ be \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{successfully c
 }
 }
 \details{
-This function is similar to \code{\link[RCurl:url.exists]{RCurl::url.exists()}}, i.e. it only retrieves the header, no body, but is based on \link[httr:httr-package]{httr} which in turn is
+This function is similar to \code{\link[RCurl:url.exists]{RCurl::url.exists()}}, i.e. it only retrieves the header, no body, but is based on \link[httr2:httr2-package]{httr2} which in turn is
 based on \href{https://jeroen.cran.dev/curl/}{curl}.
 
-For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the \href{https://github.com/r-lib/pingr#readme}{pingr}
-package.
+For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the \href{https://r-lib.github.io/pingr/}{pingr} package.
 }
 \examples{
 pal::is_http_success("goo.gl")
 pal::is_http_success("https://google.com/")
 pal::is_http_success("https://google.not/")
-pal::is_http_success("https://google.not/",
-                     retries = 2,
-                     quiet = FALSE)
+
+# by default, requests are only retried on HTTP 429 and 503 status codes
+pal::is_http_success(url = "https://httpstat.us/503",
+                     max_tries = 2,
+                     verbosity = 1)
+pal::is_http_success(url = "https://httpstat.us/500",
+                     max_tries = 2,
+                     verbosity = 1)
+
+# to retry on *all* failing status codes, set `is_transient` accordingly:
+pal::is_http_success(url = "https://httpstat.us/500",
+                     max_tries = 2,
+                     is_transient = \(x) TRUE,
+                     verbosity = 1)
 }
 \seealso{
 Other HTTP functions:
-\code{\link{assert_mime_type}()},
 \code{\link{is_url}()},
 \code{\link{req_cached}()}
 }

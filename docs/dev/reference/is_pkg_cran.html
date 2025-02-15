@@ -43,7 +43,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is_pkg_cran</span><span class="op">(</span><span class="va">pkg</span>, min_version <span class="op">=</span> <span class="cn">NULL</span>, retries <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is_pkg_cran</span><span class="op">(</span><span class="va">pkg</span>, min_version <span class="op">=</span> <span class="cn">NULL</span>, max_tries <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -59,9 +59,8 @@
 <code><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">package_version</a></code> or something coercible to.</p></dd>
 
 
-<dt id="arg-retries">retries<a class="anchor" aria-label="anchor" href="#arg-retries"></a></dt>
-<dd><p>Maximum number of retries of the <code>HEAD</code> request in case of an HTTP error. An integer scalar <code>&gt;= 0</code>. The retries are performed using
-exponential backoff and jitter, see <code><a href="https://httr.r-lib.org/reference/RETRY.html" class="external-link">httr::RETRY()</a></code> for details.</p></dd>
+<dt id="arg-max-tries">max_tries<a class="anchor" aria-label="anchor" href="#arg-max-tries"></a></dt>
+<dd><p>Maximum number of request attempts in case of an HTTP error. An integerish scalar. Retries are performed using exponential backoff and jitter, see <code><a href="https://httr2.r-lib.org/reference/req_retry.html" class="external-link">httr2::req_retry()</a></code> for details.</p></dd>
 
 </dl></div>
     <div class="section level2">

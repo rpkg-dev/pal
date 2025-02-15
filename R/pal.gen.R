@@ -993,10 +993,11 @@ as_line_feed_chr <- function(eol = c("LF", "CRLF", "CR", "LFCR")) {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' httr::GET("https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv") |>
-#'   httr::content(as = "text") |>
-#'   pal::dsv_colnames()}
+#' "https://raw.githubusercontent.com/tidyverse/readr/master/inst/extdata/mtcars.csv" |>
+#'   httr2::request() |>
+#'   httr2::req_perform() |>
+#'   httr2::resp_body_string() |>
+#'   pal::dsv_colnames()
 dsv_colnames <- function(x,
                          delim = ",",
                          quote = "\"") {
@@ -1008,10 +1009,12 @@ dsv_colnames <- function(x,
                            null.ok = TRUE,
                            pattern = "^.$")
   x |>
+    # extract first line
     regexpr(pattern = "[\r\n]") |>
     magrittr::subtract(1L) |>
-    stringr::str_sub(string = x,
-                     start = 1L) |>
+    substr(x = x,
+           start = 1L,
+           stop = _) |>
     stringr::str_split_1(pattern = delim) |>
     stringr::str_remove_all(pattern = glue::glue("^{quote}|{quote}$"))
 }
@@ -1730,25 +1733,25 @@ is_pkg_installed <- function(pkg,
 #' pal::is_pkg_cran("dplyr", min_version = "9999.9")
 is_pkg_cran <- function(pkg,
                         min_version = NULL,
-                        retries = 1L) {
+                        max_tries = 1L) {
   
   checkmate::assert_string(pkg)
   min_version %<>% as.package_version()
-  rlang::check_installed("rvest",
+  rlang::check_installed(pkg = c("httr2", "rvest"),
                          reason = reason_pkg_required())
   
   url <- glue::glue("https://cran.r-project.org/package={pkg}")
   is_cran <- is_http_success(url = url,
-                             retries = retries)
+                             max_tries = max_tries)
   
   if (is_cran && length(min_version)) {
     
     is_cran <-
-      httr::RETRY(verb = "GET",
-                  url = url,
-                  times = retries) |>
-      httr::content(as = "parsed",
-                    encoding = "UTF-8") |>
+      httr2::request(base_url = url) |>
+      httr2::req_method(method = "GET") |>
+      httr2::req_retry(max_tries = max_tries) |>
+      httr2::req_perform() |>
+      httr2::resp_body_html() |>
       rvest::html_element(css = "body") |>
       rvest::html_element(css = "table") |>
       rvest::html_table() |>
@@ -4129,51 +4132,10 @@ git_remote_tree_url <- function(repo = ".",
   url
 }
 
-#' Assert MIME type
-#'
-#' Asserts that a [response object][httr::response] is of a specific [MIME type](https://en.wikipedia.org/wiki/Media_type). Convenience wrapper around
-#' [httr::http_type()].
-#'
-#' @param response A [response object][httr::response].
-#' @param mime_type Expected MIME type, e.g. `"application/json"`. A character scalar.
-#' @param msg Message to display in case of an error. `r pkgsnip::param_lbl("cli_markup_support")` A character scalar.
-#' @param msg_suffix Additional string to append to `msg`. `r pkgsnip::param_lbl("cli_markup_support")`
-#'
-#' @return `response`, invisibly.
-#' @family http
-#' @family checkmate
-#' @export
-#'
-#' @examples
-#' httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("application/json")
-#' 
-#' # an informative error is thrown when the assertion is violated
-#' try(
-#'   httr::GET("https://api.github.com/users/salim-b") |> pal::assert_mime_type("text/plain")
-#' )
-assert_mime_type <- function(response,
-                             mime_type,
-                             msg = paste0("The response's MIME type is {.val {mime_type_actual}} ",
-                                          "but expected was {.val {mime_type}}."),
-                             msg_suffix = "") {
-  
-  checkmate::assert_class(response, "response")
-  checkmate::assert_string(mime_type)
-  checkmate::assert_string(msg)
-  checkmate::assert_string(msg_suffix)
-  mime_type_actual <- httr::http_type(response)
-  
-  if (mime_type_actual != mime_type) {
-    cli::cli_abort(paste0(msg, msg_suffix))
-  }
-  
-  invisible(response)
-}
-
 #' Test if an HTTP request is successful
 #'
 #' @description
-#' Convenience wrapper around [`!httr::http_error()`][httr::http_error()] that returns
+#' Convenience wrapper around a bunch of [httr2][httr2::httr2-package] functions that returns
 #'
 #' - `TRUE` if the specified `url` could be resolved _and_ a [`HEAD`](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) request could
 #'   be [successfully completed](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), or
@@ -4181,17 +4143,15 @@ assert_mime_type <- function(response,
 #' - `FALSE` in any other case.
 #'
 #' @details
-#' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr][httr::httr-package] which in turn is
+#' This function is similar to [RCurl::url.exists()], i.e. it only retrieves the header, no body, but is based on [httr2][httr2::httr2-package] which in turn is
 #' based on [curl](https://jeroen.cran.dev/curl/).
 #'
-#' For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the [pingr](https://github.com/r-lib/pingr#readme)
-#' package.
+#' For checks on lower levels of the network stack like performing DNS queries or TCP port pings, see the [pingr](https://r-lib.github.io/pingr/) package.
 #'
+#' @inheritParams httr2::req_retry
+#' @inheritParams httr2::req_perform
 #' @param url HTTP protocol address. The scheme is optional, so both `"google.com"` and `"https://google.com"` will work. A character scalar.
-#' @param retries Maximum number of retries of the `HEAD` request in case of an HTTP error. An integer scalar `>= 0`. The retries are performed using
-#'   exponential backoff and jitter, see [httr::RETRY()] for details.
-#' @param quiet Whether or not to suppress the message displaying how long until the next retry in case an HTTP error occurred. A logical scalar. Only relevant
-#'   if `retries > 0`.
+#' @param max_tries `r pkgsnip::param_lbl("max_tries")`
 #'
 #' @return A logical scalar.
 #' @family http
@@ -4201,23 +4161,37 @@ assert_mime_type <- function(response,
 #' pal::is_http_success("goo.gl")
 #' pal::is_http_success("https://google.com/")
 #' pal::is_http_success("https://google.not/")
-#' pal::is_http_success("https://google.not/",
-#'                      retries = 2,
-#'                      quiet = FALSE)
+#' 
+#' # by default, requests are only retried on HTTP 429 and 503 status codes
+#' pal::is_http_success(url = "https://httpstat.us/503",
+#'                      max_tries = 2,
+#'                      verbosity = 1)
+#' pal::is_http_success(url = "https://httpstat.us/500",
+#'                      max_tries = 2,
+#'                      verbosity = 1)
+#'
+#' # to retry on *all* failing status codes, set `is_transient` accordingly:
+#' pal::is_http_success(url = "https://httpstat.us/500",
+#'                      max_tries = 2,
+#'                      is_transient = \(x) TRUE,
+#'                      verbosity = 1)
 is_http_success <- function(url,
-                            retries = 0L,
-                            quiet = TRUE) {
+                            max_tries = 1L,
+                            retry_on_failure = FALSE,
+                            is_transient = NULL,
+                            verbosity = NULL) {
   
-  checkmate::assert_string(url)
-  checkmate::assert_count(retries)
-  checkmate::assert_flag(quiet)
-  rlang::check_installed("httr",
+  rlang::check_installed("httr2",
                          reason = reason_pkg_required())
-  
-  tryCatch(!httr::http_error(httr::RETRY(verb = "HEAD",
-                                         url = url,
-                                         times = retries + 1L,
-                                         quiet = quiet)),
+  tryCatch(expr =
+             httr2::request(base_url = url) |>
+             httr2::req_method(method = "HEAD") |>
+             httr2::req_retry(max_tries = max_tries,
+                              retry_on_failure = retry_on_failure,
+                              is_transient = is_transient) |>
+             httr2::req_perform(verbosity = verbosity) |>
+             httr2::resp_is_error() |>
+             magrittr::not(),
            error = \(x) FALSE,
            interrupt = \(x) cli::cli_abort("Terminated by the user."))
 }
@@ -4258,7 +4232,6 @@ is_url <- function(x) {
 #' Convenience wrapper around a bunch of [httr2][httr2::httr2-package] functions.
 #'
 #' @inheritParams is_http_success
-#' @param max_tries Maximum number of attempts to retry in case of an HTTP error. An integerish scalar.
 #'
 #' @inherit httr2::req_perform return
 #' @family http
@@ -4696,32 +4669,34 @@ cat_lines <- function(...) {
 #' # ...a column spec could be created concisely as follows:
 #' col_regex <- list("_Text(_|$)" = "c",
 #'                   "_Code(_|$)" = "i",
-#'                   "^GARBAGE"  = readr::col_skip())
+#'                   "^GARBAGE"   = readr::col_skip())
 #' 
 #' pal::cols_regex(.col_names = col_names,
 #'                 !!!col_regex,
-#'                 .default     = "l")
+#'                 .default = "l")
 #'
 #' # we can parse some real data:
+#' url <- "https://salim_b.gitlab.io/misc/Kantonsratswahl_Zuerich_2019_Ergebnisse_Gemeinden.csv"
+#' 
 #' raw_data <-
-#'   httr::GET(paste0("http://www.web.statistik.zh.ch/ogd/data/",
-#'                    "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) |>
-#'   httr::content(as = "text",
-#'                 encoding = "UTF-8")
+#'   httr2::request(url) |>
+#'   httr2::req_perform() |>
+#'   httr2::resp_body_string()
+#'
+#' col_spec <- pal::cols_regex("^(Gemeindenamen|Liste|Wahlkreis)$" = "c",
+#'                             "(?i)anteil" = "d",
+#'                             .default = "i",
+#'                             .col_names = pal::dsv_colnames(raw_data))
+#' 
+#' print(col_spec)
 #'
 #' readr::read_csv(file = raw_data,
-#'                 col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
-#'                                             "(?i)anteil" = "d",
-#'                                             .default = "i",
-#'                                             .col_names = pal::dsv_colnames(raw_data)))
+#'                 col_types = col_spec)
 #'
-#' # an alternative way to process the same data using `readr::type_convert()`:
-#' readr::read_csv(file = raw_data,
+#' # to process the same data without first downloading it to disk, use `readr::type_convert()`:
+#' readr::read_csv(file = url,
 #'                 col_types = list(.default = "c")) %>%
-#'   readr::type_convert(col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
-#'                                                   "(?i)anteil" = "d",
-#'                                                   .default = "i",
-#'                                                   .col_names = colnames(.)))
+#'   readr::type_convert(col_types = col_spec)
 cols_regex <- function(...,
                        .col_names,
                        .default = readr::col_character()) {
@@ -4741,7 +4716,6 @@ cols_regex <- function(...,
                          pattern = names(patterns[i]),
                          value = TRUE,
                          perl = TRUE)
-    
     spec <-
       rep(list(patterns[[i]]),
           length(matched_vars)) |>
@@ -4780,7 +4754,7 @@ mime_to_ext = function(mime_type,
   }
   
   if (!quiet && length(i) > 1L) {
-    cli::cli_warn("The MIME type {.val {mime_type}} maps to multiple file extensions ({.val {result}}). Simply the first one is returned.")
+    cli::cli_warn("The MIME type {.val {mime_type}} maps to multiple file extensions ({.val {result}}). Only the first one is returned.")
   }
   
   result[1L]

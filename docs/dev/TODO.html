@@ -49,11 +49,13 @@
 <p>release on CRAN:</p>
 <ol style="list-style-type: decimal"><li>
 <p>Thoroughly scan exported fns for possible API improvements (which would be harder to introduce once the pkg is on CRAN) and other outstanding work and implement it.</p>
-<ul><li>Migrate to httr2!</li>
-<li>move <code>toml_*()</code> fns to sep pkg (tomlr?)</li>
-<li>remove deprecated fns</li>
+<ul><li><p>move <code>toml_*()</code> fns to sep pkg (tomlr?)</p></li>
+<li>
+<p>remove deprecated fns: <code><a href="reference/as_flat_list.html">as_flat_list()</a></code>, <code><a href="reference/fuse_regex.html">fuse_regex()</a></code>, …</p>
+<p>(lazier solution might be moving them to pkg salim and adapting downstream accordingly)</p>
+</li>
 </ul></li>
-<li><p>Replace <code>pkgsnip::*</code> with constants included in pkg. Make changes (to source file <code>Rmd/pal.Rmd</code> only) in a single commit, so it can be easily reverted.</p></li>
+<li><p>Replace <code>pkgsnip::*</code> with constants included in pkg. Make changes in a single commit (only incl. source file <code>Rmd/pal.Rmd</code>), so it can be easily reverted.</p></li>
 <li><p>Remove Netlify redirect rule <code>/</code> -&gt; <code>/dev</code>.</p></li>
 <li><p>Release pkg pkgsnip on CRAN.</p></li>
 <li><p>Revert step 2.</p></li>

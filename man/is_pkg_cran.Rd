@@ -4,7 +4,7 @@
 \alias{is_pkg_cran}
 \title{Test if a package is available on CRAN}
 \usage{
-is_pkg_cran(pkg, min_version = NULL, retries = 1L)
+is_pkg_cran(pkg, min_version = NULL, max_tries = 1L)
 }
 \arguments{
 \item{pkg}{Package name (case-sensitive). A character scalar.}
@@ -12,8 +12,7 @@ is_pkg_cran(pkg, min_version = NULL, retries = 1L)
 \item{min_version}{Minimum required version number of \code{pkg}. Must be either \code{NULL} to ignore version numbers, or a single
 \code{\link[base:numeric_version]{package_version}} or something coercible to.}
 
-\item{retries}{Maximum number of retries of the \code{HEAD} request in case of an HTTP error. An integer scalar \verb{>= 0}. The retries are performed using
-exponential backoff and jitter, see \code{\link[httr:RETRY]{httr::RETRY()}} for details.}
+\item{max_tries}{Maximum number of request attempts in case of an HTTP error. An integerish scalar. Retries are performed using exponential backoff and jitter, see \code{\link[httr2:req_retry]{httr2::req_retry()}} for details.}
 }
 \value{
 A logical scalar.

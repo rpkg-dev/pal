@@ -82,28 +82,27 @@ the literal escape sequences <code>\Q</code> and <code>\E</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># perform some (nonsense) Jane Austen text extraction</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># perform some (nonsense) Jane Austen text extraction</span></span></span>
 <span class="r-in"><span><span class="va">regex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"My dear Jane"</span>,</span></span>
 <span class="r-in"><span>           <span class="st">"make haste, "</span>,</span></span>
 <span class="r-in"><span>           <span class="st">"(?i)\\bevil"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></span><span class="op">(</span>string <span class="op">=</span> <span class="fu">janeaustenr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/janeaustenr/man/prideprejudice.html" class="external-link">prideprejudice</a></span>,</span></span>
-<span class="r-in"><span>                    pattern <span class="op">=</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">fuse_regex</span><span class="op">(</span><span class="va">regex</span><span class="op">)</span><span class="op">)</span><span class="co"># }</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Jane, make haste and tell us; make haste, my love.\""                      "evil--a natural defect, which not even the best education can overcome.\""</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "can have any evil tendency; and I am so far from objecting to dancing"     "evil.\""                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "to inevitable evils is the duty of us all; the peculiar duty of a"         "\"My dear Jane!\" exclaimed Elizabeth, \"you are too good. Your sweetness"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "understanding than I now do of her heart. My dear Jane, Mr. Collins is a"  "wish him all manner of evil. But my feelings are not only cordial"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "however, was no evil to Elizabeth, and upon the whole she spent her time"  "travelling unimportant, distance becomes no evil. But that is not the"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "world; and no one could say how lasting an evil he might have inflicted."  "connection could not be so great an evil to my friend as to me. But"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "of pointing out to my friend the certain evils of such a choice. I"        "herself, was entirely insensible of the evil. Elizabeth had frequently"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "of particular, but of general evils, which I am now complaining. Our"      "over unavoidable evils, or augment them by anxiety, was no part of her"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "unsuitable a marriage, nor ever been so fully aware of the evils arising"  "greater evil might be apprehended, was likely to be hardened in all"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "good or evil must be done by him! Every idea that had been brought"        "kind of moral extractions from the evil before them."                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "\"You may well warn me against such an evil. Human nature is so prone"     "it sounds! And she was only sixteen last June. My dear Jane, I am in"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "an evil which had been brought on by himself. If he _had another_"         "\"My dear Jane, make haste and hurry down. He is come--Mr. Bingley is"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "representation of the evils attached to a connection with her, she dared"  "Elizabeth, and yourself, of what evils you may incur by a precipitate"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "there were other evils before her. She anticipated what would be felt"    </span>
+<span class="r-in"><span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_lines.html" class="external-link">read_lines</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"https://www.gutenberg.org/cache/epub/1342/pg1342.txt"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">fuse_regex</span><span class="op">(</span><span class="va">regex</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Jane, make haste and tell us; make haste, my love.”"                      "evil, a natural defect, which not even the best education can overcome.”"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "have any evil tendency; and I am so far from objecting to dancing"        "evil.”"                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "inevitable evils is the duty of us all: the peculiar duty of a young man" "“My dear Jane,” exclaimed Elizabeth, “you are too good. Your sweetness"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "understanding than I now do of her heart. My dear Jane, Mr. Collins is a" "and wish him all manner of evil. But my feelings are not only cordial"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "however, was no evil to Elizabeth, and upon the whole she spent her time" "travelling unimportant, distance becomes no evil. But that is not the"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "in the world; and no one could say how lasting an evil he might have"     "in my own case; the want of connection could not be so great an evil to" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "friend the certain evils of such a choice. I described and enforced them" "herself, was entirely insensible of the evil. Elizabeth had frequently"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "of peculiar, but of general evils, which I am now complaining. Our"       "unavoidable evils, or augment them by anxiety, was no part of her"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "unsuitable a marriage, nor ever been so fully aware of the evils arising" "greater evil might be apprehended, was likely to be hardened in all her" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "or evil must be done by him! Every idea that had been brought forward by" "kind of moral extractions from the evil before them."                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "“You may well warn me against such an evil. Human nature is so prone to"  "it sounds! And she was only sixteen last June. My dear Jane, I am in"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "     forward, and endeavour to remedy an evil which had been brought on"  "“My dear Jane, make haste and hurry down. He is come--Mr. Bingley is"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "representation of the evils attached to a connection with her she dared"  "my cousin Elizabeth, and yourself, of what evils you may incur by a"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "there were other evils before her. She anticipated what would be felt in"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

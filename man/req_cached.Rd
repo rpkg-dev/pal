@@ -9,7 +9,7 @@ req_cached(url, max_tries = 3L)
 \arguments{
 \item{url}{HTTP protocol address. The scheme is optional, so both \code{"google.com"} and \code{"https://google.com"} will work. A character scalar.}
 
-\item{max_tries}{Maximum number of attempts to retry in case of an HTTP error. An integerish scalar.}
+\item{max_tries}{Maximum number of request attempts in case of an HTTP error. An integerish scalar. Retries are performed using exponential backoff and jitter, see \code{\link[httr2:req_retry]{httr2::req_retry()}} for details.}
 }
 \value{
 \itemize{
@@ -28,7 +28,6 @@ Convenience wrapper around a bunch of \link[httr2:httr2-package]{httr2} function
 }
 \seealso{
 Other HTTP functions:
-\code{\link{assert_mime_type}()},
 \code{\link{is_http_success}()},
 \code{\link{is_url}()}
 }

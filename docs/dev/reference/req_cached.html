@@ -55,7 +55,7 @@
 
 
 <dt id="arg-max-tries">max_tries<a class="anchor" aria-label="anchor" href="#arg-max-tries"></a></dt>
-<dd><p>Maximum number of attempts to retry in case of an HTTP error. An integerish scalar.</p></dd>
+<dd><p>Maximum number of request attempts in case of an HTTP error. An integerish scalar. Retries are performed using exponential backoff and jitter, see <code><a href="https://httr2.r-lib.org/reference/req_retry.html" class="external-link">httr2::req_retry()</a></code> for details.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -73,7 +73,6 @@ server doesn't exist), an error with class <code>"httr2_failure"</code>.</p></li
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other HTTP functions:
-<code><a href="assert_mime_type.html">assert_mime_type</a>()</code>,
 <code><a href="is_http_success.html">is_http_success</a>()</code>,
 <code><a href="is_url.html">is_url</a>()</code></p></div>
     </div>

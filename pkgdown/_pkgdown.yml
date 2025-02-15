@@ -132,11 +132,9 @@ reference:
   - git_file_mod_time
   - git_remote_tree_url
 - title: HTTP
-  desc: |-
-    Extending the [**httr**](https://httr.r-lib.org/) and [**httr2**](https://httr2.r-lib.org/) packages that wrap the [curl](https://jeroen.cran.dev/curl/)
-    package.
+  desc: Extending the [**httr2**](https://httr2.r-lib.org/) package which is built
+    upon the [curl](https://jeroen.cran.dev/curl/) package.
 - contents:
-  - assert_mime_type
   - is_http_success
   - is_url
   - req_cached

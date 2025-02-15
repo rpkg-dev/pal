@@ -37,30 +37,32 @@ col_names <- c("VAR1_Text",
 # ...a column spec could be created concisely as follows:
 col_regex <- list("_Text(_|$)" = "c",
                   "_Code(_|$)" = "i",
-                  "^GARBAGE"  = readr::col_skip())
+                  "^GARBAGE"   = readr::col_skip())
 
 pal::cols_regex(.col_names = col_names,
                 !!!col_regex,
-                .default     = "l")
+                .default = "l")
 
 # we can parse some real data:
+url <- "https://salim_b.gitlab.io/misc/Kantonsratswahl_Zuerich_2019_Ergebnisse_Gemeinden.csv"
+
 raw_data <-
-  httr::GET(paste0("http://www.web.statistik.zh.ch/ogd/data/",
-                   "KANTON_ZUERICH_nrw_2019_listen_ergebnisse_gemeinde.csv")) |>
-  httr::content(as = "text",
-                encoding = "UTF-8")
+  httr2::request(url) |>
+  httr2::req_perform() |>
+  httr2::resp_body_string()
+
+col_spec <- pal::cols_regex("^(Gemeindenamen|Liste|Wahlkreis)$" = "c",
+                            "(?i)anteil" = "d",
+                            .default = "i",
+                            .col_names = pal::dsv_colnames(raw_data))
+
+print(col_spec)
 
 readr::read_csv(file = raw_data,
-                col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
-                                            "(?i)anteil" = "d",
-                                            .default = "i",
-                                            .col_names = pal::dsv_colnames(raw_data)))
+                col_types = col_spec)
 
-# an alternative way to process the same data using `readr::type_convert()`:
-readr::read_csv(file = raw_data,
+# to process the same data without first downloading it to disk, use `readr::type_convert()`:
+readr::read_csv(file = url,
                 col_types = list(.default = "c")) \%>\%
-  readr::type_convert(col_types = pal::cols_regex("^(Gemeindenamen|Partei)$" = "c",
-                                                  "(?i)anteil" = "d",
-                                                  .default = "i",
-                                                  .col_names = colnames(.)))
+  readr::type_convert(col_types = col_spec)
 }
