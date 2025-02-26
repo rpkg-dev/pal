@@ -3767,7 +3767,7 @@ write_widget_deps <- function(x,
     cli::cli_alert_info(text = "Include the following HTML snippet in the {.field <head>} of your document:")
     cli::cli_par()
     cli::cli_end()
-    head_snippet |> cli::cli_code()
+    cli::cli_code(lines = head_snippet)
   }
   
   invisible(head_snippet)
