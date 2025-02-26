@@ -27,7 +27,7 @@ Tests whether a \href{https://en.wikipedia.org/wiki/Command-line_interface}{comm
 \examples{
 pal::test_cli("Rscript")
 
-cmd <- ifelse(xfun::is_windows(), "pandoc.exe", "pandoc")
+cmd <- ifelse(checkmate::test_os("windows"), "pandoc.exe", "pandoc")
 pal::test_cli(cmd, get_cmd_path = TRUE)
 }
 \seealso{

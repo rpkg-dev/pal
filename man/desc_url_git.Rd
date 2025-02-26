@@ -18,7 +18,7 @@ A character scalar.
 Returns the first Git repository URL found in the \code{URL} (preferred) or \code{BugReports} fields of a \code{DESCRIPTION} file.
 }
 \details{
-Currently, this function recognizes \href{https://gitlab.com/}{GitLab}, \href{https://github.com/}{GitHub}, \href{https://gitea.com/}{Gitea},
+Currently, this function recognizes \href{https://about.gitlab.com/}{GitLab}, \href{https://github.com/}{GitHub}, \href{https://gitea.com/}{Gitea},
 \href{https://codeberg.org/}{Codeberg}, \href{https://pagure.io/}{Pagure}, \href{https://bitbucket.org/}{Bitbucket} and \href{https://sr.ht/}{SourceHut} repository URLs.
 }
 \seealso{
