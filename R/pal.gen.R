@@ -4274,6 +4274,8 @@ toml_read <- function(input,
   checkmate::assert_flag(verbose)
   rlang::check_installed("RcppTOML",
                          reason = reason_pkg_required())
+  rlang::check_installed("xfun",
+                         reason = reason_pkg_required())
   if (from_file) {
     checkmate::assert_file_exists(input,
                                   access = "r")
