@@ -41,7 +41,6 @@ Suggests:
     knitr (>= 1.41),
     mime (>= 0.12),
     pander (>= 0.6.3),
-    pkgdown.tpl (>= 0.0.9000),
     pkgsnip (>= 0.0.9037),
     rappdirs (>= 0.3.3),
     RcppTOML (>= 0.1.7),
