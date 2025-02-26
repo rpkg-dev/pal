@@ -2681,7 +2681,7 @@ TODO:
 #'
 #' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
 #'
-#' Currently, this function recognizes [GitLab](https://gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
+#' Currently, this function recognizes [GitLab](https://about.gitlab.com/), [GitHub](https://github.com/), [Gitea](https://gitea.com/),
 #' [Codeberg](https://codeberg.org/), [Pagure](https://pagure.io/), [Bitbucket](https://bitbucket.org/) and [SourceHut](https://sr.ht/) repository URLs.
 #'
 #' @inheritParams desc::desc_get_field
@@ -3533,7 +3533,7 @@ NOTES:
 #' Removes all Markdown formatting from a character vector.
 #'
 #' This function relies on [commonmark::markdown_text()] which [supports the CommonMark specification plus the Github
-#' extensions](https://github.com/jeroen/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) can't be stripped
+#' extensions](https://github.com/r-lib/commonmark#readme). Unfortunately, [Markdown footnotes](https://pandoc.org/MANUAL.html#footnotes) can't be stripped
 #' using `commonmark::markdown_text()`. Therefore a separate option `strip_footnotes` is offered which relies on regular expressions to remove inline footnotes
 #' and footnote definitions and references.
 #'
