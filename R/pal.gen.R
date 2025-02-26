@@ -3695,6 +3695,8 @@ write_widget <- function(x,
                           classes = "htmlwidget")
   checkmate::assert_path_for_output(path,
                                     overwrite = TRUE)
+  rlang::check_installed("brio",
+                         reason = reason_pkg_required())
   rlang::check_installed("htmltools",
                          reason = reason_pkg_required())
   x |>
