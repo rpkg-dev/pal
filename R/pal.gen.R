@@ -1159,6 +1159,11 @@ enum_str <- function(x,
 
 #' Fuse regular expressions
 #'
+#' @description
+#' `r lifecycle::badge("superseded")` \cr
+#' It's recommended to rely on the [**rex**](https://rex.r-lib.org/) package instead, more precisely [`rex::rex(or(...))`][rex::or] and
+#' [`rex::rex(or(rex::escape(c(...))))`][rex::escape].
+#'
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
 #'
 #' @param ... Regular expressions. All elements will be converted to type character before fusing. `r pkgsnip::roxy_lbl("dyn_dots_support")`

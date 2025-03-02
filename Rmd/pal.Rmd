@@ -1385,12 +1385,15 @@ enum_str <- function(x,
 
 TODO:
 
--   [ ] Deprecate `fuse_regex(...)` in favor of `rex::rex(or(...))`?
-
--   [ ] Incorporate `fuzzify_regex()` and `diacritify_regex` from FA or even make a separate pkg, say `rgx`
+-   [ ] Incorporate `fuzzify_regex()` and `diacritify_regex` from FA or even make a separate pkg, say `rgx`?
 
 ```{r}
 #' Fuse regular expressions
+#'
+#' @description
+#' `r lifecycle::badge("superseded")` \cr
+#' It's recommended to rely on the [**rex**](https://rex.r-lib.org/) package instead, more precisely [`rex::rex(or(...))`][rex::or] and
+#' [`rex::rex(or(rex::escape(c(...))))`][rex::escape].
 #'
 #' Combines a vector or list of regular expressions to a single one (by logical OR).
 #'

@@ -16,6 +16,10 @@ the literal escape sequences \verb{\\Q} and \verb{\\E}.}
 A character scalar.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}} \cr
+It's recommended to rely on the \href{https://rex.r-lib.org/}{\strong{rex}} package instead, more precisely \code{\link[rex:or]{rex::rex(or(...))}} and
+\code{\link[rex:escape]{rex::rex(or(rex::escape(c(...))))}}.
+
 Combines a vector or list of regular expressions to a single one (by logical OR).
 }
 \examples{
