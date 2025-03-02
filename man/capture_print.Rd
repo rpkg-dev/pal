@@ -27,9 +27,9 @@ mtcars |> pal::capture_print()
 mtcars |> pal::capture_print(collapse = "\n") |> cat()
 
 # to strip ANSI escape sequences, use `cli::ansi_strip()`
-mtcars |> tibble::as_tibble()
+airquality |> tibble::as_tibble()
 
-mtcars |>
+airquality |>
   tibble::as_tibble() |>
   pal::capture_print(collapse = "\n") |>
   cli::ansi_strip() |>

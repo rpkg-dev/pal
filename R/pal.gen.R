@@ -4590,9 +4590,9 @@ path_script <- function() {
 #' mtcars |> pal::capture_print(collapse = "\n") |> cat()
 #' 
 #' # to strip ANSI escape sequences, use `cli::ansi_strip()`
-#' mtcars |> tibble::as_tibble()
+#' airquality |> tibble::as_tibble()
 #' 
-#' mtcars |>
+#' airquality |>
 #'   tibble::as_tibble() |>
 #'   pal::capture_print(collapse = "\n") |>
 #'   cli::ansi_strip() |>
@@ -4648,6 +4648,9 @@ cat_lines <- function(...) {
 #'
 #' Allows to define a regular expression per desired [column specification object][readr::cols] matching the respective column names.
 #'
+#' The main limitation of `cols_regex()` is that it needs to know the input dataset's full set of `.col_names` in advance, for which [dsv_colnames()] can help.
+#' See the examples for further details.
+#'
 #' @param ... Named arguments where the names are (Perl-compatible) regular expressions and the values are column objects created by `col_*()`, or their
 #'   abbreviated character names (as described in the `col_types` parameter of [readr::read_delim()]). `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #' @param .col_names Column names which should be matched by `...`.
@@ -4691,16 +4694,19 @@ cat_lines <- function(...) {
 #'                             "(?i)anteil" = "d",
 #'                             .default = "i",
 #'                             .col_names = pal::dsv_colnames(raw_data))
-#' 
 #' print(col_spec)
 #'
 #' readr::read_csv(file = raw_data,
 #'                 col_types = col_spec)
 #'
-#' # to process the same data without first downloading it to disk, use `readr::type_convert()`:
+#' # we can also do basically the same in a more concise way without having to rely on
+#' # `pal::dsv_colnames()`:
 #' readr::read_csv(file = url,
 #'                 col_types = list(.default = "c")) %>%
-#'   readr::type_convert(col_types = col_spec)
+#'   readr::type_convert(col_types = pal::cols_regex("^(Gemeindenamen|Liste|Wahlkreis)$" = "c",
+#'                                                   "(?i)anteil" = "d",
+#'                                                   .default = "i",
+#'                                                   .col_names = colnames(.)))
 cols_regex <- function(...,
                        .col_names,
                        .default = readr::col_character()) {

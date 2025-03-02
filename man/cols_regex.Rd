@@ -20,6 +20,10 @@ A \link[readr:cols]{column specification}.
 \description{
 Allows to define a regular expression per desired \link[readr:cols]{column specification object} matching the respective column names.
 }
+\details{
+The main limitation of \code{cols_regex()} is that it needs to know the input dataset's full set of \code{.col_names} in advance, for which \code{\link[=dsv_colnames]{dsv_colnames()}} can help.
+See the examples for further details.
+}
 \examples{
 library(magrittr)
 
@@ -55,14 +59,17 @@ col_spec <- pal::cols_regex("^(Gemeindenamen|Liste|Wahlkreis)$" = "c",
                             "(?i)anteil" = "d",
                             .default = "i",
                             .col_names = pal::dsv_colnames(raw_data))
-
 print(col_spec)
 
 readr::read_csv(file = raw_data,
                 col_types = col_spec)
 
-# to process the same data without first downloading it to disk, use `readr::type_convert()`:
+# we can also do basically the same in a more concise way without having to rely on
+# `pal::dsv_colnames()`:
 readr::read_csv(file = url,
                 col_types = list(.default = "c")) \%>\%
-  readr::type_convert(col_types = col_spec)
+  readr::type_convert(col_types = pal::cols_regex("^(Gemeindenamen|Liste|Wahlkreis)$" = "c",
+                                                  "(?i)anteil" = "d",
+                                                  .default = "i",
+                                                  .col_names = colnames(.)))
 }
