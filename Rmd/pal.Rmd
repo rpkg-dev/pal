@@ -3,275 +3,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-# INTERNAL
-
-## Logo
-
-The package logo is based on the vector graphic [*help*](https://thenounproject.com/term/help/28807/) created by [Luis Prado](https://thenounproject.com/Luis)
-which he licensed under [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/us/legalcode). The original logo is stored under `data-raw/logo/help.svg` and a
-colored raster image version is stored under `data-raw/logo/help_yellow.png`.
-
-This was fed to [hexSticker](https://github.com/GuangchuangYu/hexSticker) to create `data-raw/logo/hexsticker.png` and `data-raw/logo/hexsticker_alt.png` as
-follows (the spotlight has some "random jitter", so hexSticker creates a slightly different image on each run):
-
-```{r, purl = FALSE}
-hexSticker::sticker(subplot = "data-raw/logo/help_yellow.png",
-                    s_x = 1.0,
-                    s_y = 1.31,
-                    s_width = 0.47,
-                    # the default asp 1.0 distorts the subplot, so we have to fiddle -.-
-                    asp = 0.85,
-                    package = "pal",
-                    p_x = 1.0,
-                    p_y	= 0.65,
-                    p_color = "#ffcc00",
-                    p_size = 40.0,
-                    h_fill = "#000000",
-                    h_color = "#ffcc00",
-                    spotlight = TRUE,
-                    l_x = 1.1,
-                    l_y = 2.0,
-                    l_width = 8.0,
-                    l_height = 8.0,
-                    l_alpha = 0.5,
-                    url = "rpkg.dev/pal",
-                    u_color = "#ffcc00",
-                    u_size = 4.0,
-                    filename = "data-raw/logo/hexsticker.png")
-```
-
-Finally, `data-raw/logo/hexsticker.png` was post-processed by the [G'MIC](https://gmic.eu/) filter *Felt Pen* in GIMP to create
-`data-raw/logo/hexsticker_gmic_felt_pen.png` which, however, was discarded. Instead, the final package logo `data-raw/logo/hexsticker_smooth.png` is just
-smoothed using the G'MIC filter *Smooth Diffusion* in GIMP.
-
-## Avoid `R CMD check` notes about undefined global objects used in magrittr pipes
-
-Cf. <https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262>
-
-```{r}
-utils::globalVariables(names = c(".",
-                                 # tidyselect fns
-                                 "any_of",
-                                 "everything",
-                                 "where",
-                                 # other
-                                 "data",
-                                 "default_value",
-                                 "default_value_dynamic",
-                                 "env_var",
-                                 "key",
-                                 "package",
-                                 "Package",
-                                 "r_opt",
-                                 "repository",
-                                 "rowid",
-                                 "type",
-                                 "Version",
-                                 "X1",
-                                 "X2"))
-```
-
-## Constants
-
-### `forbidden_dots`
-
-```{r}
-# forbidden dots arguments
-forbidden_dots <- list(roxy_tag_value = c("pkgs",
-                                          "destdir",
-                                          "available",
-                                          "type",
-                                          "quiet"))
-```
-
-## Functions
-
-### `as_env_var_name`
-
-TODO:
-
--   Export this fn?
-
-NOTES:
-
--   Only alphanumeric chars plus underscore are [commonly allowed in env var names](https://stackoverflow.com/q/2821043/7196903). Additionally, the first char
-    mustn't be a digit.
-
-```{r}
-as_env_var_name <- function(...) {
-  
-  as_str(...,
-         sep = "_") |>
-    stringr::str_replace_all(pattern = "\\W",
-                             replacement = "_") |>
-    stringr::str_replace(pattern = "^(\\d)",
-                         replacement = "_\\1") |>
-    toupper()
-}
-```
-
-### `get_pkg_config`
-
-```{r}
-get_pkg_config <- function(pkg) {
-  
-  checkmate::assert_string(pkg)
-  if (!exists_in_namespace(x = "pkg_config",
-                           ns = pkg)) {
-    cli::cli_abort(paste0("Package {.pkg {pkg}} has not defined the required package configuration metadata in its namespace (as object {.var pkg_config}). ",
-                          "See the {.emph Details} section of {.help pal::pkg_config_val} for more information."))
-  }
-  
-  pkg_config <- utils::getFromNamespace(x = "pkg_config",
-                                        ns = pkg)
-  checkmate::assert_data_frame(pkg_config,
-                               col.names = "unique")
-  if (!("key" %in% colnames(pkg_config) && any(c("default_value", "default_value_dynamic") %in% colnames(pkg_config)))) {
-    cli::cli_abort("{.code {pkg}:::pkg_config} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
-  }
-  
-  # ensure/complement df structure
-  pkg_config |>
-    vctrs::tib_cast(tibble::tibble(key = character(),
-                                   default_value = list(),
-                                   default_value_dynamic = character(),
-                                   require = logical(),
-                                   description = character())) |>
-    tidyr::replace_na(replace = list(require = TRUE))
-}
-```
-
-### `get_pkg_config_val_default`
-
-```{r}
-get_pkg_config_val_default <- function(key,
-                                       pkg_config,
-                                       env = parent.frame()) {
-  key <- rlang::arg_match0(key,
-                           values = pkg_config$key)
-  
-  data <- pkg_config |> dplyr::filter(key == !!key)
-  
-  if (is.na(data$default_value_dynamic)) {
-    
-    result <- Reduce(x = data$default_value,
-                     f = c)
-  } else {
-    
-    # ensure only one of `default_value_dynamic` and `default_value` is set
-    if (!is.null(data$default_value[[1L]])) {
-      cli::cli_abort(paste0("Only one of {.var default_value} and {.var default_value_dynamic} can be set in {.var pkg_config} for a specific {.var key}, but ",
-                            "for {.field {key}} both are."))
-    }
-    
-    result <- eval(expr = parse(text = data$default_value_dynamic),
-                   envir = env)
-  }
-  
-  result
-}
-```
-
-### `has_root`
-
-TODO: Submit this function as `check_criterion()` upstream as outlined [from here on](https://github.com/r-lib/rprojroot/pull/83#issuecomment-1874876315).
-
-```{r}
-has_root <- function(criterion,
-                     path,
-                     check_parent_dirs) {
-  
-  checkmate::assert_class(criterion,
-                          classes = "root_criterion")
-  checkmate::assert_flag(check_parent_dirs)
-  rlang::check_installed("rprojroot",
-                         reason = reason_pkg_required())
-  checkmate::assert_directory_exists(path,
-                                     access = "r")
-  if (check_parent_dirs) {
-    result <- tryCatch(
-      expr = {
-        rprojroot::find_root(criterion = criterion,
-                             path = path)
-        TRUE
-      },
-      error = \(e) FALSE
-    )
-    
-  } else {
-    result <-
-      criterion$testfun |>
-      purrr::map_lgl(\(x) x(path = path)) |>
-      any()
-  }
-  
-  result
-}
-```
-
-### `pkg_config_env_var_name`
-
-```{r}
-pkg_config_env_var_name <- function(pkg,
-                                    key) {
-  as_env_var_name("R", pkg, key)
-}
-```
-
-### `pkg_config_opt_name`
-
-```{r}
-pkg_config_opt_name <- function(pkg,
-                                key) {
-  paste(pkg, key,
-        sep = ".")
-}
-```
-
-### CommonMark parsing helpers
-
-#### `is_heading_node`
-
-```{r}
-is_heading_node <- function(xml_node) {
-  
-  xml2::xml_name(xml_node) == "heading"
-}
-```
-
-#### `node_heading_lvl`
-
-```{r}
-node_heading_lvl <- function(xml_node) {
-  
-  xml_node |>
-    xml2::xml_attr(attr = "level") |>
-    as.integer()
-}
-```
-
-#### `subnode_ix`
-
-```{r}
-subnode_ix <- function(xml_nodes,
-                       i) {
-  i_node <- i
-  i <- i + 1L
-  ix_subnodes <- integer()
-  heading_lvl_node <- node_heading_lvl(xml_nodes[i_node])
-  is_subnode <- is_heading_node(xml_nodes[i_node]) && i <= length(xml_nodes)
-  
-  while (is_subnode) {
-    is_subnode <- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) > heading_lvl_node)
-    ix_subnodes %<>% c(i[is_subnode])
-    i <- i + 1L
-    if (i > length(xml_nodes)) is_subnode <- FALSE
-  }
-  
-  ix_subnodes
-}
-```
-
 # EXPORTED
 
 ## Statistical computing / numbers
@@ -5850,5 +5581,274 @@ when <- function(.,
   }
   
   result
+}
+```
+
+# INTERNAL
+
+## Logo
+
+The package logo is based on the vector graphic [*help*](https://thenounproject.com/term/help/28807/) created by [Luis Prado](https://thenounproject.com/Luis)
+which he licensed under [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/us/legalcode). The original logo is stored under `data-raw/logo/help.svg` and a
+colored raster image version is stored under `data-raw/logo/help_yellow.png`.
+
+This was fed to [hexSticker](https://github.com/GuangchuangYu/hexSticker) to create `data-raw/logo/hexsticker.png` and `data-raw/logo/hexsticker_alt.png` as
+follows (the spotlight has some "random jitter", so hexSticker creates a slightly different image on each run):
+
+```{r, purl = FALSE}
+hexSticker::sticker(subplot = "data-raw/logo/help_yellow.png",
+                    s_x = 1.0,
+                    s_y = 1.31,
+                    s_width = 0.47,
+                    # the default asp 1.0 distorts the subplot, so we have to fiddle -.-
+                    asp = 0.85,
+                    package = "pal",
+                    p_x = 1.0,
+                    p_y	= 0.65,
+                    p_color = "#ffcc00",
+                    p_size = 40.0,
+                    h_fill = "#000000",
+                    h_color = "#ffcc00",
+                    spotlight = TRUE,
+                    l_x = 1.1,
+                    l_y = 2.0,
+                    l_width = 8.0,
+                    l_height = 8.0,
+                    l_alpha = 0.5,
+                    url = "rpkg.dev/pal",
+                    u_color = "#ffcc00",
+                    u_size = 4.0,
+                    filename = "data-raw/logo/hexsticker.png")
+```
+
+Finally, `data-raw/logo/hexsticker.png` was post-processed by the [G'MIC](https://gmic.eu/) filter *Felt Pen* in GIMP to create
+`data-raw/logo/hexsticker_gmic_felt_pen.png` which, however, was discarded. Instead, the final package logo `data-raw/logo/hexsticker_smooth.png` is just
+smoothed using the G'MIC filter *Smooth Diffusion* in GIMP.
+
+## Avoid `R CMD check` notes about undefined global objects used in magrittr pipes
+
+Cf. <https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262>
+
+```{r}
+utils::globalVariables(names = c(".",
+                                 # tidyselect fns
+                                 "any_of",
+                                 "everything",
+                                 "where",
+                                 # other
+                                 "data",
+                                 "default_value",
+                                 "default_value_dynamic",
+                                 "env_var",
+                                 "key",
+                                 "package",
+                                 "Package",
+                                 "r_opt",
+                                 "repository",
+                                 "rowid",
+                                 "type",
+                                 "Version",
+                                 "X1",
+                                 "X2"))
+```
+
+## Constants
+
+### `forbidden_dots`
+
+```{r}
+# forbidden dots arguments
+forbidden_dots <- list(roxy_tag_value = c("pkgs",
+                                          "destdir",
+                                          "available",
+                                          "type",
+                                          "quiet"))
+```
+
+## Functions
+
+### `as_env_var_name`
+
+TODO:
+
+-   Export this fn?
+
+NOTES:
+
+-   Only alphanumeric chars plus underscore are [commonly allowed in env var names](https://stackoverflow.com/q/2821043/7196903). Additionally, the first char
+    mustn't be a digit.
+
+```{r}
+as_env_var_name <- function(...) {
+  
+  as_str(...,
+         sep = "_") |>
+    stringr::str_replace_all(pattern = "\\W",
+                             replacement = "_") |>
+    stringr::str_replace(pattern = "^(\\d)",
+                         replacement = "_\\1") |>
+    toupper()
+}
+```
+
+### `get_pkg_config`
+
+```{r}
+get_pkg_config <- function(pkg) {
+  
+  checkmate::assert_string(pkg)
+  if (!exists_in_namespace(x = "pkg_config",
+                           ns = pkg)) {
+    cli::cli_abort(paste0("Package {.pkg {pkg}} has not defined the required package configuration metadata in its namespace (as object {.var pkg_config}). ",
+                          "See the {.emph Details} section of {.help pal::pkg_config_val} for more information."))
+  }
+  
+  pkg_config <- utils::getFromNamespace(x = "pkg_config",
+                                        ns = pkg)
+  checkmate::assert_data_frame(pkg_config,
+                               col.names = "unique")
+  if (!("key" %in% colnames(pkg_config) && any(c("default_value", "default_value_dynamic") %in% colnames(pkg_config)))) {
+    cli::cli_abort("{.code {pkg}:::pkg_config} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
+  }
+  
+  # ensure/complement df structure
+  pkg_config |>
+    vctrs::tib_cast(tibble::tibble(key = character(),
+                                   default_value = list(),
+                                   default_value_dynamic = character(),
+                                   require = logical(),
+                                   description = character())) |>
+    tidyr::replace_na(replace = list(require = TRUE))
+}
+```
+
+### `get_pkg_config_val_default`
+
+```{r}
+get_pkg_config_val_default <- function(key,
+                                       pkg_config,
+                                       env = parent.frame()) {
+  key <- rlang::arg_match0(key,
+                           values = pkg_config$key)
+  
+  data <- pkg_config |> dplyr::filter(key == !!key)
+  
+  if (is.na(data$default_value_dynamic)) {
+    
+    result <- Reduce(x = data$default_value,
+                     f = c)
+  } else {
+    
+    # ensure only one of `default_value_dynamic` and `default_value` is set
+    if (!is.null(data$default_value[[1L]])) {
+      cli::cli_abort(paste0("Only one of {.var default_value} and {.var default_value_dynamic} can be set in {.var pkg_config} for a specific {.var key}, but ",
+                            "for {.field {key}} both are."))
+    }
+    
+    result <- eval(expr = parse(text = data$default_value_dynamic),
+                   envir = env)
+  }
+  
+  result
+}
+```
+
+### `has_root`
+
+TODO: Submit this function as `check_criterion()` upstream as outlined [from here on](https://github.com/r-lib/rprojroot/pull/83#issuecomment-1874876315).
+
+```{r}
+has_root <- function(criterion,
+                     path,
+                     check_parent_dirs) {
+  
+  checkmate::assert_class(criterion,
+                          classes = "root_criterion")
+  checkmate::assert_flag(check_parent_dirs)
+  rlang::check_installed("rprojroot",
+                         reason = reason_pkg_required())
+  checkmate::assert_directory_exists(path,
+                                     access = "r")
+  if (check_parent_dirs) {
+    result <- tryCatch(
+      expr = {
+        rprojroot::find_root(criterion = criterion,
+                             path = path)
+        TRUE
+      },
+      error = \(e) FALSE
+    )
+    
+  } else {
+    result <-
+      criterion$testfun |>
+      purrr::map_lgl(\(x) x(path = path)) |>
+      any()
+  }
+  
+  result
+}
+```
+
+### `pkg_config_env_var_name`
+
+```{r}
+pkg_config_env_var_name <- function(pkg,
+                                    key) {
+  as_env_var_name("R", pkg, key)
+}
+```
+
+### `pkg_config_opt_name`
+
+```{r}
+pkg_config_opt_name <- function(pkg,
+                                key) {
+  paste(pkg, key,
+        sep = ".")
+}
+```
+
+### CommonMark parsing helpers
+
+#### `is_heading_node`
+
+```{r}
+is_heading_node <- function(xml_node) {
+  
+  xml2::xml_name(xml_node) == "heading"
+}
+```
+
+#### `node_heading_lvl`
+
+```{r}
+node_heading_lvl <- function(xml_node) {
+  
+  xml_node |>
+    xml2::xml_attr(attr = "level") |>
+    as.integer()
+}
+```
+
+#### `subnode_ix`
+
+```{r}
+subnode_ix <- function(xml_nodes,
+                       i) {
+  i_node <- i
+  i <- i + 1L
+  ix_subnodes <- integer()
+  heading_lvl_node <- node_heading_lvl(xml_nodes[i_node])
+  is_subnode <- is_heading_node(xml_nodes[i_node]) && i <= length(xml_nodes)
+  
+  while (is_subnode) {
+    is_subnode <- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) > heading_lvl_node)
+    ix_subnodes %<>% c(i[is_subnode])
+    i <- i + 1L
+    if (i > length(xml_nodes)) is_subnode <- FALSE
+  }
+  
+  ix_subnodes
 }
 ```

@@ -12,171 +12,6 @@
 # 
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-utils::globalVariables(names = c(".",
-                                 # tidyselect fns
-                                 "any_of",
-                                 "everything",
-                                 "where",
-                                 # other
-                                 "data",
-                                 "default_value",
-                                 "default_value_dynamic",
-                                 "env_var",
-                                 "key",
-                                 "package",
-                                 "Package",
-                                 "r_opt",
-                                 "repository",
-                                 "rowid",
-                                 "type",
-                                 "Version",
-                                 "X1",
-                                 "X2"))
-
-# forbidden dots arguments
-forbidden_dots <- list(roxy_tag_value = c("pkgs",
-                                          "destdir",
-                                          "available",
-                                          "type",
-                                          "quiet"))
-
-as_env_var_name <- function(...) {
-  
-  as_str(...,
-         sep = "_") |>
-    stringr::str_replace_all(pattern = "\\W",
-                             replacement = "_") |>
-    stringr::str_replace(pattern = "^(\\d)",
-                         replacement = "_\\1") |>
-    toupper()
-}
-
-get_pkg_config <- function(pkg) {
-  
-  checkmate::assert_string(pkg)
-  if (!exists_in_namespace(x = "pkg_config",
-                           ns = pkg)) {
-    cli::cli_abort(paste0("Package {.pkg {pkg}} has not defined the required package configuration metadata in its namespace (as object {.var pkg_config}). ",
-                          "See the {.emph Details} section of {.help pal::pkg_config_val} for more information."))
-  }
-  
-  pkg_config <- utils::getFromNamespace(x = "pkg_config",
-                                        ns = pkg)
-  checkmate::assert_data_frame(pkg_config,
-                               col.names = "unique")
-  if (!("key" %in% colnames(pkg_config) && any(c("default_value", "default_value_dynamic") %in% colnames(pkg_config)))) {
-    cli::cli_abort("{.code {pkg}:::pkg_config} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
-  }
-  
-  # ensure/complement df structure
-  pkg_config |>
-    vctrs::tib_cast(tibble::tibble(key = character(),
-                                   default_value = list(),
-                                   default_value_dynamic = character(),
-                                   require = logical(),
-                                   description = character())) |>
-    tidyr::replace_na(replace = list(require = TRUE))
-}
-
-get_pkg_config_val_default <- function(key,
-                                       pkg_config,
-                                       env = parent.frame()) {
-  key <- rlang::arg_match0(key,
-                           values = pkg_config$key)
-  
-  data <- pkg_config |> dplyr::filter(key == !!key)
-  
-  if (is.na(data$default_value_dynamic)) {
-    
-    result <- Reduce(x = data$default_value,
-                     f = c)
-  } else {
-    
-    # ensure only one of `default_value_dynamic` and `default_value` is set
-    if (!is.null(data$default_value[[1L]])) {
-      cli::cli_abort(paste0("Only one of {.var default_value} and {.var default_value_dynamic} can be set in {.var pkg_config} for a specific {.var key}, but ",
-                            "for {.field {key}} both are."))
-    }
-    
-    result <- eval(expr = parse(text = data$default_value_dynamic),
-                   envir = env)
-  }
-  
-  result
-}
-
-has_root <- function(criterion,
-                     path,
-                     check_parent_dirs) {
-  
-  checkmate::assert_class(criterion,
-                          classes = "root_criterion")
-  checkmate::assert_flag(check_parent_dirs)
-  rlang::check_installed("rprojroot",
-                         reason = reason_pkg_required())
-  checkmate::assert_directory_exists(path,
-                                     access = "r")
-  if (check_parent_dirs) {
-    result <- tryCatch(
-      expr = {
-        rprojroot::find_root(criterion = criterion,
-                             path = path)
-        TRUE
-      },
-      error = \(e) FALSE
-    )
-    
-  } else {
-    result <-
-      criterion$testfun |>
-      purrr::map_lgl(\(x) x(path = path)) |>
-      any()
-  }
-  
-  result
-}
-
-pkg_config_env_var_name <- function(pkg,
-                                    key) {
-  as_env_var_name("R", pkg, key)
-}
-
-pkg_config_opt_name <- function(pkg,
-                                key) {
-  paste(pkg, key,
-        sep = ".")
-}
-
-is_heading_node <- function(xml_node) {
-  
-  xml2::xml_name(xml_node) == "heading"
-}
-
-node_heading_lvl <- function(xml_node) {
-  
-  xml_node |>
-    xml2::xml_attr(attr = "level") |>
-    as.integer()
-}
-
-subnode_ix <- function(xml_nodes,
-                       i) {
-  i_node <- i
-  i <- i + 1L
-  ix_subnodes <- integer()
-  heading_lvl_node <- node_heading_lvl(xml_nodes[i_node])
-  is_subnode <- is_heading_node(xml_nodes[i_node]) && i <= length(xml_nodes)
-  
-  while (is_subnode) {
-    is_subnode <- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) > heading_lvl_node)
-    ix_subnodes %<>% c(i[is_subnode])
-    i <- i + 1L
-    if (i > length(xml_nodes)) is_subnode <- FALSE
-  }
-  
-  ix_subnodes
-}
-
 #' Generate an integer sequence of specific length (safe)
 #'
 #' Modified version of [base::seq_len()] that returns a zero-length integer in case of a zero-length input instead of throwing an error.
@@ -4935,4 +4770,171 @@ when <- function(.,
   }
   
   result
+}
+
+
+
+utils::globalVariables(names = c(".",
+                                 # tidyselect fns
+                                 "any_of",
+                                 "everything",
+                                 "where",
+                                 # other
+                                 "data",
+                                 "default_value",
+                                 "default_value_dynamic",
+                                 "env_var",
+                                 "key",
+                                 "package",
+                                 "Package",
+                                 "r_opt",
+                                 "repository",
+                                 "rowid",
+                                 "type",
+                                 "Version",
+                                 "X1",
+                                 "X2"))
+
+# forbidden dots arguments
+forbidden_dots <- list(roxy_tag_value = c("pkgs",
+                                          "destdir",
+                                          "available",
+                                          "type",
+                                          "quiet"))
+
+as_env_var_name <- function(...) {
+  
+  as_str(...,
+         sep = "_") |>
+    stringr::str_replace_all(pattern = "\\W",
+                             replacement = "_") |>
+    stringr::str_replace(pattern = "^(\\d)",
+                         replacement = "_\\1") |>
+    toupper()
+}
+
+get_pkg_config <- function(pkg) {
+  
+  checkmate::assert_string(pkg)
+  if (!exists_in_namespace(x = "pkg_config",
+                           ns = pkg)) {
+    cli::cli_abort(paste0("Package {.pkg {pkg}} has not defined the required package configuration metadata in its namespace (as object {.var pkg_config}). ",
+                          "See the {.emph Details} section of {.help pal::pkg_config_val} for more information."))
+  }
+  
+  pkg_config <- utils::getFromNamespace(x = "pkg_config",
+                                        ns = pkg)
+  checkmate::assert_data_frame(pkg_config,
+                               col.names = "unique")
+  if (!("key" %in% colnames(pkg_config) && any(c("default_value", "default_value_dynamic") %in% colnames(pkg_config)))) {
+    cli::cli_abort("{.code {pkg}:::pkg_config} must at minimum contain the columns {.var key} and {.var default_value} or {.var default_value_dynamic}.")
+  }
+  
+  # ensure/complement df structure
+  pkg_config |>
+    vctrs::tib_cast(tibble::tibble(key = character(),
+                                   default_value = list(),
+                                   default_value_dynamic = character(),
+                                   require = logical(),
+                                   description = character())) |>
+    tidyr::replace_na(replace = list(require = TRUE))
+}
+
+get_pkg_config_val_default <- function(key,
+                                       pkg_config,
+                                       env = parent.frame()) {
+  key <- rlang::arg_match0(key,
+                           values = pkg_config$key)
+  
+  data <- pkg_config |> dplyr::filter(key == !!key)
+  
+  if (is.na(data$default_value_dynamic)) {
+    
+    result <- Reduce(x = data$default_value,
+                     f = c)
+  } else {
+    
+    # ensure only one of `default_value_dynamic` and `default_value` is set
+    if (!is.null(data$default_value[[1L]])) {
+      cli::cli_abort(paste0("Only one of {.var default_value} and {.var default_value_dynamic} can be set in {.var pkg_config} for a specific {.var key}, but ",
+                            "for {.field {key}} both are."))
+    }
+    
+    result <- eval(expr = parse(text = data$default_value_dynamic),
+                   envir = env)
+  }
+  
+  result
+}
+
+has_root <- function(criterion,
+                     path,
+                     check_parent_dirs) {
+  
+  checkmate::assert_class(criterion,
+                          classes = "root_criterion")
+  checkmate::assert_flag(check_parent_dirs)
+  rlang::check_installed("rprojroot",
+                         reason = reason_pkg_required())
+  checkmate::assert_directory_exists(path,
+                                     access = "r")
+  if (check_parent_dirs) {
+    result <- tryCatch(
+      expr = {
+        rprojroot::find_root(criterion = criterion,
+                             path = path)
+        TRUE
+      },
+      error = \(e) FALSE
+    )
+    
+  } else {
+    result <-
+      criterion$testfun |>
+      purrr::map_lgl(\(x) x(path = path)) |>
+      any()
+  }
+  
+  result
+}
+
+pkg_config_env_var_name <- function(pkg,
+                                    key) {
+  as_env_var_name("R", pkg, key)
+}
+
+pkg_config_opt_name <- function(pkg,
+                                key) {
+  paste(pkg, key,
+        sep = ".")
+}
+
+is_heading_node <- function(xml_node) {
+  
+  xml2::xml_name(xml_node) == "heading"
+}
+
+node_heading_lvl <- function(xml_node) {
+  
+  xml_node |>
+    xml2::xml_attr(attr = "level") |>
+    as.integer()
+}
+
+subnode_ix <- function(xml_nodes,
+                       i) {
+  i_node <- i
+  i <- i + 1L
+  ix_subnodes <- integer()
+  heading_lvl_node <- node_heading_lvl(xml_nodes[i_node])
+  is_subnode <- is_heading_node(xml_nodes[i_node]) && i <= length(xml_nodes)
+  
+  while (is_subnode) {
+    is_subnode <- !is_heading_node(xml_nodes[i]) || isTRUE(node_heading_lvl(xml_nodes[i]) > heading_lvl_node)
+    ix_subnodes %<>% c(i[is_subnode])
+    i <- i + 1L
+    if (i > length(xml_nodes)) is_subnode <- FALSE
+  }
+  
+  ix_subnodes
 }
