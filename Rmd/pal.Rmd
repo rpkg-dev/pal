@@ -1987,9 +1987,14 @@ TODO:
 
     Possible pkg names:
 
+    -   ***funky***
+    -   funstate
+    -   funst
+    -   fnst
+    -   fust (has a negative literal meaning)
     -   pkgconf
     -   pkginit
-    -   **pkgopt**
+    -   pkgopt
     -   pkgset
     -   pkgstate (but state is rather misleading and evokes associations with [actual state](https://r-pkgs.org/data.html#sec-data-state))
 
