@@ -619,14 +619,14 @@ is_equal_df <- function(x,
   result
 }
 
-#' Reduce a nested list of data frames / tibbles to a single tibble
+#' Reduce a nested list of data frames to a single data frame
 #'
-#' Recursively reduces a nested list containing data frames / tibbles at its leafs to a single tibble.
+#' Recursively reduces a nested list containing data frames at its leafs to a single row-bound data frame.
 #'
-#' @param x A list containing data frames / tibbles at its leafs.
-#' @param strict Ensure `x` contains data frames / tibbles only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
+#' @param x A list containing data frames at its leafs.
+#' @param strict Ensure `x` contains data frames only and throw an error otherwise. If `FALSE`, leafs containing other objects are ignored (skipped).
 #'
-#' @return `r pkgsnip::return_lbl("tibble")`
+#' @return A data frame.
 #' @family df
 #' @export
 reduce_df_list <- function(x,
@@ -634,14 +634,14 @@ reduce_df_list <- function(x,
   
   checkmate::assert_flag(strict)
   
-  if (is.data.frame(x) || tibble::is_tibble(x)) {
+  if (is.data.frame(x)) {
     
     result <- x
     
   } else if (purrr::pluck_depth(x) < 2L) {
     
     if (strict) {
-      cli::cli_abort("At least one element of the list to be reduced is not a data frame / tibble!")
+      cli::cli_abort("At least one element of the list to be reduced is not a data frame!")
       
     } else {
       result <- NULL
@@ -651,8 +651,8 @@ reduce_df_list <- function(x,
     
     result <-
       x |>
-      purrr::map(reduce_df_list,
-                 strict = strict) |>
+      purrr::map(\(x) reduce_df_list(x = x,
+                                     strict = strict)) |>
       purrr::list_rbind()
   }
   

@@ -2,20 +2,20 @@
 % Please edit documentation in R/pal.gen.R
 \name{reduce_df_list}
 \alias{reduce_df_list}
-\title{Reduce a nested list of data frames / tibbles to a single tibble}
+\title{Reduce a nested list of data frames to a single data frame}
 \usage{
 reduce_df_list(x, strict = TRUE)
 }
 \arguments{
-\item{x}{A list containing data frames / tibbles at its leafs.}
+\item{x}{A list containing data frames at its leafs.}
 
-\item{strict}{Ensure \code{x} contains data frames / tibbles only and throw an error otherwise. If \code{FALSE}, leafs containing other objects are ignored (skipped).}
+\item{strict}{Ensure \code{x} contains data frames only and throw an error otherwise. If \code{FALSE}, leafs containing other objects are ignored (skipped).}
 }
 \value{
-A \link[tibble:tbl_df-class]{tibble}.
+A data frame.
 }
 \description{
-Recursively reduces a nested list containing data frames / tibbles at its leafs to a single tibble.
+Recursively reduces a nested list containing data frames at its leafs to a single row-bound data frame.
 }
 \seealso{
 Other data frame / tibble functions:
