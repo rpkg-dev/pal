@@ -1949,10 +1949,10 @@ TODO:
     ``` r
     #' @section Package configuration:
     #'
-    #' `r pkgsnip::md_snip("pkg_config", pkg = "PKG_NAME")`
+    #' `r pkgsnip::md_snip("pkg_config")`
     #'
     #' ```{r, echo = FALSE}
-    #' pal::print_pkg_config("PKG_NAME")
+    #' pal::print_pkg_config()
     #' ```
     #'
     ```
@@ -1992,11 +1992,12 @@ TODO:
     -   funst
     -   fnst
     -   fust (has a negative literal meaning)
-    -   pkgconf
+    -   pkgconf (there's already *pkgconfig*)
     -   pkginit
     -   pkgopt
     -   pkgset
-    -   pkgstate (but state is rather misleading and evokes associations with [actual state](https://r-pkgs.org/data.html#sec-data-state))
+    -   pkgstate (drawback: might evoke associations with [actual state](https://r-pkgs.org/data.html#sec-data-state))
+    -   state
 
     Maybe first compile a systematic review of existing pkgs with similar functionality like
 
