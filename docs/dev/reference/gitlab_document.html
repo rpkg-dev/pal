@@ -53,7 +53,6 @@
 <span>  fig_height <span class="op">=</span> <span class="fl">5L</span>,</span>
 <span>  dev <span class="op">=</span> <span class="st">"png"</span>,</span>
 <span>  preserve_yaml <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  add_footnotes_hr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  autolink_bare_uris <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  tex_math_single_backslash <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -115,12 +114,6 @@ placed <em>before</em> the README's body, meaning also <em>before</em> the first
 <dd><p>Preserve YAML front matter in final document.</p></dd>
 
 
-<dt id="arg-add-footnotes-hr">add_footnotes_hr<a class="anchor" aria-label="anchor" href="#arg-add-footnotes-hr"></a></dt>
-<dd><p>Whether to add a trailing horizontal rule (<code>---</code>) to the final Markdown file if it doesn't already end in one and contains footnotes
-(currently only checks for Pandoc's <a href="https://pandoc.org/MANUAL.html#footnotes" class="external-link">reference-style footnotes</a> and not inline footnotes). This improves
-readability when the file is rendered on <code>GitLab.com</code>.</p></dd>
-
-
 <dt id="arg-autolink-bare-uris">autolink_bare_uris<a class="anchor" aria-label="anchor" href="#arg-autolink-bare-uris"></a></dt>
 <dd><p>Enable the <a href="https://pandoc.org/MANUAL.html#extension-autolink_bare_uris" class="external-link"><code>autolink_bare_uris</code> Pandoc Markdown extension</a> which
 makes all absolute URIs into links, even when not surrounded by pointy braces <code>&lt;...&gt;</code>.</p></dd>
@@ -166,7 +159,9 @@ Pandoc during conversion.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/file_temp.html" class="external-link">file_temp</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://gitlab.com/rpkg.dev/pal/-/raw/master/Rmd/pal.Rmd"</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span>url <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://gitlab.com/rpkg.dev/pal/-/raw/"</span>,</span></span>
+<span class="r-in"><span>                           <span class="st">"77b791b9a5e80b2980a67d4ed7dc06553c4450ca/"</span>,</span></span>
+<span class="r-in"><span>                           <span class="st">"README.Rmd"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              destfile <span class="op">=</span> <span class="va">tmp_file</span>,</span></span>
 <span class="r-in"><span>              quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>              mode <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span></span></span>
@@ -175,8 +170,38 @@ Pandoc during conversion.</p></li>
 <span class="r-in"><span>                  output_format <span class="op">=</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">gitlab_document</span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                  quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">brio</span><span class="fu">::</span><span class="fu"><a href="https://brio.r-lib.org/reference/read_lines.html" class="external-link">read_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span><span class="co"># }</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3942</span>
+<span class="r-in"><span>  <span class="fu">pal</span><span class="fu">::</span><span class="fu"><a href="cat_lines.html">cat_lines</a></span><span class="op">(</span><span class="op">)</span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # `r paste0(desc::desc_get_field(key = "Package"), ": ", desc::desc_get_field(key = "Title", default = "&lt;No \x60Title\x60 field set in DESCRIPTION!&gt;"))`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `r desc::desc_get_field(key = "Description", default = "&lt;No \x60Description\x60 field set in DESCRIPTION!&gt;")`[^1].</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ## Features</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ## Details</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ## Installation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `{r, install-snippet-dev, child = pkgsnippets::file("installation-notice_dev-version_gitlab.Rmd")}`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ## Development</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ### Literate Programming</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `{r, literate-programming-snippet, child = pkgsnippets::file("literate-programming-notice.Rmd")}`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ### Coding Style</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `{r, coding-style-snippet, child = pkgsnippets::file("coding-style-notice.Rmd")}`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ## See also</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -   The [xfun](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/salim_b/r/pkgs/pal/-/issues/new) to me and I will consider removing it. I strongly support standardization efforts and the avoidance of unnecessary duplication.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

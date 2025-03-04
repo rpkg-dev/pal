@@ -69,8 +69,6 @@ As far as possible, these deviations from the TSG plus some additional restricti
 
 -   The [**xfun**](https://yihui.org/xfun/) package by Yihui Xie, a non-overlapping collection of miscellaneous R functions.
 
----
-
 [^1]: If you discover one or more of the features of this package in a more popular tidyverse-style package, feel free [to report it](https://gitlab.com/rpkg.dev/pal/-/issues/new) to me and I will consider deprecating it. I strongly support standardization efforts and the avoidance of unnecessary duplication.
 
 [^2]: The very idea to leverage the R Markdown format to author R packages was originally proposed by Yihui Xie. See his excellent [blog post](https://yihui.org/rlp/) for his point of view on the advantages of literate programming techniques and some practical examples. Note that using `pkgpurl::purl_rmd()` is a less cumbersome alternative to the Makefile approach outlined by him.
