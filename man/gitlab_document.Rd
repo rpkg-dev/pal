@@ -14,7 +14,6 @@ gitlab_document(
   fig_height = 5L,
   dev = "png",
   preserve_yaml = FALSE,
-  add_footnotes_hr = TRUE,
   autolink_bare_uris = FALSE,
   tex_math_single_backslash = FALSE
 )
@@ -53,10 +52,6 @@ placed \emph{before} the README's body, meaning also \emph{before} the first Mar
 \item{dev}{Graphics device to use for figure output (defaults to png)}
 
 \item{preserve_yaml}{Preserve YAML front matter in final document.}
-
-\item{add_footnotes_hr}{Whether to add a trailing horizontal rule (\verb{---}) to the final Markdown file if it doesn't already end in one and contains footnotes
-(currently only checks for Pandoc's \href{https://pandoc.org/MANUAL.html#footnotes}{reference-style footnotes} and not inline footnotes). This improves
-readability when the file is rendered on \code{GitLab.com}.}
 
 \item{autolink_bare_uris}{Enable the \href{https://pandoc.org/MANUAL.html#extension-autolink_bare_uris}{\code{autolink_bare_uris} Pandoc Markdown extension} which
 makes all absolute URIs into links, even when not surrounded by pointy braces \verb{<...>}.}
