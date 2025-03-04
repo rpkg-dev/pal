@@ -3401,7 +3401,9 @@ strip_yaml_header <- function(rmd,
 #' @examples
 #' \donttest{
 #' tmp_file <- fs::file_temp()
-#' download.file(url = "https://gitlab.com/rpkg.dev/pal/-/raw/master/Rmd/pal.Rmd",
+#' download.file(url = paste0("https://gitlab.com/rpkg.dev/pal/-/raw/",
+#'                            "a191aa74994bbaec96ee14f29f2a342ac95e11cd/",
+#'                            "Rmd/pal.Rmd"),
 #'               destfile = tmp_file,
 #'               quiet = TRUE,
 #'               mode = "wb")
