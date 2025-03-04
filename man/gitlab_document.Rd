@@ -68,9 +68,8 @@ R Markdown output format intended to be fed to \code{\link[rmarkdown:render]{rma
 Format for converting from R Markdown to \href{https://gitlab.com/help/user/markdown.md}{GitLab Flavored Markdown}.
 }
 \details{
-This is the GitLab equivalent to the \code{\link[rmarkdown:github_document]{github_document}} R Markdown
-\href{https://bookdown.org/yihui/rmarkdown/output-formats.html}{output format}. It basically ensures Pandoc is called with a custom set of options optimized for
-maximum compatibility with \href{https://gitlab.com/help/user/markdown.md}{GitLab Flavored Markdown}.
+This is the GitLab equivalent to the \code{\link[rmarkdown:github_document]{github_document}} R Markdown \href{https://bookdown.org/yihui/rmarkdown/output-formats.html}{output format}. It basically ensures Pandoc is called with a custom set of options optimized for maximum
+compatibility with \href{https://gitlab.com/help/user/markdown.md}{GitLab Flavored Markdown}.
 \subsection{Caveats regarding GitLab-Flavored-Markdown-specific features}{
 
 GitLab Flavored Markdown extends the \href{https://spec.commonmark.org/current/}{CommonMark} Markdown specification with a bunch of

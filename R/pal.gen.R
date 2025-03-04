@@ -324,7 +324,7 @@ assert_cols <- function(data,
 
 #' Test if two data frames/tibbles are equal
 #'
-#' Compares two [data frames][base::data.frame()]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like [matrices][base::matrix()]), optionally
+#' Compares two [data frames][base::data.frame]/[tibbles][tibble::tbl_df] (or two objects coercible to tibbles like [matrices][base::matrix]), optionally
 #' ignoring row and column ordering, and returns `TRUE` if both are equal, or `FALSE` otherwise. If the latter is the case and `quiet = FALSE`, information
 #' about detected differences is printed to the console.
 #'
@@ -507,10 +507,10 @@ reduce_df_list <- function(x,
 #' - removes list names. `unlist()` concatenates nested names (separated by a dot).
 #'
 #' @param x `r pkgsnip::param_lbl("r_obj")`
-#' @param keep_attrs Keep [attributes][base::attr()] (and thereby retain list structure of custom objects). A logical scalar.
+#' @param keep_attrs Keep [attributes][base::attr] (and thereby retain list structure of custom objects). A logical scalar.
 #' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
 #'
-#' @return A [list][base::list()].
+#' @return A list.
 #' @family list
 #' @export
 #'
@@ -856,7 +856,7 @@ dsv_colnames <- function(x,
 
 #' Convert to a character scalar (aka string)
 #'
-#' Similar to [`paste0(..., collapse = "")`][base::paste0()], but _recursively_ converts its inputs to type character.
+#' Similar to [`paste0(..., collapse = "")`][base::paste0], but _recursively_ converts its inputs to type character.
 #'
 #' @param ... \R objects to be assembled to a single string. `r pkgsnip::roxy_lbl("dyn_dots_support")`
 #' @param sep Separator to delimit `...`. Defaults to none (`""`).
@@ -1214,8 +1214,8 @@ draw_path_tree <- function(paths,
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Ensures that [dots][base::dots()] `...` are either empty (if `.empty_ok = TRUE`), or all named elements in dots are a valid subset of `.fn`'s parameter
-#' names. In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
+#' Ensures that [dots][base::dots] `...` are either empty (if `.empty_ok = TRUE`), or all named elements in dots are a valid subset of `.fn`'s parameter names.
+#' In case of an invalid or `.forbidden` argument, an informative message is shown and the defined `.action` is taken.
 #'
 #' @details
 #' `check_dots_named()` is intended to combat the second one of the two major downsides that using `...` usually brings. In chapter 6.6 of the book
@@ -1513,7 +1513,7 @@ use_pkg <- function(package,
 #'
 #' @param pkg Package names. A character vector.
 #' @param min_version Minimum required version number of each `pkg`. Must be either `NULL` to ignore version numbers, or a vector of
-#'   [`package_version`][base::package_version()]s or something coercible to.
+#'   [`package_version`][base::package_version]s or something coercible to.
 #'
 #' @return A named logical vector of the same length as `pkg`.
 #' @family rpkgs
@@ -1561,7 +1561,7 @@ is_pkg_installed <- function(pkg,
 #' @inheritParams is_http_success
 #' @param pkg Package name (case-sensitive). A character scalar.
 #' @param min_version Minimum required version number of `pkg`. Must be either `NULL` to ignore version numbers, or a single
-#'   [`package_version`][base::package_version()] or something coercible to.
+#'   [`package_version`][base::package_version] or something coercible to.
 #'
 #' @return A logical scalar.
 #' @family rpkgs
@@ -2026,8 +2026,8 @@ desc_value <- function(key,
 #'
 #' Returns the version of the specified `pkg` dependency from a `DESCRIPTION` file.
 #'
-#' @inheritParams pkg_config_val
 #' @inheritParams desc::desc_get_deps
+#' @param pkg `r pkgsnip::param_lbl("pkg")`
 #' @param types Dependency types to be considered. If `pkg` is listed in multiple dependency types, the maximally required version is returned.
 #'
 #' @return `r pkgsnip::return_lbl("num_vrsn")`
@@ -2255,7 +2255,7 @@ enum_fn_param_defaults <- function(param,
 #' pal::roxy_to_md_links("[base::c()] is so short I almost forget it's there.")
 #' pal::roxy_to_md_links("[`base::c()`], probably the most used base R function ever.")
 #' pal::roxy_to_md_links("Some functions [are magic][downlit::autolink_url]!")
-#' pal::roxy_to_md_links("downlit's [`autolink_url()`][downlit::autolink_url()] seems magic!")
+#' pal::roxy_to_md_links("downlit's [`autolink_url()`][downlit::autolink_url] seems magic!")
 roxy_to_md_links <- function(x) {
   
   checkmate::assert_string(x)
@@ -2746,7 +2746,7 @@ as_md_val_list <- function(...) {
 
 #' Convert dataframe/tibble to Markdown pipe table
 #'
-#' Convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable()] to create a [Markdown pipe
+#' Convenience wrapper around [`knitr::kable(format = "pipe")`][knitr::kable] to create a [Markdown pipe
 #' table](https://pandoc.org/MANUAL.html#extension-pipe_tables).
 #' 
 #' # Create tables dynamically in roxygen2 documentation
@@ -3349,9 +3349,9 @@ strip_yaml_header <- function(rmd,
 #'
 #' Format for converting from R Markdown to [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
 #'
-#' This is the GitLab equivalent to the [`github_document`][rmarkdown::github_document()] R Markdown
-#' [output format](https://bookdown.org/yihui/rmarkdown/output-formats.html). It basically ensures Pandoc is called with a custom set of options optimized for 
-#' maximum compatibility with [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
+#' This is the GitLab equivalent to the [`github_document`][rmarkdown::github_document] R Markdown [output
+#' format](https://bookdown.org/yihui/rmarkdown/output-formats.html). It basically ensures Pandoc is called with a custom set of options optimized for maximum
+#' compatibility with [GitLab Flavored Markdown](https://gitlab.com/help/user/markdown.md).
 #'
 #' ## Caveats regarding GitLab-Flavored-Markdown-specific features
 #'
@@ -3779,7 +3779,7 @@ cli_progress_step_quick <- function(msg,
 #'
 #' @inheritParams cli::cli_process_start
 #' @param expr An expression to be evaluated.
-#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue()] expressions within `msg`, in.
+#' @param env Default environment to evaluate `expr`, as well as possible [glue][glue::glue] expressions within `msg`, in.
 #'
 #' @return The result of the evaluated `expr`, invisibly.
 #' @family cli
@@ -4060,7 +4060,7 @@ req_cached <- function(url,
 
 #' Read in and parse TOML file as strict list
 #'
-#' Reads in a file in [Tom's Obvious Minimal Language (TOML)](https://toml.io/) format and returns its content as a (nested) [strict list][xfun::strict_list()].
+#' Reads in a file in [Tom's Obvious Minimal Language (TOML)](https://toml.io/) format and returns its content as a (nested) [strict list][xfun::strict_list].
 #'
 #' The file is parsed using [`RcppTOML::parseTOML(escape = FALSE)`][RcppTOML::parseTOML].
 #'
@@ -4378,8 +4378,8 @@ path_script <- function() {
 
 #' Capture printed console output as string
 #'
-#' Returns what [`print(x)`][base::print()] would output on the console – if `collapse` is set to anything other than `NULL`, as a character scalar
-#' (i.e. a string), otherwise as a character vector of output lines.
+#' Returns what [`print(x)`][base::print] would output on the console – if `collapse` is set to anything other than `NULL`, as a character scalar (i.e. a
+#' string), otherwise as a character vector of output lines.
 #'
 #' This is a simple convenience wrapper around [utils::capture.output()]. Note that [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
 #' (e.g. as output by the `print()` methods of tidyverse packages) are included in the result. To remove them, use [cli::ansi_strip()].

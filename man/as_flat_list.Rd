@@ -14,7 +14,7 @@ as_flat_list(x, keep_attrs = TRUE, attrs_to_drop = "xfun_strict_list")
 \item{attrs_to_drop}{Attribute names which should never be kept. Only relevant if \code{keep_attrs = TRUE}. A character vector.}
 }
 \value{
-A \link[base:list]{list}.
+A list.
 }
 \description{
 \emph{Recursively} flattens a list. Unlike the similar \code{unlist()}, it
