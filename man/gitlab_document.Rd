@@ -96,8 +96,8 @@ Pandoc during conversion.
 \donttest{
 tmp_file <- fs::file_temp()
 download.file(url = paste0("https://gitlab.com/rpkg.dev/pal/-/raw/",
-                           "a191aa74994bbaec96ee14f29f2a342ac95e11cd/",
-                           "Rmd/pal.Rmd"),
+                           "77b791b9a5e80b2980a67d4ed7dc06553c4450ca/",
+                           "README.Rmd"),
               destfile = tmp_file,
               quiet = TRUE,
               mode = "wb")
@@ -106,6 +106,6 @@ rmarkdown::render(input = tmp_file,
                   output_format = pal::gitlab_document(),
                   quiet = TRUE) |>
   brio::read_lines() |>
-  length()}
+  pal::cat_lines()}
 }
 \concept{rmd_format}
