@@ -2546,6 +2546,7 @@ roxy_tag_value <- function(blocks,
 #' @param .nlines Maximum number of lines to produce. A negative value indicates no limit. An integer scalar.
 #'
 #' @return A character vector of the same length as `...`.
+#' @seealso [pander::pandoc.verbatim()] for a similar function with different features.
 #' @family md
 #' @export
 #'

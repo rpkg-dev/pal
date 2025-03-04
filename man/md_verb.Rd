@@ -60,6 +60,8 @@ pal::md_verb(Not, actual(), `R-expressions`,
   pal::cat_lines()
 }
 \seealso{
+\code{\link[pander:pandoc.verbatim.return]{pander::pandoc.verbatim()}} for a similar function with different features.
+
 Other (Pandoc) Markdown functions:
 \code{\link{as_md_list}()},
 \code{\link{as_md_val_list}()},
