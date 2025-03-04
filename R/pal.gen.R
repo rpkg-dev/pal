@@ -951,6 +951,29 @@ as_comment_str <- function(...,
     paste0(collapse = "")
 }
 
+#' Convert to a valid environment variable name
+#'
+#' @param ... Input to convert to an environment variable name. A character vector or something coercible to.
+#'
+#' @returns A character scalar.
+#' @family string
+#' @export
+#'
+#' @examples
+#' pal::as_env_var_name("foo.bar")
+#' pal::as_env_var_name("/oh/my/goodness")
+#' pal::as_env_var_name("1.2", "some title")
+as_env_var_name <- function(...) {
+  
+  as_str(...,
+         sep = "_") |>
+    stringr::str_replace_all(pattern = "\\W",
+                             replacement = "_") |>
+    stringr::str_replace(pattern = "^(\\d)",
+                         replacement = "_\\1") |>
+    toupper()
+}
+
 #' Enumerate vector's elements as string
 #'
 #' Takes a vector or list and enumerates its elements in a single string. Convenience function combining [wrap_chr()] and [cli::ansi_collapse()] with slightly
@@ -4766,17 +4789,6 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
                                           "available",
                                           "type",
                                           "quiet"))
-
-as_env_var_name <- function(...) {
-  
-  as_str(...,
-         sep = "_") |>
-    stringr::str_replace_all(pattern = "\\W",
-                             replacement = "_") |>
-    stringr::str_replace(pattern = "^(\\d)",
-                         replacement = "_\\1") |>
-    toupper()
-}
 
 get_pkg_config <- function(pkg) {
   

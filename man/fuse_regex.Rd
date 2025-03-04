@@ -37,6 +37,7 @@ The \link[rex:rex]{rex} package which provides an intuitive framework to build c
 Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_comment_str}()},
+\code{\link{as_env_var_name}()},
 \code{\link{as_line_feed_chr}()},
 \code{\link{as_str}()},
 \code{\link{capitalize_first}()},

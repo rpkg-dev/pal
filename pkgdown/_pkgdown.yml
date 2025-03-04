@@ -33,6 +33,7 @@ reference:
 - contents:
   - as_str
   - as_comment_str
+  - as_env_var_name
   - enum_str
   - fuse_regex
 - title: Filesystem paths

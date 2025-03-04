@@ -25,6 +25,7 @@ Convert control character sequence name to actual character sequence
 Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_comment_str}()},
+\code{\link{as_env_var_name}()},
 \code{\link{as_str}()},
 \code{\link{capitalize_first}()},
 \code{\link{dsv_colnames}()},

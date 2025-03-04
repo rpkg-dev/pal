@@ -31,6 +31,7 @@ Returns the column names of a string in a \href{https://en.wikipedia.org/wiki/De
 Other string functions:
 \code{\link{as_chr}()},
 \code{\link{as_comment_str}()},
+\code{\link{as_env_var_name}()},
 \code{\link{as_line_feed_chr}()},
 \code{\link{as_str}()},
 \code{\link{capitalize_first}()},

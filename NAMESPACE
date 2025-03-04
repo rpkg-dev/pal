@@ -3,6 +3,7 @@
 export(arrange_by)
 export(as_chr)
 export(as_comment_str)
+export(as_env_var_name)
 export(as_flat_list)
 export(as_line_feed_chr)
 export(as_md_list)
