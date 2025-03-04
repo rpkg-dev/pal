@@ -3894,6 +3894,8 @@ TODO:
 
 -   As soon as Pandoc [offers native support for GitLab Flavored Markdown](https://github.com/jgm/pandoc/issues/3977), switching to that will be the next step.
 
+-   Move this function to pkg gitlab?
+
 ```{r}
 #' Convert to GitLab Flavored Markdown
 #'
