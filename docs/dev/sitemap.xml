@@ -6,6 +6,7 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/arrange_by.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/as_chr.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/as_comment_str.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/as_env_var_name.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/as_flat_list.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/as_line_feed_chr.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/as_md_list.html</loc></url>
@@ -17,7 +18,6 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_cols.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_df_or_tibble.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/assert_inf_count.html</loc></url>
-<url><loc>https://pal.rpkg.dev/dev/reference/augment_pkg_config.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/build_readme.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/capitalize_first.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/capture_print.html</loc></url>
@@ -43,7 +43,6 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/git_file_mod_time.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/git_remote_tree_url.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/gitlab_document.html</loc></url>
-<url><loc>https://pal.rpkg.dev/dev/reference/has_pkg_config_val.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/index.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/is_equal_df.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/is_http_success.html</loc></url>
@@ -62,10 +61,7 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/path_mod_time.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/path_script.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/pipe_table.html</loc></url>
-<url><loc>https://pal.rpkg.dev/dev/reference/pkg_config_val.html</loc></url>
-<url><loc>https://pal.rpkg.dev/dev/reference/pkg_config_val_default.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/prettify_nr.html</loc></url>
-<url><loc>https://pal.rpkg.dev/dev/reference/print_pkg_config.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/reason_pkg_required.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/reduce_df_list.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/rename_from.html</loc></url>
