@@ -14,7 +14,6 @@ Depends:
 Imports: 
     checkmate (>= 2.2.0),
     cli (>= 3.6.2),
-    constructive (>= 1.0.1),
     dplyr (>= 1.1.0),
     fs (>= 1.5.0),
     glue (>= 1.4.2),
@@ -25,7 +24,6 @@ Imports:
     rlang (>= 1.0.0),
     stringr (>= 1.5.0),
     tibble (>= 3.1.4),
-    tidyr (>= 1.3.1),
     utils,
     vctrs (>= 0.6.5)
 Suggests: 

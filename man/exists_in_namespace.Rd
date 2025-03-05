@@ -26,8 +26,8 @@ This complements \code{\link[utils:getFromNamespace]{utils::getFromNamespace()}}
 }
 \examples{
 if (pal::is_pkg_installed("pkgpurl")) {
-  pal::exists_in_namespace("pkg_config", "pkgpurl")
+  pal::exists_in_namespace("funky_config", "pkgpurl")
 }
 
-pal::exists_in_namespace("pkg_config", "pal")
+pal::exists_in_namespace("funky_config", "pal")
 }
