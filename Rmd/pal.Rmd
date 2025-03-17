@@ -4471,62 +4471,68 @@ toml_read <- function(input,
 
 ### `toml_validate`
 
+TODO:
+
+-   Switch to [`tombi` CLI](https://tombi-toml.github.io/tombi/docs/cli)! Note that is has a different [config
+    approach](https://tombi-toml.github.io/tombi/docs/configuration).
+
 NOTES:
 
-An alternative to the Rust-based external `taplo` CLI would be to rely on the R package [jsonvalidate](https://docs.ropensci.org/jsonvalidate/) that wraps the
-JavaScript tool [Ajv](https://ajv.js.org/). The **main drawback** is that it doesn't feature native TOML support, meaning only JSON files can be directly
-validated. So we'd need to convert the TOML to JSON before validation -- which a) isn't possible in a strictly lossless manner due to the additional native
-date(time) types formats TOML supports as well as [serialization ambuigity](https://docs.ropensci.org/jsonvalidate/reference/json_serialise.html#details) when
-the conversion is done via an intermediary R representation (`RcppTOML::parseTOML()` can only convert TOML to R lists, not directly to JSON, but R doesn't have
-a native atomic type, only vectors, thus the "atomicness" information is lost when converting R lists to JSON), and b) could fail for an invalid TOML file.
-After succesful conversion, validation errors would then refer to the JSON representation which obviously is less useful. Also, Ajv is notably slower than Taplo
-(which is built in Rust).
+-   An alternative to the Rust-based external `taplo` CLI would be to rely on the R package [jsonvalidate](https://docs.ropensci.org/jsonvalidate/) that wraps
+    the JavaScript tool [Ajv](https://ajv.js.org/). The **main drawback** is that it doesn't feature native TOML support, meaning only JSON files can be
+    directly validated. So we'd need to convert the TOML to JSON before validation -- which a) isn't possible in a strictly lossless manner due to the
+    additional native date(time) types formats TOML supports as well as [serialization
+    ambuigity](https://docs.ropensci.org/jsonvalidate/reference/json_serialise.html#details) when the conversion is done via an intermediary R representation
+    (`RcppTOML::parseTOML()` can only convert TOML to R lists, not directly to JSON, but R doesn't have a native atomic type, only vectors, thus the
+    "atomicness" information is lost when converting R lists to JSON), and b) could fail for an invalid TOML file. After successful conversion, validation
+    errors would then refer to the JSON representation which obviously is less useful. Also, Ajv is notably slower than Taplo (which is built in Rust).
 
-The main advantage of using jsonvalidate is support for JSON schema formats greater than [Draft 4](https://json-schema.org/specification-links.html#draft-4)
-(the highest version [taplo currently supports](https://taplo.tamasfe.dev/configuration/developing-schemas.html)).
+    The main advantage of using jsonvalidate is support for JSON schema formats greater than [Draft 4](https://json-schema.org/specification-links.html#draft-4)
+    (the highest version [`taplo` currently supports](https://taplo.tamasfe.dev/configuration/developing-schemas.html)). *Update: `tombi` would also have that
+    advantage without any additional drawbacks!*
 
-Example code to validate the `simple.toml` qstnr survey configuration using jsonvalidate:
+    Example code to validate the `simple.toml` qstnr survey configuration using jsonvalidate:
 
-``` r
-jsonvalidate::json_validate(
-    json = '{
-              "qstnr": {
-                "items": {
-                  "source": [
-                    {
-                      "list": "qstnr:::defaults$items"
-                    },
-                    {
-                      "list": "list(ballot_date = list(name = list(en = \'ballooon day\')))"
+    ``` r
+    jsonvalidate::json_validate(
+        json = '{
+                  "qstnr": {
+                    "items": {
+                      "source": [
+                        {
+                          "list": "qstnr:::defaults$items"
+                        },
+                        {
+                          "list": "list(ballot_date = list(name = list(en = \'ballooon day\')))"
+                        }
+                      ],
+                      "ids": {
+                        "official_register_data": [
+                          "ballot_date",
+                          "ballot_type",
+                          "first_name",
+                          "middle_name",
+                          "last_name",
+                          "street",
+                          "street_number",
+                          "zip_code",
+                          "place"
+                        ],
+                        "personal_data": [
+                          "year_of_birth",
+                          "sex",
+                          "cantonal_att achment"
+                        ]
+                      }
                     }
-                  ],
-                  "ids": {
-                    "official_register_data": [
-                      "ballot_date",
-                      "ballot_type",
-                      "first_name",
-                      "middle_name",
-                      "last_name",
-                      "street",
-                      "street_number",
-                      "zip_code",
-                      "place"
-                    ],
-                    "personal_data": [
-                      "year_of_birth",
-                      "sex",
-                      "cantonal_att achment"
-                    ]
                   }
-                }
-              }
-            }',
-    schema = "/home/salim/Code/own/rpkg.dev/qstnr/inst/json-schema/qstnr-survey.schema.json",
-    engine = "ajv",
-    error = TRUE, # set to FALSE in order to get the `errors` tibble below
-    verbose = TRUE
-) %T>% { attr(., "errors") |> tibble::as_tibble() }
-```
+                }',
+        schema = "/home/salim/Code/own/rpkg.dev/qstnr/inst/json-schema/qstnr-survey.schema.json",
+        engine = "ajv",
+        error = TRUE, # set to FALSE in order to get the `errors` tibble below
+        verbose = TRUE
+    ) %T>% { attr(., "errors") |> tibble::as_tibble() }
+    ```
 
 ```{r}
 #' Validate TOML
