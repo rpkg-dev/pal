@@ -42,7 +42,7 @@ Other string functions:
 \code{\link{dsv_colnames}()},
 \code{\link{enum_str}()},
 \code{\link{fuse_regex}()},
-\code{\link{prettify_nr}()},
+\code{\link{phrase_nr}()},
 \code{\link{sentenceify}()},
 \code{\link{wrap_chr}()}
 }

@@ -755,20 +755,16 @@ escape_lf <- function(x,
 }
 ```
 
-#### `prettify_nr`
-
-TODO:
-
--   Rename fn to `phrase_nr()`?
+#### `phrase_nr`
 
 ```{r}
-#' Prettify a numeric vector
+#' Phrase numeric vector
 #'
-#' Prettifies a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
+#' Phrases a numeric vector by rounding, separating thousands and optionally other procedures. Basically a convenience wrapper around [round_to()] and
 #' [base::format()].
 #'
 #' @inheritParams round_to
-#' @param x A numeric vector to prettify.
+#' @param x A numeric vector to phrase.
 #' @param round_to Number to round `x` to. A numeric scalar.
 #' @param big_mark Character used between every 3 digits to separate thousands.
 #' @param decimal_mark Character used to indicate the numeric decimal point. Only relevant if `x` does not solely consist of integers.
@@ -780,18 +776,18 @@ TODO:
 #' @export
 #'
 #' @examples
-#' c(0.11, 11111.11) |> pal::prettify_nr()
+#' c(0.11, 11111.11) |> pal::phrase_nr()
 #'
 #' c(0.11, 11111.11) |>
-#'   pal::prettify_nr(justify_right = TRUE) |>
+#'   pal::phrase_nr(justify_right = TRUE) |>
 #'   pal::cat_lines()
-prettify_nr <- function(x,
-                        round_to = 0.1,
-                        round_up = TRUE,
-                        big_mark = "'",
-                        decimal_mark = ".",
-                        justify_right = FALSE,
-                        ...) {
+phrase_nr <- function(x,
+                      round_to = 0.1,
+                      round_up = TRUE,
+                      big_mark = "'",
+                      decimal_mark = ".",
+                      justify_right = FALSE,
+                      ...) {
   round_to(x = x,
            to = round_to,
            round_up = round_up) |>

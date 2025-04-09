@@ -21,7 +21,7 @@ reference:
 - contents:
   - as_chr
   - escape_lf
-  - prettify_nr
+  - phrase_nr
   - sentenceify
   - capitalize_first
   - wrap_chr
