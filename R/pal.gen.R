@@ -1034,13 +1034,11 @@ enum_str <- function(x,
 #' @export
 #'
 #' @examples
-#' # perform some (nonsense) Jane Austen text extraction
-#' regex <- c("My dear Jane",
-#'            "make haste, ",
-#'            "(?i)\\bevil")
-#'
-#' readr::read_lines(file = "https://www.gutenberg.org/cache/epub/1342/pg1342.txt") |>
-#'   stringr::str_subset(pattern = pal::fuse_regex(regex))
+#' stringr::str_subset(string = c("yeah",
+#'                                "nope",
+#'                                "maybe",
+#'                                "never"),
+#'                     pattern = pal::fuse_regex(letters[1:3]))
 fuse_regex <- function(...,
                        .literal = FALSE) {
   

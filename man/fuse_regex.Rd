@@ -23,13 +23,11 @@ It's recommended to rely on the \href{https://rex.r-lib.org/}{\strong{rex}} pack
 Combines a vector or list of regular expressions to a single one (by logical OR).
 }
 \examples{
-# perform some (nonsense) Jane Austen text extraction
-regex <- c("My dear Jane",
-           "make haste, ",
-           "(?i)\\\\bevil")
-
-readr::read_lines(file = "https://www.gutenberg.org/cache/epub/1342/pg1342.txt") |>
-  stringr::str_subset(pattern = pal::fuse_regex(regex))
+stringr::str_subset(string = c("yeah",
+                               "nope",
+                               "maybe",
+                               "never"),
+                    pattern = pal::fuse_regex(letters[1:3]))
 }
 \seealso{
 The \link[rex:rex]{rex} package which provides an intuitive framework to build complex regular expressions.
