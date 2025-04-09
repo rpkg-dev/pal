@@ -1782,7 +1782,7 @@ desc_list <- function(file = ".") {
   result
 }
 
-#' Get value from `DESCRIPTION` file field, cleaned up and with dynamic fallback
+#' Get value from `DESCRIPTION` file field (safe)
 #'
 #' Returns the value from a `DESCRIPTION` file field (aka _key_). Thin wrapper around [desc::desc_get_field()] that returns an informative string referring to
 #' the given `key` as `default` if the field is unset.

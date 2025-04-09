@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{desc_get_field_safe}
 \alias{desc_get_field_safe}
-\title{Get value from \code{DESCRIPTION} file field, cleaned up and with dynamic fallback}
+\title{Get value from \code{DESCRIPTION} file field (safe)}
 \usage{
 desc_get_field_safe(
   key,
