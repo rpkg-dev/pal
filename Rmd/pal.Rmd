@@ -2010,14 +2010,6 @@ desc_list <- function(file = ".") {
 
 #### `desc_get_field_safe`
 
-TODO:
-
--   Figure out why setting `default` to an error call referring to `key` doesn't work, i.e.:
-
-    ``` r
-    pal::desc_get_field_safe("Suggestss", default = cli::cli_abort("No {.field {key}} field set in {.file DESCRIPTION}!"))
-    ```
-
 ```{r}
 #' Get value from `DESCRIPTION` file field (safe)
 #'
