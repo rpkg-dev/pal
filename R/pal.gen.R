@@ -1749,7 +1749,7 @@ reason_pkg_required <- function(fn = rlang::call_name(rlang::caller_call()),
 #' - Multi-value fields are returned as vectors.
 #' - The fields `Depends`, `Imports` and `Suggests` are returned as a single data frame named `dependencies`.
 #'
-#' @inheritParams desc_value
+#' @inheritParams desc_get_field_safe
 #'
 #' @return A list.
 #' @family desc
@@ -1772,7 +1772,7 @@ desc_list <- function(file = ".") {
               "Suggests",
               "URL")) |>
     rlang::set_names() |>
-    purrr::map(desc_value,
+    purrr::map(desc_get_field_safe,
                file = file)
   
   if ("Authors@R" %in% fields) result[["Authors@R"]] <- desc::desc_get_authors(file = file)
@@ -1784,10 +1784,8 @@ desc_list <- function(file = ".") {
 
 #' Get value from `DESCRIPTION` file field, cleaned up and with dynamic fallback
 #'
-#' Returns the value from a `DESCRIPTION` file field (aka _key_). Whitespaces at the start and end of the value as well as repeated whitespaces within
-#' it are removed.
-#' 
-#' This function is a slightly modified version of [desc::desc_get_field()] that allows the `default` parameter to be dependent on the `key` parameter.
+#' Returns the value from a `DESCRIPTION` file field (aka _key_). Thin wrapper around [desc::desc_get_field()] that returns an informative string referring to
+#' the given `key` as `default` if the field is unset.
 #'
 #' By default, the following string is returned if `key = "NoRealKey"` is not found:
 #'
@@ -1805,17 +1803,21 @@ desc_list <- function(file = ".") {
 #' @export
 #'
 #' @examples
-#' pal::desc_value(key = "Description",
-#'                 file = fs::path_package("pal"))
-desc_value <- function(key,
-                       file = ".",
-                       default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>")) {
+#' pal::desc_get_field_safe(key = "Description",
+#'                          file = fs::path_package("pal"))
+desc_get_field_safe <- function(key,
+                                default = glue::glue("<No \x60{key}\x60 field set in DESCRIPTION!>"),
+                                trim_ws = TRUE,
+                                squish_ws = trim_ws,
+                                file = ".") {
   
   rlang::check_installed("desc",
                          reason = reason_pkg_required())
   
   desc::desc_get_field(key = key,
                        default = default,
+                       trim_ws = trim_ws,
+                       squish_ws = squish_ws,
                        file = file)
 }
 

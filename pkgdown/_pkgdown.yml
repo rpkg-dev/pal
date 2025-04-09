@@ -61,7 +61,7 @@ reference:
   desc: Extending the [**desc**](https://github.com/r-lib/desc#readme) package.
 - contents:
   - desc_list
-  - desc_value
+  - desc_get_field_safe
   - desc_dep_vrsn
   - desc_url_git
 - subtitle: Package documentation

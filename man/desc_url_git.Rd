@@ -24,7 +24,7 @@ Currently, this function recognizes \href{https://about.gitlab.com/}{GitLab}, \h
 \seealso{
 Other package \code{DESCRIPTION} functions:
 \code{\link{desc_dep_vrsn}()},
-\code{\link{desc_list}()},
-\code{\link{desc_value}()}
+\code{\link{desc_get_field_safe}()},
+\code{\link{desc_list}()}
 }
 \concept{desc}

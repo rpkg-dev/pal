@@ -9,11 +9,11 @@ output: pal::gitlab_document
 knitr::opts_knit$set(root.dir = getwd())
 ```
 
-# `r pal::desc_value("Package")` <a href="https://pal.rpkg.dev/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
+# `r pal::desc_get_field_safe("Package")` <a href="https://pal.rpkg.dev/"><img src="man/figures/logo.png" alt="Package Logo" class="pkg-logo" align="right" height="180"/></a>
 
-`r paste0('[![CRAN Status](https://r-pkg.org/badges/version/', pal::desc_value(key = "Package"), ')](https://cran.r-project.org/package=', pal::desc_value(key = "Package"), '){.pkgdown-release}')`
+`r paste0('[![CRAN Status](https://r-pkg.org/badges/version/', pal::desc_get_field_safe(key = "Package"), ')](https://cran.r-project.org/package=', pal::desc_get_field_safe(key = "Package"), '){.pkgdown-release}')`
 
-`r pal::desc_value("Description")`[^1]
+`r pal::desc_get_field_safe("Description")`[^1]
 
 This is arguably a [*low-cohesion*](https://en.wikipedia.org/wiki/Cohesion_(computer_science)) package.
 

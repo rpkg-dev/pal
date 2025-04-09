@@ -28,7 +28,7 @@ fs::path_package(package = "dplyr") |> pal::desc_list()
 \seealso{
 Other package \code{DESCRIPTION} functions:
 \code{\link{desc_dep_vrsn}()},
-\code{\link{desc_url_git}()},
-\code{\link{desc_value}()}
+\code{\link{desc_get_field_safe}()},
+\code{\link{desc_url_git}()}
 }
 \concept{desc}
