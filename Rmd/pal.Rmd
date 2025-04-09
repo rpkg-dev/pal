@@ -1696,7 +1696,7 @@ use_pkg <- function(package,
   rlang::check_installed("usethis",
                          reason = reason_pkg_required())
   
-  # TODO: submit PR upstream for this
+  # TODO: remove this once https://github.com/r-lib/usethis/pull/2117 has been merged and released
   if (isFALSE(min_version)) min_version <- NULL
   
   usethis::use_package(package = package,
