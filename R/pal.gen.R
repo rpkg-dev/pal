@@ -3842,8 +3842,8 @@ is_url <- function(x) {
 #' @inherit httr2::req_perform return
 #' @family http
 #' @export
-req_cached <- function(url,
-                       max_tries = 3L) {
+http_get_cached <- function(url,
+                            max_tries = 3L) {
   
   rlang::check_installed("httr2",
                          reason = reason_pkg_required())

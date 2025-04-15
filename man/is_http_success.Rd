@@ -74,7 +74,7 @@ pal::is_http_success(url = "https://httpstat.us/500",
 }
 \seealso{
 Other HTTP functions:
-\code{\link{is_url}()},
-\code{\link{req_cached}()}
+\code{\link{http_get_cached}()},
+\code{\link{is_url}()}
 }
 \concept{http}

@@ -43,6 +43,7 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/git_file_mod_time.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/git_remote_tree_url.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/gitlab_document.html</loc></url>
+<url><loc>https://pal.rpkg.dev/dev/reference/http_get_cached.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/index.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/is_equal_df.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/is_http_success.html</loc></url>
@@ -65,7 +66,6 @@
 <url><loc>https://pal.rpkg.dev/dev/reference/reason_pkg_required.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/reduce_df_list.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/rename_from.html</loc></url>
-<url><loc>https://pal.rpkg.dev/dev/reference/req_cached.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/round_to.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/roxy_blocks.html</loc></url>
 <url><loc>https://pal.rpkg.dev/dev/reference/roxy_obj.html</loc></url>

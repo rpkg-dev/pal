@@ -4376,14 +4376,7 @@ is_url <- function(x) {
 }
 ```
 
-### `req_cached`
-
-TODO:
-
--   Rename this fn to be less missleading (it returns a *response* object, not a request object; but `resp_cached()` wouldn't be much better since all the
-    `httr2::resp_*()` fns *extract* something from a response rather than returning a response).
-
-    Maybe `http_get_cached()` would be appropriate (since it only does *GET* requests anyways)?
+### `http_get_cached`
 
 ```{r}
 #' Perform a cached HTTP GET request
@@ -4395,8 +4388,8 @@ TODO:
 #' @inherit httr2::req_perform return
 #' @family http
 #' @export
-req_cached <- function(url,
-                       max_tries = 3L) {
+http_get_cached <- function(url,
+                            max_tries = 3L) {
   
   rlang::check_installed("httr2",
                          reason = reason_pkg_required())

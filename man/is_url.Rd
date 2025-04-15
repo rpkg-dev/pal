@@ -25,7 +25,7 @@ pal::is_url(c("/some/path",
 }
 \seealso{
 Other HTTP functions:
-\code{\link{is_http_success}()},
-\code{\link{req_cached}()}
+\code{\link{http_get_cached}()},
+\code{\link{is_http_success}()}
 }
 \concept{http}
