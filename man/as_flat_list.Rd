@@ -4,25 +4,40 @@
 \alias{as_flat_list}
 \title{Convert to a flat list}
 \usage{
-as_flat_list(x, keep_attrs = TRUE, attrs_to_drop = "xfun_strict_list")
+as_flat_list(
+  x,
+  is_node = vctrs::obj_is_list,
+  name_spec = "{outer}.{inner}",
+  name_repair = c("minimal", "unique", "check_unique", "universal")
+)
 }
 \arguments{
 \item{x}{An \R object.}
 
-\item{keep_attrs}{Keep \link[base:attr]{attributes} (and thereby retain list structure of custom objects). A logical scalar.}
+\item{is_node}{A predicate function that determines whether an element is
+a node (by returning \code{TRUE}) or a leaf (by returning \code{FALSE}). The
+default value, \code{NULL}, treats simple lists as nodes and everything else
+(including richer objects like data frames and linear models) as leaves,
+using \code{\link[vctrs:obj_is_list]{vctrs::obj_is_list()}}. To recurse into all objects built on lists
+use \code{\link[=is.list]{is.list()}}.}
 
-\item{attrs_to_drop}{Attribute names which should never be kept. Only relevant if \code{keep_attrs = TRUE}. A character vector.}
+\item{name_spec}{If both inner and outer names are present, control
+how they are combined. Should be a glue specification that uses
+variables \code{inner} and \code{outer}.}
+
+\item{name_repair}{One of \code{"minimal"}, \code{"unique"}, \code{"universal"}, or
+\code{"check_unique"}. See \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}} for the meaning of these
+options.}
 }
 \value{
 A list.
 }
 \description{
-\emph{Recursively} flattens a list. Unlike the similar \code{unlist()}, it
+\emph{Recursively} flattens an \R object . Unlike \code{unlist()}, it
 \itemize{
 \item always returns a list, i.e. wraps \code{x} in a list if necessary, and will never remove the last list level. Thus it is
 \href{https://en.wikipedia.org/wiki/Type_safety}{type-safe}.
 \item won't treat any of the list leafs specially (like \code{unlist()} does with factors). Thus leaf values will never be modified.
-\item removes list names. \code{unlist()} concatenates nested names (separated by a dot).
 }
 }
 \examples{
@@ -50,13 +65,12 @@ nested_list <-
   str()
 nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) \%T>\% str()
 
-# by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
+# by default, classed lists like data frames, tibbles or `xfun_strict_list` are retained, i.e.
 # not flattened...
 pal::as_flat_list(nested_list) |> str()
 pal::as_flat_list(nested_list_2) |> str()
 # ...but you can drop them and thereby flatten custom objects if needed...
-pal::as_flat_list(nested_list, keep_attrs = FALSE) |> str()
-# ...or retain `xfun_strict_list`s, too
-pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) |> str()
+pal::as_flat_list(nested_list, is_node = is.list) |> str()
+pal::as_flat_list(nested_list_2, is_node = is.list) |> str()
 }
 \concept{list}

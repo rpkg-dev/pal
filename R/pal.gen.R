@@ -497,18 +497,15 @@ reduce_df_list <- function(x,
 #' Convert to a flat list
 #'
 #' @description
-#' _Recursively_ flattens a list. Unlike the similar `unlist()`, it
+#' _Recursively_ flattens an \R object . Unlike `unlist()`, it
 #'
 #' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is
 #'   [type-safe](https://en.wikipedia.org/wiki/Type_safety).
 #'
 #' - won't treat any of the list leafs specially (like `unlist()` does with factors). Thus leaf values will never be modified.
 #'
-#' - removes list names. `unlist()` concatenates nested names (separated by a dot).
-#'
+#' @inheritParams purrr::list_flatten
 #' @param x `r pkgsnip::param_lbl("r_obj")`
-#' @param keep_attrs Keep [attributes][base::attr] (and thereby retain list structure of custom objects). A logical scalar.
-#' @param attrs_to_drop Attribute names which should never be kept. Only relevant if `keep_attrs = TRUE`. A character vector.
 #'
 #' @return A list.
 #' @family list
@@ -539,69 +536,37 @@ reduce_df_list <- function(x,
 #'   str()
 #' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
 #'
-#' # by default, attributes and thus custom objects (except `xfun_strict_list`) are retained, i.e.
+#' # by default, classed lists like data frames, tibbles or `xfun_strict_list` are retained, i.e.
 #' # not flattened...
 #' pal::as_flat_list(nested_list) |> str()
 #' pal::as_flat_list(nested_list_2) |> str()
 #' # ...but you can drop them and thereby flatten custom objects if needed...
-#' pal::as_flat_list(nested_list, keep_attrs = FALSE) |> str()
-#' # ...or retain `xfun_strict_list`s, too
-#' pal::as_flat_list(nested_list_2, attrs_to_drop = NULL) |> str()
+#' pal::as_flat_list(nested_list, is_node = is.list) |> str()
+#' pal::as_flat_list(nested_list_2, is_node = is.list) |> str()
 as_flat_list <- function(x,
-                         keep_attrs = TRUE,
-                         attrs_to_drop = "xfun_strict_list") {
+                         is_node = vctrs::obj_is_list,
+                         name_spec = "{outer}.{inner}",
+                         name_repair = c("minimal", "unique", "check_unique", "universal")) {
   
-  checkmate::assert_flag(keep_attrs)
-  checkmate::assert_character(attrs_to_drop,
-                              any.missing = FALSE,
-                              null.ok = TRUE)
+  checkmate::assert_function(is_node)
   
-  regard_attrs <- keep_attrs && length(setdiff(attributes(x), attrs_to_drop)) > 0L
-  depth <- purrr::pluck_depth(x)
+  result <- x
+  depth <- purrr::pluck_depth(result,
+                              is_node = is_node)
   
-  # wrap `x` in a list if it's not
-  if (regard_attrs || (!rlang::is_bare_list(x) && depth < 2L)) {
-    result <- list(x)
-    
-    # return `x` as-is if it is an unnested list
-  } else if (depth < 3L) {
-    result <- x
-    
-    # flatten the two last list levels (keeping attributes if requested)
-  } else if (depth < 4L) {
-    result <- if (keep_attrs) rm_list_lvl(x, attrs_to_drop = attrs_to_drop) else unname(purrr::list_flatten(as.list(x)))
-    
-  } else {
-    
-    # recursively feed the elements of `x` to this function and flatten the two last list levels (keeping attributes if requested)
-    result <-
-      x |>
-      purrr::map(\(x) as_flat_list(x = x,
-                                   keep_attrs = keep_attrs,
-                                   attrs_to_drop = attrs_to_drop)) |>
-      when(keep_attrs ~ rm_list_lvl(.,
-                                    attrs_to_drop = attrs_to_drop),
-           ~ unname(purrr::list_flatten(.)))
+  # unlist until only a single list level remains
+  while (depth > 2L) {
+    # TODO: switch to `purrr::list_flatten()` once https://github.com/tidyverse/purrr/pull/1179 is merged and released
+    result %<>% list_flatten(is_node = is_node,
+                             name_spec = name_spec,
+                             name_repair = name_repair)
+    depth <- purrr::pluck_depth(result,
+                                is_node = is_node)
   }
   
-  result
-}
-
-rm_list_lvl <- function(x,
-                        attrs_to_drop = "xfun_strict_list") {
-  
-  checkmate::assert_list(x)
-  result <- list()
-  
-  for (i in seq_along(x)) {
-    
-    regard_attrs <- length(setdiff(attributes(x[[i]]), attrs_to_drop)) > 0L
-    
-    if (!regard_attrs && purrr::pluck_depth(x[[i]]) > 1L) {
-      result %<>% c(x[[i]])
-    } else {
-      result %<>% c(list(x[[i]]))
-    }
+  # wrap in list if necessary
+  if (depth < 2L && !is_node(result)) {
+    result %<>% list()
   }
   
   result
@@ -4595,6 +4560,52 @@ has_root <- function(criterion,
   }
   
   result
+}
+
+list_flatten <- function(x,
+                         is_node,
+                         name_spec = "{outer}_{inner}",
+                         name_repair = c("minimal", "unique", "check_unique", "universal")) {
+  
+  obj_check_node(x, is_node)
+  checkmate::assert_string(name_spec)
+
+  # Take the proxy as we restore on exit
+  proxy <- vctrs::vec_proxy(x)
+
+  # Unclass S3 lists to avoid their coercion methods. Wrap atoms in a
+  # list of size 1 so the elements can be concatenated in a single list.
+  proxy <- purrr::map_if(proxy, is_node, unclass, .else = list)
+
+  out <- vctrs::list_unchop(
+    proxy,
+    ptype = list(),
+    name_spec = name_spec,
+    name_repair = name_repair,
+    error_arg = x,
+    error_call = rlang::current_env()
+  )
+
+  # Preserve input type
+  vctrs::vec_restore(out, x)
+}
+
+obj_check_node <- function(
+    x,
+    f,
+    error_call = rlang::caller_env(),
+    error_arg = rlang::caller_arg(x)
+) {
+  if (!f(x)) {
+    if (nzchar(error_arg)) {
+      error_arg <- cli::format_inline("{.arg {error_arg}}")
+    }
+    else {
+      error_arg <- "Input"
+    }
+    cli::cli_abort("{error_arg} must be a list, not {obj_type_friendly(x)}.",
+                   call = error_call)
+  }
 }
 
 is_heading_node <- function(xml_node) {
