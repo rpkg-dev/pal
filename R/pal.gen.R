@@ -2456,7 +2456,7 @@ as_md_list <- function(x,
 as_md_vals <- function(...) {
   
   rlang::list2(...) |>
-    as_flat_list() |>
+    as_flat_list(is_node = is.list) |>
     purrr::map(\(x) {
       
       # wrap chr vals in double quotes
