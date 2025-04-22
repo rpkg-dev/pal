@@ -1593,8 +1593,8 @@ is_pkg_cran <- function(pkg,
 
 #' Test if a directory is an \R package
 #'
-#' Convenience wrapper around the [`rprojroot::is_r_package`][rprojroot::is_r_package] root criterion. Note that it will by default only return `TRUE` for the
-#' root of a package directory, not its subdirectories.
+#' Convenience wrapper around the [`rprojroot::is_r_package`] root criterion. Note that it will by default only return `TRUE` for the root of a package
+#' directory, not its subdirectories.
 #'
 #' @param path Path of the directory to check. A character scalar. Defaults to the current working directory.
 #' @param check_parent_dirs Whether or not to also check `path`'s parent directories (up until the filesystem root) for an \R package setup. Setting
@@ -1618,8 +1618,8 @@ is_pkg_dir <- function(path = ".",
 
 #' Test if pkgdown is set up for an R package directory
 #'
-#' Convenience wrapper around the [`rprojroot::is_pkgdown_project`][rprojroot::is_pkgdown_project] root criterion. Note that it will by default only return
-#' `TRUE` for the root of a package directory and the `pkgdown` subdirectory, not other subdirectories.
+#' Convenience wrapper around the [`rprojroot::is_pkgdown_project`] root criterion. Note that it will by default only return `TRUE` for the root of a package
+#' directory and the `pkgdown` subdirectory, not other subdirectories.
 #'
 #' @param path Path of the R package directory to check. A character scalar. Defaults to the current working directory.
 #' @param check_parent_dirs Whether or not to also check `path`'s parent directories (up until the filesystem root) for a pkgdown setup. Setting
@@ -4309,8 +4309,8 @@ cols_regex <- function(...,
 
 #' MIME type to file extension
 #'
-#' Determines a suitable file extension from a [MIME type](https://en.wikipedia.org/wiki/Media_type), based i.a. on [`mime::mimemap`][mime::mimemap] and
-#' `mime:::mimeextra`. In case of multiple matches, the first one is returned and a warning is printed (unless `quiet = TRUE`).
+#' Determines a suitable file extension from a [MIME type](https://en.wikipedia.org/wiki/Media_type), based i.a. on [`mime::mimemap`] and `mime:::mimeextra`. In
+#' case of multiple matches, the first one is returned and a warning is printed (unless `quiet = TRUE`).
 #'
 #' @param mime_type MIME type to determine the file extension for. A character scalar.
 #' @param quiet `r pkgsnip::param_lbl("quiet")`

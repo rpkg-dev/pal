@@ -17,8 +17,8 @@ is_pkg_dir(path = ".", check_parent_dirs = FALSE)
 \code{FALSE} otherwise.
 }
 \description{
-Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_package}} root criterion. Note that it will by default only return \code{TRUE} for the
-root of a package directory, not its subdirectories.
+Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_r_package}} root criterion. Note that it will by default only return \code{TRUE} for the root of a package
+directory, not its subdirectories.
 }
 \examples{
 pal::is_pkg_dir()

@@ -16,8 +16,8 @@ is_pkgdown_dir(path = ".", check_parent_dirs = FALSE)
 \code{TRUE} if pkgdown is set up for \code{path}, \code{FALSE} otherwise.
 }
 \description{
-Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_pkgdown_project}} root criterion. Note that it will by default only return
-\code{TRUE} for the root of a package directory and the \code{pkgdown} subdirectory, not other subdirectories.
+Convenience wrapper around the \code{\link[rprojroot:criteria]{rprojroot::is_pkgdown_project}} root criterion. Note that it will by default only return \code{TRUE} for the root of a package
+directory and the \code{pkgdown} subdirectory, not other subdirectories.
 }
 \examples{
 pal::is_pkgdown_dir()
