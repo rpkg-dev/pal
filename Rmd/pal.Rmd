@@ -2242,15 +2242,19 @@ enum_fn_param_defaults <- function(param,
 
 #### `roxy_to_md_links`
 
+TODO:
+
+-   R \< 4.5.0 only allowed plaintext as `\link` text in `.Rd` files. roxygen2 optionally allows *the whole* link text to be formatted as inline code (via a
+    simple hack). So it basically wasn't allowed to mix text both formatted as inline code and not inside documentation link text (roxygen2 used to [throw a
+    warning](https://github.com/r-lib/roxygen2/blob/a34bdf7c7b952068b1f7742b7b34d1eac78e54da/R/markdown-link.R#L107) if tried). This simplified link text
+    replacing quite a bit for us.
+
+    Revisit whether changes are needed after [r-lib/roxygen2#1712](https://github.com/r-lib/roxygen2/pull/1712) is merged and released!
+
 NOTES:
 
--   Stripping all valid MD links using `xml2::xml_text(md_to_xml(x))` so that only roxygen2 documentation links remain won't work since the Markdown
+-   Stripping all valid MD links using `xml2::xml_text(pal::md_to_xml(x))` so that only roxygen2 documentation links remain won't work since the Markdown
     normalization also removes enclosing backticks from the latter (i.e. `` "[`base::c()`]" `` becomes `"[base::c()]"`).
-
--   roxygen2 only allows plaintext, optionally formatted as inline code, as documentation link text. And it does not allow to mix text both formatted as inline
-    code and not inside documentation link text (it [throws a
-    warning](https://github.com/r-lib/roxygen2/blob/a34bdf7c7b952068b1f7742b7b34d1eac78e54da/R/markdown-link.R#L107) if tried). This simplifies link text
-    replacing quite a bit for us.
 
 -   While `downlit::autolink_url()` requires objects with non-standard names like `pkgdown-package` to be wrapped in backticks to be recognized (i.e.
     `` "pkgdown::`pkgdown-package`" ``), roxygen2 only handles them properly when the backticks are omitted and otherwise throws a warning:
