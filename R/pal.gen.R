@@ -497,14 +497,14 @@ reduce_df_list <- function(x,
 #' Convert to a flat list
 #'
 #' @description
-#' _Recursively_ flattens an \R object . Unlike `unlist()`, it
+#' Recursively flattens an \R object. Unlike [base::unlist()], it
 #'
 #' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is
 #'   [type-safe](https://en.wikipedia.org/wiki/Type_safety).
 #'
 #' - won't treat any of the list leafs specially (like `unlist()` does with factors). Thus leaf values will never be modified.
 #'
-#' @inheritParams purrr::list_flatten
+#' @inheritParams list_flatten
 #' @param x `r pkgsnip::param_lbl("r_obj")`
 #'
 #' @return A list.
@@ -544,11 +544,13 @@ reduce_df_list <- function(x,
 #' pal::as_flat_list(nested_list, is_node = is.list) |> str()
 #' pal::as_flat_list(nested_list_2, is_node = is.list) |> str()
 as_flat_list <- function(x,
-                         is_node = vctrs::obj_is_list,
+                         is_node = NULL,
                          name_spec = "{outer}.{inner}",
                          name_repair = c("minimal", "unique", "check_unique", "universal")) {
   
-  checkmate::assert_function(is_node)
+  checkmate::assert_function(is_node,
+                             null.ok = TRUE)
+  if (is.null(is_node)) is_node <- vctrs::obj_is_list
   
   result <- x
   depth <- purrr::pluck_depth(result,
@@ -556,7 +558,6 @@ as_flat_list <- function(x,
   
   # unlist until only a single list level remains
   while (depth > 2L) {
-    # TODO: switch to `purrr::list_flatten()` once https://github.com/tidyverse/purrr/pull/1179 is merged and released
     result %<>% list_flatten(is_node = is_node,
                              name_spec = name_spec,
                              name_repair = name_repair)
@@ -4562,6 +4563,11 @@ has_root <- function(criterion,
   result
 }
 
+#' @inherit purrr::list_flatten title description return
+#' @inheritParams purrr::list_flatten
+#' @inheritParams purrr::modify_tree
+#'
+#' @keywords internal
 list_flatten <- function(x,
                          is_node,
                          name_spec = "{outer}_{inner}",

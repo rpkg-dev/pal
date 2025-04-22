@@ -6,7 +6,7 @@
 \usage{
 as_flat_list(
   x,
-  is_node = vctrs::obj_is_list,
+  is_node = NULL,
   name_spec = "{outer}.{inner}",
   name_repair = c("minimal", "unique", "check_unique", "universal")
 )
@@ -33,7 +33,7 @@ options.}
 A list.
 }
 \description{
-\emph{Recursively} flattens an \R object . Unlike \code{unlist()}, it
+Recursively flattens an \R object. Unlike \code{\link[base:unlist]{base::unlist()}}, it
 \itemize{
 \item always returns a list, i.e. wraps \code{x} in a list if necessary, and will never remove the last list level. Thus it is
 \href{https://en.wikipedia.org/wiki/Type_safety}{type-safe}.
