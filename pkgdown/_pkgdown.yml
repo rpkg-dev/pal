@@ -139,7 +139,6 @@ reference:
 - contents:
   - test_cli
   - assert_cli
-  - path_script
 - title: Miscellaneous
 - contents:
   - capture_print

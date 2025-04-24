@@ -4097,50 +4097,6 @@ assert_cli <- function(cmd,
   invisible(cli_path)
 }
 
-#' Determine file path of executing script
-#'
-#' Tries to determine the path to the R/Rmd script that this function is called from.
-#'
-#' @return The file path to the executing script.
-#' @family sys
-#' @export
-path_script <- function() {
-  
-  rlang::check_installed("rprojroot",
-                         reason = reason_pkg_required())
-  rlang::check_installed("rstudioapi",
-                         reason = reason_pkg_required())
-  
-  cmd_args <- commandArgs(trailingOnly = FALSE)
-  needle <- "--file="
-  match <- grep(x = cmd_args,
-                pattern = needle)
-  
-  # Rscript
-  if (length(match) > 0L) {
-    return(normalizePath(sub(needle, "", cmd_args[match])))
-  }
-  
-  # `source()`d via R console
-  if (!is.null(sys.frames()[[1L]][["ofile"]])) {
-    return(normalizePath(sys.frames()[[1L]][["ofile"]]))
-  }
-  
-  # RStudio Run Selection, cf. http://stackoverflow.com/a/35842176/2292993
-  if (!is.null(rprojroot::thisfile())) {
-    return(rprojroot::thisfile())
-  }
-  
-  # RStudio document
-  path <- rstudioapi::getActiveDocumentContext()[["path"]]
-  
-  if (path != "") {
-    return(normalizePath(path))
-  }
-  
-  cli::cli_abort("Couldn't determine script path.")
-}
-
 #' Capture printed console output as string
 #'
 #' Returns what [`print(x)`][base::print] would output on the console – if `collapse` is set to anything other than `NULL`, as a character scalar (i.e. a

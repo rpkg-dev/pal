@@ -32,7 +32,6 @@ pal::test_cli(cmd, get_cmd_path = TRUE)
 }
 \seealso{
 Other system interaction functions:
-\code{\link{assert_cli}()},
-\code{\link{path_script}()}
+\code{\link{assert_cli}()}
 }
 \concept{sys}

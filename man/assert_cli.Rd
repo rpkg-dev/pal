@@ -37,7 +37,6 @@ pal::assert_cli(cmd)
 }
 \seealso{
 Other system interaction functions:
-\code{\link{path_script}()},
 \code{\link{test_cli}()}
 
 Other functions extending the checkmate package:
