@@ -18,11 +18,14 @@
     1.  Thoroughly scan exported fns for possible API improvements (which would be harder to introduce once the pkg is on CRAN) and other outstanding work and
         implement it.
 
-        -   move `toml_*()` fns to sep pkg (tomlr?)
+        -   move `toml_*()` fns to sep pkg (tomlr?); ideally, we'd directly create a [tombi](https://tombi-toml.github.io/tombi) wrapper pkg
 
-        -   remove deprecated fns: `as_flat_list()`, `fuse_regex()`, ...
+        -   fix TODOs for
 
-            (lazier solution might be moving them to pkg salim and adapting downstream accordingly)
+            -   `gitlab_document()`
+            -   `md_to_xml()`
+            -   `pipe_table()`
+            -   `roxy_tag_value()`
 
     2.  Replace `pkgsnip::*` with constants included in pkg. Make changes in a single commit (only incl. source file `Rmd/pal.Rmd`), so it can be easily
         reverted.
@@ -32,4 +35,3 @@
     4.  Release pkg pkgsnip on CRAN.
 
     5.  Revert step 2.
-

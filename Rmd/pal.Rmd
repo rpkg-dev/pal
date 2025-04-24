@@ -1091,7 +1091,7 @@ enum_str <- function(x,
 
 TODO:
 
--   [ ] Incorporate `fuzzify_regex()` and `diacritify_regex` from FA or even make a separate pkg, say `rgx`?
+-   Incorporate `fuzzify_regex()` and `diacritify_regex` from FA
 
 ```{r}
 #' Fuse regular expressions
@@ -2049,7 +2049,7 @@ desc_dep_vrsn <- function(pkg,
 
 TODO:
 
--   Propose this function upstream.
+-   [Upstream](https://github.com/r-lib/desc/issues/162) this function?
 
 ```{r}
 #' Get the Git repository URL from `DESCRIPTION` file
@@ -2505,7 +2505,9 @@ roxy_obj <- function(blocks,
 
 #### `roxy_tag_value`
 
-TODO: Fix failing examples during `pkgdown::build_site()` or -- if not possible to fix -- figure out how to disable running these examples during pkgdown build.
+TODO:
+
+-   Fix failing examples during `pkgdown::build_site()` or -- if not possible to fix -- figure out how to disable running these examples during pkgdown build.
 
 ```{r}
 #' Get an object's roxygen2 tag value(s)
@@ -4401,7 +4403,7 @@ toml_read <- function(input,
 
 TODO:
 
--   Switch to [`tombi` CLI](https://tombi-toml.github.io/tombi/docs/cli)! Note that is has a different [config
+-   Switch to [`tombi` CLI](https://tombi-toml.github.io/tombi/docs/cli)! Note that it has a different [config
     approach](https://tombi-toml.github.io/tombi/docs/configuration).
 
 NOTES:
@@ -5278,7 +5280,9 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
 
 ### `has_root`
 
-TODO: Submit this function as `check_criterion()` upstream as outlined [from here on](https://github.com/r-lib/rprojroot/pull/83#issuecomment-1874876315).
+TODO:
+
+-   Submit this function as `check_criterion()` upstream as outlined [from here on](https://github.com/r-lib/rprojroot/pull/83#issuecomment-1874876315).
 
 ```{r}
 has_root <- function(criterion,
