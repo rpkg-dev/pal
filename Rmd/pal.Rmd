@@ -2052,7 +2052,7 @@ TODO:
 -   [Upstream](https://github.com/r-lib/desc/issues/162) this function?
 
 ```{r}
-#' Get the Git repository URL from `DESCRIPTION` file
+#' Get Git repository URL from `DESCRIPTION` file
 #'
 #' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
 #'

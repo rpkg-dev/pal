@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{desc_url_git}
 \alias{desc_url_git}
-\title{Get the Git repository URL from \code{DESCRIPTION} file}
+\title{Get Git repository URL from \code{DESCRIPTION} file}
 \usage{
 desc_url_git(file = ".")
 }

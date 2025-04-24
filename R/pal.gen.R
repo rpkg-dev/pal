@@ -1832,7 +1832,7 @@ desc_dep_vrsn <- function(pkg,
          ~ .)
 }
 
-#' Get the Git repository URL from `DESCRIPTION` file
+#' Get Git repository URL from `DESCRIPTION` file
 #'
 #' Returns the first Git repository URL found in the `URL` (preferred) or `BugReports` fields of a `DESCRIPTION` file.
 #'
