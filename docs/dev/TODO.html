@@ -49,11 +49,14 @@
 <p>release on CRAN:</p>
 <ol style="list-style-type: decimal"><li>
 <p>Thoroughly scan exported fns for possible API improvements (which would be harder to introduce once the pkg is on CRAN) and other outstanding work and implement it.</p>
-<ul><li><p>move <code>toml_*()</code> fns to sep pkg (tomlr?)</p></li>
+<ul><li><p>move <code>toml_*()</code> fns to sep pkg (tomlr?); ideally, we’d directly create a <a href="https://tombi-toml.github.io/tombi" class="external-link">tombi</a> wrapper pkg</p></li>
 <li>
-<p>remove deprecated fns: <code><a href="reference/as_flat_list.html">as_flat_list()</a></code>, <code><a href="reference/fuse_regex.html">fuse_regex()</a></code>, …</p>
-<p>(lazier solution might be moving them to pkg salim and adapting downstream accordingly)</p>
-</li>
+<p>fix TODOs for</p>
+<ul><li><code><a href="reference/gitlab_document.html">gitlab_document()</a></code></li>
+<li><code><a href="reference/md_to_xml.html">md_to_xml()</a></code></li>
+<li><code><a href="reference/pipe_table.html">pipe_table()</a></code></li>
+<li><code><a href="reference/roxy_tag_value.html">roxy_tag_value()</a></code></li>
+</ul></li>
 </ul></li>
 <li><p>Replace <code>pkgsnip::*</code> with constants included in pkg. Make changes in a single commit (only incl. source file <code>Rmd/pal.Rmd</code>), so it can be easily reverted.</p></li>
 <li><p>Remove Netlify redirect rule <code>/</code> -&gt; <code>/dev</code>.</p></li>
