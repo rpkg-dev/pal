@@ -84,11 +84,11 @@ safe_max <- function(...,
   
   input <- rlang::list2(...)
   
-  purrr::map(input,
-             \(x) checkmate::assert_numeric(x,
-                                            typed.missing = TRUE,
-                                            null.ok = TRUE,
-                                            .var.name = "..."))
+  purrr::walk(input,
+              \(x) checkmate::assert_numeric(x,
+                                             typed.missing = TRUE,
+                                             null.ok = TRUE,
+                                             .var.name = "..."))
   input |>
     purrr::reduce(c) |>
     when(length(.) == 0L ~ .[0L],
@@ -138,11 +138,11 @@ safe_min <- function(...,
   
   input <- rlang::list2(...)
   
-  purrr::map(input,
-             \(x) checkmate::assert_numeric(x,
-                                            typed.missing = TRUE,
-                                            null.ok = TRUE,
-                                            .var.name = "..."))
+  purrr::walk(input,
+              \(x) checkmate::assert_numeric(x,
+                                             typed.missing = TRUE,
+                                             null.ok = TRUE,
+                                             .var.name = "..."))
   input |>
     purrr::reduce(c) |>
     when(length(.) == 0L ~ .[0L],
