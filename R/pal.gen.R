@@ -3366,7 +3366,6 @@ assert_class_any <- function(x,
   
   checkmate::assert_character(classes,
                               any.missing = FALSE)
-  
   if (!inherits(x = x,
                 what = classes)) {
     
