@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{as_chr}
 \alias{as_chr}
-\title{Convert to a character vector}
+\title{Convert to character vector}
 \usage{
 as_chr(..., use_names = FALSE)
 }

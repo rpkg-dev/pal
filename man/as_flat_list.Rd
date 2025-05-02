@@ -2,7 +2,7 @@
 % Please edit documentation in R/pal.gen.R
 \name{as_flat_list}
 \alias{as_flat_list}
-\title{Convert to a flat list}
+\title{Convert to flat list}
 \usage{
 as_flat_list(
   x,
@@ -35,7 +35,7 @@ A list.
 \description{
 Recursively flattens an \R object. Unlike \code{\link[base:unlist]{base::unlist()}}, it
 \itemize{
-\item always returns a list, i.e. wraps \code{x} in a list if necessary, and will never remove the last list level. Thus it is
+\item always returns a regular list, i.e. wraps \code{x} in a \link[base:list]{list} if necessary, and will never remove the last list level. Thus it is
 \href{https://en.wikipedia.org/wiki/Type_safety}{type-safe}.
 \item won't treat any of the list leafs specially (like \code{unlist()} does with factors). Thus leaf values will never be modified.
 }
@@ -44,13 +44,18 @@ Recursively flattens an \R object. Unlike \code{\link[base:unlist]{base::unlist(
 library(magrittr)
 
 nested_list <- list(1:3, list("foo", list("bar"))) \%T>\% str()
+lm_obj <- lm(mpg ~ hp, mtcars)
 
-# unlike `unlist()` which also removes the last list tier in many cases...
+# unlike `unlist()` which also removes the last list tier from regular lists and many list-based
+# objects...
 unlist("foobar")
 unlist(nested_list) |> str()
-# ...this function always returns an (unnested) list
-pal::as_flat_list("foobar") |> str()
-pal::as_flat_list(nested_list) |> str()
+unlist(lm_obj) |> str()
+
+# ...this function is able to return consistent results, i.e. an unnested list
+pal::as_flat_list("foobar", is_node = is.list) |> str()
+pal::as_flat_list(nested_list, is_node = is.list) |> str()
+pal::as_flat_list(lm_obj, is_node = is.list) |> str()
 
 nested_list <- list(list(factor("a"), factor("b")), factor("c")) \%T>\% str()
 
@@ -65,11 +70,11 @@ nested_list <-
   str()
 nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) \%T>\% str()
 
-# by default, classed lists like data frames, tibbles or `xfun_strict_list` are retained, i.e.
+# by default, classed lists like data frames, tibbles or `xfun_strict_list`s are retained, i.e.
 # not flattened...
 pal::as_flat_list(nested_list) |> str()
 pal::as_flat_list(nested_list_2) |> str()
-# ...but you can drop them and thereby flatten custom objects if needed...
+# ...but you can drop them and thereby flatten custom objects if needed
 pal::as_flat_list(nested_list, is_node = is.list) |> str()
 pal::as_flat_list(nested_list_2, is_node = is.list) |> str()
 }

@@ -498,12 +498,12 @@ reduce_df_list <- function(x,
   result
 }
 
-#' Convert to a flat list
+#' Convert to flat list
 #'
 #' @description
 #' Recursively flattens an \R object. Unlike [base::unlist()], it
 #'
-#' - always returns a list, i.e. wraps `x` in a list if necessary, and will never remove the last list level. Thus it is
+#' - always returns a regular list, i.e. wraps `x` in a [list][base::list] if necessary, and will never remove the last list level. Thus it is
 #'   [type-safe](https://en.wikipedia.org/wiki/Type_safety).
 #'
 #' - won't treat any of the list leafs specially (like `unlist()` does with factors). Thus leaf values will never be modified.
@@ -517,15 +517,20 @@ reduce_df_list <- function(x,
 #'
 #' @examples
 #' library(magrittr)
-#'
-#' nested_list <- list(1:3, list("foo", list("bar"))) %T>% str()
 #' 
-#' # unlike `unlist()` which also removes the last list tier in many cases...
+#' nested_list <- list(1:3, list("foo", list("bar"))) %T>% str()
+#' lm_obj <- lm(mpg ~ hp, mtcars)
+#'
+#' # unlike `unlist()` which also removes the last list tier from regular lists and many list-based
+#' # objects...
 #' unlist("foobar")
 #' unlist(nested_list) |> str()
-#' # ...this function always returns an (unnested) list
-#' pal::as_flat_list("foobar") |> str()
-#' pal::as_flat_list(nested_list) |> str()
+#' unlist(lm_obj) |> str()
+#' 
+#' # ...this function is able to return consistent results, i.e. an unnested list
+#' pal::as_flat_list("foobar", is_node = is.list) |> str()
+#' pal::as_flat_list(nested_list, is_node = is.list) |> str()
+#' pal::as_flat_list(lm_obj, is_node = is.list) |> str()
 #' 
 #' nested_list <- list(list(factor("a"), factor("b")), factor("c")) %T>% str()
 #' 
@@ -540,11 +545,11 @@ reduce_df_list <- function(x,
 #'   str()
 #' nested_list_2 <- list(1:3, xfun::strict_list(list(list("buried deep")))) %T>% str()
 #'
-#' # by default, classed lists like data frames, tibbles or `xfun_strict_list` are retained, i.e.
+#' # by default, classed lists like data frames, tibbles or `xfun_strict_list`s are retained, i.e.
 #' # not flattened...
 #' pal::as_flat_list(nested_list) |> str()
 #' pal::as_flat_list(nested_list_2) |> str()
-#' # ...but you can drop them and thereby flatten custom objects if needed...
+#' # ...but you can drop them and thereby flatten custom objects if needed
 #' pal::as_flat_list(nested_list, is_node = is.list) |> str()
 #' pal::as_flat_list(nested_list_2, is_node = is.list) |> str()
 as_flat_list <- function(x,
@@ -577,7 +582,7 @@ as_flat_list <- function(x,
   result
 }
 
-#' Convert to a character vector
+#' Convert to character vector
 #'
 #' _Recursively_ applies [base::as.character()] to its inputs.
 #'
