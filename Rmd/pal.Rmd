@@ -5235,6 +5235,9 @@ forbidden_dots <- list(roxy_tag_value = c("pkgs",
 
 TODO:
 
+-   Our PR that would fix `rprojroot::find_root()` got [rejected](https://github.com/r-lib/rprojroot/pull/100#issuecomment-2439864749) in the end for
+    questionable reasons. But we'd need it to be able to really *rely* on `rprojroot::find_root()` as used below. Discuss or try with another PR?
+
 -   Submit this function as `check_criterion()` upstream as outlined [from here on](https://github.com/r-lib/rprojroot/pull/83#issuecomment-1874876315).
 
 ```{r}
