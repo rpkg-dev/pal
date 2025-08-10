@@ -57,12 +57,12 @@ test_that("`fn_param_defaults()` works as expected", {
   # test with external fns
   expect_identical(fn_param_defaults(param = ".name_repair",
                                      fn = tibble::as_tibble),
-                   c('"check_unique"', '"unique"', '"universal"', '"minimal"'))
+                   c('"check_unique"', '"unique"', '"universal"', '"minimal"', '"unique_quiet"', '"universal_quiet"'))
 
   expect_identical(fn_param_defaults(param = ".name_repair",
                                      fn = "as_tibble",
                                      env = environment(tibble::as_tibble)),
-                   c('"check_unique"', '"unique"', '"universal"', '"minimal"'))
+                   c('"check_unique"', '"unique"', '"universal"', '"minimal"', '"unique_quiet"', '"universal_quiet"'))
 
   ## test non-character results
   expect_identical(fn_param_defaults(param = ".id",
