@@ -78,15 +78,15 @@
 <span class="r-in"><span>                               size <span class="op">=</span> <span class="fl">100L</span>,</span></span>
 <span class="r-in"><span>                               replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/tee.html" class="external-link">%T&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "m" "w" "l" "e" "f" "o" "o" "d" "f" "i" "e" "e" "x" "o" "m" "b" "w" "k" "k" "e" "u" "l" "b" "f" "d" "p" "b" "c" "y" "v" "k" "g" "u" "f" "i" "v" "j" "u"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [39] "b" "q" "t" "x" "v" "a" "f" "b" "s" "n" "a" "y" "o" "r" "e" "h" "a" "l" "s" "p" "k" "z" "c" "b" "w" "j" "c" "f" "d" "j" "a" "g" "f" "v" "s" "y" "b" "h"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [77] "a" "a" "g" "l" "v" "i" "j" "b" "f" "g" "l" "z" "v" "n" "e" "g" "s" "l" "q" "e" "q" "m" "f" "a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "l" "e" "f" "o" "o" "d" "f" "i" "e" "e" "x" "o" "m" "b" "w" "k" "k" "e" "u" "l" "b" "f" "d" "p" "b" "c" "y" "v" "k" "g" "u" "f" "i" "v" "j" "u" "b" "q"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [39] "t" "x" "v" "a" "f" "b" "s" "n" "a" "y" "o" "r" "e" "h" "a" "l" "s" "p" "k" "z" "c" "b" "w" "j" "c" "f" "d" "j" "a" "g" "f" "v" "s" "y" "b" "h" "a" "a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [77] "g" "l" "v" "i" "j" "b" "f" "g" "l" "z" "v" "n" "e" "g" "s" "l" "q" "e" "q" "m" "f" "a" "a" "m"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># sort the random letters alphabetically</span></span></span>
 <span class="r-in"><span><span class="va">random_letters</span> <span class="op">|&gt;</span> <span class="fu">pal</span><span class="fu">::</span><span class="fu">arrange_by</span><span class="op">(</span>by <span class="op">=</span> <span class="va">letters</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "a" "a" "a" "a" "a" "a" "a" "b" "b" "b" "b" "b" "b" "b" "b" "c" "c" "c" "d" "d" "d" "e" "e" "e" "e" "e" "e" "e" "f" "f" "f" "f" "f" "f" "f" "f" "f" "g"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [39] "g" "g" "g" "g" "h" "h" "i" "i" "i" "j" "j" "j" "j" "k" "k" "k" "k" "l" "l" "l" "l" "l" "l" "m" "m" "m" "n" "n" "o" "o" "o" "o" "p" "p" "q" "q" "q" "r"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [77] "s" "s" "s" "s" "t" "u" "u" "u" "v" "v" "v" "v" "v" "v" "w" "w" "w" "x" "x" "y" "y" "y" "z" "z"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "a" "a" "a" "a" "a" "a" "a" "a" "b" "b" "b" "b" "b" "b" "b" "b" "c" "c" "c" "d" "d" "d" "e" "e" "e" "e" "e" "e" "e" "f" "f" "f" "f" "f" "f" "f" "f" "f"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [39] "g" "g" "g" "g" "g" "h" "h" "i" "i" "i" "j" "j" "j" "j" "k" "k" "k" "k" "l" "l" "l" "l" "l" "l" "m" "m" "m" "n" "n" "o" "o" "o" "o" "p" "p" "q" "q" "q"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [77] "r" "s" "s" "s" "s" "t" "u" "u" "u" "v" "v" "v" "v" "v" "v" "w" "w" "x" "x" "y" "y" "y" "z" "z"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -98,7 +98,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
